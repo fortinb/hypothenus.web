@@ -1,0 +1,27 @@
+
+
+:root {
+  
+    --primary: #04b1b8;
+    --info: #1b59ed;
+    --accent: #fdab08;
+    --dark: #181827;
+    --less-dark: #242439;
+    --light: #f4f4f7;
+    --less-light: #ababc9;
+    --danger: #f72f2f;
+    --button-danger: #ee7d7d;
+  }
+
+body,
+html {
+  font-family: "Roboto", sans-serif;
+  color: var(--dark);
+  background: linear-gradient(
+      0deg,
+      rgba(250, 250, 250, 0.5),
+      rgba(250, 250, 250, 0.5)
+    ),
+    #fff;
+  padding-bottom: 1rem;
+}
