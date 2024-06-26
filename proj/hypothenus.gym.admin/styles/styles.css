@@ -1,8 +1,17 @@
 @import './general.css';
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+
+
+.text-primary {
+  color: var(--bs-primary)
 }
+
+.icon-primary {
+  color: var(--bs-gray-500)
+}
+
+
+/*------------------------------------------------------*/
 .theme-light:before,
 .theme-dark:before {
   content: "";
@@ -416,12 +425,6 @@ header ul li button:focus {
 
 .background-text-highlight {
   background: var(--accent);
-}
-
-.blue-box-background {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQAQMAAAC032DuAAAAAXNSR0IArs4c6QAAAANQTFRFdsvgfwLFxQAAABBJREFUGBljGAWjYBTQDQAAA3AAATXTgHYAAAAASUVORK5CYII=");
-  height: 80px;
-  width: 80px;
 }
 
 .flex-grow-04 {
