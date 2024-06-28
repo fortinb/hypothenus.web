@@ -5,6 +5,7 @@ import { Page } from "@/src/lib/entities/page";
 import GymDetails from "./gym-details";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
+
 export default function GymsList({ pageNumber, pageSize }: { pageNumber: number, pageSize: number; }) {
 
   let [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,13 +28,13 @@ export default function GymsList({ pageNumber, pageSize }: { pageNumber: number,
     }
   }, [pageNumber, pageSize]);
 
+
   return (
     <div className="container pb-4">
       <div className="row g-4">
-        if (!isLoading) {
-          pageOfGyms?.content.map((gym: Gym) => {
-            return <GymDetails key={gym.gymId} gym={gym}></GymDetails>
-          })}
+      {pageOfGyms?.content.map((gym: Gym) => {
+         return <GymDetails key={gym.gymId} gym={gym}></GymDetails>
+      })}
       </div>
     </div>
   );

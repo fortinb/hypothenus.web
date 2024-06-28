@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Gym } from "@/src//lib/entities/gym";

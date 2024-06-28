@@ -21,7 +21,7 @@ export default function RootLayout({
       <body>
         <div className="container-fluid">
           <StoreProvider>
-            {children}
+              {children}
           </StoreProvider>
         </div>
       </body>
