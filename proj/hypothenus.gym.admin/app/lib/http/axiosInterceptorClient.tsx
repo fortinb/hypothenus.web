@@ -1,4 +1,4 @@
-"use server";
+"use client"
 
 import axios from 'axios'
 
@@ -10,8 +10,7 @@ axiosInstance.interceptors.request.use(
     // Modify the request config here (e.g., add headers, authentication tokens)
     config.headers['Content-Type'] = "application/json";
     config.headers["x-tracking-number"] = "1234";
-    config.headers["x-credentials"] = "Bruno Fortin";
-    config.headers["x-authorization"] = "{ \"roles\" : [\"Admin\"] }";
+    config.headers["Authorization"] = "{ \"roles\" : [\"Admin\"] }";
 
     return config;
   },

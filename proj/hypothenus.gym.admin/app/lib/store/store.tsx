@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit"
-import gymReducer from "./slices/gymSlice" 
+import gymsPagingReducer from "./slices/gymsPagingSlice" 
 
 export const store = configureStore({
   reducer: {
-    gym: gymReducer
+    gymsPaging: gymsPagingReducer
   }
 })
 
