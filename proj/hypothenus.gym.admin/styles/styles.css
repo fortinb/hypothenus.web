@@ -12,139 +12,8 @@
 
 
 /*------------------------------------------------------*/
-.theme-light:before,
-.theme-dark:before {
-  content: "";
-  position: fixed;
-  z-index: 0;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
 
-.theme-light:before {
-  background: linear-gradient(
-      0deg,
-      rgba(250, 250, 250, 0.5),
-      rgba(250, 250, 250, 0.5)
-    ),
-    #fff;
-}
-.theme-dark::before {
-  background: #ccc;
-}
 
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-a:hover,
-a:focus {
-  color: var(--primary);
-}
-
-.btn-danger {
-  background-color: var(--button-danger);
-  border-color: var(--button-danger);
-}
-
-.bg-main-gradient {
-  background: linear-gradient(145deg, #ffe598, #ffffff);
-}
-
-.form-check-input:checked {
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
-
-.form-check-input[type="checkbox"] {
-  border-radius: 0.25em;
-}
-
-.form-check-input {
-  width: 1.3rem;
-  height: 1.3rem;
-  margin-top: 0.1em;
-  margin-right: 5px;
-  vertical-align: top;
-}
-
-/* by adding 'spinner-bottom' class as a wrapper will change the spinner position to bottom */
-.spinner-bottom .spinner-grow,
-.spinner-bottom .spinner-border {
-  --bs-spinner-width: 1rem;
-  --bs-spinner-height: 1rem;
-  --bs-spinner-border-width: 0.18em;
-}
-
-.spinner-grow,
-.spinner-border {
-  --bs-spinner-width: 1.5rem;
-  --bs-spinner-height: 1.5rem;
-  --bs-spinner-border-width: 0.18em;
-  margin-left: .75rem;
-}
-
-.spinner-height {
-  height: 2rem;
-  position: absolute !important;
-  right: 22%;
-  top: 13px;
-}
-
-.btn-accent {
-  background: var(--primary);
-  border-radius: var(--bs-btn-border-radius) !important;
-  color: var(--light);
-  font-size: 15px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  font-weight: 600;
-  text-shadow: inherit;
-}
-
-.hero {
-  background-color: var(--dark);
-  color: var(--light);
-  position: relative;
-  z-index: 1;
-}
-
-.hero .logo {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.hero .logo h2 {
-  font-size: 17px;
-  text-transform: uppercase;
-  margin: 0;
-  letter-spacing: 1px;
-  color: var(--less-light);
-}
-
-.hero .date-meta h5 {
-  margin-bottom: 3px;
-  color: var(--light);
-  letter-spacing: 0.3px;
-  font-size: 19px;
-}
-
-.hero .date-meta h6 {
-  margin: 0;
-  font-size: 15px;
-  letter-spacing: 0.4px;
-  color: var(--less-light);
-}
-
-.content-wrapper {
-  margin-top: 1rem;
-  position: relative;
-  z-index: 1;
-}
 
 header {
   background-color: var(--less-dark);
@@ -500,9 +369,7 @@ header ul li button:focus {
   box-sizing: border-box; /* Includes the border in the element's total width */
 }
 
-.app-content-background {
-  background-color: #f8ffff; /* Lighter background color */
-}
+
 
 .show-modal {
   display: block;

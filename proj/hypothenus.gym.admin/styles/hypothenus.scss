@@ -1,0 +1,71 @@
+@import "@/node_modules/bootstrap/scss/bootstrap";
+
+// Bootstrap Overrides
+
+
+// Theme
+$primary: #b5b5b8;
+$secondary: #babcbe;
+$success: $green-500;
+$info: $gray-500;
+$warning: $yellow-500;
+$danger: $red-500;
+$light: $gray-100;
+$dark: $gray-900;
+
+$text-primary: $gray-900;
+$text-secondary: $gray-700;
+
+$text-primary-light: #86b7fe;
+$text-secondary-light : $blue;
+$text-secondary-lights : #3b88fc;
+
+$border-color: $dark!important;
+
+$enable-shadows: true;
+
+body,
+html {
+    font-family: "Roboto", sans-serif;
+    background: $light;
+    padding-bottom: 1rem;
+}
+
+.icon-primary {
+    color: $dark;
+}
+
+header {
+    background-color: transparent;
+   /* background-color: $primary;*/
+    /* Uncomment below code when the header need to be sticky onScrollDown */
+    /* position: sticky;
+    top: 0;
+    z-index: 9; */
+
+    //box-shadow: 0px 12px 15px 0px rgb(114 116 118 / 57%);
+    margin-bottom: 13px;
+    position: relative;
+    z-index: 1;
+}
+
+// Bootstrap overrides
+
+// navbar
+.navbar-brand {
+    color: $text-primary-light;
+}
+
+.nav-link {
+    color: $text-primary-light;
+}
+
+.navbar-nav > .nav-link.active {
+    color: $text-secondary-light;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: $text-secondary-light
+}
+    
