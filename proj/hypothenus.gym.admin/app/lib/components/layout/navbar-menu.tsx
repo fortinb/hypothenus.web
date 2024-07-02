@@ -12,17 +12,17 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../hooks/useStore";
 
 export default function NavbarMenu() {
-
+  
   const searchState: SearchState = useSelector((state: any) => state.search?.value);
   const dispatch = useAppDispatch();
-
+  
   function search(formData: FormData) {
     const searchCriteria = formData.get("searchCriteria");
     if (searchCriteria) {
       dispatch(setSearchCriteria(searchCriteria?.toString()));
     }
   }
- 
+  
    return (
     <Navbar expand="lg" className="container-xxl bd-gutter flex-wrap flex-lg-nowrap" >
       <Container className="container-fluid">
@@ -32,7 +32,7 @@ export default function NavbarMenu() {
             <div>
               <Nav className="mb-2 mb-lg-0">
                 <div className="mt-2 mt-lg-0 me-2">
-                  <img src="/images/logo_small.png"></img>
+                  <img src="/images/logo_small_blue.png"></img>
                 </div>
                 <Nav.Link as={Link} href="/">Home</Nav.Link>
                 <Nav.Link as={Link} href="/gyms">Gyms</Nav.Link>
@@ -48,6 +48,5 @@ export default function NavbarMenu() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-
   );
 }

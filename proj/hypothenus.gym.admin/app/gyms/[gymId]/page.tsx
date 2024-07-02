@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="main-bg-gradient">
       <div className="">
-       erwewew
+       gym details
       </div>
     </main>
   );

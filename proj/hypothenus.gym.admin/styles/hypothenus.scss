@@ -5,7 +5,7 @@
 
 // Theme
 $primary: #b5b5b8;
-$secondary: #babcbe;
+$secondary: $gray-300;
 $success: $green-500;
 $info: $gray-500;
 $warning: $yellow-500;
@@ -14,43 +14,70 @@ $light: $gray-100;
 $dark: $gray-900;
 
 $text-primary: $gray-900;
-$text-secondary: $gray-700;
+$text-secondary: #3b88fc;
 
 $text-primary-light: #86b7fe;
-$text-secondary-light : $blue;
-$text-secondary-lights : #3b88fc;
+$text-secondary-light: $blue;
 
-$border-color: $dark!important;
+$icon-primary: #3b88fc;
+$icon-secondary: $gray-500;
+
+$card-shadow:#3b88fc;
+$card-footer: $gray-100;
+
+$border-color: $dark !important;
 
 $enable-shadows: true;
 
+$main-bg-gradient: linear-gradient(145deg, $light, #86b7fe);
+
+// page
 body,
 html {
     font-family: "Roboto", sans-serif;
-    background: $light;
-    padding-bottom: 1rem;
-}
-
-.icon-primary {
-    color: $dark;
+    background: $main-bg-gradient;
+    height: 100%;
 }
 
 header {
-    background-color: transparent;
-   /* background-color: $primary;*/
-    /* Uncomment below code when the header need to be sticky onScrollDown */
-    /* position: sticky;
-    top: 0;
-    z-index: 9; */
-
-    //box-shadow: 0px 12px 15px 0px rgb(114 116 118 / 57%);
+    background-color: $light;
     margin-bottom: 13px;
     position: relative;
     z-index: 1;
 }
 
-// Bootstrap overrides
+footer {
+    background-color: $light;
+}
 
+//text
+.text-primary {
+    color: $text-primary !important;
+    ;
+}
+
+.text-secondary {
+    color: $text-secondary !important;
+    ;
+}
+
+.invisible-text {
+    color: transparent;
+}
+
+.bg-gradient-loading-text {
+    /* Applying the linear gradient */
+    background: linear-gradient(to right, $primary, $secondary);
+  
+    /* Padding around the text */
+    padding: 10px;
+  
+    /* Aligning text */
+    text-align: center;
+  
+    /* Only as wide as the content plus padding */
+    display: inline-block;
+  }
 // navbar
 .navbar-brand {
     color: $text-primary-light;
@@ -60,7 +87,7 @@ header {
     color: $text-primary-light;
 }
 
-.navbar-nav > .nav-link.active {
+.navbar-nav>.nav-link.active {
     color: $text-secondary-light;
     font-weight: bold;
 }
@@ -68,4 +95,66 @@ header {
 .nav-link:hover {
     color: $text-secondary-light
 }
-    
+
+// cards
+.card {
+    transition: 250ms ease all;
+}
+
+.card:hover {
+    box-shadow: 5px 10px 20px $card-shadow;
+}
+
+.card h5.card-title {
+    color: $text-primary;
+    opacity: 0.9;
+    transition: 250ms ease all;
+}
+
+.card:hover h5.card-title {
+    color: $text-secondary;
+}
+
+.card-body {
+    min-height: 215px;
+}
+
+.speaker-rounded-corners {
+    border-top-left-radius: 10px;
+    /* Adjust the radius as needed */
+    border-bottom-right-radius: 10px;
+    /* Adjust the radius as needed */
+}
+
+.card .card-body {
+    min-height: auto;
+}
+
+.card-body .card-text {
+    color: $text-primary;
+    opacity: 0.7;
+    font-size: 0.9em;
+    /* Reduce font size */
+    line-height: 1.4;
+    /* Adjust line height for readability */
+    margin-bottom: 1em;
+    /* Add some space at the bottom */
+}
+
+.card-footer {
+    background-color: $card-footer;
+    border-top-color: rgb(0 0 0 / 6%);
+}
+
+//icons
+.icon-primary {
+    color: $dark;
+}
+
+//animation
+.animate-opacity-for-pending {
+    animation: opacityAnimation 1.5s ease-in-out infinite;
+}
+
+
+  

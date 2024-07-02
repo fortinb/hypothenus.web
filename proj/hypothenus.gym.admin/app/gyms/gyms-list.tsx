@@ -6,12 +6,12 @@ import GymDetails from "./gym-details";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 
-export default function GymsList({ pageNumber, pageSize }: { pageNumber: number, pageSize: number; }) {
+export default function GymsList({ pageOfGyms }: { pageOfGyms: Page<Gym> | undefined; }) {
 
-  let [isLoading, setIsLoading] = useState<boolean>(false);
-  let [pageOfGyms, setPageOfGyms] = useState<Page<Gym>>();
+  //const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [pageOfGyms, setPageOfGyms] = useState<Page<Gym>>();
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchGymsPage = async () => {
       let response = await axiosInstance.post("/api/gyms", {
         pageNumber: pageNumber, pageSize: pageSize
@@ -19,23 +19,23 @@ export default function GymsList({ pageNumber, pageSize }: { pageNumber: number,
 
       let pageOfGyms: Page<Gym> = response.data;
 
-      setPageOfGyms(pageOfGyms);
+  //    setPageOfGyms(pageOfGyms);
     }
 
     if (isLoading === false) {
       setIsLoading(true);
       fetchGymsPage();
     }
-  }, [pageNumber, pageSize]);
+  }, []);
+  */
 
 
   return (
-    <div className="container pb-4">
-      <div className="row g-4">
+
+    <div className="row h-100 w-100 mt-2 mb-2">
       {pageOfGyms?.content.map((gym: Gym) => {
-         return <GymDetails key={gym.gymId} gym={gym}></GymDetails>
+        return <GymDetails key={gym.gymId} gym={gym}></GymDetails>
       })}
-      </div>
     </div>
   );
 }

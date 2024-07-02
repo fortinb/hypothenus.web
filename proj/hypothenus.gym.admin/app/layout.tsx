@@ -6,6 +6,7 @@ import "/styles/hypothenus.scss";
 import NextAuthProvider from "./lib/contexts/next-auth-provider";
 import StoreProvider from './lib/store/store-provider'
 import Header from "./lib/components/layout/header";
+import Footer from "./lib/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "Isoceles Hypothenus",
@@ -18,19 +19,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-   
-    <html lang="en">
+
+    <html lang="fr">
       <body>
-        <div className="container-fluid">
-         <div className="overflow-hidden">
-         <StoreProvider>
-              <Header />
-                {children}
-          </StoreProvider>
+        <StoreProvider>
+          <div className="container-fluid overflow-hidden w-100 h-100">
+            <div className="d-flex flex-row w-100 h-100 p-1">
+              <div className="d-flex flex-column justify-content-between w-100 h-100 pt-2">
+                <Header />
+                <div className="container-fluid overflow-hidden"> 
+                  {children}
+                </div>
+                <Footer />
+              </div>
+            </div>
           </div>
-        </div>
+        </StoreProvider>
       </body>
-    </html>
+    </html >
   );
 }
 //    <NextAuthProvider> </NextAuthProvider> 
