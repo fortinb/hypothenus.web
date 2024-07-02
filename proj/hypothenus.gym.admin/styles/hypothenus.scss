@@ -101,8 +101,10 @@ footer {
     transition: 250ms ease all;
 }
 
-.card:hover {
-    box-shadow: 5px 10px 20px $card-shadow;
+.card-body:hover {
+    border: solid;
+    border-color: $card-shadow;
+    border-width: 2px;
 }
 
 .card h5.card-title {
@@ -116,7 +118,11 @@ footer {
 }
 
 .card-body {
+    border: solid;
+    border-color: transparent;
+    border-width: 2px;
     min-height: 215px;
+    box-shadow: 5px 10px 20px $card-shadow;
 }
 
 .speaker-rounded-corners {

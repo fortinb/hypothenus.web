@@ -27,7 +27,7 @@ export default function RootLayout({
             <div className="d-flex flex-row w-100 h-100 p-1">
               <div className="d-flex flex-column justify-content-between w-100 h-100 pt-2">
                 <Header />
-                <div className="container-fluid overflow-hidden"> 
+                <div className="container-fluid overflow-hidden h-100"> 
                   {children}
                 </div>
                 <Footer />

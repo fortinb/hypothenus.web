@@ -3,13 +3,13 @@
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Gym } from "@/src/lib/entities/gym";
 import { Page } from "@/src/lib/entities/page";
-import { FormEvent, Suspense, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ErrorBoundary from "../lib/components/errors/error-boundary";
-import { useAppDispatch } from "../lib/hooks/useStore";
+import PagingNavigation from "../lib/components/navigation/paging-navigation";
 import { GymsPagingState } from "../lib/store/slices/gymsPagingSlice";
 import GymsList from "./gyms-list";
-import GymsListLoading from "./gyms-list-loading";
+import Loader from "../lib/components/navigation/loader";
 
 export default function GymsListPaging() {
   const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging?.value);
@@ -24,8 +24,6 @@ export default function GymsListPaging() {
   useEffect(() => {
     if (!isInitDone) {
       fetchGymsPage();
-
-      setIsInitDone(true);
     }
   }, [pageOfGyms]);
 
@@ -50,6 +48,8 @@ export default function GymsListPaging() {
     let pageOfGyms: Page<Gym> = response.data;
 
     setPageOfGyms(pageOfGyms);
+
+    setIsInitDone(true);
   }
 
   const searchGymsPage = async (criteria: String) => {
@@ -63,14 +63,35 @@ export default function GymsListPaging() {
   }
 
   return (
-    <div className="overflow-auto h-100">
+    <div className="h-100">
       <ErrorBoundary>
-         <GymsList pageOfGyms={pageOfGyms} />
+        <div className="d-flex flex-column justify-content-between h-100">
+          <div>
+            <PagingNavigation />
+          </div>
+
+          {isInitDone == false &&
+            <div className="flex-fill h-100">
+              <Loader />
+            </div>
+          }
+
+          {isInitDone == true &&
+            <div className="overflow-auto h-100">
+              <GymsList pageOfGyms={pageOfGyms} />
+            </div>
+          }
+
+        </div>
       </ErrorBoundary>
     </div>
   );
 }
-/*    <div className="pt-2">
+/*  const sleep = (milliseconds: number) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+   await sleep(60000);
+      <div className="pt-2">
 <Form as="form" className="d-flex" role="search" onSubmit={onSearch}>
 <Form.Control type="search" placeholder="Search" name="searchCriteria" defaultValue="" aria-label="Search" />
 <Button className="ms-2" type="submit" variant="primary">Search</Button>

@@ -39,10 +39,7 @@ export default function NavbarMenu() {
               </Nav>
             </div>
             <div>
-              <Form as="form" className="d-flex" role="search" action={search}>
-                <Form.Control type="search" placeholder="Search"  name="searchCriteria" defaultValue="" aria-label="Search" disabled={!searchState.active}/>
-                <Button className="ms-2" type="submit" variant="primary" disabled={!searchState.active}>Search</Button>
-              </Form>
+              
             </div>
           </div>
         </Navbar.Collapse>
