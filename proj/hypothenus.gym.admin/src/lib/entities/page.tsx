@@ -3,7 +3,8 @@ export interface Page<T> {
     content: T[];
     pageable: Pageable;
     sort: any;
-    total: number;
+    totalPages: number;
+    totalElements: number;
   }
 
   export interface Pageable {
