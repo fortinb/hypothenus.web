@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const body  = await req.json();
 
     const ParamsSchema = z.object({
-      criteria:z.string().min(3, "Invalid search criteria"),
+      criteria:z.string().min(2, "Invalid search criteria"),
       pageNumber: z.number().min(0, "Invalid page number"), 
       pageSize: z.number().min(0, "Invalid page size"), 
     });

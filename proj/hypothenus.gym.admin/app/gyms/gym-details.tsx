@@ -1,6 +1,7 @@
 "use client";
 
 import { Gym } from "@/src//lib/entities/gym";
+import { formatAddress } from "@/src/lib/entities/address";
 import Link from "next/link";
 
 export default function GymDetails({ gym }: { gym: Gym }) {
@@ -14,7 +15,7 @@ export default function GymDetails({ gym }: { gym: Gym }) {
               <Link href={"/gyms/" + gym.gymId}> {gym.name}</Link>
             </h5>
             <p className="card-text">
-              <span className="text-primary">{gym.address.city}</span><br/>
+              <span className="text-primary">{formatAddress(gym.address)}</span><br/>
               <Link href={"mailto:" + gym.email}>{gym.email}</Link>
             </p>
           </div>

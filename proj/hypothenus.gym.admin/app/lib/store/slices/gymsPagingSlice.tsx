@@ -1,35 +1,48 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export  const DEFAULT_PAGING_SIZE : number = 8;
+export  const DEFAULT_PAGING_SIZE : number = 10;
 
 export interface GymsPagingState {
   pageNumber: number;
   pageSize: number;
+  includeInactive: boolean;
+  searchActive: boolean;
+  searchCriteria: String
 }
 
 export const gymsPagingSlice = createSlice({
   name: 'gymsPaging',
   initialState: {
       pageNumber: 0,
-      pageSize: DEFAULT_PAGING_SIZE
+      pageSize: DEFAULT_PAGING_SIZE,
+      includeInactive: false,
+      searchActive: false,
+      searchCriteria: ""
    },
   reducers: {
+    includeInactive: (state, action: PayloadAction<boolean>) => {
+      //  console.log ("reducer nextPage");
+        return {
+          ...state,
+          includeInactive: action.payload
+        }
+      },
     nextPage: (state) => {
-      console.log ("reducer nextPage");
+    //  console.log ("reducer nextPage");
       return {
         ...state,
         pageNumber: state.pageNumber + 1
       }
     },
     previousPage: (state) => {
-      console.log ("reducer previousPage");
+    //  console.log ("reducer previousPage");
       return {
         ...state,
         pageNumber: state.pageNumber - 1
       }
     },
     firstPage: (state) => {
-      console.log ("reducer firstPage");
+    //  console.log ("reducer firstPage");
       return {
         ...state,
         pageNumber: 0,
@@ -37,10 +50,28 @@ export const gymsPagingSlice = createSlice({
        
       }
     },
+    setSearchCriteria: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        pageNumber: 0,
+        pageSize: DEFAULT_PAGING_SIZE,
+        searchActive: true,
+        searchCriteria: action.payload
+      }
+    },
+    resetSearchCriteria: (state) => {
+      return {
+        ...state,
+        pageNumber: 0,
+        pageSize: DEFAULT_PAGING_SIZE,
+        searchActive: false,
+        searchCriteria: ""
+      }
+    },
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { nextPage, previousPage, firstPage } = gymsPagingSlice.actions
+export const { nextPage, previousPage, firstPage, setSearchCriteria, resetSearchCriteria, includeInactive } = gymsPagingSlice.actions
 
 export default gymsPagingSlice.reducer

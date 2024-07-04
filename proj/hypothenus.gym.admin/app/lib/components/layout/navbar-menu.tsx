@@ -5,23 +5,13 @@ import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { SearchState, setSearchCriteria } from "../../store/slices/searchSlice";
+
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../hooks/useStore";
 
 export default function NavbarMenu() {
   
-  const searchState: SearchState = useSelector((state: any) => state.search?.value);
-  const dispatch = useAppDispatch();
-  
-  function search(formData: FormData) {
-    const searchCriteria = formData.get("searchCriteria");
-    if (searchCriteria) {
-      dispatch(setSearchCriteria(searchCriteria?.toString()));
-    }
-  }
+ 
   
    return (
     <Navbar expand="lg" className="container-xxl bd-gutter flex-wrap flex-lg-nowrap" >

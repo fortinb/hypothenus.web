@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import gymsPagingReducer from "./slices/gymsPagingSlice";
-import searchReducer from "./slices/searchSlice";
 
 export const store = configureStore({
   reducer: {
-    gymsPaging: gymsPagingReducer,
-    search: searchReducer
+    gymsPaging: gymsPagingReducer
   }
 })
 

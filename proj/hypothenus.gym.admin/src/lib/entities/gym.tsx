@@ -8,6 +8,7 @@ export interface Gym {
     address: Address;
     email: string;
     language: string;
+    isActive: boolean;
     phoneNumbers: PhoneNumber[];
     socialMediaAccounts: SocialMediaAccount[];
   }
