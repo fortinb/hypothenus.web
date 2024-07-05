@@ -5,7 +5,7 @@ import { Page } from "@/src//lib/entities/page";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "../http/axiosInterceptor";
 
-export async function fetchGyms(token : String, trackingNumber: String, pageNumber: number, pageSize: number): Promise<Page<Gym>> {
+export async function fetchGyms(token : String, trackingNumber: String, pageNumber: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
 
   const listURI : String  = "/v1/admin/gyms";
   
@@ -14,7 +14,8 @@ export async function fetchGyms(token : String, trackingNumber: String, pageNumb
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     params: {
       page: pageNumber,
-      pageSize : pageSize
+      pageSize : pageSize,
+      includeInactive: includeInactive
     },
     headers: { "Authorization": token.valueOf(),
                "x-tracking-number" : trackingNumber.valueOf()

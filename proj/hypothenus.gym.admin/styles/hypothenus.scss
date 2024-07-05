@@ -16,20 +16,23 @@ $dark: $gray-900;
 $bg-primary: #cdcdce;
 $bg-secondary: $white;
 $bg-light: $gray-100;
+$bg-info: $info;
 
 $text-primary: $gray-900;
 $text-secondary: #3b88fc;
-
 $text-primary-light: #5f9dfa;
 $text-secondary-light: $blue;
+$text-bright: $white;
 
 $icon-primary: #3b88fc;
-$icon-secondary:  #9e9e9e!important;;
+$icon-secondary:  #9e9e9e!important;
+$icon-light: $white;
+$icon-danger: $danger;
 
-$card-shadow:#3b88fc;
-$card-footer: $gray-100;
+$card-shadow: $gray-700; //#3b88fc;
 
 $border-color: $dark !important;
+$border-color-light: $gray-500 !important;
 
 $enable-shadows: true;
 
@@ -57,12 +60,11 @@ footer {
 //text
 .text-primary {
     color: $text-primary !important;
-    ;
+    opacity: 0.9;
 }
 
 .text-secondary {
     color: $text-secondary !important;
-    ;
 }
 
 .invisible-text {
@@ -111,13 +113,6 @@ footer {
 // cards
 .card {
     transition: 250ms ease all;
-    
-}
-
-.card-body:hover {
-    border: solid;
-    border-color: $card-shadow;
-    border-width: 2px;
 }
 
 .card h5.card-title {
@@ -131,22 +126,27 @@ footer {
 }
 
 .card-body {
+    background-color: $secondary;
     border: solid;
     border-color: transparent;
     border-width: 2px;
-    min-height: 215px;
     box-shadow: 5px 10px 20px $card-shadow;
 }
 
-.speaker-rounded-corners {
-    border-top-left-radius: 10px;
-    /* Adjust the radius as needed */
-    border-bottom-right-radius: 10px;
-    /* Adjust the radius as needed */
+.card-body.card-body-inactive {
+    box-shadow: none;
 }
 
-.card .card-body {
-    min-height: auto;
+.card-body.card-body-inactive:hover {
+    border: solid;
+    border-color: $border-color-light;
+    border-width: 2px;
+}
+
+.card-body:hover {
+    border: solid;
+    border-color: $card-shadow;
+    border-width: 2px;
 }
 
 .card-body .card-text {
@@ -161,8 +161,13 @@ footer {
 }
 
 .card-footer {
-    background-color: $card-footer;
-    border-top-color: rgb(0 0 0 / 6%);
+    border-top-color: $border-color-light;
+}
+
+.card-footer.card-footer-inactive {
+    background-color: $bg-info;
+    color: $text-bright;
+    font-weight: bold;
 }
 
 //icons
@@ -174,12 +179,21 @@ footer {
     color: $icon-secondary;
 }
 
-.icon.icon-muted {
-  background-color: #9e9e9e!important;
+.icon.icon-light {
+    color: $icon-light;
+}
+
+.icon.icon-danger {
+    color: $icon-danger;
 }
 
 //animation
 .animate-opacity-for-pending {
     animation: opacityAnimation 1.5s ease-in-out infinite;
+}
+
+//checkbox
+.form-check-input-lg {
+    transform: scale(1.5);
 }
   

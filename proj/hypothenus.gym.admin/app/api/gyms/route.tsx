@@ -19,11 +19,12 @@ export async function POST(req: NextRequest) {
 
     let pageNumber : number = body.pageNumber;
     let pageSize : number = body.pageSize;
+    let includeInactive : boolean = body.includeInactive;
 
     let token = req.headers.get('Authorization');
     let trackingNumber = req.headers.get('x-tracking-number');
 
-    const gymsPage = await fetchGyms(token ?? "", trackingNumber ?? "", pageNumber, pageSize);
+    const gymsPage = await fetchGyms(token ?? "", trackingNumber ?? "", pageNumber, pageSize, includeInactive);
    
     return NextResponse.json(gymsPage, { status: 200 });
     

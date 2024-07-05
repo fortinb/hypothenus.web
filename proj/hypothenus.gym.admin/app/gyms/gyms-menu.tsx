@@ -1,30 +1,33 @@
 "use client"
-import { ChangeEvent, ToggleEvent} from 'react';
+
+import { ChangeEvent } from 'react';
 import Form from 'react-bootstrap/Form';
+import { GymsPagingState, includeInactive } from '../lib/store/slices/gymsPagingSlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../lib/hooks/useStore';
 
 export default function GymsMenu() {
-
-  function onActivated(e: ChangeEvent<HTMLInputElement> ) {
-   // e.preventDefault();
-
-    if (e?.currentTarget?.checked == true) {
-      
-    }
+  const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging);
+  const dispatch = useAppDispatch();
+  
+  function onIncludeDeactivated(e: ChangeEvent<HTMLInputElement> ) {
+    dispatch(includeInactive(e.currentTarget.checked));
   }
+
   return (
 
     <div className="d-flex flex-column justify-content-start w-100 h-50 page-part">
       <div>
-        <h2 className="text-secondary">Gyms management</h2>
+        <h2 className="text-secondary">Gyms</h2>
       </div>
       <div>
         <hr />
       </div>
-      <div>
+      <div className="d-flex flex-row justify-content-end pb-2">
         <div className="form-check form-switch">
-          <Form.Control className="form-check-input" type="checkbox" role="switch" name="includeDeactivate"
-            id="flexSwitchCheckChecked" onChange={onActivated}/>
-          <label className="text-primary">Include deactivated</label>
+          <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
+            id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} defaultChecked={false} />
+          <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">Include inactive</label>
         </div>
       </div>
       <div className="row flex-fill">
@@ -36,4 +39,3 @@ export default function GymsMenu() {
     </div>
   );
 }
-/* <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>*/ 
