@@ -1,17 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../hooks/useStore";
-
 export default function NavbarMenu() {
-  
- 
   
    return (
     <Navbar expand="lg" className="container-xxl bd-gutter flex-wrap flex-lg-nowrap" >
@@ -29,7 +23,6 @@ export default function NavbarMenu() {
               </Nav>
             </div>
             <div>
-              
             </div>
           </div>
         </Navbar.Collapse>

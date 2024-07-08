@@ -1,7 +1,7 @@
 export interface SocialMediaAccount {
   accountName: string;
   url: string;
-  socialMedia: SocialMediaTypeEnum;
+  socialMedia: SocialMediaTypeEnum | null;
 }
 
 export enum SocialMediaTypeEnum {
@@ -9,3 +9,13 @@ export enum SocialMediaTypeEnum {
   X,
   Instagram
 }
+
+export const newSocialMediaAccount = () : SocialMediaAccount => {
+  let newSocialMediaAccount : SocialMediaAccount = {
+    accountName: "",
+    url: "",
+    socialMedia: null
+  };
+
+  return newSocialMediaAccount;
+} 

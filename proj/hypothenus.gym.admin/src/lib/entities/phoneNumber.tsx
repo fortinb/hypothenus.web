@@ -1,11 +1,28 @@
+import { z } from 'zod';
+
+export enum PhoneNumberTypeEnum {
+  Business = "Business",
+  Home = "Home",
+  Mobile = "Mobile"
+}
+
 export interface PhoneNumber {
-   regionalCode: string;
    number: string;
    type: PhoneNumberTypeEnum;
 }
 
-export enum PhoneNumberTypeEnum {
-  Business,
-  Home,
-  Mobile
-}
+export const newPhoneNumber = (type: PhoneNumberTypeEnum) : PhoneNumber => {
+  let newPhoneNumber : PhoneNumber = {
+    type: type,
+    number: ""
+  };
+
+  return newPhoneNumber;
+} 
+
+const phoneRegex = new RegExp(/^(\s*|(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:([\(]{1}))?(?:([0-9]{3}))?(?:([\)]{1}))?\s*(?:[.-]\s*)?)([0-9]{3})\s*(?:[.-]\s*)?([0-9]{4})\s*(?:\s*(?:#|x\.?|ext\.?)\s*(\d+)\s*)?)$/);
+
+export const PhoneNumberSchema = z.object({
+  type: z.nativeEnum(PhoneNumberTypeEnum),
+  number: z.string().min(0).regex(phoneRegex, { message: "+1 999-999-9999 x9999"}), 
+});
