@@ -18,7 +18,7 @@ export async function fetchGyms(token : String, trackingNumber: String, page: nu
       includeInactive: includeInactive
     },
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 
@@ -41,7 +41,7 @@ export async function searchGyms(token : String, trackingNumber: String, page: n
       includeInactive: includeInactive
     },
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 
@@ -58,7 +58,7 @@ export async function getGym(token : String, trackingNumber: String, gymId: stri
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 
@@ -75,7 +75,7 @@ export async function activateGym(token : String, trackingNumber: String, gymId:
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 
@@ -92,11 +92,28 @@ export async function deactivateGym(token : String, trackingNumber: String, gymI
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 
-  let  response = await axiosInstance.post(postURI.valueOf(), {}, requestContext);
+  let response = await axiosInstance.post(postURI.valueOf(), {}, requestContext);
+
+  return response.data;
+}
+
+export async function deleteGym(token : String, trackingNumber: String, gymId: string): Promise<void> {
+
+  const deleteURI : String  = "/v1/admin/gyms/" + gymId;
+  
+  const requestContext: AxiosRequestConfig = 
+  {
+    baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
+    headers: { "Authorization": token.valueOf(),
+               "x-tracking-number": trackingNumber.valueOf()
+    }
+  };
+
+  let response = await axiosInstance.delete(deleteURI.valueOf(), requestContext);
 
   return response.data;
 }
@@ -109,7 +126,7 @@ export async function createGym(token : String, trackingNumber: String, gym: Gym
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 
@@ -126,7 +143,7 @@ export async function saveGym(token : String, trackingNumber: String, gym: Gym):
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     headers: { "Authorization": token.valueOf(),
-               "x-tracking-number" : trackingNumber.valueOf()
+               "x-tracking-number": trackingNumber.valueOf()
     }
   };
 

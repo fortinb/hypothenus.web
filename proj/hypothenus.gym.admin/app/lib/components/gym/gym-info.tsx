@@ -1,18 +1,20 @@
 "use client"
 
 import { Gym, GymSchema } from '@/src/lib/entities/gym';
+import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from '@/src/lib/entities/messages';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, Dispatch, MouseEvent, SetStateAction, useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Toast from 'react-bootstrap/Toast';
-import { useForm, SubmitHandler } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from 'zod';
+import axiosInstance from '../../http/axiosInterceptorClient';
+import FormActionBar from '../actions/form-action-bar';
+import FormActionButtons from '../actions/form-action-buttons';
+import ModalConfirmation from '../actions/modal-confirmation';
+import ToastSuccess from '../notifications/toast-success';
 import AddressInfo from './address-info';
 import PhoneInfo from './phone-info';
-import axiosInstance from '../../http/axiosInterceptorClient';
-import Link from 'next/link';
-import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from '@/src/lib/entities/messages';
+import { useRouter } from 'next/navigation';
 
 export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<SetStateAction<Gym>> }) {
     const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<Gym>({
@@ -20,11 +22,17 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
         resolver: zodResolver(GymSchema),
     });
 
+    const router = useRouter();
+    const [success, setSuccess] = useState(false);
+    const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [isSaving, setIsSaving] = useState<boolean>(false);
-    const [savingSuccessfull, setSavingSuccessfull] = useState(false);
-    const toggleSavingSuccessfull = () => setSavingSuccessfull(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [isActivating, setIsActivating] = useState<boolean>(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+    const toggleSuccess = () => setSuccess(false);
+   
     useEffect(() => {
         if (!isEditMode && gym.id == "") {
             setIsEditMode(true);
@@ -55,7 +63,8 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
             setGym(result);
             reset(result);
         }
-        setSavingSuccessfull(true)
+        setTextSuccess("Saving successfull !");
+        setSuccess(true);
         setIsSaving(false);
     }
 
@@ -67,7 +76,8 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
         setGym(result);
         reset(result);
 
-        setSavingSuccessfull(true)
+        setTextSuccess("Saving successfull !");
+        setSuccess(true);
         setIsSaving(false);
     }
 
@@ -75,15 +85,36 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
         let response = await axiosInstance.post("/api/gyms/" + gymId + "/activate");
         let gym: Gym = response.data;
         setGym(gym);
+        setIsActivating(false);
+        setTextSuccess("Activation successfull !");
+        setSuccess(true);
     }
 
     const deactivateGym = async (gymId: string) => {
         let response = await axiosInstance.post("/api/gyms/" + gymId + "/deactivate");
         let gym: Gym = response.data;
         setGym(gym);
+        setIsActivating(false);
+        setTextSuccess("Deactivation successfull !");
+        setSuccess(true);
+    }
+
+    const deleteGym = async (gymId: string) => {
+        await axiosInstance.delete("/api/gyms/" + gymId);
+     
+        setTextSuccess("Deleting successfull !");
+        setSuccess(true);
+
+        setTimeout(function()
+        {
+            setShowDeleteConfirmation(false);
+            router.push("/gyms");
+
+        }, 2000);
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
+        setIsActivating(true);
         if (e.currentTarget.checked) {
             activateGym(gym.gymId);
         } else {
@@ -95,6 +126,20 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
         if (gym.id !== "") {
             setIsEditMode(isEditMode ? false : true);
             reset(gym);
+        }
+    }
+
+    function onDelete(confirmation: boolean) {
+        if (confirmation) {
+            setIsDeleting(true);
+
+            deleteGym(gym.gymId);
+        }
+    }
+
+    function onDeleteConfirmation(e: MouseEvent<HTMLAnchorElement>) {
+        if (gym.id !== "") {
+            setShowDeleteConfirmation(true);
         }
     }
 
@@ -121,23 +166,8 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
     return (
         <div className="w-100 h-100">
             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={handleSubmit(onSubmit)}>
-                <div className="d-flex flex-row justify-content-between align-items-center">
-                    <div className="d-flex flex-row justify-content-start align-items-center">
-                        <div>
-                            <Link className="link-element ps-1" href="#" onClick={onEdit} ><i className="icon icon-secondarybi bi-pencil h3 mb-1"></i></Link>
-                        </div>
-                        <div>
-                            <Link className="link-element ms-4" href="#" onClick={onEdit} ><i className="icon icon-secondarybi bi-trash h3 mb-1"></i></Link>
-                        </div>
-                    </div>
-                    <div className="align-items-center">
-                        <div className="form-check form-switch pe-2">
-                            <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
-                                id="flexSwitchCheckChecked" onChange={onActivation} disabled={(gym.gymId == "" ? true : false) || !isEditMode} checked={gym.gymId == "" ? true : gym.active} />
-                            <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">Activated</label>
-                        </div>
-                    </div>
-                </div>
+                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gym.gymId == "" ? true : gym.active}  
+                                isActivationDisabled={(gym.gymId == "" ? true : false)} isActivating={isActivating}/>
                 <hr className="mt-1" />
                 <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="gym_info_form" disabled={!isEditMode} >
                     <div className="d-flex flex-row justify-content-start">
@@ -189,32 +219,10 @@ export default function GymInfo({ gym, setGym }: { gym: Gym, setGym: Dispatch<Se
                     </div>
                 </fieldset>
                 <hr className="mt-1 mb-1" />
-                <div className="d-flex flex-row justify-content-between" >
-                    <div className="p-2">
-                        <Link className="btn btn-secondary ms-2" href="/gyms"><i className="icon icon-secondarybi bi-x-lg me-2"></i>Cancel</Link>
-                    </div>
-                   
-                    <fieldset className="p-2" disabled={!isEditMode} form="gym_info_form">
-                        <Button className="btn btn-primary pt-2 pb-2 me-3" type="submit" variant="primary">
-                            {isSaving &&
-                                <div className="spinner-border spinner-border-sm me-2"></div>
-                            }
-
-                            {!isSaving &&
-                                <i className="icon bi bi-floppy me-2 h7"></i>
-                            }
-
-                            {isSaving ? "Saving" : "Save"}
-                        </Button>
-                    </fieldset>
-                </div>
+                <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} href="/gyms" formId="gym_info_form"/>
             </Form>
-            <Toast className="toast-success" show={savingSuccessfull} onClose={toggleSavingSuccessfull} autohide={true} delay={3000} animation={true} role="alert">
-                        <Toast.Body className="d-flex flex-row justify-content-center">
-                            Saving successfull !
-                        </Toast.Body>
-                    </Toast>
+            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+            <ModalConfirmation title={gym.name} text={"Are you sure you want to delete this gym ?"} yesText="Delete" noText="Cancel" actionText="Deleting..." isAction={isDeleting} show={showDeleteConfirmation}  handleResult={onDelete} />
         </div>
-
     );
 }

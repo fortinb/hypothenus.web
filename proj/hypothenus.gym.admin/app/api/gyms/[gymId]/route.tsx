@@ -1,4 +1,4 @@
-import { getGym, saveGym } from '@/app/lib/ssr/gyms-data-service'
+import { deleteGym, getGym, saveGym } from '@/app/lib/ssr/gyms-data-service'
 import { Gym } from '@/src/lib/entities/gym';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -29,6 +29,23 @@ export async function PUT(req: NextRequest, { params }: { params: { gymId: strin
     gym = await saveGym(token ?? "", trackingNumber ?? "", gym);
    
     return NextResponse.json(gym, { status: 200 });
+    
+  } catch (err) {
+    console.log("PUT error: " + err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { gymId: string } }) {
+
+  try {
+  
+    let token = req.headers.get("Authorization");
+    let trackingNumber = req.headers.get("x-tracking-number");
+
+    await deleteGym(token ?? "", trackingNumber ?? "", params.gymId);
+   
+    return NextResponse.json({ status: 200 });
     
   } catch (err) {
     console.log("PUT error: " + err);
