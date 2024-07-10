@@ -29,7 +29,7 @@ export function formatAddress(address: Address): String {
          address.city + ", " + address.state + " " + address.zipCode;
 }
 
-const zipCodeRegex = new RegExp(/[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ ]?\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d/);
+const zipCodeRegex = new RegExp(/^\d{5}$|(^\d{5}-\d{4}$)|[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ ]?\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d/);
 
 export const AddressSchema = z.object({
   civicNumber: z.string().min(1, { message: "Civic number is required"} ),

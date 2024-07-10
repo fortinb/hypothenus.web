@@ -5,7 +5,7 @@ import { Page } from "@/src//lib/entities/page";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "../http/axiosInterceptor";
 
-export async function fetchGyms(token : String, trackingNumber: String, pageNumber: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
+export async function fetchGyms(token : String, trackingNumber: String, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
 
   const listURI : String  = "/v1/admin/gyms";
   
@@ -13,7 +13,7 @@ export async function fetchGyms(token : String, trackingNumber: String, pageNumb
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     params: {
-      page: pageNumber,
+      page: page,
       pageSize : pageSize,
       includeInactive: includeInactive
     },
@@ -27,7 +27,7 @@ export async function fetchGyms(token : String, trackingNumber: String, pageNumb
   return response.data;
 }
 
-export async function searchGyms(token : String, trackingNumber: String, pageNumber: number, pageSize: number, criteria: String): Promise<Page<Gym>> {
+export async function searchGyms(token : String, trackingNumber: String, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Gym>> {
 
   const searchURI : String  = "/v1/admin/gyms/search";
   
@@ -35,9 +35,10 @@ export async function searchGyms(token : String, trackingNumber: String, pageNum
   {
     baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
     params: {
-      page: pageNumber,
+      page: page,
       pageSize : pageSize,
-      criteria: criteria
+      criteria: criteria,
+      includeInactive: includeInactive
     },
     headers: { "Authorization": token.valueOf(),
                "x-tracking-number" : trackingNumber.valueOf()
@@ -96,6 +97,40 @@ export async function deactivateGym(token : String, trackingNumber: String, gymI
   };
 
   let  response = await axiosInstance.post(postURI.valueOf(), {}, requestContext);
+
+  return response.data;
+}
+
+export async function createGym(token : String, trackingNumber: String, gym: Gym): Promise<Gym> {
+
+  const postURI : String  = "/v1/admin/gyms";
+  
+  const requestContext: AxiosRequestConfig = 
+  {
+    baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
+    headers: { "Authorization": token.valueOf(),
+               "x-tracking-number" : trackingNumber.valueOf()
+    }
+  };
+
+  let response = await axiosInstance.post(postURI.valueOf(), gym, requestContext);
+
+  return response.data;
+}
+
+export async function saveGym(token : String, trackingNumber: String, gym: Gym): Promise<Gym> {
+
+  const putURI : String  = "/v1/admin/gyms/" + gym.gymId;
+  
+  const requestContext: AxiosRequestConfig = 
+  {
+    baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
+    headers: { "Authorization": token.valueOf(),
+               "x-tracking-number" : trackingNumber.valueOf()
+    }
+  };
+
+  let  response = await axiosInstance.put(putURI.valueOf(), gym, requestContext);
 
   return response.data;
 }

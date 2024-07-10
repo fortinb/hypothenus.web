@@ -11,6 +11,7 @@ import PagingNavigation from "../lib/components/navigation/paging-navigation";
 import { useAppDispatch } from "../lib/hooks/useStore";
 import { GymsPagingState, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria, includeInactive } from "../lib/store/slices/gymsPagingSlice";
 import GymsList from "./gyms-list";
+import { AxiosRequestConfig } from "axios";
 
 export default function GymsListPaging() {
   const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging);
@@ -22,19 +23,26 @@ export default function GymsListPaging() {
 
   useEffect(() => {
     if (gymsPagingState.searchActive) {
-      searchGymsPage(gymsPagingState.pageNumber, gymsPagingState.pageSize, gymsPagingState.includeInactive, gymsPagingState.searchCriteria);
+      searchGymsPage(gymsPagingState.page, gymsPagingState.pageSize, gymsPagingState.includeInactive, gymsPagingState.searchCriteria);
     } else {
-      fetchGymsPage(gymsPagingState.pageNumber, gymsPagingState.pageSize, gymsPagingState.includeInactive);
+      fetchGymsPage(gymsPagingState.page, gymsPagingState.pageSize, gymsPagingState.includeInactive);
     }
-    
+
   }, [gymsPagingState]);
-  
-  const fetchGymsPage = async (pageNumber: number, pageSize: number, includeInactive: boolean) => {
+
+  const fetchGymsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
     setIsLoading(true);
 
-    let response = await axiosInstance.post("/api/gyms", {
-      pageNumber, pageSize, includeInactive
-    });
+    const requestContext: AxiosRequestConfig =
+    {
+      params: {
+        page: page,
+        pageSize: pageSize,
+        includeInactive: includeInactive
+      }
+    };
+
+    let response = await axiosInstance.get("/api/gyms", requestContext);
 
     let pageOfGyms: Page<Gym> = response.data;
 
@@ -46,12 +54,20 @@ export default function GymsListPaging() {
     setIsLoading(false);
   }
 
-  const searchGymsPage = async (pageNumber: number, pageSize: number, includeInactive: boolean, criteria: String) => {
+  const searchGymsPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
     setIsLoading(true);
 
-    let response = await axiosInstance.post("/api/gyms/search", {
-      pageNumber, pageSize, includeInactive, criteria
-    });
+    const requestContext: AxiosRequestConfig =
+    {
+      params: {
+        page: page,
+        pageSize: pageSize,
+        includeInactive: includeInactive,
+        criteria: criteria
+      }
+    };
+
+    let response = await axiosInstance.get("/api/gyms/search", requestContext);
 
     let pageOfGyms: Page<Gym> = response.data;
 
@@ -64,7 +80,7 @@ export default function GymsListPaging() {
     setIsLoading(false);
   }
 
-  function onSearchInput(e: ChangeEvent<HTMLInputElement> ) {
+  function onSearchInput(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     if (e?.currentTarget?.value == "") {
@@ -107,7 +123,7 @@ export default function GymsListPaging() {
     <ErrorBoundary>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation pageNumber={gymsPagingState.pageNumber + 1} totalPages={totalPages}
+          <PagingNavigation page={gymsPagingState.page + 1} totalPages={totalPages}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
             onSearch={onSearch} onSearchInput={onSearchInput} />
         </div>

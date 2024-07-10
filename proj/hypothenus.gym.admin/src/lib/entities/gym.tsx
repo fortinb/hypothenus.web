@@ -1,10 +1,12 @@
 import { Address, AddressSchema, newAddress } from "./address"
+import { BaseEntity } from "./baseEntity";
 import { Contact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber"
 import { SocialMediaAccount } from "./socialMediaAccount"
 import { z } from 'zod';
 
-export interface Gym {
+export interface Gym extends BaseEntity {
+    id: string;
     gymId: string;
     name: string;
     address: Address;
@@ -18,6 +20,7 @@ export interface Gym {
 
   export const  newGym = () : Gym => {
     let newGym : Gym = {
+      id: "",
       gymId: "",
       name: "",
       address: newAddress(),
@@ -28,7 +31,10 @@ export interface Gym {
       phoneNumbers: [
         newPhoneNumber(PhoneNumberTypeEnum.Business),
         newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
-      socialMediaAccounts: []
+      socialMediaAccounts: [],
+      messages: undefined,
+      createdBy: undefined,
+      modifiedBy: undefined
     };
 
     return newGym;

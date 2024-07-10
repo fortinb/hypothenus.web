@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export  const DEFAULT_PAGING_SIZE : number = 10;
 
 export interface GymsPagingState {
-  pageNumber: number;
+  page: number;
   pageSize: number;
   includeInactive: boolean;
   searchActive: boolean;
@@ -13,7 +13,7 @@ export interface GymsPagingState {
 export const gymsPagingSlice = createSlice({
   name: 'gymsPaging',
   initialState: {
-      pageNumber: 0,
+      page: 0,
       pageSize: DEFAULT_PAGING_SIZE,
       includeInactive: false,
       searchActive: false,
@@ -31,21 +31,21 @@ export const gymsPagingSlice = createSlice({
     //  console.log ("reducer nextPage");
       return {
         ...state,
-        pageNumber: state.pageNumber + 1
+        page: state.page + 1
       }
     },
     previousPage: (state) => {
     //  console.log ("reducer previousPage");
       return {
         ...state,
-        pageNumber: state.pageNumber - 1
+        page: state.page - 1
       }
     },
     firstPage: (state) => {
     //  console.log ("reducer firstPage");
       return {
         ...state,
-        pageNumber: 0,
+        page: 0,
         pageSize: DEFAULT_PAGING_SIZE
        
       }
@@ -53,7 +53,7 @@ export const gymsPagingSlice = createSlice({
     setSearchCriteria: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        pageNumber: 0,
+        page: 0,
         pageSize: DEFAULT_PAGING_SIZE,
         searchActive: true,
         searchCriteria: action.payload
@@ -62,7 +62,7 @@ export const gymsPagingSlice = createSlice({
     resetSearchCriteria: (state) => {
       return {
         ...state,
-        pageNumber: 0,
+        page: 0,
         pageSize: DEFAULT_PAGING_SIZE,
         searchActive: false,
         searchCriteria: ""

@@ -5,8 +5,7 @@ import GymInfo from '@/app/lib/components/gym/gym-info';
 import Loader from '@/app/lib/components/navigation/loader';
 import axiosInstance from '@/app/lib/http/axiosInterceptorClient';
 import { Gym, newGym } from '@/src/lib/entities/gym';
-import { ChangeEvent, useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
+import { useEffect, useState } from 'react';
 
 export default function GymForm({ gymId }: { gymId: string }) {
     const [gym, setGym] = useState<Gym>(newGym());
@@ -15,15 +14,17 @@ export default function GymForm({ gymId }: { gymId: string }) {
     useEffect(() => {
         if (isLoading && gymId !== "new") {
             fetchGym(gymId);
+        } else {
+            setIsLoading(false);  
         }
-
-        setIsLoading(false);    
     }, [gym]);
 
     const fetchGym = async (gymId: string) => {
         let response = await axiosInstance.get("/api/gyms/" + gymId);
         let gym: Gym = response.data;
         setGym(gym);
+
+        setIsLoading(false);  
     }
 
     return (
@@ -33,9 +34,8 @@ export default function GymForm({ gymId }: { gymId: string }) {
                     <h2 className="text-secondary pt-4 ps-2">{gym.name}</h2>
                 </div>
                 <div className="ps-2 pe-2">
-                    <hr />
+                    <hr className="mt-0 mb-0"/>
                 </div>
-             
 
                 {isLoading &&
                     <div className="flex-fill w-100 h-100">

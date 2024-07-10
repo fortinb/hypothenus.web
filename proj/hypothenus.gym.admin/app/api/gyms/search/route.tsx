@@ -1,35 +1,29 @@
-import { searchGyms } from '@/app/lib/ssr/gyms-data-service'
+import { searchGyms } from '@/app/lib/ssr/gyms-data-service';
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
  
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
 
   try {
-    const body  = await req.json();
+    const { searchParams } = new URL(req.url);
 
-    const ParamsSchema = z.object({
-      criteria:z.string().min(2, "Invalid search criteria"),
-      pageNumber: z.number().min(0, "Invalid page number"), 
-      pageSize: z.number().min(0, "Invalid page size"), 
-    });
-    
-    const validatedParams = ParamsSchema.safeParse(body);
-    if (!validatedParams.success) {
-      return NextResponse.json(validatedParams?.error?.issues, { status: 400 });
+    let token = req.headers.get("Authorization");
+    let trackingNumber = req.headers.get("x-tracking-number");
+
+    let page: number = parseInt(searchParams.get("page") ?? "0") ;
+    let pageSize: number = parseInt(searchParams.get("pageSize") ?? "10");
+    let criteria : string =  searchParams.get("criteria") ?? "";
+    let includeInactive : boolean = (searchParams.get("includeInactive")?.toLocaleLowerCase() == "true" ? true : false) ?? false;
+
+    if (isNaN(page) || isNaN(pageSize) || criteria == "") {
+      return NextResponse.json("Invalid parameters", { status: 400 });
     }
 
-    let pageNumber : number = body.pageNumber;
-    let pageSize : number = body.pageSize;
-    let criteria : String = body.criteria;
-
-    let token = req.headers.get('Authorization');
-    let trackingNumber = req.headers.get('x-tracking-number');
-
-    const gymsPage = await searchGyms(token ?? "", trackingNumber ?? "", pageNumber, pageSize, criteria);
+    const gymsPage = await searchGyms(token ?? "", trackingNumber ?? "", page, pageSize, includeInactive, criteria);
    
     return NextResponse.json(gymsPage, { status: 200 });
     
   } catch (err) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.log("GET error: " + err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -6,7 +6,7 @@
 // Theme
 $primary: #f7f7f7;
 $secondary: #bc1fc1;
-$success: $green-500;
+$success: $green-300;
 $info: $gray-500;
 $warning: $yellow-500;
 $danger: $red-500;
@@ -17,7 +17,6 @@ $bg-primary: #cdcdce;
 $bg-secondary: $white;
 $bg-light: $gray-100;
 $bg-info: $info;
-
 
 $text-primary: $gray-900;
 $text-secondary: #3b88fc;
@@ -30,6 +29,8 @@ $icon-primary: #3b88fc;
 $icon-secondary: $secondary;
 $icon-light: $white;
 $icon-danger: $danger;
+
+$toast-success: #af80b1;
 
 $button-primary: $secondary;
 $button-primary-hover: #961a9b;
@@ -233,6 +234,18 @@ footer {
 
 .icon.icon-danger {
     color: $icon-danger;
+}
+
+//toast
+.toast-success {
+    background-color: $toast-success;
+    color: $text-bright;
+    font-weight: bold;
+    border: none;
+    position: absolute;
+    bottom: 4%;
+    right: 1%;
+    float: right;
 }
 
 //animation
