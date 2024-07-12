@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { ChangeEvent, MouseEvent } from 'react';
 import Form from 'react-bootstrap/Form';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export default function FormActionBar({ onEdit, onDelete, onActivation, isActivationChecked, isActivationDisabled, isActivating }:
     {
@@ -18,10 +20,14 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isActiva
         <div className="d-flex flex-row justify-content-between align-items-center">
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <div>
-                    <Link className="link-element ps-1" href="#" onClick={onEdit} ><i className="icon icon-primary bi bi-pencil h3 mb-1"></i></Link>
+                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_edit_tooltip">Edit</Tooltip>}>
+                        <Link className="link-element ps-1" href="#" onClick={onEdit} ><i className="icon icon-primary bi bi-pencil h3 mb-1"></i></Link>
+                    </OverlayTrigger>
                 </div>
                 <div>
-                    <Link className="link-element ms-4" href="#" onClick={onDelete} ><i className="icon icon-primary bi bi-trash h3 mb-1"></i></Link>
+                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_delete_tooltip">Delete</Tooltip>}>
+                        <Link className="link-element ms-4" href="#" onClick={onDelete} ><i className="icon icon-primary bi bi-trash h3 mb-1"></i></Link>
+                    </OverlayTrigger>
                 </div>
             </div>
             <div className="align-items-center">

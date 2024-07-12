@@ -8,7 +8,7 @@ export default function FormActionButtons({ isSaving, isEditMode, formId, href }
     return (
         <div className="d-flex flex-row justify-content-between" >
             <div className="p-2">
-                <Link className="btn btn-secondary ms-2" href={href}><i className="icon icon-secondarybi bi-x-lg me-2"></i>Cancel</Link>
+                <Link className="btn btn-secondary ms-2" href={href}><i className="icon icon-light bi bi-x-lg me-2"></i>Cancel</Link>
             </div>
             <fieldset className="p-2" disabled={!isEditMode} form={formId}>
                 <Button className="btn btn-primary pt-2 pb-2 me-3" form={formId} type="submit" variant="primary">
@@ -17,7 +17,7 @@ export default function FormActionButtons({ isSaving, isEditMode, formId, href }
                     }
 
                     {!isSaving &&
-                        <i className="icon bi bi-floppy me-2 h7"></i>
+                        <i className="icon icon-light bi bi-floppy me-2 h7"></i>
                     }
 
                     {isSaving ? "Saving" : "Save"}

@@ -1,19 +1,73 @@
-@import "@/node_modules/bootstrap/scss/bootstrap";
+// Custom.scss
+// Option B: Include parts of Bootstrap
 
-// Bootstrap Overrides
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../node_modules/bootstrap/scss/functions";
 
-
-// Theme
+// 2. Include any default variable overrides here
 $primary: #f7f7f7;
 $secondary: #bc1fc1;
-$success: $green-300;
-$info: $gray-500;
-$warning: $yellow-500;
-$danger: $red-500;
-$light: $gray-100;
-$dark: $gray-900;
+$info: #3b88fc;
 
-$bg-primary: #cdcdce;
+$body-bg:#cdcdce;
+
+$tooltip-bg: #3b88fc;
+$tooltip-color: #fff;
+$enable-shadows: true;
+
+// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+
+// 4. Include any default map overrides here
+
+// 5. Include remainder of required parts
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/root";
+
+// 6. Optionally include any other parts as needed
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/transitions";
+@import "../node_modules/bootstrap/scss/dropdown";
+@import "../node_modules/bootstrap/scss/button-group";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/card";
+@import "../node_modules/bootstrap/scss/accordion";
+@import "../node_modules/bootstrap/scss/breadcrumb";
+@import "../node_modules/bootstrap/scss/pagination";
+@import "../node_modules/bootstrap/scss/badge";
+@import "../node_modules/bootstrap/scss/alert";
+@import "../node_modules/bootstrap/scss/progress";
+@import "../node_modules/bootstrap/scss/list-group";
+@import "../node_modules/bootstrap/scss/close";
+@import "../node_modules/bootstrap/scss/toasts";
+@import "../node_modules/bootstrap/scss/modal";
+@import "../node_modules/bootstrap/scss/tooltip";
+@import "../node_modules/bootstrap/scss/popover";
+@import "../node_modules/bootstrap/scss/carousel";
+@import "../node_modules/bootstrap/scss/spinners";
+@import "../node_modules/bootstrap/scss/offcanvas";
+@import "../node_modules/bootstrap/scss/placeholders";
+
+// Helpers
+@import "../node_modules/bootstrap/scss/helpers";
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+// 8. Add additional custom code here
+
+//$bg-primary: #cdcdce;
 $bg-secondary: $white;
 $bg-light: $gray-100;
 $bg-info: $info;
@@ -33,19 +87,18 @@ $icon-danger: $danger;
 $toast-success: #af80b1;
 
 $button-primary: $secondary;
+$button-primary-color: $white;
 $button-primary-hover: #961a9b;
-$button-primary-disabled: $secondary;
-$bg-button-navigation: $gray-300;
+$button-primary-disabled: $info;
 
 $card-shadow: $gray-700; //#3b88fc;
-$card-secondary: $gray-300;
+$card-bg-primary: $gray-200;
+$card-bg-secondary: $gray-300;
 
 $bg-checkbox-switch: $gray-300;
 
-$border-color: $dark !important;
+$border-color-dark: $dark !important;
 $border-color-light: $gray-500 !important;
-
-$enable-shadows: true;
 
 $main-bg-gradient: linear-gradient(145deg, $light, #86b7fe);
 
@@ -53,7 +106,6 @@ $main-bg-gradient: linear-gradient(145deg, $light, #86b7fe);
 body,
 html {
     font-family: "Roboto", sans-serif;
-    background: $bg-primary; //$main-bg-gradient;
     height: 100%;
 }
 
@@ -141,7 +193,6 @@ footer {
     color: $text-primary;
     cursor: pointer;
     padding-bottom: 0 !important;
-
 }
 
 .navbar-nav>.nav-link.active {
@@ -168,6 +219,7 @@ footer {
 .card {
     transition: 250ms ease all;
     min-height: 150px;
+    background-color: $card-bg-primary;
 }
 
 .card h5.card-title {
@@ -181,7 +233,7 @@ footer {
 }
 
 .card-body {
-    background-color: $card-secondary;
+    background-color: $card-bg-secondary;
     border: solid;
     border-color: transparent;
     border-width: 2px;
@@ -274,25 +326,21 @@ footer {
 }
 
 //Button
-.btn-primary {
+.btn.btn-primary {
     border: none;
+    color: $button-primary-color;
     background-color: $button-primary;
 }
 
-.btn-primary:hover {
+.btn.btn-primary:hover {
     background-color: $button-primary-hover;
     border: none;
 }
 
-.btn-primary:active {
-    background-color: $button-primary-disabled !important;
-    opacity: 2.0;
-    border: none;
-}
-
-.btn-primary:disabled {
+.btn.btn-primary:disabled {
     opacity: var(--bs-btn-disabled-opacity);
     background-color: $button-primary-disabled;
+    color: $button-primary-color;
 }
 
 .btn-navigation {

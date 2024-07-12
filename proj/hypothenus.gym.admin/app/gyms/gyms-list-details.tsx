@@ -15,16 +15,17 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
               <Link className="link-element" href={"/gym/" + gym.gymId}> {gym.name}</Link>
             </h6>
             <p className="card-text">
-              
               <span className="text-primary">{formatAddress(gym.address)}</span><br />
-              <Link href={"mailto:" + gym.email}>{gym.email}</Link><br />
+              <Link className="link-element" href={"mailto:" + gym.email}>{gym.email}</Link><br />
               <span className="text-primary">{gym.gymId}</span><br />
-              {gym.active == false &&
+            </p>
+
+            {gym.active == false &&
                 <div>
                   <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>Inactive</span><br />
                 </div>
             }
-            </p>
+
           </div>
         </div>
       </div>
