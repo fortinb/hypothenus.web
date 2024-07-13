@@ -8,7 +8,6 @@ import StoreProvider from './lib/store/store-provider'
 import Header from "./lib/components/layout/header";
 import Footer from "./lib/components/layout/footer";
 import Container from "react-bootstrap/Container";
-import "/styles/roboto/roboto.css";
 
 export const metadata: Metadata = {
   title: "Isoceles Hypothenus",

@@ -1,6 +1,5 @@
 import React from "react";
 import Image from 'next/image';
-import Carousel from 'react-bootstrap/Carousel';
 import Container from "react-bootstrap/Container";
 
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
