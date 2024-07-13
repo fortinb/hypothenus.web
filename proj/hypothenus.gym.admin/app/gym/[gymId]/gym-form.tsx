@@ -40,9 +40,11 @@ export default function GymForm({ gymId }: { gymId: string }) {
     useEffect(() => {
         if (isLoading && gymId !== "new") {
             fetchGym(gymId);
-        } else {
-            setIsLoading(false);
+        }
+
+        if (isLoading && gymId == "new") {
             setIsEditMode(true);
+            setIsLoading(false);
         }
     }, [gym]);
 
@@ -50,7 +52,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let response = await axiosInstance.get("/api/gyms/" + gymId);
         let gym: Gym = response.data;
         setGym(gym);
-
+        reset(gym);
         setIsLoading(false);
     }
     
@@ -198,7 +200,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
                     </div>
                 }
 
-                {!isLoading &&
+                {!isLoading  &&
                     <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
                         <div className="w-100 h-100">
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={handleSubmit(onSubmit)}>

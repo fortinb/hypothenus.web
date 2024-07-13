@@ -13,6 +13,8 @@ $body-bg:#cdcdce;
 
 $tooltip-bg: #3b88fc;
 $tooltip-color: #fff;
+
+$focus-ring-color: #3b88fc;
 $enable-shadows: true;
 
 // 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
@@ -377,7 +379,7 @@ footer {
 .input-invalid {
     border: solid;
     border-color: $secondary;
-    border-width: 2px;
+    border-width: 4px;
 }
 
 .uppercase {
