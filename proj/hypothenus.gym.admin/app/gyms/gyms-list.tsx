@@ -6,7 +6,7 @@ import GymListDetails from "./gyms-list-details";
 
 export default function GymsList({ pageOfGyms }: { pageOfGyms: Page<Gym> | undefined; }) {
 
-    return (
+  return (
 
     <div className="d-flex flex-row flex-wrap mt-2 mb-2">
       {pageOfGyms?.content.map((gym: Gym) => {

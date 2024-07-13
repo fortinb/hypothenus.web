@@ -6,8 +6,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 export default function NavbarMenu() {
-  
-   return (
+
+  return (
     <Navbar expand="lg" className="container-xxl bd-gutter flex-wrap flex-lg-nowrap" >
       <Container className="container-fluid">
         <Navbar.Toggle aria-controls="navbarSupportedContent" />

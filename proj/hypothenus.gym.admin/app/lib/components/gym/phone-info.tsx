@@ -1,11 +1,11 @@
 "use client"
 
 import { Gym } from "@/src/lib/entities/gym";
-import Form from "react-bootstrap/Form";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 export default function PhoneInfo({ register, errors }: { register: UseFormRegister<Gym>, errors: FieldErrors<Gym> }) {
 

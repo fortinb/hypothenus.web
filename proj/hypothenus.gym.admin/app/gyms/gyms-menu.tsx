@@ -1,11 +1,11 @@
 "use client"
 
+import Link from "next/link";
 import { ChangeEvent } from "react";
 import Form from "react-bootstrap/Form";
-import { GymsPagingState, includeInactive } from "../lib/store/slices/gymsPagingSlice";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../lib/hooks/useStore";
-import Link from "next/link";
+import { GymsPagingState, includeInactive } from "../lib/store/slices/gymsPagingSlice";
 
 export default function GymsMenu() {
   const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging);
@@ -42,7 +42,7 @@ export default function GymsMenu() {
           <div className="form-check form-switch pe-2">
             <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
               id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsPagingState.includeInactive} />
-               <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">Include inactive</label>
+            <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">Include inactive</label>
           </div>
         </div>
       </div>

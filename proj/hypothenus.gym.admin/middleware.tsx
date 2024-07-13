@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getRequestContext } from "./app/lib/http/requestContext";
 
-export interface RequestContext {
-    token: string | null;
-    trackingNumber: string | null;
-}
+
 
 export function middleware(req: NextRequest) {
 
-    const requestContext: RequestContext = {
-        token: req?.headers?.get("Authorization"),
-        trackingNumber: req?.headers?.get("x-tracking-number")
-    }
-
+    const requestContext = getRequestContext(req);
+    
     if (!requestContext.token) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

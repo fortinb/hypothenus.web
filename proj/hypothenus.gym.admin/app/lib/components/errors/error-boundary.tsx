@@ -1,9 +1,9 @@
 import React from "react";
 
-const ErrorBoundary = ({ children  }: {children: React.ReactNode}) => {
+const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = React.useState("");
 
-  const promiseRejectionHandler = React.useCallback((event : any) => {
+  const promiseRejectionHandler = React.useCallback((event: any) => {
     setError(event.reason);
   }, []);
 

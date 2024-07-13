@@ -3,15 +3,15 @@
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Gym } from "@/src/lib/entities/gym";
 import { Page } from "@/src/lib/entities/page";
+import { AxiosRequestConfig } from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ErrorBoundary from "../lib/components/errors/error-boundary";
 import Loader from "../lib/components/navigation/loader";
 import PagingNavigation from "../lib/components/navigation/paging-navigation";
 import { useAppDispatch } from "../lib/hooks/useStore";
-import { GymsPagingState, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria, includeInactive } from "../lib/store/slices/gymsPagingSlice";
+import { GymsPagingState, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "../lib/store/slices/gymsPagingSlice";
 import GymsList from "./gyms-list";
-import { AxiosRequestConfig } from "axios";
 
 export default function GymsListPaging() {
   const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging);

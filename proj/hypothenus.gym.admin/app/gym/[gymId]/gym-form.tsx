@@ -1,21 +1,21 @@
 "use client"
 
+import FormActionBar from "@/app/lib/components/actions/form-action-bar";
+import FormActionButtons from "@/app/lib/components/actions/form-action-buttons";
+import ModalConfirmation from "@/app/lib/components/actions/modal-confirmation";
 import ErrorBoundary from "@/app/lib/components/errors/error-boundary";
 import GymInfo from "@/app/lib/components/gym/gym-info";
 import Loader from "@/app/lib/components/navigation/loader";
+import ToastSuccess from "@/app/lib/components/notifications/toast-success";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
-import { Gym, newGym, GymSchema } from "@/src/lib/entities/gym";
-import { ChangeEvent, Dispatch, MouseEvent, SetStateAction, useEffect, useState } from "react";
+import { Gym, GymSchema, newGym } from "@/src/lib/entities/gym";
+import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
-import ToastSuccess from "@/app/lib/components/notifications/toast-success";
-import ModalConfirmation from "@/app/lib/components/actions/modal-confirmation";
-import FormActionBar from "@/app/lib/components/actions/form-action-bar";
-import FormActionButtons from "@/app/lib/components/actions/form-action-buttons";
+import { z } from "zod";
 
 export default function GymForm({ gymId }: { gymId: string }) {
     const router = useRouter()
@@ -29,7 +29,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isActivating, setIsActivating] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-    
+
     const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<Gym>({
         defaultValues: gym,
         resolver: zodResolver(GymSchema),
@@ -55,7 +55,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
         reset(gym);
         setIsLoading(false);
     }
-    
+
     const onSubmit: SubmitHandler<Gym> = (formData: z.infer<typeof GymSchema>) => {
         setIsEditMode(false);
         setIsSaving(true);
@@ -200,18 +200,18 @@ export default function GymForm({ gymId }: { gymId: string }) {
                     </div>
                 }
 
-                {!isLoading  &&
+                {!isLoading &&
                     <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
                         <div className="w-100 h-100">
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={handleSubmit(onSubmit)}>
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gym.gymId == "" ? true : gym.active}
                                     isActivationDisabled={(gym.gymId == "" ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
-                                <GymInfo gym={gym} register={register} errors={errors} isEditMode={isEditMode}/>
+                                <GymInfo gym={gym} register={register} errors={errors} isEditMode={isEditMode} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
                             </Form>
-                          
+
                             <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
                             <ModalConfirmation title={gym.name} text={"Are you sure you want to delete this gym ?"} yesText="Delete" noText="Cancel" actionText="Deleting..." isAction={isDeleting} show={showDeleteConfirmation} handleResult={onDelete} />
                         </div>

@@ -15,7 +15,6 @@ export default function GymMenu({ gymId }: { gymId: string }) {
       <div className="ps-2 pe-2">
         <hr />
       </div>
-
       <div className="d-flex flex-row h-50">
         <div className="col btn-navigation m-2">
           <div className="d-flex flex-column justify-content-center h-100">
@@ -39,7 +38,7 @@ export default function GymMenu({ gymId }: { gymId: string }) {
         </div>
       </div>
       <div className="d-flex flex-row flex-fill align-items-center justify-content-center">
-        <OverlayTrigger placement="top" overlay={<Tooltip style={{position:"fixed"}} id="gym_menu_back_tooltip">Back to gyms management</Tooltip>}>
+        <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="gym_menu_back_tooltip">Back to gyms management</Tooltip>}>
           <Link className="btn btn-primary ms-2" href="/gyms" ><i className="icon icon-light bi bi-backspace me-2"></i>Gyms
           </Link>
         </OverlayTrigger>

@@ -1,13 +1,13 @@
-import { deactivateGym } from "@/app/lib/ssr/gyms-data-service"
+import { getRequestContext } from "@/app/lib/http/requestContext";
+import { deactivateGym } from "@/app/lib/ssr/gyms-data-service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, { params }: { params: { gymId: string } }) {
 
-   try {
-    let token = req.headers.get("Authorization");
-    let trackingNumber = req.headers.get("x-tracking-number");
+  try {
+    const requestContext = getRequestContext(req);
 
-    const gym = await deactivateGym(token ?? "", trackingNumber ?? "", params.gymId);
+    const gym = await deactivateGym(requestContext, params.gymId);
 
     return NextResponse.json(gym, { status: 200 });
 

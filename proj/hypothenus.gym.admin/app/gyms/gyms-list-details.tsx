@@ -21,9 +21,9 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
             </p>
 
             {gym.active == false &&
-                <div>
-                  <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>Inactive</span><br />
-                </div>
+              <div>
+                <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>Inactive</span><br />
+              </div>
             }
 
           </div>

@@ -34,7 +34,7 @@ export default function PagingNavigation(
         </Col>
         <Col sm="auto" xxl={3} >
           <Form as="form" className="d-flex justify-content-start" role="search" id="paging-navigation-search-form" onSubmit={onSearch}>
-            <Form.Control type="search" placeholder="Search" name="searchCriteria"  aria-label="Search"
+            <Form.Control type="search" placeholder="Search" name="searchCriteria" aria-label="Search"
               onInput={onSearchInput} />
           </Form>
         </Col>

@@ -1,13 +1,13 @@
 "use client"
 
 import { Gym } from "@/src/lib/entities/gym";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import AddressInfo from "./address-info";
 import PhoneInfo from "./phone-info";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 export default function GymInfo({ gym, register, errors, isEditMode }:
     {

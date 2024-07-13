@@ -30,10 +30,10 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     console.log(error);
-   
+
     // Handle response errors here
     switch (error?.response?.status) {
-      case 401: 
+      case 401:
         break;
       default:
         break;
