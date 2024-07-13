@@ -1,5 +1,5 @@
-import { searchGyms } from '@/app/lib/ssr/gyms-data-service';
-import { NextRequest, NextResponse } from 'next/server';
+import { searchGyms } from "@/app/lib/ssr/gyms-data-service";
+import { NextRequest, NextResponse } from "next/server";
  
 export async function GET(req: NextRequest) {
 

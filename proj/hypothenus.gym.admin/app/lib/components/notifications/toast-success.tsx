@@ -1,6 +1,6 @@
 "use client"
 
-import Toast from 'react-bootstrap/Toast';
+import Toast from "react-bootstrap/Toast";
 
 export default function ToastSuccess({ show, text, toggleShow }: { show: boolean, text: string, toggleShow: (e? : any) => any }) {
 

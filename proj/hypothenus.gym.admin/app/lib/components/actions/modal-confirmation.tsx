@@ -1,7 +1,7 @@
 "use client"
 
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 export default function ModalConfirmation({ title, text, yesText, noText, actionText, show, isAction, handleResult }:
     {
@@ -30,8 +30,8 @@ export default function ModalConfirmation({ title, text, yesText, noText, action
                 {text}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => handleResult(false)}>{noText}</Button>
-                <Button variant="primary" onClick={() => handleResult(true)}>
+                <Button className="btn btn-secondary" disabled={isAction} onClick={() => handleResult(false)}>{noText}</Button>
+                <Button className="btn btn-primary" disabled={isAction} onClick={() => handleResult(true)}>
                     {isAction &&
                         <div className="spinner-border spinner-border-sm me-2"></div>
                     }

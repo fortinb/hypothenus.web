@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import { useParams } from 'next/navigation'
+import { useParams } from "next/navigation"
 import GymMenu from "./gym-menu";
 import GymForm from "./gym-form";
 

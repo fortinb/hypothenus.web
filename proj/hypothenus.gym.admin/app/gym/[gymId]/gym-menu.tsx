@@ -1,8 +1,8 @@
 "use client"
 
-import Link from 'next/link';
-import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Link from "next/link";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 export default function GymMenu({ gymId }: { gymId: string }) {
 

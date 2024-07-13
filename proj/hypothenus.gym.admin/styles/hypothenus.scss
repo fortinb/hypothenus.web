@@ -91,6 +91,11 @@ $button-primary-color: $white;
 $button-primary-hover: #961a9b;
 $button-primary-disabled: $info;
 
+$button-secondary: $gray-600;
+$button-secondary-color: $white;
+$button-secondary-hover: $gray-800;
+$button-secondary-disabled: $info;
+
 $card-shadow: $gray-700; //#3b88fc;
 $card-bg-primary: $gray-200;
 $card-bg-secondary: $gray-300;
@@ -341,6 +346,23 @@ footer {
     opacity: var(--bs-btn-disabled-opacity);
     background-color: $button-primary-disabled;
     color: $button-primary-color;
+}
+
+.btn.btn-secondary {
+    border: none;
+    color: $button-secondary-color;
+    background-color: $button-secondary;
+}
+
+.btn.btn-secondary:hover {
+    background-color: $button-secondary-hover;
+    border: none;
+}
+
+.btn.btn-secondary:disabled {
+    opacity: var(--bs-btn-disabled-opacity);
+    background-color: $button-secondary-disabled;
+    color: $button-secondary-color;
 }
 
 .btn-navigation {

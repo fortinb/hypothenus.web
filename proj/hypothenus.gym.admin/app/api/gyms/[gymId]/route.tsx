@@ -1,6 +1,6 @@
-import { deleteGym, getGym, saveGym } from '@/app/lib/ssr/gyms-data-service'
-import { Gym } from '@/src/lib/entities/gym';
-import { NextRequest, NextResponse } from 'next/server';
+import { deleteGym, getGym, saveGym } from "@/app/lib/ssr/gyms-data-service"
+import { Gym } from "@/src/lib/entities/gym";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { gymId: string } }) {
 

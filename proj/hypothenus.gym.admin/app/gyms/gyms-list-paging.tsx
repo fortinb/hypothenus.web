@@ -74,7 +74,7 @@ export default function GymsListPaging() {
     setPageOfGyms(pageOfGyms);
 
     if (pageOfGyms?.content && pageOfGyms?.pageable) {
-      setTotalPages(0); // Force 0 since we don't know the total count of the search
+      setTotalPages(0); // Force 0 since we don"t know the total count of the search
     }
 
     setIsLoading(false);
