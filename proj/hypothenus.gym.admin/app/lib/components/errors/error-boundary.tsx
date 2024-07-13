@@ -1,4 +1,7 @@
 import React from "react";
+import Image from 'next/image';
+import Carousel from 'react-bootstrap/Carousel';
+import Container from "react-bootstrap/Container";
 
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = React.useState("");
@@ -22,14 +25,28 @@ const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
 
   return error ? (
     <React.Fragment>
-      <h2>Something went wrong!</h2>
-      <button type="button" onClick={resetError}>
-        Try again
-      </button>
+      <Container fluid="true" className="h-100 w-100">
+        <div className="d-flex flex-row h100 w-100 justify-content-between">
+          <div className="w-50">
+            <Image
+              src="/images/error_page.jpg"
+              width={800}
+              height={900}
+              alt="Hypothenus"
+            />
+          </div>
+          <div className="w-50">
+            <h3>Something went wrong !</h3>
+            <button className="btn btn-primary" type="button" onClick={resetError}>
+              Try again
+            </button>
+          </div>
+        </div>
+      </Container>
     </React.Fragment>
   ) : (
     children
   );
 };
-//<h1 style={{ color: "red" }}>{error.toString()}</h1>
+
 export default ErrorBoundary;

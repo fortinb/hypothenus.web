@@ -7,6 +7,8 @@ import NextAuthProvider from "./lib/contexts/next-auth-provider";
 import StoreProvider from './lib/store/store-provider'
 import Header from "./lib/components/layout/header";
 import Footer from "./lib/components/layout/footer";
+import Container from "react-bootstrap/Container";
+import "/styles/roboto/roboto.css";
 
 export const metadata: Metadata = {
   title: "Isoceles Hypothenus",
@@ -19,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
+  
     <html lang="fr">
       <body>
         <StoreProvider>
@@ -27,9 +29,9 @@ export default function RootLayout({
             <div className="d-flex flex-row w-100 h-100 p-1">
               <div className="d-flex flex-column justify-content-between w-100 h-100 pt-2">
                 <Header />
-                <div className="container-fluid overflow-hidden h-100"> 
-                  {children}
-                </div>
+                  <Container fluid={true} className="overflow-hidden h-100">
+                    {children}
+                </Container>
                 <Footer />
               </div>
             </div>
