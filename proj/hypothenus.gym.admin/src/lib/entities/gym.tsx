@@ -1,6 +1,6 @@
 import { Address, AddressSchema, newAddress } from "./address"
 import { BaseEntity } from "./baseEntity";
-import { Contact } from "./contact";
+import { Contact, ContactSchema, newContact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber"
 import { SocialMediaAccount } from "./socialMediaAccount"
 import { z } from 'zod';
@@ -27,7 +27,9 @@ export interface Gym extends BaseEntity {
       email: "",
       active: true,
       note: "",
-      contacts: [],
+      contacts: [
+        newContact(),
+      ],
       phoneNumbers: [
         newPhoneNumber(PhoneNumberTypeEnum.Business),
         newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
@@ -46,5 +48,6 @@ export interface Gym extends BaseEntity {
     address: AddressSchema,
     email: z.string().email({ message: "Email format is invalid"}), 
     note: z.string().min(0),
-    phoneNumbers: z.array(PhoneNumberSchema).min(1)
+    phoneNumbers: z.array(PhoneNumberSchema).min(1),
+    contacts: z.array(ContactSchema).min(1)
   });

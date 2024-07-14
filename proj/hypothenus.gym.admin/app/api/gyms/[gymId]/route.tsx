@@ -13,8 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: { gymId: strin
     return NextResponse.json(gym, { status: 200 });
 
   } catch (err) {
-    console.log("GET error: " + err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -30,7 +29,6 @@ export async function PUT(req: NextRequest, { params }: { params: { gymId: strin
     return NextResponse.json(gym, { status: 200 });
 
   } catch (err) {
-    console.log("PUT error: " + err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -46,7 +44,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { gymId: st
     return NextResponse.json({ status: 200 });
 
   } catch (err) {
-    console.log("PUT error: " + err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -4,6 +4,7 @@ import FormActionBar from "@/app/lib/components/actions/form-action-bar";
 import FormActionButtons from "@/app/lib/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/lib/components/actions/modal-confirmation";
 import ErrorBoundary from "@/app/lib/components/errors/error-boundary";
+import GymContactInfo from "@/app/lib/components/gym/gym-contact-info";
 import GymInfo from "@/app/lib/components/gym/gym-info";
 import Loader from "@/app/lib/components/navigation/loader";
 import ToastSuccess from "@/app/lib/components/notifications/toast-success";
@@ -14,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function GymForm({ gymId }: { gymId: string }) {
@@ -30,7 +31,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
     const [isActivating, setIsActivating] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-    const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<Gym>({
+    const formContext = useForm<Gym>({
         defaultValues: gym,
         resolver: zodResolver(GymSchema),
     });
@@ -52,7 +53,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let response = await axiosInstance.get("/api/gyms/" + gymId);
         let gym: Gym = response.data;
         setGym(gym);
-        reset(gym);
+        formContext.reset(gym);
         setIsLoading(false);
     }
 
@@ -73,11 +74,11 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let result: Gym = response.data;
         const duplicate = result.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
         if (duplicate) {
-            setError("gymId", { type: "manual", message: "Gym code already exists, must be unique" });
+            formContext.setError("gymId", { type: "manual", message: "Gym code already exists, must be unique" });
             setIsEditMode(true);
         } else {
             setGym(result);
-            reset(result);
+            formContext.reset(result);
         }
         setTextSuccess("Saving successfull !");
         setSuccess(true);
@@ -90,7 +91,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let result: Gym = response.data;
 
         setGym(result);
-        reset(result);
+        formContext.reset(result);
 
         setTextSuccess("Saving successfull !");
         setSuccess(true);
@@ -130,7 +131,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
 
     function onCancel() {
         setIsEditMode(false);
-        reset(gym);
+        formContext.reset(gym);
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
@@ -145,7 +146,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
     function onEdit(e: MouseEvent<HTMLAnchorElement>) {
         if (gym.id !== "") {
             setIsEditMode(isEditMode ? false : true);
-            reset(gym);
+            formContext.reset(gym);
         }
     }
 
@@ -173,7 +174,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
             email: formData.email,
             active: gym.active,
             note: formData.note,
-            contacts: [],
+            contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
             socialMediaAccounts: [],
             messages: undefined,
@@ -203,17 +204,23 @@ export default function GymForm({ gymId }: { gymId: string }) {
                 {!isLoading &&
                     <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
                         <div className="w-100 h-100">
-                            <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gym.gymId == "" ? true : gym.active}
-                                    isActivationDisabled={(gym.gymId == "" ? true : false)} isActivating={isActivating} />
-                                <hr className="mt-1" />
-                                <GymInfo gym={gym} register={register} errors={errors} isEditMode={isEditMode} />
-                                <hr className="mt-1 mb-1" />
-                                <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
-                            </Form>
+                            <FormProvider {...formContext } >
+                                <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gym.gymId == "" ? true : gym.active}
+                                        isActivationDisabled={(gym.gymId == "" ? true : false)} isActivating={isActivating} />
+                                    <hr className="mt-1" />
+                                    <GymInfo gym={gym} isEditMode={isEditMode} />
+                                    <hr className="mt-1 mb-1" />
+                                    <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
+                                </Form>
 
-                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                            <ModalConfirmation title={gym.name} text={"Are you sure you want to delete this gym ?"} yesText="Delete" noText="Cancel" actionText="Deleting..." isAction={isDeleting} show={showDeleteConfirmation} handleResult={onDelete} />
+                                <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                                <ModalConfirmation title={gym.name} text={"Are you sure you want to delete this gym ?"}
+                                    yesText="Delete" noText="Cancel"
+                                    actionText="Deleting..."
+                                    isAction={isDeleting}
+                                    show={showDeleteConfirmation} handleResult={onDelete} />
+                            </FormProvider>
                         </div>
                     </div>
                 }

@@ -5,17 +5,18 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import AddressInfo from "./address-info";
-import PhoneInfo from "./phone-info";
+import { useFormContext } from "react-hook-form";
+import GymAddressInfo from "./gym-address-info";
+import GymContactInfo from "./gym-contact-info";
+import GymPhoneInfo from "./gym-phone-info";
 
-export default function GymInfo({ gym, register, errors, isEditMode }:
+export default function GymInfo({ gym, isEditMode }:
     {
         gym: Gym,
-        register: UseFormRegister<Gym>,
-        errors: FieldErrors<Gym>,
         isEditMode: boolean
     }) {
+
+    const { register, formState: {errors} } = useFormContext();
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="gym_info_form" disabled={!isEditMode} >
@@ -27,18 +28,17 @@ export default function GymInfo({ gym, register, errors, isEditMode }:
                             <Form.Control type="input" id="gym_info_input_code" placeholder="Gym unique code" {...register("gymId")}
                                 className={errors.gymId ? "input-invalid" : ""}
                                 disabled={(gym.gymId !== "" ? true : false)} />
-                            {errors.gymId && <Form.Text className="text-invalid">{errors.gymId.message}</Form.Text>}
+                            {errors.gymId && <Form.Text className="text-invalid">{errors.gymId.message as string}</Form.Text>}
                         </Form.Group>
                     </Col>
                 </Row>
-
                 <Row className="m-2 gx-2">
                     <Col xs={6} >
                         <Form.Group>
                             <Form.Label className="text-primary" htmlFor="gym_info_input_name">Name</Form.Label>
                             <Form.Control autoFocus={isEditMode} type="input" id="gym_info_input_name" placeholder=""  {...register("name")}
                                 className={errors.name ? "input-invalid" : ""} />
-                            {errors.name && <Form.Text className="text-invalid">{errors.name.message}</Form.Text>}
+                            {errors.name && <Form.Text className="text-invalid">{errors.name.message as string}</Form.Text>}
                         </Form.Group>
                     </Col>
                     <Col xs={6} >
@@ -46,18 +46,23 @@ export default function GymInfo({ gym, register, errors, isEditMode }:
                             <Form.Label className="text-primary" htmlFor="gym_info_input_email">Email address</Form.Label>
                             <Form.Control type="input" id="gym_info_input_email" placeholder="example@email.ca" {...register("email")}
                                 className={errors.email ? "input-invalid" : ""} />
-                            {errors.email && <Form.Text className="text-invalid">{errors.email.message}</Form.Text>}
+                            {errors.email && <Form.Text className="text-invalid">{errors.email.message as string}</Form.Text>}
                         </Form.Group>
                     </Col>
                 </Row>
                 <Row className="m-2 p-1">
                     <Col xs={12} className="p-1" >
-                        <AddressInfo register={register} errors={errors} />
+                        <GymAddressInfo />
                     </Col>
                 </Row>
                 <Row className="m-2 p-1">
                     <Col xs={12} className="p-1" >
-                        <PhoneInfo register={register} errors={errors} />
+                        <GymPhoneInfo />
+                    </Col>
+                </Row>
+                <Row className="m-2 p-1">
+                    <Col xs={12} className="p-1" >
+                        <GymContactInfo />
                     </Col>
                 </Row>
                 <Row className="m-2 p-1">
@@ -72,53 +77,3 @@ export default function GymInfo({ gym, register, errors, isEditMode }:
         </fieldset>
     );
 }
-/*
- <div className="d-flex flex-row justify-content-start">
-                <div className="col-6 m-2 pe-3">
-                    <Form.Group>
-                        <Form.Label className="text-primary" htmlFor="gym_info_input_code">Code</Form.Label>
-                        <Form.Control type="input" id="gym_info_input_code" placeholder="Gym unique code" {...register("gymId")}
-                            className={errors.gymId ? "input-invalid" : ""}
-                            disabled={(gym.gymId !== "" ? true : false)} />
-                        {errors.gymId && <Form.Text className="text-invalid">{errors.gymId.message}</Form.Text>}
-                    </Form.Group>
-                </div>
-            </div>
-            <div className="d-flex flex-row justify-content-start">
-                <div className="col-6 p-2">
-                    <Form.Group>
-                        <Form.Label className="text-primary" htmlFor="gym_info_input_name">Name</Form.Label>
-                        <Form.Control autoFocus={isEditMode} type="input" id="gym_info_input_name" placeholder=""  {...register("name")}
-                            className={errors.name ? "input-invalid" : ""} />
-                        {errors.name && <Form.Text className="text-invalid">{errors.name.message}</Form.Text>}
-                    </Form.Group>
-                </div>
-                <div className="col-6 p-2">
-                    <Form.Group>
-                        <Form.Label className="text-primary" htmlFor="gym_info_input_email">Email address</Form.Label>
-                        <Form.Control type="input" id="gym_info_input_email" placeholder="example@email.ca" {...register("email")}
-                            className={errors.email ? "input-invalid" : ""} />
-                        {errors.email && <Form.Text className="text-invalid">{errors.email.message}</Form.Text>}
-                    </Form.Group>
-                </div>
-            </div>
-            <div className="d-flex flex-row justify-content-start">
-                <div className="col-12">
-                    <AddressInfo register={register} errors={errors} />
-                </div>
-            </div>
-            <div className="d-flex flex-row justify-content-start">
-                <div className="col-12">
-                    <PhoneInfo register={register} errors={errors} />
-                </div>
-            </div>
-            <div className="d-flex flex-row justify-content-start">
-                <div className="col-12 p-2">
-                    <Form.Group>
-                        <Form.Label className="text-primary" htmlFor="gym_info_input_note">Notes</Form.Label>
-                        <Form.Control as="textarea" id="gym_info_input_note" rows={4} {...register("note")} />
-                    </Form.Group>
-                </div>
-            </div>
-        </fieldset>
-*/

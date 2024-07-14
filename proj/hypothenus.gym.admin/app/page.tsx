@@ -10,8 +10,8 @@ export default function Home() {
       <div className="d-flex flex-row w-100 h-100">
         <div className="flex-column flex-fill justify-content-between w-50 h-100">
           <Container fluid="true">
-                <h1 className="text-secondary">Hypothenus</h1>
-                <h2 className="text-tertiary">The ultimate fitness management software !</h2>
+                <h1 className="text-tertiary">Hypothenus</h1>
+                <h2 className="text-primary">The ultimate fitness management software !</h2>
           </Container>
         </div>
         <div className="flex-column flex-fill justify-content-between w-50 h-100">

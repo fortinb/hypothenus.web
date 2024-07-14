@@ -23,7 +23,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(gymsPage, { status: 200 });
 
   } catch (err) {
-    console.log("GET error: " + err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
