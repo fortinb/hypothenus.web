@@ -1,27 +1,33 @@
 "use client"
 
 import { Contact, formatName, newContact } from "@/src/lib/entities/contact";
-import Link from "next/link";
 import { MouseEvent, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Row from "react-bootstrap/Row";
 import Tooltip from "react-bootstrap/Tooltip";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, Merge, useFieldArray, useFormContext } from "react-hook-form";
 import ModalConfirmation from "../actions/modal-confirmation";
 import ContactInfo from "../contact/contact-info";
-import Button from "react-bootstrap/Button";
 
 export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
 
+    const { formState: { errors } } = useFormContext();
+
     const formContacts = useFieldArray({
         name: "contacts",
     });
 
+    function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
+        const result =  (errors?.contacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
+        return result;
+    }
+    
     function onDelete(confirmation: boolean) {
         if (confirmation ?? contactIndexToDelete >= 0) {
             setIsDeleting(true);
@@ -59,9 +65,11 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
             </Row>
             <Row className="m-0 pb-2">
                 <Accordion >
+
                     {formContacts.fields?.map((contact: Record<string, any>, index: number) => {
+
                         return <Accordion.Item key={index} eventKey={index.toString()} className="pt-2">
-                            <Accordion.Header className="accordion-header-light">{formatName(contact as Contact)}</Accordion.Header>
+                            <Accordion.Header className={"accordion-header-light" + (getError(index) ? " accordeon-header-invalid" : "")}>{formatName(contact as Contact)}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Card>
                                     <Card.Body className="">
@@ -77,6 +85,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                                 </Card>
                             </Accordion.Body>
                         </Accordion.Item>
+
                     })}
 
                 </Accordion>
@@ -89,14 +98,4 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
             </Row>
         </div>
     );
-
-    /*
-     <Link className={"link-element ms-4" + (!isEditMode ? " link-disabled" : "")} href="#"
-                            onClick={onAddContact}>
-                            <i className="icon icon-secondary bi bi-person-plus h3 mb-1"></i></Link>
-
-                             <Link className={"link-element ms-4" + (!isEditMode ? " link-disabled" : "")} href="#"
-                                                        onClick={(e) => onDeleteConfirmation(e, index)}>
-                                                        <i className="icon icon-secondary bi bi-trash h3 mb-1"></i></Link>
-    */
 }

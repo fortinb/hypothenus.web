@@ -32,6 +32,7 @@ export default function ModalConfirmation({ title, text, yesText, noText, action
             <Modal.Footer>
                 <Button className="btn btn-secondary" disabled={isAction} onClick={() => handleResult(false)}>{noText}</Button>
                 <Button className="btn btn-primary" disabled={isAction} onClick={() => handleResult(true)}>
+                    
                     {isAction &&
                         <div className="spinner-border spinner-border-sm me-2"></div>
                     }

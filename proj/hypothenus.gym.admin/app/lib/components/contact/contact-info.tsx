@@ -27,16 +27,16 @@ export default function GymContactInfo({ index, id, formStatefield }:
             <Row className="gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_firstname_" + id +  index}>Firstname</Form.Label>
-                        <Form.Control type="input" id={"contact_input_firstname_" + id +  index}  {...register(formStatefield + ".firstname")}
+                        <Form.Label className="text-primary" htmlFor={"contact_input_firstname_" + id + index}>Firstname</Form.Label>
+                        <Form.Control type="input" id={"contact_input_firstname_" + id + index}  {...register(formStatefield + ".firstname")}
                             className={getError(index)?.firstname ? "input-invalid" : ""} />
                         {getError(index)?.firstname && <Form.Text className="text-invalid">{getError(index)?.firstname?.message ?? ""}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_lastname_" + id +  index}>Lastname</Form.Label>
-                        <Form.Control type="input" id={"contact_input_lastname_" + id +  index}  {...register(formStatefield + ".lastname")}
+                        <Form.Label className="text-primary" htmlFor={"contact_input_lastname_" + id + index}>Lastname</Form.Label>
+                        <Form.Control type="input" id={"contact_input_lastname_" + id + index}  {...register(formStatefield + ".lastname")}
                             className={getError(index)?.lastname ? "input-invalid" : ""} />
                         {getError(index)?.lastname && <Form.Text className="text-invalid">{getError(index)?.lastname?.message ?? ""}</Form.Text>}
                     </Form.Group>
@@ -45,15 +45,15 @@ export default function GymContactInfo({ index, id, formStatefield }:
             <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_description_" + id +  index}>Description</Form.Label>
-                        <Form.Control type="input" id={"contact_input_description_" + id +  index}  {...register(formStatefield + ".description")}
+                        <Form.Label className="text-primary" htmlFor={"contact_input_description_" + id + index}>Description</Form.Label>
+                        <Form.Control type="input" id={"contact_input_description_" + id + index}  {...register(formStatefield + ".description")}
                             className={getError(index)?.description ? "input-invalid" : ""} />
                         {getError(index)?.description && <Form.Text className="text-invalid">{getError(index)?.description?.message ?? ""}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_email_" + id +  index}>Email address</Form.Label>
+                        <Form.Label className="text-primary" htmlFor={"contact_input_email_" + id + index}>Email address</Form.Label>
                         <Form.Control type="input" id="contact_info_input_email" placeholder="example@email.ca" {...register(formStatefield + ".email")}
                             className={getError(index)?.email ? "input-invalid" : ""} />
                         {getError(index)?.email && <Form.Text className="text-invalid">{getError(index)?.email?.message ?? ""}</Form.Text>}

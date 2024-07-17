@@ -9,9 +9,8 @@ import Loader from "@/app/lib/components/navigation/loader";
 import ToastSuccess from "@/app/lib/components/notifications/toast-success";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
-import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
-import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
-import { Gym, GymSchema, newGym } from "@/src/lib/entities/gym";
+import { clearGymState, GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
+import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -54,7 +53,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
 
         return () => {
             dispatch(clearGymState());
-          };
+        };
     }, []);
 
     const fetchGym = async (gymId: string) => {
@@ -213,7 +212,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
                 {!isLoading &&
                     <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
                         <div className="w-100 h-100">
-                            <FormProvider {...formContext } >
+                            <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.active}
                                         isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />

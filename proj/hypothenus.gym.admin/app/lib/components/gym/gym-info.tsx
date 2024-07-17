@@ -1,6 +1,7 @@
 "use client"
 
 import { Gym } from "@/src/lib/entities/gym";
+import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -9,7 +10,6 @@ import { useFormContext } from "react-hook-form";
 import GymAddressInfo from "./gym-address-info";
 import GymContactInfo from "./gym-contact-info";
 import GymPhoneInfo from "./gym-phone-info";
-import Accordion from "react-bootstrap/Accordion";
 
 export default function GymInfo({ gym, isEditMode }:
     {
@@ -18,7 +18,7 @@ export default function GymInfo({ gym, isEditMode }:
     }) {
 
     const { register, formState: { errors } } = useFormContext();
-
+    
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="gym_info_form" disabled={!isEditMode} >
             <Container >
@@ -54,8 +54,8 @@ export default function GymInfo({ gym, isEditMode }:
                 <Row className="m-0 pt-2">
                     <Accordion >
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className="">Address</Accordion.Header>
-                            <Accordion.Body  className="p-0">
+                            <Accordion.Header className={(errors?.address ? "accordeon-header-invalid" : "")}>Address</Accordion.Header>
+                            <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
                                         <GymAddressInfo />
@@ -64,7 +64,7 @@ export default function GymInfo({ gym, isEditMode }:
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className="" >Phones</Accordion.Header>
+                            <Accordion.Header className={(errors?.phoneNumbers ? "accordeon-header-invalid" : "")} >Phones</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -74,11 +74,11 @@ export default function GymInfo({ gym, isEditMode }:
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="2" className="pt-2">
-                            <Accordion.Header className="">Contacts</Accordion.Header>
+                            <Accordion.Header className={(errors?.contacts ? "accordeon-header-invalid" : "")}>Contacts</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
-                                        <GymContactInfo isEditMode={isEditMode}/>
+                                        <GymContactInfo isEditMode={isEditMode} />
                                     </Col>
                                 </Row>
                             </Accordion.Body>

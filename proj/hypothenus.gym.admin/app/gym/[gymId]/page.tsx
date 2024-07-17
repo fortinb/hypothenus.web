@@ -17,7 +17,7 @@ export default function Gym() {
         <GymForm gymId={params.gymId} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <GymResume gymId={params.gymId} />
+        <GymResume />
       </div>
     </div>
   );

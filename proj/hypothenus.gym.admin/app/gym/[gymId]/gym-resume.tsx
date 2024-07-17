@@ -1,13 +1,13 @@
 "use client"
 
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
-import { useSelector } from "react-redux";
+import { formatAddress } from "@/src/lib/entities/address";
+import { Contact, formatName } from "@/src/lib/entities/contact";
+import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { formatAddress } from "@/src/lib/entities/address";
-import Link from "next/link";
-import { Contact, formatName } from "@/src/lib/entities/contact";
+import { useSelector } from "react-redux";
 
 export default function GymResume() {
   const gymState: GymState = useSelector((state: any) => state.gymState);
@@ -33,11 +33,12 @@ export default function GymResume() {
         </Row>
 
         {gymState.gym.contacts?.map((contact: Contact, index: number) => {
-          return <Row className="gx-2">
+
+          return <Row key={index} className="gx-2">
             <Col xs={12} >
               <hr />
               <p className="card-text">
-                <span className="text-primary">{formatName(contact)}</span><br />
+                <span className="text-secondary fw-bolder">{formatName(contact)}</span><br />
                 <span className="text-primary">{contact.description}</span><br />
                 <Link className="link-element" href={"mailto:" + contact?.email}>{contact.email}</Link><br />
                 <span className="text-primary">{contact.phoneNumbers[0]?.number}</span><br />
@@ -45,8 +46,9 @@ export default function GymResume() {
               </p>
             </Col>
           </Row>
+
         })}
-        
+
         <Row className="gx-2">
           <Col xs={12} >
             <hr />

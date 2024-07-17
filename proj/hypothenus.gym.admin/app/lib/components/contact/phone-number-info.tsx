@@ -22,6 +22,7 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
         <Form.Group>
             <Form.Control type="hidden" id={"phone_input_type_" + id + index} value={defaultType} {...register(formStatefield + ".type")} />
             <Form.Label className="text-primary" htmlFor={"phone_input_number_" + { id } + { index }} >
+                
                 {defaultType == PhoneNumberTypeEnum.Home &&
                     <span>Home</span>
                 }
@@ -33,6 +34,7 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
                 {defaultType == PhoneNumberTypeEnum.Mobile &&
                     <span>Mobile</span>
                 }
+
             </Form.Label>
             <Form.Control type="input" id={"phone_input_number_" + id + index} placeholder="999 999-9999"  {...register(formStatefield + ".number")}
                 className={getError(index) ? "input-invalid" : ""} />

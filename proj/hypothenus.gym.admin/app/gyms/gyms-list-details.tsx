@@ -10,22 +10,23 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
   return (
     <div className="col-6 p-2">
       <Card>
-          <Card.Body className={"m-2" + (gym.active == false ? " card-body-inactive" : "")}>
-            <Card.Title >
-              <Link className="link-element" href={"/gym/" + gym.gymId}> {gym.name}</Link>
-            </Card.Title>
-            <Card.Text>
-              <span className="text-primary">{formatAddress(gym.address)}</span><br />
-              <Link className="link-element" href={"mailto:" + gym.email}>{gym.email}</Link><br />
-              <span className="text-primary">{gym.gymId}</span><br />
+        <Card.Body className={"m-2" + (gym.active == false ? " card-body-inactive" : "")}>
+          <Card.Title >
+            <Link className="link-element" href={"/gym/" + gym.gymId}> {gym.name}</Link>
+          </Card.Title>
+          <Card.Text>
+            <span className="text-primary">{formatAddress(gym.address)}</span><br />
+            <Link className="link-element" href={"mailto:" + gym.email}>{gym.email}</Link><br />
+            <span className="text-primary">{gym.gymId}</span><br />
 
-              {gym.active == false &&
-                <div>
-                  <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>Inactive</span><br />
-                </div>
-              }
-            </Card.Text>
-          </Card.Body>
+            {gym.active == false &&
+              <div>
+                <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>Inactive</span><br />
+              </div>
+            }
+            
+          </Card.Text>
+        </Card.Body>
       </Card>
     </div>
   );

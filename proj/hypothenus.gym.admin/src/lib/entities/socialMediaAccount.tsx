@@ -10,8 +10,8 @@ export enum SocialMediaTypeEnum {
   Instagram
 }
 
-export const newSocialMediaAccount = () : SocialMediaAccount => {
-  let newSocialMediaAccount : SocialMediaAccount = {
+export const newSocialMediaAccount = (): SocialMediaAccount => {
+  let newSocialMediaAccount: SocialMediaAccount = {
     accountName: "",
     url: "",
     socialMedia: null

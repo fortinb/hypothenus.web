@@ -265,6 +265,13 @@ footer {
     opacity: 0.9;
 }
 
+.accordeon-header-invalid {
+    border: solid;
+    border-color: $secondary;
+    border-width: 4px;
+    border-radius: 10px;
+}
+
 //page
 .page-accordeon-header {
     color: $text-primary;
