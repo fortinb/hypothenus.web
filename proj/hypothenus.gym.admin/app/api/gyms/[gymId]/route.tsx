@@ -1,5 +1,5 @@
 import { getRequestContext } from "@/app/lib/http/requestContext";
-import { deleteGym, getGym, saveGym } from "@/app/lib/ssr/gyms-data-service";
+import { deleteGym, getGym, updateGym } from "@/app/lib/ssr/gyms-data-service";
 import { Gym } from "@/src/lib/entities/gym";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest, { params }: { params: { gymId: strin
 
     const requestContext = getRequestContext(req);
 
-    gym = await saveGym(requestContext, gym);
+    gym = await updateGym(requestContext, gym);
 
     return NextResponse.json(gym, { status: 200 });
 

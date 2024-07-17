@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export const DEFAULT_PAGING_SIZE: number = 10;
 
-export interface GymsPagingState {
+export interface GymsStatePaging {
   page: number;
   pageSize: number;
   includeInactive: boolean;
@@ -10,8 +10,8 @@ export interface GymsPagingState {
   searchCriteria: String
 }
 
-export const gymsPagingSlice = createSlice({
-  name: 'gymsPaging',
+export const gymsStatePagingSlice = createSlice({
+  name: 'gymsStatePaging',
   initialState: {
     page: 0,
     pageSize: DEFAULT_PAGING_SIZE,
@@ -72,6 +72,6 @@ export const gymsPagingSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { nextPage, previousPage, firstPage, setSearchCriteria, resetSearchCriteria, includeInactive } = gymsPagingSlice.actions
+export const { nextPage, previousPage, firstPage, setSearchCriteria, resetSearchCriteria, includeInactive } = gymsStatePagingSlice.actions
 
-export default gymsPagingSlice.reducer
+export default gymsStatePagingSlice.reducer

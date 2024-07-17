@@ -107,7 +107,7 @@ export async function createGym(requestContext: RequestContext, gym: Gym): Promi
   return response.data;
 }
 
-export async function saveGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
+export async function updateGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
 
   const putURI: String = "/v1/admin/gyms/" + gym.gymId;
 

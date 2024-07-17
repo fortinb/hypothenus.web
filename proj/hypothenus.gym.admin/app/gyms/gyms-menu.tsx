@@ -5,10 +5,10 @@ import { ChangeEvent } from "react";
 import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../lib/hooks/useStore";
-import { GymsPagingState, includeInactive } from "../lib/store/slices/gymsPagingSlice";
+import { GymsStatePaging, includeInactive } from "../lib/store/slices/gyms-state-paging-slice";
 
 export default function GymsMenu() {
-  const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging);
+  const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
   const dispatch = useAppDispatch();
 
   function onIncludeDeactivated(e: ChangeEvent<HTMLInputElement>) {
@@ -41,7 +41,7 @@ export default function GymsMenu() {
         <div className="col pt-2 m-2">
           <div className="form-check form-switch pe-2">
             <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
-              id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsPagingState.includeInactive} />
+              id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsStatePaging.includeInactive} />
             <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">Include inactive</label>
           </div>
         </div>

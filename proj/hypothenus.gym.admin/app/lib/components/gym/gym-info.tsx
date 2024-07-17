@@ -9,6 +9,7 @@ import { useFormContext } from "react-hook-form";
 import GymAddressInfo from "./gym-address-info";
 import GymContactInfo from "./gym-contact-info";
 import GymPhoneInfo from "./gym-phone-info";
+import Accordion from "react-bootstrap/Accordion";
 
 export default function GymInfo({ gym, isEditMode }:
     {
@@ -16,7 +17,7 @@ export default function GymInfo({ gym, isEditMode }:
         isEditMode: boolean
     }) {
 
-    const { register, formState: {errors} } = useFormContext();
+    const { register, formState: { errors } } = useFormContext();
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="gym_info_form" disabled={!isEditMode} >
@@ -50,20 +51,39 @@ export default function GymInfo({ gym, isEditMode }:
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row className="m-2 p-1">
-                    <Col xs={12} className="p-1" >
-                        <GymAddressInfo />
-                    </Col>
-                </Row>
-                <Row className="m-2 p-1">
-                    <Col xs={12} className="p-1" >
-                        <GymPhoneInfo />
-                    </Col>
-                </Row>
-                <Row className="m-2 p-1">
-                    <Col xs={12} className="p-1" >
-                        <GymContactInfo />
-                    </Col>
+                <Row className="m-0 pt-2">
+                    <Accordion >
+                        <Accordion.Item eventKey="0" className="pt-2">
+                            <Accordion.Header className="">Address</Accordion.Header>
+                            <Accordion.Body  className="p-0">
+                                <Row className="m-2 p-2">
+                                    <Col xs={12} className="p-1" >
+                                        <GymAddressInfo />
+                                    </Col>
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1" className="pt-2">
+                            <Accordion.Header className="" >Phones</Accordion.Header>
+                            <Accordion.Body className="p-0">
+                                <Row className="m-2 p-2">
+                                    <Col xs={12} className="p-1" >
+                                        <GymPhoneInfo />
+                                    </Col>
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="2" className="pt-2">
+                            <Accordion.Header className="">Contacts</Accordion.Header>
+                            <Accordion.Body className="p-0">
+                                <Row className="m-2 p-2">
+                                    <Col xs={12} className="p-1" >
+                                        <GymContactInfo isEditMode={isEditMode}/>
+                                    </Col>
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
                 </Row>
                 <Row className="m-2 p-1">
                     <Col xs={12} className="p-1">

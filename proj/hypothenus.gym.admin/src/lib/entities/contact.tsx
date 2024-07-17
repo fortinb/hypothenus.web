@@ -7,10 +7,12 @@ export interface Contact {
     description: string;
     email: string;
     phoneNumbers: PhoneNumber[];
+    id?:any;
   }
 
   export const  newContact = () : Contact => {
     let newContact : Contact = {
+      id: null,
       firstname: "",
       lastname: "",
       description: "",
@@ -23,7 +25,12 @@ export interface Contact {
     return newContact;
   } 
 
+  export function formatName(contact: Contact): string {
+    return (contact?.firstname ?? "") + " " + (contact?.lastname ?? "");
+  }
+
   export const ContactSchema = z.object({
+    id: z.any().nullable(),
     firstname: z.string().min(1),
     lastname: z.string().min(1),
     description: z.string().min(1),

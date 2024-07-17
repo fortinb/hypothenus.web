@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import gymsPagingReducer from "./slices/gymsPagingSlice";
+import gymsStatePagingReducer from "./slices/gyms-state-paging-slice";
+import gymStateReducer from "./slices/gym-state-slice";
 
 export const store = configureStore({
   reducer: {
-    gymsPaging: gymsPagingReducer
+    gymsStatePaging: gymsStatePagingReducer,
+    gymState: gymStateReducer
   }
 })
 
@@ -13,5 +15,3 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 // Get the type of our store variable
 export type AppStore = typeof store
-
-

@@ -5,6 +5,20 @@
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../node_modules/bootstrap/scss/functions";
 
+// Bootstratp base variables
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
 // 2. Include any default variable overrides here
 $primary: #f7f7f7;
 $secondary: #bc1fc1;
@@ -14,6 +28,16 @@ $body-bg:#cdcdce;
 
 $tooltip-bg: #3b88fc;
 $tooltip-color: #fff;
+
+$accordion-bg : $white;
+$accordion-color: $gray-900;
+$accordion-border-width: 0px;
+$accordion-button-bg: $info;
+$accordion-button-color: $white;
+$accordion-button-padding-y: 2px;
+$accordion-button-padding-y: 10px;
+$accordion-icon-color: $white;
+$accordion-icon-active-color: $white;
 
 $focus-ring-color: #3b88fc;
 $enable-shadows: true;
@@ -74,6 +98,7 @@ $enable-shadows: true;
 $bg-secondary: $white;
 $bg-light: $gray-100;
 $bg-info: $info;
+$bg-tertiary:  #3b88fc;
 
 $text-primary: $gray-900;
 $text-secondary: #3b88fc;
@@ -106,7 +131,7 @@ $card-bg-secondary: $gray-300;
 
 $bg-checkbox-switch: $gray-300;
 
-$border-color-dark: $dark !important;
+$border-color-dark: $info !important;
 $border-color-light: $gray-500 !important;
 
 $main-bg-gradient: linear-gradient(145deg, $light, #bad0d4);
@@ -206,6 +231,51 @@ footer {
     border-radius: 10px;
 }
 
+//Accordeon
+.accordion-button:focus {
+    box-shadow: none;
+   
+}
+
+.accordion-button:disabled {
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: $accordion-button-bg;
+    color: $accordion-button-color;
+    box-shadow: none;
+}
+
+.accordion-item  > .accordion-header .accordion-button {
+    border: none !important;
+    border-radius: 5px;
+}
+
+.accordion-item:first-of-type > .accordion-header .accordion-button {
+    border-radius: 5px!important;
+}
+
+.accordion-item:last-of-type > .accordion-header .accordion-button {
+    border-radius: 5px!important;
+}
+
+.accordion-header-light {
+    opacity: 0.9;
+}
+
+//page
+.page-accordeon-header {
+    color: $text-primary;
+    font-weight: bolder;
+    background-color: $bg-tertiary;
+}
+
+.page-accordeon-body {
+    background-color: $bg-secondary;
+}
+
 // navbar
 .nav-link {
     color: $text-primary;
@@ -254,7 +324,7 @@ footer {
     background-color: $card-bg-secondary;
     border: solid;
     border-color: transparent;
-    border-width: 2px;
+    border-width: 0px;
     box-shadow: 5px 10px 20px $card-shadow;
 }
 
@@ -270,7 +340,7 @@ footer {
 
 .card-body:hover {
     border: solid;
-    border-color: $card-shadow;
+    border-color: $border-color-dark;
     border-width: 2px;
 }
 
@@ -386,7 +456,14 @@ footer {
     max-height: 200px;
 }
 
+.btn-icon {
+    padding: 1;
+}
 //form controls
+.form-control:disabled {
+    opacity: 0.7;
+}
+
 .input-invalid {
     border: solid;
     border-color: $secondary;
@@ -399,4 +476,9 @@ footer {
 
 textarea {
     resize: none;
+}
+
+.link-disabled {
+    pointer-events: none;
+    opacity:0.7;
 }

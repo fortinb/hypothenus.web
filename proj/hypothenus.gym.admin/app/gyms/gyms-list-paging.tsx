@@ -10,11 +10,11 @@ import ErrorBoundary from "../lib/components/errors/error-boundary";
 import Loader from "../lib/components/navigation/loader";
 import PagingNavigation from "../lib/components/navigation/paging-navigation";
 import { useAppDispatch } from "../lib/hooks/useStore";
-import { GymsPagingState, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "../lib/store/slices/gymsPagingSlice";
+import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "../lib/store/slices/gyms-state-paging-slice";
 import GymsList from "./gyms-list";
 
 export default function GymsListPaging() {
-  const gymsPagingState: GymsPagingState = useSelector((state: any) => state.gymsPaging);
+  const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
   const dispatch = useAppDispatch();
 
   const [pageOfGyms, setPageOfGyms] = useState<Page<Gym>>();
@@ -22,13 +22,13 @@ export default function GymsListPaging() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (gymsPagingState.searchActive) {
-      searchGymsPage(gymsPagingState.page, gymsPagingState.pageSize, gymsPagingState.includeInactive, gymsPagingState.searchCriteria);
+    if (gymsStatePaging.searchActive) {
+      searchGymsPage(gymsStatePaging.page, gymsStatePaging.pageSize, gymsStatePaging.includeInactive, gymsStatePaging.searchCriteria);
     } else {
-      fetchGymsPage(gymsPagingState.page, gymsPagingState.pageSize, gymsPagingState.includeInactive);
+      fetchGymsPage(gymsStatePaging.page, gymsStatePaging.pageSize, gymsStatePaging.includeInactive);
     }
 
-  }, [gymsPagingState]);
+  }, [gymsStatePaging]);
 
   const fetchGymsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
     setIsLoading(true);
@@ -123,7 +123,7 @@ export default function GymsListPaging() {
     <ErrorBoundary>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation page={gymsPagingState.page + 1} totalPages={totalPages}
+          <PagingNavigation page={gymsStatePaging.page + 1} totalPages={totalPages}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
             onSearch={onSearch} onSearchInput={onSearchInput} />
         </div>
