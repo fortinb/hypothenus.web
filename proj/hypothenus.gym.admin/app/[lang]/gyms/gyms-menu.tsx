@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ChangeEvent } from "react";
 import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../lib/hooks/useStore";
-import { GymsStatePaging, includeInactive } from "../lib/store/slices/gyms-state-paging-slice";
+import { useAppDispatch } from "../../lib/hooks/useStore";
+import { GymsStatePaging, includeInactive } from "../../lib/store/slices/gyms-state-paging-slice";
 
 export default function GymsMenu() {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);

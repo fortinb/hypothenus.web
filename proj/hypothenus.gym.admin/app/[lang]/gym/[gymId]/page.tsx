@@ -3,7 +3,6 @@
 import { useParams } from "next/navigation";
 import GymForm from "./gym-form";
 import GymMenu from "./gym-menu";
-import Accordion from 'react-bootstrap/Accordion';
 import GymResume from "./gym-resume";
 export default function Gym() {
   const params = useParams<{ gymId: string }>();

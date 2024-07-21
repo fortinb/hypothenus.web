@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import {useTranslation} from "react-i18next";
 
 export default function FormActionBar({ onEdit, onDelete, onActivation, isActivationChecked, isActivationDisabled, isActivating }:
     {
@@ -16,6 +17,7 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isActiva
         isActivating: boolean
     }) {
 
+    const { t } = useTranslation();
     return (
         <div className="d-flex flex-row justify-content-between align-items-center">
             <div className="d-flex flex-row justify-content-start">
@@ -23,9 +25,7 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isActiva
                     <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_edit_tooltip">Edit</Tooltip>}>
                         <Button className="btn btn-icon btn-sm" onClick={onEdit}><i className="icon bi bi-pencil h5"></i></Button>
                     </OverlayTrigger>
-
                 </div>
-               
             </div>
             <div className="d-flex flex-row justify-content-end">
                 <div className="pe-4">

@@ -6,11 +6,11 @@ import { Page } from "@/src/lib/entities/page";
 import { AxiosRequestConfig } from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ErrorBoundary from "../lib/components/errors/error-boundary";
-import Loader from "../lib/components/navigation/loader";
-import PagingNavigation from "../lib/components/navigation/paging-navigation";
-import { useAppDispatch } from "../lib/hooks/useStore";
-import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "../lib/store/slices/gyms-state-paging-slice";
+import ErrorBoundary from "../components/errors/error-boundary";
+import Loader from "../components/navigation/loader";
+import PagingNavigation from "../components/navigation/paging-navigation";
+import { useAppDispatch } from "../../lib/hooks/useStore";
+import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "../../lib/store/slices/gyms-state-paging-slice";
 import GymsList from "./gyms-list";
 
 export default function GymsListPaging() {

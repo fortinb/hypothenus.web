@@ -1,12 +1,12 @@
 "use client"
 
-import FormActionBar from "@/app/lib/components/actions/form-action-bar";
-import FormActionButtons from "@/app/lib/components/actions/form-action-buttons";
-import ModalConfirmation from "@/app/lib/components/actions/modal-confirmation";
-import ErrorBoundary from "@/app/lib/components/errors/error-boundary";
-import GymInfo from "@/app/lib/components/gym/gym-info";
-import Loader from "@/app/lib/components/navigation/loader";
-import ToastSuccess from "@/app/lib/components/notifications/toast-success";
+import FormActionBar from "@/app/[lang]/components/actions/form-action-bar";
+import FormActionButtons from "@/app/[lang]/components/actions/form-action-buttons";
+import ModalConfirmation from "@/app/[lang]/components/actions/modal-confirmation";
+import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
+import GymInfo from "@/app/[lang]/components/gym/gym-info";
+import Loader from "@/app/[lang]/components/navigation/loader";
+import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { clearGymState, GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";

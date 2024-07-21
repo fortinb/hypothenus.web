@@ -310,6 +310,10 @@ footer {
     border-bottom: $secondary 2px solid;
 }
 
+.nav-link-img:hover {
+    // color: $secondary;
+    border-bottom: none;
+}
 // cards
 .card {
     transition: 250ms ease all;

@@ -1,17 +1,14 @@
+"use client"
+
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import type { Metadata } from "next";
 import React from "react";
 import Container from "react-bootstrap/Container";
-import Footer from "./lib/components/layout/footer";
-import Header from "./lib/components/layout/header";
-import StoreProvider from './lib/store/store-provider';
+import Footer from "./components/layout/footer";
+import Header from "./components/layout/header";
+import StoreProvider from '../lib/store/store-provider';
 import "/styles/hypothenus.scss";
-
-export const metadata: Metadata = {
-  title: "Isoceles Hypothenus",
-  description: "Gym management experience",
-};
+import "../i18n/i18n";
 
 export default function RootLayout({
   children,
@@ -20,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
 
-    <html lang="fr">
+    <html lang="en">
+      <head>
+      <title>Hypothenus - Good job !</title>
+      </head>
       <body>
         <StoreProvider>
           <div className="container-fluid overflow-hidden w-100 h-100">

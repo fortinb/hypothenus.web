@@ -1,23 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRequestContext } from "./app/lib/http/requestContext";
-
+import i18n, {supportedLanguages} from "./app/i18n/i18n";
 
 
 export function middleware(req: NextRequest) {
+    const pathname = req.nextUrl.pathname;
+  
+    const pathnameIsMissingLocale = supportedLanguages.every(
+        (locale) => 
+            !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+    );
+    console.log ("pathname : " + pathname);
+    console.log ("missing locale: " + pathnameIsMissingLocale);
+    if (pathnameIsMissingLocale) {
+        const locale = i18n.resolvedLanguage;
 
-    const requestContext = getRequestContext(req);
-    
-    if (!requestContext.token) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    if (!requestContext.trackingNumber) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        return NextResponse.redirect(
+            new URL(
+                `/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
+                req.url,
+            ),
+        );
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/api/:path*']
-  }
+    matcher: ["/((?!api|images_next/|static|.*\\..*|_next/images|favicon.ico).*)"]
+}
