@@ -1,11 +1,11 @@
 "use client"
 
-import Navbar from "./navbar-menu";
+import NavbarMenu from "./navbar-menu";
 
-export default function Header() {
+export default function Header({lang}: {lang: string}) {
   return (
     <header className="navbar navbar-expand-lg bd-navbar shadow sticky-top border border-2">
-      <Navbar />
+      <NavbarMenu />
     </header>
   );
 }

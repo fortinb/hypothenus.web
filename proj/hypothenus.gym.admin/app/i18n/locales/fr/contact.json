@@ -1,0 +1,21 @@
+{
+    "address": {
+        "civicNumber": "# Civique",
+        "street": "Rue",
+        "city": "Ville",
+        "appartment": "# Appartement",
+        "state": "Province",
+        "zipcode": "Code postal"
+    },
+    "person": {
+        "firstname": "Prénom",
+        "lastname": "Nom",
+        "description": "Description",
+        "email": "Courriel"
+    },
+    "phone": {
+        "home": "Domicile",
+        "business": "Travail",
+        "mobile": "Mobile"
+    }
+}

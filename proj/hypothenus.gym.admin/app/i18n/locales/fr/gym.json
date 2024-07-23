@@ -1,0 +1,45 @@
+{
+    "info": {
+        "code": "Code",
+        "codePlaceholder": "Identification unique",
+        "name": "Nom",
+        "email": "Courriel",
+        "address": "Addresse",
+        "phones": "Téléphones",
+        "contacts": "Contacts",
+        "note": "Notes"
+    },
+    "menu": {
+        "sections": "Sections",
+        "info": "Info",
+        "coachs": "Entraîneurs",
+        "management": "Salles de sport",
+        "managementTooltip": "retour aux salles de sport"
+    },
+    "resume": {
+        "contacts": "Contacts"
+    },
+    "contact": {
+        "buttons": {
+            "add": "Ajouter un contact",
+            "delete": "Supprimer"
+        },
+        "deleteConfirmation": {
+            "title": "Supprimer un contact",
+            "text": "Êtes vous certain de vouloir supprimer ce contact ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    },
+    "list": {
+        "menu": {
+            "title": "Salles de sport",
+            "add": "Ajouter une salle de sport",
+            "inactive": "Inactives"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

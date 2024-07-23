@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "@/app/i18n/i18n";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -14,7 +15,7 @@ export default function ModalConfirmation({ title, text, yesText, noText, action
         isAction: boolean;
         handleResult: (value: boolean) => void
     }) {
-
+      
     return (
         <Modal
             show={show}

@@ -1,0 +1,19 @@
+{
+    "navbar": {
+        "gyms": {
+            "title": "Salles de sport"
+        },
+        "language": {
+            "title": "Langues",
+            "en": "English",
+            "fr": "Français"
+        }
+    },
+    "error": {
+        "boundary" : {
+            "title" : "Désolé, un problème est survenu !",
+            "action" : "Réessayez"
+        }
+    }
+
+}

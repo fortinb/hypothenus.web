@@ -1,19 +1,31 @@
 "use client";
 
 import { changeLanguage, useTranslation } from "@/app/i18n/i18n";
+import Image from 'next/image';
 import Link from "next/link";
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-import Image from 'next/image';
-import { useParams } from "next/navigation";
-
 export default function NavbarMenu() {
+  const pathname = usePathname();
+  const router = useRouter();
   const params = useParams<{ lang: string }>();
-  const { t } = useTranslation(params.lang);
+  const { t } = useTranslation("layout");
 
+  function languageRedirect(languageRequested: string) {
+   
+    if (!pathname.startsWith(`/${params.lang}`)) {
+      return;
+    }
+
+    changeLanguage(languageRequested);
+    router.push(pathname.replace(params.lang, languageRequested));
+  }
+  
+  
   return (
     <Navbar expand="lg" className="container-xxl bd-gutter flex-wrap flex-lg-nowrap" >
       <Container className="container-fluid">
@@ -35,16 +47,25 @@ export default function NavbarMenu() {
             </div>
             <div>
               <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                <Dropdown.Toggle id="navbar-languages-dropdown">
                   {t("navbar.language.title")}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => changeLanguage("en")}>{t("navbar.language.en")}</Dropdown.Item>
-                  <Dropdown.Item onClick={() => changeLanguage("fr")}>{t("navbar.language.fr")}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => languageRedirect("en")}>
+                      {t("navbar.language.en")}
+                      {params.lang=="en" &&
+                        <i className="bi bi-check"></i>
+                      }
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => languageRedirect("fr")}>
+                    {t("navbar.language.fr")}
+                    {params.lang=="fr" &&
+                        <i className="bi bi-check"></i>
+                      }
+                    </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-
             </div>
           </div>
         </Navbar.Collapse>
@@ -52,6 +73,3 @@ export default function NavbarMenu() {
     </Navbar>
   );
 }
-/*
-   <Button onClick={() => changeLanguage(i18n.resolvedLanguage === "fr" ? "en" : "fr")}>{i18n.resolvedLanguage === "fr" ? "EN" : "FR"}</Button>
-*/

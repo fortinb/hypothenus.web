@@ -1,0 +1,20 @@
+{
+    "paging": {
+        "buttons": {
+            "first": "Première page",
+            "previous": "Page précédente",
+            "next": "Page suivante"
+        },
+        "page" : "page",
+        "pageOf" : "de",
+        "search": {
+            "buttons": {
+                "search": "Rechercher"
+            },
+            "placeholder": "Texte de recherche"
+        }
+    },
+    "loader" : {
+        "loading" : "Chargement en cours..."
+    }
+}

@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "@/app/i18n/i18n";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import { formatAddress } from "@/src/lib/entities/address";
 import { Contact, formatName } from "@/src/lib/entities/contact";
@@ -11,12 +12,13 @@ import { useSelector } from "react-redux";
 
 export default function GymResume() {
   const gymState: GymState = useSelector((state: any) => state.gymState);
-
+  const { t } = useTranslation("gym");
+  
   return (
 
     <div className="d-flex flex-column justify-content-start w-100 h-100 page-menu overflow-auto">
       <div className="d-flex flex-row justify-content-center">
-        <h2 className="text-secondary pt-4 ps-2">Contacts</h2>
+        <h2 className="text-secondary pt-4 ps-2">{t("resume.contacts")}</h2>
       </div>
       <div className="ps-2 pe-2">
         <hr />

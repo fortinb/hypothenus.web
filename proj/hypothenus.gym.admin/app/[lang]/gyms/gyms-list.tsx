@@ -4,7 +4,7 @@ import { Gym } from "@/src/lib/entities/gym";
 import { Page } from "@/src/lib/entities/page";
 import GymListDetails from "./gyms-list-details";
 
-export default function GymsList({ pageOfGyms }: { pageOfGyms: Page<Gym> | undefined; }) {
+export default function GymsList({ pageOfGyms }: { pageOfGyms?: Page<Gym> }) {
 
   return (
 

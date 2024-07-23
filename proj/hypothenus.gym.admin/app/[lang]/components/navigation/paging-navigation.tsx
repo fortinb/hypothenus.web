@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "@/app/i18n/i18n";
 import { FormEventHandler, MouseEventHandler, ReactEventHandler } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -26,33 +27,35 @@ export default function PagingNavigation(
       onSearchInput: ReactEventHandler<HTMLInputElement>
     }
 ) {
+  const { t } = useTranslation("navigation");
+  
   return (
     <Container >
       <Row className="gx-2">
         <Col xl={2} >
-          <Button className="btn btn-primary ms-0" type="button" variant="primary" onClick={onFirstPage} disabled={page == 1}><i className="bi bi-skip-start me-2" />First page</Button>
+          <Button className="btn btn-primary ms-0" type="button" variant="primary" onClick={onFirstPage} disabled={page == 1}><i className="bi bi-skip-start me-2" />{t("paging.buttons.first")}</Button>
         </Col>
         <Col sm="auto" xxl={3} >
           <Form as="form" className="d-flex justify-content-start" role="search" id="paging-navigation-search-form" onSubmit={onSearch}>
-            <Form.Control type="search" placeholder="Search" name="searchCriteria" aria-label="Search"
+            <Form.Control type="search" placeholder={t("paging.search.placeholder")} name="searchCriteria" aria-label="Search"
               onInput={onSearchInput} />
           </Form>
         </Col>
         <Col sm="auto" xxl={2} >
-          <Button className="btn btn-primary" type="submit" form="paging-navigation-search-form" variant="primary">Search<i className="bi bi-search ms-2" /></Button>
+          <Button className="btn btn-primary" type="submit" form="paging-navigation-search-form" variant="primary">{t("paging.search.buttons.search")}<i className="bi bi-search ms-2" /></Button>
         </Col>
         <Col sm="auto" xxl={3} className="d-flex justify-content-end">
           <Button className="btn btn-primary" type="button" variant="primary" onClick={onPreviousPage}
-            disabled={page <= 1}><i className="bi bi-rewind-btn me-2" />Previous page</Button>
+            disabled={page <= 1}><i className="bi bi-rewind-btn me-2" />{t("paging.buttons.previous")}</Button>
         </Col>
         <Col sm="auto" xxl={2} >
           <Button className="btn btn-primary" type="button" variant="primary" onClick={onNextPage}
-            disabled={page >= totalPages}>Next page<i className="bi bi-fast-forward-btn ms-2" /></Button>
+            disabled={page >= totalPages}>{t("paging.buttons.next")}<i className="bi bi-fast-forward-btn ms-2" /></Button>
         </Col>
       </Row>
       <Row className="m-0 p-0">
         <Col >
-          <span className="text-primary align-middle">page {page} of {totalPages == 0 ? "..." : totalPages}</span>
+          <span className="text-primary align-middle">{t("paging.page")} {page} {t("paging.pageOf")} {totalPages == 0 ? "..." : totalPages}</span>
         </Col>
       </Row>
     </Container>

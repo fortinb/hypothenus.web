@@ -1,0 +1,14 @@
+{
+    "form": {
+        "bar": {
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "activate": "Actif"
+        },
+        "buttons": {
+            "cancel": "Annuler",
+            "save": "Sauvegarder",
+            "saving": "Sauvegarde en cours..."
+        }
+    }
+}

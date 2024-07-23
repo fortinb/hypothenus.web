@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslation } from "@/app/i18n/i18n";
 import { Gym } from "@/src//lib/entities/gym";
 import { formatAddress } from "@/src/lib/entities/address";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
 
 export default function GymListDetails({ gym }: { gym: Gym }) {
+  const { t } = useTranslation("gym");
 
   return (
     <div className="col-6 p-2">
@@ -21,7 +23,7 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
 
             {gym.active == false &&
               <div>
-                <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>Inactive</span><br />
+                <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
               </div>
             }
             

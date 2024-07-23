@@ -1,9 +1,11 @@
+import { useTranslation } from '@/app/i18n/i18n';
 import Image from 'next/image';
 import React from "react";
 import Container from "react-bootstrap/Container";
 
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = React.useState("");
+  const { t } = useTranslation("layout");
 
   const promiseRejectionHandler = React.useCallback((event: any) => {
     setError(event.reason);
@@ -35,9 +37,9 @@ const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
             />
           </div>
           <div className="w-50">
-            <h3>Something went wrong !</h3>
+            <h3>{t("error.boundary.title")}</h3>
             <button className="btn btn-primary" type="button" onClick={resetError}>
-              Try again
+            {t("error.boundary.action")}
             </button>
           </div>
         </div>

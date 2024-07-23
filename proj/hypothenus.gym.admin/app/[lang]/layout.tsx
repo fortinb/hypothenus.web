@@ -8,25 +8,29 @@ import Footer from "./components/layout/footer";
 import Header from "./components/layout/header";
 import StoreProvider from '../lib/store/store-provider';
 import "/styles/hypothenus.scss";
-import "../i18n/i18n";
+import i18n, { useTranslation } from "../i18n/i18n";
+import { useParams } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const params = useParams<{ lang: string }>();
+  const { t } = useTranslation("translation", params.lang);
+
   return (
 
-    <html lang="en">
+    <html lang={params.lang}>
       <head>
-      <title>Hypothenus - Good job !</title>
+      <title>{t("html.head.title")}</title>
       </head>
       <body>
         <StoreProvider>
           <div className="container-fluid overflow-hidden w-100 h-100">
             <div className="d-flex flex-row w-100 h-100 p-1">
               <div className="d-flex flex-column justify-content-between w-100 h-100 pt-2">
-                <Header />
+                <Header lang={params.lang}/>
                 <Container fluid={true} className="overflow-hidden h-100">
                   {children}
                 </Container>

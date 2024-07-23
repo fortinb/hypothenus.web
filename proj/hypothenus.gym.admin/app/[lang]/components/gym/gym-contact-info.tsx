@@ -11,17 +11,17 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { FieldError, FieldErrorsImpl, Merge, useFieldArray, useFormContext } from "react-hook-form";
 import ModalConfirmation from "../actions/modal-confirmation";
 import ContactInfo from "../contact/contact-info";
+import { useTranslation } from "@/app/i18n/i18n";
 
 export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
-
     const { formState: { errors } } = useFormContext();
-
     const formContacts = useFieldArray({
         name: "contacts",
     });
+    const { t } = useTranslation("gym");
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
         const result =  (errors?.contacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
@@ -58,7 +58,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
         <div>
             <Row className="m-0 pe-2">
                 <div className="d-flex flex-row justify-content-end mb-1 me-3">
-                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_add_contact_tooltip">Add new contact</Tooltip>}>
+                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_add_contact_tooltip">{t("contact.buttons.add")}</Tooltip>}>
                         <Button className="btn btn-icon btn-sm" disabled={!isEditMode} onClick={onAddContact}><i className="icon bi bi-person-plus h5"></i></Button>
                     </OverlayTrigger>
                 </div>
@@ -75,7 +75,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                                     <Card.Body className="">
                                         <Card.Title >
                                             <div className="d-flex flex-row justify-content-end">
-                                                <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id={"form_action_delete_contact_tooltip_" + index}>Delete</Tooltip>}>
+                                                <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id={"form_action_delete_contact_tooltip_" + index}>{t("contact.buttons.delete")}</Tooltip>}>
                                                     <Button className="btn btn-icon btn-sm" disabled={!isEditMode} onClick={(e) => onDeleteConfirmation(e, index)}><i className="icon bi bi-trash h5"></i></Button>
                                                 </OverlayTrigger>
                                             </div>
@@ -87,12 +87,11 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                         </Accordion.Item>
 
                     })}
-
                 </Accordion>
 
-                <ModalConfirmation title={""} text={"Are you sure you want to delete this contact ?"}
-                    yesText="Delete" noText="Cancel"
-                    actionText="Deleting..."
+                <ModalConfirmation title={t("contact.deleteConfirmation.title")} text={t("contact.deleteConfirmation.text")}
+                    yesText={t("contact.deleteConfirmation.yes")} noText={t("contact.deleteConfirmation.no")}
+                    actionText={t("contact.deleteConfirmation.action")}
                     isAction={isDeleting}
                     show={showDeleteConfirmation} handleResult={onDelete} />
             </Row>

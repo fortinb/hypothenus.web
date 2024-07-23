@@ -3,15 +3,18 @@
 import Image from 'next/image';
 import Carousel from 'react-bootstrap/Carousel';
 import Container from "react-bootstrap/Container";
+import { useTranslation } from '../i18n/i18n';
 
 export default function Home() {
+  const { t } = useTranslation("home");
+
   return (
     <main className="main-bg-gradient overflow-auto">
       <div className="d-flex flex-row w-100 h-100">
         <div className="flex-column flex-fill justify-content-between w-50 h-100">
           <Container fluid="true">
-                <h1 className="text-tertiary">Hypothenus</h1>
-                <h2 className="text-primary">The ultimate fitness management software !</h2>
+                <h1 className="text-tertiary">{t("header.hypothenus")}</h1>
+                <h2 className="text-primary">{t("header.title")}</h2>
           </Container>
         </div>
         <div className="flex-column flex-fill justify-content-between w-50 h-100">
@@ -25,8 +28,8 @@ export default function Home() {
                   alt="Hypothenus"
                 />
                 <Carousel.Caption>
-                  <h3>Manage your gym !</h3>
-                  <p>The Ultimate Platform to Grow Your Fitness Business.</p>
+                  <h3>{t("captions.image1.title")}</h3>
+                  <p>{t("captions.image1.text")}</p>
                 </Carousel.Caption>
               </Carousel.Item>
               <Carousel.Item>
@@ -37,8 +40,8 @@ export default function Home() {
                   alt="Hypothenus"
                 />
                 <Carousel.Caption>
-                  <h3>Good Job !</h3>
-                  <p>Excellent user experience</p>
+                <h3>{t("captions.image2.title")}</h3>
+                <p>{t("captions.image2.text")}</p>
                 </Carousel.Caption>
               </Carousel.Item>
             </Carousel>
@@ -48,4 +51,3 @@ export default function Home() {
     </main>
   );
 }
-/*  */ 

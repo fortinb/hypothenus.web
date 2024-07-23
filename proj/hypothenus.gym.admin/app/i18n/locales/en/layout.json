@@ -1,0 +1,19 @@
+{
+    "navbar": {
+        "gyms": {
+            "title": "Gyms"
+        },
+        "language": {
+            "title": "Languages",
+            "en": "English",
+            "fr": "Français"
+        }
+    },
+    "error": {
+        "boundary" : {
+            "title" : "Sorry, something went wrong !",
+            "action" : "Try again"
+        }
+    }
+
+}

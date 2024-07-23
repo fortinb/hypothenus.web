@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import i18n, {supportedLanguages} from "./app/i18n/i18n";
+import i18n, {changeLanguage, fallbackLanguage, languageCookieName, supportedLanguages} from "./app/i18n/i18n";
 
 
 export function middleware(req: NextRequest) {
+    if (req.nextUrl.pathname.indexOf('icon') > -1 || req.nextUrl.pathname.indexOf('chrome') > -1) {
+        return NextResponse.next();
+    }
+
     const pathname = req.nextUrl.pathname;
-  
+   
     const pathnameIsMissingLocale = supportedLanguages.every(
         (locale) => 
             !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
     );
-    console.log ("pathname : " + pathname);
-    console.log ("missing locale: " + pathnameIsMissingLocale);
+   
     if (pathnameIsMissingLocale) {
-        const locale = i18n.resolvedLanguage;
-
+        const locale = i18n.resolvedLanguage ?? fallbackLanguage;
+    
         return NextResponse.redirect(
             new URL(
                 `/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
@@ -21,8 +24,15 @@ export function middleware(req: NextRequest) {
             ),
         );
     }
+ 
+    const languageRequested = supportedLanguages.find((language) => pathname.startsWith(`/${language}`)) ?? fallbackLanguage;
+    if (languageRequested && languageRequested !== i18n.resolvedLanguage) {
+        changeLanguage(languageRequested);
+    }
 
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.cookies.set(languageCookieName, languageRequested);
+    return response;
 }
 
 export const config = {

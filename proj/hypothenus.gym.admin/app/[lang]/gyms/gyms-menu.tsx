@@ -6,11 +6,13 @@ import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../lib/hooks/useStore";
 import { GymsStatePaging, includeInactive } from "../../lib/store/slices/gyms-state-paging-slice";
+import { useTranslation } from "@/app/i18n/i18n";
 
 export default function GymsMenu() {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
   const dispatch = useAppDispatch();
-
+  const { t } = useTranslation("gym");
+  
   function onIncludeDeactivated(e: ChangeEvent<HTMLInputElement>) {
     dispatch(includeInactive(e.currentTarget.checked));
   }
@@ -19,7 +21,7 @@ export default function GymsMenu() {
 
     <div className="d-flex flex-column justify-content-start w-100 h-50 page-menu">
       <div className="d-flex flex-row justify-content-center">
-        <h2 className="text-secondary pt-4 ps-2">Gyms</h2>
+        <h2 className="text-secondary pt-4 ps-2">{t("list.menu.title")}</h2>
       </div>
       <div className="ps-2 pe-2">
         <hr />
@@ -34,7 +36,7 @@ export default function GymsMenu() {
               <Link className="link-element" href={"/gym/new"}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
             </div>
             <div className="d-flex flex-row justify-content-center">
-              <span className="text-primary mt-3">Add new gym</span>
+              <span className="text-primary mt-3">{t("list.menu.add")}</span>
             </div>
           </div>
         </div>
@@ -42,7 +44,7 @@ export default function GymsMenu() {
           <div className="form-check form-switch pe-2">
             <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
               id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsStatePaging.includeInactive} />
-            <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">Include inactive</label>
+            <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">{t("list.menu.inactive")}</label>
           </div>
         </div>
       </div>

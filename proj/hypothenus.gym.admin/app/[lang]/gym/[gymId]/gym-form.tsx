@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 
 export default function GymForm({ gymId }: { gymId: string }) {
-    const router = useRouter()
+    const router = useRouter();
     const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
 

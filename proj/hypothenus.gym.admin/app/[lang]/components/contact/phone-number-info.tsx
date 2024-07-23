@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "@/app/i18n/i18n";
 import { PhoneNumber, PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
 import Form from "react-bootstrap/Form";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
@@ -11,7 +12,7 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
         defaultType: PhoneNumberTypeEnum,
         formStatefield: string
     }) {
-
+    const { t } = useTranslation("contact");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<PhoneNumber>> {
@@ -24,15 +25,15 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
             <Form.Label className="text-primary" htmlFor={"phone_input_number_" + { id } + { index }} >
                 
                 {defaultType == PhoneNumberTypeEnum.Home &&
-                    <span>Home</span>
+                    <span>{t("phone.home")}</span>
                 }
 
                 {defaultType == PhoneNumberTypeEnum.Business &&
-                    <span>Business</span>
+                    <span>{t("phone.business")}</span>
                 }
 
                 {defaultType == PhoneNumberTypeEnum.Mobile &&
-                    <span>Mobile</span>
+                    <span>{t("phone.mobile")}</span>
                 }
 
             </Form.Label>
