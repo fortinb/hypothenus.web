@@ -60,8 +60,6 @@ export function useTranslation(namespace?: string, language?: string) {
 
   const translation = useTranslationOriginal(namespace);
   if (runsOnServerSide && language && !supportedLanguages.includes(language)) {
-    console.log("not supported language" + language);
-
     return translation;
   }
 

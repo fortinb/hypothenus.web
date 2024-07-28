@@ -1,0 +1,94 @@
+{
+    "action" : {
+        "saveSuccess": "Saving successfull !",
+        "deleteSuccess": "Delete successfull !",
+        "activationSuccess": "Activation successfull !",
+        "deactivationSuccess": "Deactivation successfull !"
+    },
+    "validation": {
+        "emailInvalid": "Email format is invalid."
+    },
+    "address": {
+        "validation": {
+            "civicNumberRequired": "Civic number is required.",
+            "streetRequired": "Street name is required.",
+            "cityRequired": "City name is required.",
+            "stateRequired": "Province is required.",
+            "zipcodeFormat": "A9A 9A9"
+        },
+        "civicNumber": "Civic number",
+        "street": "Street",
+        "city": "City",
+        "appartment": "# Appartment",
+        "state": "Province",
+        "zipcode": "Postal code"
+    },
+    "gym": {
+        "validation": {
+            "alreadyExists": "Firstname is required.",
+            "codeRequired": "Code is required.",
+            "codeMaxLength": "Maximum length for Gym Code is 20 characters.",
+            "nameRequired": "Name is required.",
+            "nameMaxLength": "Maximum length for Name is 100 characters.",
+            "emailInvalid": "Email format is invalid."
+        },
+        "code": "Code",
+        "codePlaceholder": "Gym unique code",
+        "name": "Name",
+        "email": "Email address",
+        "address": "Address",
+        "phones": "Phones",
+        "contacts": "Contacts",
+        "note": "Notes",
+        "deleteConfirmation": {
+            "title": "Delete {{name}}",
+            "text": "Are you sure you want to delete this gym ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
+        }
+    },
+    "person": {
+        "validation": {
+            "firstnameRequired": "Firstname is required.",
+            "lastnameRequired": "Lastname is required.",
+            "descriptionRequired": "Description is required."
+        },
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "description": "Description",
+        "email": "Email address",
+        "address": "Address",
+        "phones": "Phones",
+        "contacts": "Contacts",
+        "note": "Notes",
+        "deleteConfirmation": {
+            "title": "Delete {{name}}",
+            "text": "Are you sure you want to delete this coach ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
+        }
+    },
+    "phoneNumber": {
+        "validation": {
+            "phoneNumberFormat": "+1 999-999-9999 x9999"
+        },
+        "home": "Home",
+        "business": "Business",
+        "mobile": "Mobile"
+    },
+    "contact": {
+        "buttons": {
+            "add": "Add new contact",
+            "delete": "Delete"
+        },
+        "deleteConfirmation": {
+            "title": "Delete contact",
+            "text": "Are you sure you want to delete this contact ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
+        }
+    }
+}

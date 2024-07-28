@@ -8,9 +8,9 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   (config) => {
     // Modify the request config here (e.g., add headers, authentication tokens)
-    config.headers['Content-Type'] = "application/json";
+    config.headers['content-type'] = "application/json";
     config.headers["x-tracking-number"] = "1234";
-    config.headers["Authorization"] = "{ \"roles\" : [\"Admin\"] }";
+    config.headers["authorization"] = "{ \"roles\" : [\"Admin\"] }";
 
     return config;
   },

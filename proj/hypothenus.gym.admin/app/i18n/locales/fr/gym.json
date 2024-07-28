@@ -1,14 +1,4 @@
 {
-    "info": {
-        "code": "Code",
-        "codePlaceholder": "Identification unique",
-        "name": "Nom",
-        "email": "Courriel",
-        "address": "Addresse",
-        "phones": "Téléphones",
-        "contacts": "Contacts",
-        "note": "Notes"
-    },
     "menu": {
         "sections": "Sections",
         "info": "Info",
@@ -18,19 +8,6 @@
     },
     "resume": {
         "contacts": "Contacts"
-    },
-    "contact": {
-        "buttons": {
-            "add": "Ajouter un contact",
-            "delete": "Supprimer"
-        },
-        "deleteConfirmation": {
-            "title": "Supprimer un contact",
-            "text": "Êtes vous certain de vouloir supprimer ce contact ?",
-            "yes": "Supprimer",
-            "no": "Annuler",
-            "action": "Suppression en cours..."
-        }
     },
     "list": {
         "menu": {

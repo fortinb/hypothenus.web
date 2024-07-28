@@ -10,13 +10,13 @@ import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-f
 import PhoneNumberInfo from "./phone-number-info";
 import { useTranslation } from "@/app/i18n/i18n";
 
-export default function GymContactInfo({ index, id, formStatefield }:
+export default function ContactInfo({ index, id, formStatefield }:
     {
         index: number,
         id: string,
         formStatefield: string
     }) {
-    const { t } = useTranslation("contact");
+    const { t } = useTranslation("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
@@ -28,45 +28,45 @@ export default function GymContactInfo({ index, id, formStatefield }:
             <Row className="gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_firstname_" + id + index}>{t("person.firstname")}</Form.Label>
-                        <Form.Control type="input" id={"contact_input_firstname_" + id + index}  {...register(formStatefield + ".firstname")}
+                        <Form.Label className="text-primary" htmlFor={`contact_input_firstname_${id}_${index}`}>{t("person.firstname")}</Form.Label>
+                        <Form.Control type="input" id={`contact_input_firstname_${id}_${index}`}  {...register(`${formStatefield}.firstname`)}
                             className={getError(index)?.firstname ? "input-invalid" : ""} />
-                        {getError(index)?.firstname && <Form.Text className="text-invalid">{getError(index)?.firstname?.message ?? ""}</Form.Text>}
+                        {getError(index)?.firstname && <Form.Text className="text-invalid">{t(getError(index)?.firstname?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_lastname_" + id + index}>{t("person.lastname")}</Form.Label>
-                        <Form.Control type="input" id={"contact_input_lastname_" + id + index}  {...register(formStatefield + ".lastname")}
+                        <Form.Label className="text-primary" htmlFor={`contact_input_lastname_${id}_${index}`}>{t("person.lastname")}</Form.Label>
+                        <Form.Control type="input" id={`contact_input_lastname_${id}_${index}`}  {...register(`${formStatefield}.lastname`)}
                             className={getError(index)?.lastname ? "input-invalid" : ""} />
-                        {getError(index)?.lastname && <Form.Text className="text-invalid">{getError(index)?.lastname?.message ?? ""}</Form.Text>}
+                        {getError(index)?.lastname && <Form.Text className="text-invalid">{t(getError(index)?.lastname?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
             </Row>
             <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_description_" + id + index}>{t("person.description")}</Form.Label>
-                        <Form.Control type="input" id={"contact_input_description_" + id + index}  {...register(formStatefield + ".description")}
+                        <Form.Label className="text-primary" htmlFor={`contact_input_description_${id}_${index}`}>{t("person.description")}</Form.Label>
+                        <Form.Control type="input" id={`contact_input_description_${id}_${index}`}  {...register(`${formStatefield}.description`)}
                             className={getError(index)?.description ? "input-invalid" : ""} />
-                        {getError(index)?.description && <Form.Text className="text-invalid">{getError(index)?.description?.message ?? ""}</Form.Text>}
+                        {getError(index)?.description && <Form.Text className="text-invalid">{t(getError(index)?.description?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={"contact_input_email_" + id + index}>{t("person.email")}</Form.Label>
-                        <Form.Control type="input" id="contact_info_input_email" placeholder="example@email.ca" {...register(formStatefield + ".email")}
+                        <Form.Label className="text-primary" htmlFor={`contact_input_email_${id}_${index}`}>{t("person.email")}</Form.Label>
+                        <Form.Control type="input" id="contact_info_input_email" placeholder="example@email.ca" {...register(`${formStatefield}.email`)}
                             className={getError(index)?.email ? "input-invalid" : ""} />
-                        {getError(index)?.email && <Form.Text className="text-invalid">{getError(index)?.email?.message ?? ""}</Form.Text>}
+                        {getError(index)?.email && <Form.Text className="text-invalid">{t(getError(index)?.email?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
             </Row>
             <Row className="mt-2 gx-2">
                 <Col xs={4} >
-                    <PhoneNumberInfo index={0} id="contact_phone" defaultType={PhoneNumberTypeEnum.Home} formStatefield={formStatefield + ".phoneNumbers.0"} />
+                    <PhoneNumberInfo index={0} id="contact_phone" defaultType={PhoneNumberTypeEnum.Home} formStatefield={`${formStatefield}.phoneNumbers.0`} />
                 </Col>
                 <Col xs={4} >
-                    <PhoneNumberInfo index={1} id="contact_phone" defaultType={PhoneNumberTypeEnum.Mobile} formStatefield={formStatefield + ".phoneNumbers.1"} />
+                    <PhoneNumberInfo index={1} id="contact_phone" defaultType={PhoneNumberTypeEnum.Mobile} formStatefield={`${formStatefield}.phoneNumbers.1`} />
                 </Col>
             </Row>
         </Container>

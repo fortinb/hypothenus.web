@@ -27,5 +27,5 @@ const phoneRegex = new RegExp(/^(\s*|(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:([\(]{1}))?(?
 export const PhoneNumberSchema = z.object({
   id: z.any().nullable(),
   type: z.nativeEnum(PhoneNumberTypeEnum),
-  number: z.string().min(0).regex(phoneRegex, { message: "+1 999-999-9999 x9999" }),
+  number: z.string().min(0).regex(phoneRegex, { message: "phoneNumber.validation.phoneNumberFormat" }),
 });

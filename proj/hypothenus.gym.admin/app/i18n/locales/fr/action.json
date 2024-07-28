@@ -3,7 +3,7 @@
         "bar": {
             "edit": "Modifier",
             "delete": "Supprimer",
-            "activate": "Actif"
+            "activate": "Active"
         },
         "buttons": {
             "cancel": "Annuler",

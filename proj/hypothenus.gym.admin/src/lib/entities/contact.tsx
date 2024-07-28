@@ -31,9 +31,9 @@ export function formatName(contact: Contact): string {
 
 export const ContactSchema = z.object({
   id: z.any().nullable(),
-  firstname: z.string().min(1),
-  lastname: z.string().min(1),
-  description: z.string().min(1),
-  email: z.string().min(0).email("Email format is invalid").optional().or(z.literal("")),
+  firstname: z.string().min(1, {message: "person.validation.firstnameRequired"}),
+  lastname: z.string().min(1, {message: "person.validation.lastnameRequired"}),
+  description: z.string().min(1, {message: "person.validation.descriptionRequired"}),
+  email: z.string().min(0).email("validation.emailInvalid").optional().or(z.literal("")),
   phoneNumbers: z.array(PhoneNumberSchema).min(0)
 });

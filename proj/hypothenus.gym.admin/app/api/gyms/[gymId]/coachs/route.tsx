@@ -1,10 +1,9 @@
-//import { validateRequest } from "@/app/lib/http/middleware";
 import { getRequestContext } from "@/app/lib/http/requestContext";
-import { createGym, fetchGyms } from "@/app/lib/ssr/gyms-data-service";
-import { Gym } from "@/src/lib/entities/gym";
+import { createCoach, fetchCoachs } from "@/app/lib/ssr/coachs-data-service";
+import { Coach } from "@/src/lib/entities/coach";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, { params }: { params: { gymId: string} }) {
 
   try {
     const { searchParams } = new URL(req.url);
@@ -19,25 +18,25 @@ export async function GET(req: NextRequest) {
       return NextResponse.json("Invalid parameters", { status: 400 });
     }
 
-    const gymsPage = await fetchGyms(requestContext, page, pageSize, includeInactive);
+    const coachsPage = await fetchCoachs(requestContext, params.gymId, page, pageSize, includeInactive);
 
-    return NextResponse.json(gymsPage, { status: 200 });
+    return NextResponse.json(coachsPage, { status: 200 });
 
   } catch (err) {
      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, { params }: { params: { gymId: string} }) {
 
   try {
-    let gym: Gym = await req.json();
+    let coach: Coach = await req.json();
 
     const requestContext = getRequestContext(req);
 
-    gym = await createGym(requestContext, gym);
+    coach = await createCoach(requestContext, params.gymId, coach);
 
-    return NextResponse.json(gym, { status: 200 });
+    return NextResponse.json(coach, { status: 200 });
 
   } catch (err) {
 

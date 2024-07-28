@@ -23,19 +23,27 @@ export const newAddress = (): Address => {
 }
 
 export function formatAddress(address: Address): String {
-  const appartment = address?.appartment !== "" ? ", " + address.appartment : "";
+  if (!address) {
+    return "";
+  }
+ 
+  const civicNumber = address?.civicNumber && address.civicNumber;
+  const streetName = address?.streetName && address.streetName;
+  const appartment = address?.appartment && address.appartment;
+  const city = address?.city && address.city;
+  const state = address?.state && address.state;
+  const zipCode = address?.zipCode && address.zipCode;
 
-  return address.civicNumber + " " + address.streetName + appartment + ", " +
-    address.city + ", " + address.state + " " + address.zipCode;
+  return `${civicNumber} ${streetName} ${appartment}, ${city}, ${state} ${zipCode}`;
 }
 
 const zipCodeRegex = new RegExp(/^\d{5}$|(^\d{5}-\d{4}$)|[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ ]?\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d/);
 
 export const AddressSchema = z.object({
-  civicNumber: z.string().min(1, { message: "Civic number is required" }),
-  streetName: z.string().min(1, { message: "Street name is required" }),
+  civicNumber: z.string().min(1, { message: "address.validation.civicNumberRequired"  }),
+  streetName: z.string().min(1, { message: "address.validation.streetRequired" }),
   appartment: z.string().min(0),
-  city: z.string().min(1, { message: "City name is required" }),
-  state: z.string().min(2, { message: "Province is required" }),
-  zipCode: z.string().regex(zipCodeRegex, { message: "A9A 9A9" }),
+  city: z.string().min(1, { message: "address.validation.cityRequired" }),
+  state: z.string().min(2, { message: "address.validation.stateRequired" }),
+  zipCode: z.string().regex(zipCodeRegex, { message: "address.validation.zipcodeFormat" }),
 });

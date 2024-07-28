@@ -1,9 +1,9 @@
 {
     "paging": {
         "buttons": {
-            "first": "Première page",
-            "previous": "Page précédente",
-            "next": "Page suivante"
+            "first": "1ère page",
+            "previous": "Précédente",
+            "next": "Suivante"
         },
         "page" : "page",
         "pageOf" : "de",

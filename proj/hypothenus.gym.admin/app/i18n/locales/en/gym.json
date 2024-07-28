@@ -1,14 +1,4 @@
 {
-    "info": {
-        "code": "Code",
-        "codePlaceholder": "Gym unique code",
-        "name": "Name",
-        "email": "Email address",
-        "address": "Address",
-        "phones": "Phones",
-        "contacts": "Contacts",
-        "note": "Notes"
-    },
     "menu": {
         "sections": "Sections",
         "info": "Info",
@@ -18,19 +8,6 @@
     },
     "resume": {
         "contacts": "Contacts"
-    },
-    "contact": {
-        "buttons": {
-            "add": "Add new contact",
-            "delete": "Delete"
-        },
-        "deleteConfirmation": {
-            "title": "Delete contact",
-            "text": "Are you sure you want to delete this contact ?",
-            "yes": "Delete",
-            "no": "Cancel",
-            "action": "Deleting..."
-        }
     },
     "list": {
         "menu": {

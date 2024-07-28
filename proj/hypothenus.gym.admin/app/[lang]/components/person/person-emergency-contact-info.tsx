@@ -13,7 +13,7 @@ import ModalConfirmation from "../actions/modal-confirmation";
 import ContactInfo from "../contact/contact-info";
 import { useTranslation } from "@/app/i18n/i18n";
 
-export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) {
+export default function EmergencyContactInfo({ isEditMode }: { isEditMode: boolean }) {
     const { t } = useTranslation("entity");
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -21,14 +21,14 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
     const { formState: { errors } } = useFormContext();
     const formContacts = useFieldArray({
-        name: "contacts",
+        name: "person.emergencyContacts",
     });
-   
+
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
-        const result =  (errors?.contacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
+        const result = (errors?.emergencyContacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
         return result;
     }
-    
+
     function onDelete(confirmation: boolean) {
         if (confirmation ?? contactIndexToDelete >= 0) {
             setIsDeleting(true);
@@ -76,12 +76,12 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                                     <Card.Body className="">
                                         <Card.Title >
                                             <div className="d-flex flex-row justify-content-end">
-                                                <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id={`form_action_delete_contact_tooltip_${index}`}>{t("contact.buttons.delete")}</Tooltip>}>
+                                                <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id={`form_action_delete_person_emergencyContact_tooltip_${index}`}>{t("contact.buttons.delete")}</Tooltip>}>
                                                     <Button className="btn btn-icon btn-sm" disabled={!isEditMode} onClick={(e) => onDeleteConfirmation(e, index)}><i className="icon bi bi-trash h5"></i></Button>
                                                 </OverlayTrigger>
                                             </div>
                                         </Card.Title>
-                                        <ContactInfo key={contact.id} index={index} id={`gym_contact_${index}`} formStatefield={`contacts.${index}`} />
+                                        <ContactInfo key={contact.id} index={index} id={`person_emergencyContact_${index}`} formStatefield={`contacts.${index}`} />
                                     </Card.Body>
                                 </Card>
                             </Accordion.Body>

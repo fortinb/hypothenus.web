@@ -14,11 +14,11 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
       <Card>
         <Card.Body className={"m-2" + (gym.active == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={"/gym/" + gym.gymId}> {gym.name}</Link>
+            <Link className="link-element" href={`/gym/${gym.gymId}`}> {gym.name}</Link>
           </Card.Title>
           <Card.Text>
             <span className="text-primary">{formatAddress(gym.address)}</span><br />
-            <Link className="link-element" href={"mailto:" + gym.email}>{gym.email}</Link><br />
+            <Link className="link-element" href={`mailto:${gym.email}`}>{gym.email}</Link><br />
             <span className="text-primary">{gym.gymId}</span><br />
 
             {gym.active == false &&

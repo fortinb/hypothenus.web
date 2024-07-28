@@ -36,13 +36,15 @@ export default function NavbarMenu() {
               <Nav className="mb-2 mb-lg-0">
                 <div className="mt-2 mt-lg-0 me-2">
                   <Nav.Link as={Link} className="nav-link-img p-2" href="/">
-                    <Image src="/images/logo_small_blue.png" 
+                    <Image src="/images/logo_transparent.png" 
                       width={86}
                       height={32} 
                       alt="Hypothenus"></Image>
                   </Nav.Link>
                 </div>
-                <Nav.Link as={Link} href="/gyms">{t("navbar.gyms.title")}</Nav.Link>
+                <div className="d-flex align-items-center">
+                    <Nav.Link as={Link} href="/gyms">{t("navbar.gyms.title")}</Nav.Link>
+                </div>
               </Nav>
             </div>
             <div>

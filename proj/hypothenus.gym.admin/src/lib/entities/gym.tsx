@@ -1,16 +1,16 @@
-import { Address, AddressSchema, newAddress } from "./address"
+import { z } from 'zod';
+import { Address, AddressSchema, newAddress } from "./address";
 import { BaseEntity } from "./baseEntity";
 import { Contact, ContactSchema, newContact } from "./contact";
-import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber"
-import { SocialMediaAccount } from "./socialMediaAccount"
-import { z } from 'zod';
+import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
+import { SocialMediaAccount } from "./socialMediaAccount";
 
 export interface Gym extends BaseEntity {
   id: string;
   gymId: string;
   name: string;
   address: Address;
-  email: string;
+  email?: string;
   active: boolean;
   note: string;
   contacts: Contact[];
@@ -24,7 +24,7 @@ export const newGym = (): Gym => {
     gymId: "",
     name: "",
     address: newAddress(),
-    email: "",
+    email: undefined,
     active: true,
     note: "",
     contacts: [
@@ -43,10 +43,10 @@ export const newGym = (): Gym => {
 }
 
 export const GymSchema = z.object({
-  gymId: z.string().min(1, { message: "Code is required" }).max(20, { message: "Maximum length for Gym Code is 20 characters" }),
-  name: z.string().max(100, { message: "Maximum length for Name is 100 characters" }).min(1, { message: "Name is required" }),
+  gymId: z.string().min(1, { message: "gym.validation.codeRequired"}).max(20, { message:"gym.validation.codeMaxLength"}),
+  name: z.string().min(1, { message:  "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength"}),
   address: AddressSchema,
-  email: z.string().email({ message: "Email format is invalid" }),
+  email: z.string().min(0).email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),
   phoneNumbers: z.array(PhoneNumberSchema).min(1),
   contacts: z.array(ContactSchema).min(1)

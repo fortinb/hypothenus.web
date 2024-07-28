@@ -21,7 +21,7 @@ export default function GymMenu({ gymId }: { gymId: string }) {
         <div className="col btn-navigation m-2">
           <div className="d-flex flex-column justify-content-center h-100">
             <div className="d-flex flex-row justify-content-center">
-              <Link className="link-element" href={"/gym/" + gymId}><i className="icon icon-secondary bi bi-building h1 m-0"></i></Link>
+              <Link className="link-element" href={`/gym/${gymId}`}><i className="icon icon-secondary bi bi-building h1 m-0"></i></Link>
             </div>
             <div className="d-flex flex-row justify-content-center">
               <span className="text-primary mt-3">{t("menu.info")}</span>
@@ -31,7 +31,7 @@ export default function GymMenu({ gymId }: { gymId: string }) {
         <div className="col btn-navigation m-2">
           <div className="d-flex flex-column justify-content-center h-100">
             <div className="d-flex flex-row justify-content-center">
-              <Link className="link-element" href={"/gym/" + gymId + "/contacts"}><i className="icon icon-secondary bi bi-telephone h1 m-0"></i></Link>
+              <Link className="link-element" href={`/gym/${gymId}/contacts`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
             </div>
             <div className="d-flex flex-row justify-content-center">
               <span className="text-primary mt-3">{t("menu.coachs")}</span>

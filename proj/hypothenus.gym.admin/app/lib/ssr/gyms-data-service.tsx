@@ -54,7 +54,7 @@ export async function searchGyms(requestContext: RequestContext, page: number, p
 
 export async function getGym(requestContext: RequestContext, gymId: string): Promise<Gym> {
 
-  const getURI: String = "/v1/admin/gyms/" + gymId;
+  const getURI: String = `/v1/admin/gyms/${gymId}`;
 
   const request = initRequest(requestContext, {});
 
@@ -65,7 +65,7 @@ export async function getGym(requestContext: RequestContext, gymId: string): Pro
 
 export async function activateGym(requestContext: RequestContext, gymId: string): Promise<Gym> {
 
-  const getURI: String = "/v1/admin/gyms/" + gymId + "/activate";
+  const getURI: String = `/v1/admin/gyms/${gymId}/activate`;
 
   const request = initRequest(requestContext, {});
 
@@ -76,7 +76,7 @@ export async function activateGym(requestContext: RequestContext, gymId: string)
 
 export async function deactivateGym(requestContext: RequestContext, gymId: string): Promise<Gym> {
 
-  const postURI: String = "/v1/admin/gyms/" + gymId + "/deactivate";
+  const postURI: String = `/v1/admin/gyms/${gymId}/deactivate`;
 
   const request = initRequest(requestContext, {});
 
@@ -87,7 +87,7 @@ export async function deactivateGym(requestContext: RequestContext, gymId: strin
 
 export async function deleteGym(requestContext: RequestContext, gymId: string): Promise<void> {
 
-  const deleteURI: String = "/v1/admin/gyms/" + gymId;
+  const deleteURI: String = `/v1/admin/gyms/${gymId}`;
 
   const request = initRequest(requestContext, {});
 
@@ -109,7 +109,7 @@ export async function createGym(requestContext: RequestContext, gym: Gym): Promi
 
 export async function updateGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
 
-  const putURI: String = "/v1/admin/gyms/" + gym.gymId;
+  const putURI: String = `/v1/admin/gyms/${gym.gymId}`;
 
   const request = initRequest(requestContext, {});
 

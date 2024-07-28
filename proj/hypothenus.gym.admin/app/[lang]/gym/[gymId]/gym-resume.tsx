@@ -27,7 +27,7 @@ export default function GymResume() {
         <Row className="gx-2">
           <Col xs={12} >
             <p className="card-text">
-              <Link className="link-element" href={"mailto:" + gymState.gym.email}>{gymState.gym.email}</Link><br />
+              <Link className="link-element" href={`mailto:${gymState.gym.email}`}>{gymState.gym.email}</Link><br />
               <span className="text-primary">{gymState.gym.phoneNumbers[0]?.number}</span><br />
               <span className="text-primary">{gymState.gym.phoneNumbers[1]?.number}</span><br />
             </p>
@@ -42,7 +42,7 @@ export default function GymResume() {
               <p className="card-text">
                 <span className="text-secondary fw-bolder">{formatName(contact)}</span><br />
                 <span className="text-primary">{contact.description}</span><br />
-                <Link className="link-element" href={"mailto:" + contact?.email}>{contact.email}</Link><br />
+                <Link className="link-element" href={`mailto:${contact?.email}`}>{contact.email}</Link><br />
                 <span className="text-primary">{contact.phoneNumbers[0]?.number}</span><br />
                 <span className="text-primary">{contact.phoneNumbers[1]?.number}</span><br />
               </p>

@@ -27,10 +27,10 @@ export default function RootLayout({
       </head>
       <body>
         <StoreProvider>
-          <div className="container-fluid overflow-hidden w-100 h-100">
-            <div className="d-flex flex-row w-100 h-100 p-1">
-              <div className="d-flex flex-column justify-content-between w-100 h-100 pt-2">
-                <Header lang={params.lang}/>
+          <div className="container-fluid overflow-hidden w-100 h-100 p-0">
+            <div className="d-flex flex-row w-100 h-100 p-0">
+              <div className="d-flex flex-column justify-content-between w-100 h-100">
+                <Header />
                 <Container fluid={true} className="overflow-hidden h-100">
                   {children}
                 </Container>

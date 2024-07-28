@@ -1,0 +1,94 @@
+{
+    "action" : {
+        "saveSuccess": "Sauvegarde complétée !",
+        "deleteSuccess": "Suppression complétée !",
+        "activationSuccess": "Activation complétée !",
+        "deactivationSuccess": "Deactivation conplétée !"
+    },
+    "validation": {
+        "emailInvalid": "Le format du courriel est invalide."
+    },
+    "address": {
+        "validation": {
+            "civicNumberRequired": "Le numéro civique est requis.",
+            "streetRequired": "La rue est requise.",
+            "cityRequired": "La ville est requise.",
+            "stateRequired": "La province est requise.",
+            "zipcodeFormat": "A9A 9A9"
+        },
+        "civicNumber": "# Civique",
+        "street": "Rue",
+        "city": "Ville",
+        "appartment": "# Appartement",
+        "state": "Province",
+        "zipcode": "Code postal"
+    },
+    "gym" : {
+        "validation": {
+            "alreadyExists": "Ce code unique est déjà existant.",
+            "codeRequired": "Le code unique est requis.",
+            "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
+            "nameRequired": "Le nom de la salle de sport est requis.",
+            "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
+            "emailInvalid": "Le format du courriel est invalide."
+        },
+        "code": "Code",
+        "codePlaceholder": "Identification unique",
+        "name": "Nom",
+        "email": "Courriel",
+        "address": "Adresse",
+        "phones": "Téléphones",
+        "contacts": "Contacts",
+        "note": "Notes",
+        "deleteConfirmation": {
+            "title": "Supprimer {{name}}",
+            "text": "Êtes vous certain de vouloir supprimer cette salle de sport ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    },
+    "person": {
+        "validation": {
+            "firstnameRequired": "Le prénom est requis.",
+            "lastnameRequired": "Le nom est requis.",
+            "descriptionRequired": "La description est requise."
+        },
+        "firstname": "Prénom",
+        "lastname": "Nom",
+        "description": "Description",
+        "email": "Courriel",
+        "address": "Adresse",
+        "phones": "Téléphones",
+        "contacts": "Contacts",
+        "note": "Notes",
+        "deleteConfirmation": {
+            "title": "Supprimer {{name}}",
+            "text": "Êtes vous certain de vouloir supprimer cet entraineur ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    },
+    "phoneNumber": {
+        "validation": {
+            "phoneNumberFormat": "+1 999-999-9999 x9999"
+        },
+        "home": "Domicile",
+        "business": "Travail",
+        "mobile": "Mobile"
+    },
+    "contact": {
+        "buttons": {
+            "add": "Ajouter un contact",
+            "delete": "Supprimer"
+        },
+        "deleteConfirmation": {
+            "title": "Supprimer un contact",
+            "text": "Êtes vous certain de vouloir supprimer ce contact ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    }
+}

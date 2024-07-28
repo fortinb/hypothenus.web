@@ -98,6 +98,7 @@ $enable-shadows: true;
 $bg-secondary: $white;
 $bg-light: $gray-100;
 $bg-info: $info;
+$bg-header: #961a9b;
 $bg-tertiary:  #3b88fc;
 
 $text-primary: $gray-900;
@@ -106,6 +107,7 @@ $text-tertiary: $secondary;
 $text-primary-light: $gray-600;
 $text-secondary-light: $blue;
 $text-bright: $white;
+$text-light: $gray-100;
 $text-invalid: $secondary;
 
 $icon-primary: #3b88fc;
@@ -145,7 +147,7 @@ html {
 }
 
 header {
-    background-color: $bg-light;
+    background-color: $bg-header; //$bg-light;
     margin-bottom: 13px;
     position: relative;
     z-index: 1;
@@ -284,22 +286,28 @@ footer {
 }
 
 // navbar
-.nav-link {
-    color: $text-primary;
-    cursor: pointer;
-    padding-bottom: 0 !important;
+.navbar-nav .nav-link.active {
+    color: $text-bright;
+    font-weight: bolder;
 }
 
-.navbar-nav>.nav-link.active {
-    color: $secondary;
+.navbar-nav .nav-link:hover {
+    color: $text-bright;
     font-weight: bold;
+    border-bottom: none;
 }
 
-.nav-link:hover {
-    // color: $secondary;
-    border-bottom: $secondary 2px solid;
+.navbar-nav .nav-link {
+    color: $text-light;
+    padding: 0;
 }
 
+.nav-link-img:hover {
+    border-bottom: none;
+  
+}
+
+//Link
 .link-element {
     color: $text-secondary-light;
     cursor: pointer;
@@ -310,10 +318,6 @@ footer {
     border-bottom: $secondary 2px solid;
 }
 
-.nav-link-img:hover {
-    // color: $secondary;
-    border-bottom: none;
-}
 // cards
 .card {
     transition: 250ms ease all;
