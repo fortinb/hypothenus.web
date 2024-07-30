@@ -16,7 +16,7 @@ export const newContact = (): Contact => {
     firstname: "",
     lastname: "",
     description: "",
-    email: "",
+    email: undefined,
     phoneNumbers: [
       newPhoneNumber(PhoneNumberTypeEnum.Home),
       newPhoneNumber(PhoneNumberTypeEnum.Mobile)]

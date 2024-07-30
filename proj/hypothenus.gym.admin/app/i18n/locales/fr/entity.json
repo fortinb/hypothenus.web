@@ -3,7 +3,7 @@
         "saveSuccess": "Sauvegarde complétée !",
         "deleteSuccess": "Suppression complétée !",
         "activationSuccess": "Activation complétée !",
-        "deactivationSuccess": "Deactivation conplétée !"
+        "deactivationSuccess": "Déactivation complétée !"
     },
     "validation": {
         "emailInvalid": "Le format du courriel est invalide."
@@ -25,8 +25,8 @@
     },
     "gym" : {
         "validation": {
-            "alreadyExists": "Ce code unique est déjà existant.",
-            "codeRequired": "Le code unique est requis.",
+            "alreadyExists": "Ce code est déjà existant.",
+            "codeRequired": "Le code est requis.",
             "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
             "nameRequired": "Le nom de la salle de sport est requis.",
             "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
@@ -56,12 +56,16 @@
         },
         "firstname": "Prénom",
         "lastname": "Nom",
+        "dateOfBirth": "Date de naissance",
+        "photoUri": "Photo",
         "description": "Description",
         "email": "Courriel",
         "address": "Adresse",
         "phones": "Téléphones",
-        "contacts": "Contacts",
-        "note": "Notes",
+        "contacts": "Contacts d'urgence",
+        "note": "Notes"
+    },
+    "coach": {
         "deleteConfirmation": {
             "title": "Supprimer {{name}}",
             "text": "Êtes vous certain de vouloir supprimer cet entraineur ?",

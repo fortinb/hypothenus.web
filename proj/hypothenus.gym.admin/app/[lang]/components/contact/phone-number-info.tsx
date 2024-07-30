@@ -1,22 +1,25 @@
 "use client"
 
 import { useTranslation } from "@/app/i18n/i18n";
+import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
 import { PhoneNumber, PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
 import Form from "react-bootstrap/Form";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 
-export default function PhoneNumberInfo({ index, id, defaultType, formStatefield }:
+export default function PhoneNumberInfo({ index, id, defaultType, formStatefield, parent }:
     {
         index: number,
         id: string,
         defaultType: PhoneNumberTypeEnum,
-        formStatefield: string
+        formStatefield: string,
+        parent?: string
     }) {
     const { t } = useTranslation("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<PhoneNumber>> {
-        return (errors?.phoneNumbers as unknown as Merge<FieldError, FieldErrorsImpl<PhoneNumber>>[])?.[index];
+        const parentErrorField: any = getParentErrorField(errors, parent);
+        return (parentErrorField?.phoneNumbers as Merge<FieldError, FieldErrorsImpl<PhoneNumber>>[])?.[index];
     }
 
     return (

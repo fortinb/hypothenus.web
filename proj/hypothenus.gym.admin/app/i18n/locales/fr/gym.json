@@ -1,5 +1,6 @@
 {
     "menu": {
+        "gym": "{{name}}",
         "sections": "Sections",
         "info": "Info",
         "coachs": "Entraîneurs",

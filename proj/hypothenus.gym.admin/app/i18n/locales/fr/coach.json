@@ -1,0 +1,26 @@
+{
+    "menu": {
+        "gym": "{{name}}",
+        "sections": "Entraîneur",
+        "info": "Info",
+        "management": "Entraîneurs",
+        "managementTooltip": "Retour à la liste des entraîneurs"
+       
+    },
+    "resume": {
+        "contacts": "Contacts d'urgence"
+    },
+    "list": {
+        "menu": {
+            "gym": "{{name}}",
+            "title": "Entraîneurs",
+            "add": "Ajouter un entraîneur",
+            "inactive": "Inactives",
+            "management": "{{name}}",
+            "managementTooltip": "Retour à la salle de sport"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

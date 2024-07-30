@@ -1,0 +1,25 @@
+{
+    "menu": {
+        "gym": "{{name}}",
+        "sections": "Coach",
+        "info": "Info",
+        "management": "Coachs",
+        "managementTooltip": "Back to coachs"
+    },
+    "resume": {
+        "contacts": "Emergency contacts"
+    },
+    "list": {
+        "menu": {
+            "gym": "{{name}}",
+            "title": "Coachs",
+            "add": "Add new coach",
+            "inactive": "Inactive",
+            "management": "{{name}}",
+            "managementTooltip": "Back to gym"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

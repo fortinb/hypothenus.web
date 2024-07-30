@@ -46,17 +46,18 @@ export default function GymForm({ gymId }: { gymId: string }) {
 
     useEffect(() => {
         if (isLoading && gymId !== "new") {
-            fetchGym(gymId);
+            if (gymState.gym?.gymId == gymId) {
+                formContext.reset(gymState.gym);
+                setIsLoading(false);
+            } else {
+                fetchGym(gymId);
+            }
         }
 
         if (isLoading && gymId == "new") {
             setIsEditMode(true);
             setIsLoading(false);
         }
-
-        return () => {
-            dispatch(clearGymState());
-        };
     }, []);
 
     const fetchGym = async (gymId: string) => {
@@ -71,7 +72,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
         setIsEditMode(false);
         setIsSaving(true);
 
-        if (gymState.gym.id == "") {
+        if (gymState.gym.id == null) {
             createGym(formData);
         } else {
             saveGym(formData);
@@ -201,9 +202,6 @@ export default function GymForm({ gymId }: { gymId: string }) {
     return (
         <ErrorBoundary>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
-                <div className="d-flex flex-row justify-content-center">
-                    <h2 className="text-secondary pt-4 ps-2">{gymState.gym.name}</h2>
-                </div>
                 <div className="ps-2 pe-2">
                     <hr className="mt-0 mb-0" />
                 </div>

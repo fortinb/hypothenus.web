@@ -21,12 +21,12 @@ export default function EmergencyContactInfo({ isEditMode }: { isEditMode: boole
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
     const { formState: { errors } } = useFormContext();
     const formContacts = useFieldArray({
-        name: "person.emergencyContacts",
+        name: "person.contacts",
     });
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
-        const result = (errors?.emergencyContacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
-        return result;
+        const parentErrorField = (errors?.person as any);
+        return (parentErrorField?.contacts as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
     }
 
     function onDelete(confirmation: boolean) {
@@ -81,7 +81,7 @@ export default function EmergencyContactInfo({ isEditMode }: { isEditMode: boole
                                                 </OverlayTrigger>
                                             </div>
                                         </Card.Title>
-                                        <ContactInfo key={contact.id} index={index} id={`person_emergencyContact_${index}`} formStatefield={`contacts.${index}`} />
+                                        <ContactInfo key={contact.id} index={index} id={`person_contacts_${index}`} formStatefield={`person.contacts.${index}`} parent="person" />
                                     </Card.Body>
                                 </Card>
                             </Accordion.Body>

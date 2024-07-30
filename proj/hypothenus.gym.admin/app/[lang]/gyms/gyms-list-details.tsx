@@ -33,4 +33,3 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
     </div>
   );
 }
-

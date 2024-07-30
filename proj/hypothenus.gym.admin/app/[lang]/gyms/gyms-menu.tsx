@@ -12,7 +12,7 @@ export default function GymsMenu() {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
   const dispatch = useAppDispatch();
   const { t } = useTranslation("gym");
-  
+
   function onIncludeDeactivated(e: ChangeEvent<HTMLInputElement>) {
     dispatch(includeInactive(e.currentTarget.checked));
   }

@@ -25,8 +25,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
     });
    
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
-        const result =  (errors?.contacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
-        return result;
+        return (errors?.contacts as unknown as Merge<FieldError, FieldErrorsImpl<Contact>>[])?.[index];
     }
     
     function onDelete(confirmation: boolean) {

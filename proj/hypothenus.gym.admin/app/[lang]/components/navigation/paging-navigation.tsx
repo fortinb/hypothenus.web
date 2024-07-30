@@ -15,7 +15,8 @@ export default function PagingNavigation(
     onPreviousPage,
     onFirstPage,
     onSearch,
-    onSearchInput }
+    onSearchInput,
+    searchActive }
     :
     {
       page: number,
@@ -23,12 +24,13 @@ export default function PagingNavigation(
       onNextPage: MouseEventHandler<HTMLButtonElement>,
       onPreviousPage: MouseEventHandler<HTMLButtonElement>,
       onFirstPage: MouseEventHandler<HTMLButtonElement>,
-      onSearch: FormEventHandler<HTMLFormElement>,
-      onSearchInput: ReactEventHandler<HTMLInputElement>
+      onSearch?: FormEventHandler<HTMLFormElement>,
+      onSearchInput?: ReactEventHandler<HTMLInputElement>
+      searchActive: boolean
     }
 ) {
   const { t } = useTranslation("navigation");
-  
+
   return (
     <Container >
       <Row className="gx-2">
@@ -36,13 +38,17 @@ export default function PagingNavigation(
           <Button className="btn btn-primary ms-0" type="button" variant="primary" onClick={onFirstPage} disabled={page == 1}><i className="bi bi-skip-start me-2" />{t("paging.buttons.first")}</Button>
         </Col>
         <Col sm="auto" xxl={3} >
-          <Form as="form" className="d-flex justify-content-start" role="search" id="paging-navigation-search-form" onSubmit={onSearch}>
-            <Form.Control type="search" placeholder={t("paging.search.placeholder")} name="searchCriteria" aria-label="Search"
-              onInput={onSearchInput} />
-          </Form>
+          {searchActive == true &&
+            <Form as="form" className="d-flex justify-content-start" role="search" id="paging-navigation-search-form" onSubmit={onSearch}>
+              <Form.Control type="search" placeholder={t("paging.search.placeholder")} name="searchCriteria" aria-label="Search"
+                onInput={onSearchInput} />
+            </Form>
+          }
         </Col>
         <Col sm="auto" xxl={2} >
-          <Button className="btn btn-primary" type="submit" form="paging-navigation-search-form" variant="primary">{t("paging.search.buttons.search")}<i className="bi bi-search ms-2" /></Button>
+          {searchActive == true &&
+            <Button className="btn btn-primary" type="submit" form="paging-navigation-search-form" variant="primary">{t("paging.search.buttons.search")}<i className="bi bi-search ms-2" /></Button>
+          }
         </Col>
         <Col sm="auto" xxl={3} className="d-flex justify-content-end">
           <Button className="btn btn-primary" type="button" variant="primary" onClick={onPreviousPage}

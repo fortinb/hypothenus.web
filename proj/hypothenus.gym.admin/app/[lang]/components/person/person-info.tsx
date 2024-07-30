@@ -38,28 +38,29 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`person_input_photoUri_${id}`}>{t("person.photoUri")}</Form.Label>
-                        <Form.Control type="input" id={`person_input_photoUri_${id}`}  {...register(`${formStatefield}.photoUri`)}
-                            className={getError()?.lastname ? "input-invalid" : ""} />
-                        {getError()?.photoUri && <Form.Text className="text-invalid">{t(getError()?.photoUri?.message ?? "")}</Form.Text>}
-                    </Form.Group>
-                </Col>
-            </Row>
-            <Row className="gx-2">
-                <Col xs={6} >
-                    <Form.Group>
                         <Form.Label className="text-primary" htmlFor={`person_input_lastname_${id}`}>{t("person.lastname")}</Form.Label>
                         <Form.Control type="input" id={`person_input_lastname_${id}`}  {...register(`${formStatefield}.lastname`)}
                             className={getError()?.lastname ? "input-invalid" : ""} />
                         {getError()?.lastname && <Form.Text className="text-invalid">{t(getError()?.lastname?.message ?? "")}</Form.Text>}
                     </Form.Group>
+
                 </Col>
+            </Row>
+            <Row className="gx-2">
                 <Col xs={6} >
                     <Form.Group>
                         <Form.Label className="text-primary" htmlFor={`person_input_dateOfBirth_${id}`}>{t("person.dateOfBirth")}</Form.Label>
                         <Form.Control type="input" id={`person_input_dateOfBirth_${id}`}  {...register(`${formStatefield}.dateOfBirth`)}
                             className={getError()?.dateOfBirth ? "input-invalid" : ""} />
                         {getError()?.dateOfBirth && <Form.Text className="text-invalid">{t(getError()?.dateOfBirth?.message ?? "")}</Form.Text>}
+                    </Form.Group>
+                </Col>
+                <Col xs={6} >
+                    <Form.Group>
+                        <Form.Label className="text-primary" htmlFor={`person_input_photoUri_${id}`}>{t("person.photoUri")}</Form.Label>
+                        <Form.Control type="input" id={`person_input_photoUri_${id}`}  {...register(`${formStatefield}.photoUri`)}
+                            className={getError()?.photoUri ? "input-invalid" : ""} />
+                        {getError()?.photoUri && <Form.Text className="text-invalid">{t(getError()?.photoUri?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
             </Row>
@@ -76,7 +77,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
             <Row className="m-0 pt-2">
                 <Accordion >
                     <Accordion.Item eventKey="0" className="pt-2">
-                        <Accordion.Header className={(errors?.address ? "accordeon-header-invalid" : "")}>{t("person.address")}</Accordion.Header>
+                        <Accordion.Header className={(getError()?.address ? "accordeon-header-invalid" : "")}>{t("person.address")}</Accordion.Header>
                         <Accordion.Body className="p-0">
                             <Row className="m-2 p-2">
                                 <Col xs={12} className="p-1" >
@@ -86,7 +87,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="1" className="pt-2">
-                        <Accordion.Header className={(errors?.phoneNumbers ? "accordeon-header-invalid" : "")} >{t("person.phones")}</Accordion.Header>
+                        <Accordion.Header className={(getError()?.phoneNumbers ? "accordeon-header-invalid" : "")} >{t("person.phones")}</Accordion.Header>
                         <Accordion.Body className="p-0">
                             <Row className="m-2 p-2">
                                 <Col xs={12} className="p-1" >
@@ -96,7 +97,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="2" className="pt-2">
-                        <Accordion.Header className={(errors?.contacts ? "accordeon-header-invalid" : "")}>{t("person.contacts")}</Accordion.Header>
+                        <Accordion.Header className={(getError()?.contacts ? "accordeon-header-invalid" : "")}>{t("person.contacts")}</Accordion.Header>
                         <Accordion.Body className="p-0">
                             <Row className="m-2 p-2">
                                 <Col xs={12} className="p-1" >

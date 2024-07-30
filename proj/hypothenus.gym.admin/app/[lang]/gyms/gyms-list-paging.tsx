@@ -12,6 +12,7 @@ import PagingNavigation from "../components/navigation/paging-navigation";
 import { useAppDispatch } from "../../lib/hooks/useStore";
 import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "../../lib/store/slices/gyms-state-paging-slice";
 import GymsList from "./gyms-list";
+import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
 
 export default function GymsListPaging() {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
@@ -22,6 +23,9 @@ export default function GymsListPaging() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    // Reset gym state
+    dispatch(clearGymState());
+
     if (gymsStatePaging.searchActive) {
       searchGymsPage(gymsStatePaging.page, gymsStatePaging.pageSize, gymsStatePaging.includeInactive, gymsStatePaging.searchCriteria);
     } else {
@@ -125,7 +129,7 @@ export default function GymsListPaging() {
         <div>
           <PagingNavigation page={gymsStatePaging.page + 1} totalPages={totalPages}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
-            onSearch={onSearch} onSearchInput={onSearchInput} />
+            searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />
         </div>
         <div>
           <hr />

@@ -6,7 +6,7 @@ import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } f
 import { SocialMediaAccount } from "./socialMediaAccount";
 
 export interface Gym extends BaseEntity {
-  id: string;
+  id?: any;
   gymId: string;
   name: string;
   address: Address;
@@ -20,7 +20,7 @@ export interface Gym extends BaseEntity {
 
 export const newGym = (): Gym => {
   let newGym: Gym = {
-    id: "",
+    id: null,
     gymId: "",
     name: "",
     address: newAddress(),

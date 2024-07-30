@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslation } from "@/app/i18n/i18n";
+import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
 import { Address } from "@/src/lib/entities/address";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -8,16 +9,18 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 
-export default function AddressInfo({ id, formStatefield }:
+export default function AddressInfo({ id, formStatefield, parent }:
     {
         id: string,
-        formStatefield: string
+        formStatefield: string,
+        parent?: string
     }) {
     const { t } = useTranslation("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(): Merge<FieldError, FieldErrorsImpl<Address>> {
-        return (errors?.address as unknown as Merge<FieldError, FieldErrorsImpl<Address>>);
+        const parentErrorField: any = getParentErrorField(errors, parent);
+        return (parentErrorField?.address as Merge<FieldError, FieldErrorsImpl<Address>>);
     }
    
     return (

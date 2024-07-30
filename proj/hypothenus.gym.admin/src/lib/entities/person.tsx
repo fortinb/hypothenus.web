@@ -7,12 +7,12 @@ import { z } from 'zod';
 export interface Person {
   firstname: string;
   lastname: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   email?: string;
-  address: Address;
+  address?: Address;
   phoneNumbers: PhoneNumber[];
-  emergencyContacts: Contact[];
-  photoUri: string;
+  contacts: Contact[];
+  photoUri?: string;
   communicationLanguage : LanguageEnum
   note: string;
 }
@@ -22,13 +22,13 @@ export const newPerson = (): Person => {
     firstname: "",
     lastname: "",
     dateOfBirth: undefined,
-    photoUri: "",
+    photoUri: undefined,
     email: undefined,
-    address: newAddress(),
+    address: undefined,
     phoneNumbers: [
       newPhoneNumber(PhoneNumberTypeEnum.Home),
       newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
-    emergencyContacts: [],
+    contacts: [],
     communicationLanguage: LanguageEnum.en,
     note: ""
   };
@@ -44,12 +44,12 @@ export const PersonSchema = z.object({
   id: z.any().nullable(),
   firstname: z.string().min(1, {message: "person.validation.firstnameRequired"}),
   lastname: z.string().min(1, {message: "person.validation.lastnameRequired"}),
-  dateOfBirth: z.date().optional(),
+  dateOfBirth: z.string().optional(), 
   email: z.string().min(0).email("validation.emailInvalid").optional().or(z.literal("")),
-  address: AddressSchema,
+  address: AddressSchema.optional(),
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
-  emergencyContacts: z.array(ContactSchema).min(0),
-  photoUri: z.string().min(0),
+  contacts: z.array(ContactSchema).min(0),
+  photoUri: z.string().min(0).optional().or(z.literal("")),
   communicationLanguage: z.nativeEnum(LanguageEnum),
   note: z.string().min(0),
 });

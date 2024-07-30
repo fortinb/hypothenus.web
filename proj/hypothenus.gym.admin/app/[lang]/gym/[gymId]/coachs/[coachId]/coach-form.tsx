@@ -11,7 +11,7 @@ import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { clearCoachState, CoachState, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
-import { Coach, CoachSchema } from "@/src/lib/entities/coach";
+import { newCoach, Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 
 
-export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: string  }) {
+export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: string }) {
     const { t } = useTranslation("entity");
     const router = useRouter();
 
@@ -42,7 +42,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         defaultValues: coachState.coach,
         resolver: zodResolver(CoachSchema),
     });
-   
+
     const toggleSuccess = () => setSuccess(false);
 
     useEffect(() => {
@@ -52,6 +52,8 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
 
         if (isLoading && coachId == "new") {
             setIsEditMode(true);
+           
+            formContext.setValue("gymId", gymId);
             setIsLoading(false);
         }
 
@@ -72,7 +74,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         setIsEditMode(false);
         setIsSaving(true);
 
-        if (coachState.coach.id == "") {
+        if (coachState.coach.id == null) {
             createCoach(formData);
         } else {
             saveCoach(formData);
@@ -84,7 +86,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
 
         dispatch(updateCoachState(response.data));
         formContext.reset(response.data);
-        
+
         setTextSuccess(t("action.saveSuccess"));
         setSuccess(true);
         setIsSaving(false);
@@ -118,7 +120,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         dispatch(updateCoachState(coach));
         setIsActivating(false);
         setTextSuccess(t("action.deactivationSuccess"));
-         setSuccess(true);
+        setSuccess(true);
     }
 
     const deleteCoach = async (gymId: string, coachId: string) => {
@@ -188,9 +190,6 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     return (
         <ErrorBoundary>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
-                <div className="d-flex flex-row justify-content-center">
-                    <h2 className="text-secondary pt-4 ps-2">{formatName(coachState.coach.person)}</h2>
-                </div>
                 <div className="ps-2 pe-2">
                     <hr className="mt-0 mb-0" />
                 </div>
@@ -215,9 +214,9 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
                                 </Form>
 
                                 <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("person.deleteConfirmation.title", {name: formatName(coachState.coach.person) })} text={t("person.deleteConfirmation.text")}
-                                    yesText={t("person.deleteConfirmation.yes")} noText={t("person.deleteConfirmation.no")}
-                                    actionText={t("person.deleteConfirmation.action")}
+                                <ModalConfirmation title={t("coach.deleteConfirmation.title", { name: formatName(coachState.coach.person) })} text={t("coach.deleteConfirmation.text")}
+                                    yesText={t("coach.deleteConfirmation.yes")} noText={t("coach.deleteConfirmation.no")}
+                                    actionText={t("coach.deleteConfirmation.action")}
                                     isAction={isDeleting}
                                     show={showDeleteConfirmation} handleResult={onDelete} />
 
@@ -229,3 +228,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         </ErrorBoundary>
     );
 }
+function dispatch(arg0: any) {
+    throw new Error("Function not implemented.");
+}
+

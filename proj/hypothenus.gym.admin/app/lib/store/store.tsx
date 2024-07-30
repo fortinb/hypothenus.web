@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import gymsStatePagingReducer from "./slices/gyms-state-paging-slice";
 import gymStateReducer from "./slices/gym-state-slice";
+import coachsStatePagingReducer from "./slices/coachs-state-paging-slice";
+import coachStateReducer from "./slices/coach-state-slice";
 
 export const store = configureStore({
   reducer: {
     gymsStatePaging: gymsStatePagingReducer,
-    gymState: gymStateReducer
+    gymState: gymStateReducer,
+    coachsStatePaging: coachsStatePagingReducer,
+    coachState: coachStateReducer
   }
 })
 

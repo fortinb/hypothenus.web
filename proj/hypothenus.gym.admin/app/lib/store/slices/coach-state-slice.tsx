@@ -22,11 +22,11 @@ export const coachStateSlice = createSlice({
         ...state,
         coach: newCoach()
       }
-    }
+    },
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { updateCoachState, clearCoachState} = coachStateSlice.actions
+export const { updateCoachState, clearCoachState } = coachStateSlice.actions
 
 export default coachStateSlice.reducer
