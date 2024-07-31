@@ -7,10 +7,13 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import DatePicker from "react-datepicker";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 import PersonAddressInfo from "./person-address-info";
 import PersonPhoneInfo from "./person-phone-info";
 import PersonEmergencyContactInfo from "./person-emergency-contact-info";
+import { useState } from "react";
+import { Controller, useForm } from 'react-hook-form'
 
 export default function PersonInfo({ id, formStatefield, isEditMode }:
     {
@@ -20,7 +23,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
     }) {
     const { t } = useTranslation("entity");
     const { register, formState: { errors } } = useFormContext();
-
+   
     function getError(): Merge<FieldError, FieldErrorsImpl<Person>> {
         return (errors?.person as unknown as Merge<FieldError, FieldErrorsImpl<Person>>);
     }
@@ -46,13 +49,18 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
 
                 </Col>
             </Row>
-            <Row className="gx-2">
+            <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
                         <Form.Label className="text-primary" htmlFor={`person_input_dateOfBirth_${id}`}>{t("person.dateOfBirth")}</Form.Label>
-                        <Form.Control type="input" id={`person_input_dateOfBirth_${id}`}  {...register(`${formStatefield}.dateOfBirth`)}
-                            className={getError()?.dateOfBirth ? "input-invalid" : ""} />
-                        {getError()?.dateOfBirth && <Form.Text className="text-invalid">{t(getError()?.dateOfBirth?.message ?? "")}</Form.Text>}
+                        <br />
+                        <Controller
+                            name={`${formStatefield}.dateOfBirth`}
+                            render={({ field }) => (
+                                <DatePicker id={`person_input_dateOfBirth_${id}`} selected={field.value} onChange={(date) => field.onChange(date)}
+                                className={"form-control "} />
+                            )}
+                        />
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
@@ -71,6 +79,15 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
                         <Form.Control type="input" id="person_info_input_email" placeholder="example@email.ca" {...register(`${formStatefield}.email`)}
                             className={getError()?.email ? "input-invalid" : ""} />
                         {getError()?.email && <Form.Text className="text-invalid">{t(getError()?.email?.message ?? "")}</Form.Text>}
+                    </Form.Group>
+                </Col>
+                <Col xs={6} >
+                    <Form.Group>
+                        <Form.Label className="text-primary" htmlFor="person-communication-language-dropdown">{t("person.communicationLanguage")}</Form.Label>
+                        <Form.Select id="person-communication-language-dropdown" {...register(`${formStatefield}.communicationLanguage`)}>
+                            <option value="en">{t("language.en")}</option>
+                            <option value="fr">{t("language.fr")}</option>
+                        </Form.Select>
                     </Form.Group>
                 </Col>
             </Row>
@@ -112,7 +129,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
                 <Col xs={12} className="p-1">
                     <Form.Group>
                         <Form.Label className="text-primary" htmlFor="person_info_input_note">{t("person.note")}</Form.Label>
-                        <Form.Control as="textarea" id="person_info_input_note" rows={4} {...register("note")} />
+                        <Form.Control as="textarea" id="person_info_input_note" rows={4} {...register(`${formStatefield}.note`)} />
                     </Form.Group>
                 </Col>
             </Row>

@@ -6,7 +6,10 @@ import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../lib/hooks/useStore";
 import { GymsStatePaging, includeInactive } from "../../lib/store/slices/gyms-state-paging-slice";
-import { useTranslation } from "@/app/i18n/i18n";
+import i18n, { useTranslation } from "@/app/i18n/i18n";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
 export default function GymsMenu() {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
@@ -29,24 +32,32 @@ export default function GymsMenu() {
       <div className="d-flex flex-row justify-content-end">
 
       </div>
-      <div className="d-flex flex-row h-100">
-        <div className="col btn-navigation m-2">
-          <div className="d-flex flex-column justify-content-center h-100">
-            <div className="d-flex flex-row justify-content-center">
-              <Link className="link-element" href={"/gym/new"}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
-            </div>
-            <div className="d-flex flex-row justify-content-center">
-              <span className="text-primary mt-3">{t("list.menu.add")}</span>
-            </div>
-          </div>
-        </div>
-        <div className="col pt-2 m-2">
-          <div className="form-check form-switch pe-2">
-            <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
-              id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsStatePaging.includeInactive} />
-            <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">{t("list.menu.inactive")}</label>
-          </div>
-        </div>
+      <div className="d-flex flex-column h-100">
+        <Container fluid={true}>
+          <Row className="gx-2">
+            <Col xs={6} >
+              <div className="btn-navigation m-2">
+                <div className="d-flex flex-column justify-content-center h-100">
+                  <div className="d-flex flex-row justify-content-center">
+                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                  </div>
+                  <div className="d-flex flex-row justify-content-center">
+                    <span className="text-primary mt-3">{t("list.menu.add")}</span>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col xs={6} >
+              <div className="d-flex flex-row align-items-center justify-content-center flex-fill h-100">
+                <div className="form-check form-switch pe-2">
+                  <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
+                    id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsStatePaging.includeInactive} />
+                  <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">{t("list.menu.inactive")}</label>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
       </div>
     </div>
   );

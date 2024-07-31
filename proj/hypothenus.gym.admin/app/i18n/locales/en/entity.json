@@ -1,4 +1,8 @@
 {
+    "language": {
+        "en": "English",
+        "fr": "French"
+    },
     "action" : {
         "saveSuccess": "Saving successfull !",
         "deleteSuccess": "Delete successfull !",
@@ -63,7 +67,8 @@
         "address": "Address",
         "phones": "Phones",
         "contacts": "Emergency contacts",
-        "note": "Notes"
+        "note": "Notes",
+        "communicationLanguage": "Communication language"
     },
     "coach": {
        "deleteConfirmation": {

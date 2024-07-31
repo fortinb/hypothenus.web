@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import Link from "next/link";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -28,7 +28,7 @@ export default function CoachMenu({ gymId, coachId }: { gymId: string, coachId: 
         <div className="col btn-navigation m-2">
           <div className="d-flex flex-column justify-content-center h-100">
             <div className="d-flex flex-row justify-content-center">
-              <Link className="link-element" href={`/gym/${gymId}/coach/${coachId}`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
+              <Link className={"link-element" + (coachId == "new" ? " link-element-disabled" : "")} href={`/${i18n.resolvedLanguage}/gym/${gymId}/coachs/${coachId}`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
             </div>
             <div className="d-flex flex-row justify-content-center">
               <span className="text-primary mt-3">{t("menu.info")}</span>
@@ -38,7 +38,7 @@ export default function CoachMenu({ gymId, coachId }: { gymId: string, coachId: 
       </div>
       <div className="d-flex flex-row flex-fill align-items-center justify-content-center">
         <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="coach_menu_back_tooltip">{t("menu.managementTooltip")}</Tooltip>}>
-          <Link className="btn btn-primary ms-2" href={`/gym/${gymId}/coachs`} ><i className="icon icon-light bi bi-backspace me-2"></i>
+          <Link className="btn btn-primary ms-2" href={`/${i18n.resolvedLanguage}/gym/${gymId}/coachs`} ><i className="icon icon-light bi bi-backspace me-2"></i>
             {t("menu.management")}
           </Link>
         </OverlayTrigger>

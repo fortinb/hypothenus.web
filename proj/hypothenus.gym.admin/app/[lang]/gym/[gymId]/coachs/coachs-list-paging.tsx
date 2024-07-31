@@ -1,5 +1,8 @@
 "use client"
 
+import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
+import Loader from "@/app/[lang]/components/navigation/loader";
+import PagingNavigation from "@/app/[lang]/components/navigation/paging-navigation";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { CoachsStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/coachs-state-paging-slice";
 import { Coach } from "@/src/lib/entities/coach";
@@ -8,9 +11,6 @@ import { AxiosRequestConfig } from "axios";
 import { MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../lib/hooks/useStore";
-import ErrorBoundary from "../../../components/errors/error-boundary";
-import Loader from "../../../components/navigation/loader";
-import PagingNavigation from "../../../components/navigation/paging-navigation";
 import CoachsList from "./coachs-list";
 
 export default function CoachsListPaging({ gymId }: { gymId: string }) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { changeLanguage, useTranslation } from "@/app/i18n/i18n";
+import i18n, { changeLanguage, useTranslation } from "@/app/i18n/i18n";
 import Image from 'next/image';
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from 'next/navigation';
@@ -43,7 +43,7 @@ export default function NavbarMenu() {
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                    <Nav.Link as={Link} href="/gyms">{t("navbar.gyms.title")}</Nav.Link>
+                    <Nav.Link as={Link} href={`/${i18n.resolvedLanguage}/gyms`}>{t("navbar.gyms.title")}</Nav.Link>
                 </div>
               </Nav>
             </div>

@@ -93,6 +93,7 @@ $enable-shadows: true;
 @import "../node_modules/bootstrap/scss/utilities/api";
 
 // 8. Add additional custom code here
+@import "react-datepicker/dist/react-datepicker.css";
 
 //$bg-primary: #cdcdce;
 $bg-secondary: $white;
@@ -312,6 +313,10 @@ footer {
     color: $text-secondary-light;
     cursor: pointer;
     text-decoration: none;
+}
+
+.link-element-disabled {
+    pointer-events: none;
 }
 
 .link-element:hover {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslation } from "@/app/i18n/i18n";
+import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { Gym } from "@/src//lib/entities/gym";
 import { formatAddress } from "@/src/lib/entities/address";
 import Link from "next/link";
@@ -14,7 +14,7 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
       <Card>
         <Card.Body className={"m-2" + (gym.active == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/gym/${gym.gymId}`}> {gym.name}</Link>
+            <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/${gym.gymId}`}> {gym.name}</Link>
           </Card.Title>
           <Card.Text>
             <span className="text-primary">{formatAddress(gym.address)}</span><br />
