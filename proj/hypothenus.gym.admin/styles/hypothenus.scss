@@ -101,6 +101,7 @@ $bg-light: $gray-100;
 $bg-info: $info;
 $bg-header: #961a9b;
 $bg-tertiary:  #3b88fc;
+$bg-dark: $gray-500;
 
 $text-primary: $gray-900;
 $text-secondary: #3b88fc;
@@ -488,6 +489,20 @@ footer {
     border: solid;
     border-color: $secondary;
     border-width: 4px;
+}
+
+.dropzone {
+    border: dashed;
+    border-color: $border-color-light;
+    background-color: $bg-light;
+    border-width: 3px;
+    border-radius: 10px;
+    color: $text-primary-light;
+    cursor: pointer;
+}
+.dropzone-text {
+    font-style: italic;
+    font-weight: lighter;
 }
 
 .uppercase {

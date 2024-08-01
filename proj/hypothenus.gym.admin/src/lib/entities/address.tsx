@@ -27,14 +27,14 @@ export function formatAddress(address: Address): String {
     return "";
   }
  
-  const civicNumber = address.civicNumber && address.civicNumber;
-  const streetName = address.streetName && address.streetName;
-  const appartment = address.appartment && address.appartment;
-  const city = address.city && address.city;
-  const state = address.state && address.state;
-  const zipCode = address.zipCode && address.zipCode;
+  const civicNumber = address.civicNumber ? address.civicNumber : "";
+  const streetName = address.streetName ? address.streetName : "";
+  const appartment =  address.appartment ? "# " + address.appartment + "," : "";
+  const city = address.city ? address.city  + "," : "";
+  const state = address.state ? address.state : "";
+  const zipCode = address.zipCode ? address.zipCode : "";
 
-  return `${civicNumber} ${streetName} ${appartment}, ${city}, ${state} ${zipCode}`;
+  return `${civicNumber} ${streetName} ${appartment} ${city} ${state} ${zipCode}`;
 }
 
 const zipCodeRegex = new RegExp(/^\d{5}$|(^\d{5}-\d{4}$)|[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ ]?\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d/);

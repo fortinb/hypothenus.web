@@ -12,6 +12,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../lib/hooks/useStore";
 import CoachsList from "./coachs-list";
+import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
 
 export default function CoachsListPaging({ gymId }: { gymId: string }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
@@ -22,6 +23,9 @@ export default function CoachsListPaging({ gymId }: { gymId: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    // Reset coach state
+    dispatch(clearCoachState());
+
     fetchCoachsPage(coachsStatePaging.page, coachsStatePaging.pageSize, coachsStatePaging.includeInactive);
 
   }, [coachsStatePaging]);

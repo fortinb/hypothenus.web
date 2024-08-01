@@ -17,10 +17,6 @@ export default function CoachMenu({ gymId, coachId }: { gymId: string, coachId: 
       <div className="d-flex flex-row justify-content-center">
         <h2 className="text-secondary pt-4 ps-2">{t("menu.gym", { name: gymState.gym.name })}</h2>
       </div>
-      <div className="d-flex flex-row justify-content-center">
-        <h3 className="text-secondary pt-0 ps-2">{t("menu.sections")}
-          </h3>
-      </div>
       <div className="ps-2 pe-2">
         <hr />
       </div>

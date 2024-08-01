@@ -6,13 +6,21 @@ import resourcesToBackend from 'i18next-resources-to-backend'
 import { useCookies } from "react-cookie";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useEffect } from "react";
-
+import { frCA } from 'date-fns/locale/fr-CA';
+import { enUS } from 'date-fns/locale/en-US';
+import { registerLocale } from  "react-datepicker";
 export const fallbackLanguage = "en";
 export const supportedLanguages = [fallbackLanguage, "fr"]
 export const languageCookieName = "language";
 export const defaultNamespace = "translation";
+
 const runsOnServerSide = typeof window === 'undefined'
 
+// Date Picker
+registerLocale('fr', frCA);
+registerLocale('en', enUS);
+
+// i18n
 i18n
   .use(LanguageDetector)
   .use(resourcesToBackend((language: string, namespace: string) => import(`./locales/${language}/${namespace}.json`)))

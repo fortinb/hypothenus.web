@@ -1,7 +1,7 @@
 {
     "menu": {
         "gym": "{{name}}",
-        "sections": "Sections",
+        "sections": "Gym",
         "info": "Info",
         "coachs": "Coachs",
         "management": "Gyms",

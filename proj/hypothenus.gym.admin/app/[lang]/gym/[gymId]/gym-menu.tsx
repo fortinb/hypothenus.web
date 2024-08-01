@@ -20,10 +20,6 @@ export default function GymMenu({ gymId }: { gymId: string }) {
       <div className="d-flex flex-row justify-content-center">
         <h2 className="text-secondary pt-4 ps-2">{t("menu.gym", { name: gymState.gym.name })}</h2>
       </div>
-      <div className="d-flex flex-row justify-content-center">
-        <h3 className="text-secondary pt-0 ps-2">{t("menu.sections")}
-        </h3>
-      </div>
       <div className="ps-2 pe-2">
         <hr />
       </div>
@@ -34,7 +30,7 @@ export default function GymMenu({ gymId }: { gymId: string }) {
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/${gymId}`}><i className="icon icon-secondary bi bi-building h1 m-0"></i></Link>
+                    <Link className={"link-element" + (gymId == "new" ? " link-element-disabled" : "")} href={`/${i18n.resolvedLanguage}/gym/${gymId}`}><i className="icon icon-secondary bi bi-building h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("menu.info")}</span>
@@ -46,7 +42,7 @@ export default function GymMenu({ gymId }: { gymId: string }) {
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/${gymId}/coachs`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
+                    <Link className={"link-element" + (gymId == "new" ? " link-element-disabled" : "")} href={`/${i18n.resolvedLanguage}/gym/${gymId}/coachs`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("menu.coachs")}</span>

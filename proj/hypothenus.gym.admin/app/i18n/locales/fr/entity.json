@@ -1,4 +1,7 @@
 {
+    "format": {
+        "date": "aaaa-mm-jj"
+     },
     "language": {
         "en": "Anglais",
         "fr": "Français"

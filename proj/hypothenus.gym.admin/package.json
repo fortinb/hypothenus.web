@@ -26,6 +26,7 @@
     "react-cookie": "^7.1.4",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.52.1",
     "react-i18next": "^14.1.2",
     "react-redux": "^9.1.2",

@@ -7,7 +7,7 @@ import { z } from 'zod';
 export interface Person {
   firstname: string;
   lastname: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: any; //Date | undefined | null
   email?: string;
   address: Address;
   phoneNumbers: PhoneNumber[];

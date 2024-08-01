@@ -24,13 +24,12 @@ export default function GymsMenu() {
 
     <div className="d-flex flex-column justify-content-start w-100 h-50 page-menu">
       <div className="d-flex flex-row justify-content-center">
-        <h2 className="text-secondary pt-4 ps-2">{t("list.menu.title")}</h2>
+        <h2 className="text-secondary pt-4 ps-2">{t("list.menu.title")}
+          <i className="icon icon-secondary bi bi-building ms-2"></i>
+        </h2>
       </div>
       <div className="ps-2 pe-2">
         <hr />
-      </div>
-      <div className="d-flex flex-row justify-content-end">
-
       </div>
       <div className="d-flex flex-column h-100">
         <Container fluid={true}>

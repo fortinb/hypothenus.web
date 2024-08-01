@@ -10,8 +10,8 @@ import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
-import { clearCoachState, CoachState, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
-import { newCoach, Coach, CoachSchema } from "@/src/lib/entities/coach";
+import { CoachState, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
+import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -47,7 +47,11 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
 
     useEffect(() => {
         if (isLoading && coachId !== "new") {
-            fetchCoach(gymId, coachId);
+            if (coachState.coach?.id == coachId) {
+                setIsLoading(false);
+            } else {
+                fetchCoach(gymId, coachId);
+            }
         }
 
         if (isLoading && coachId == "new") {
@@ -56,10 +60,6 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
             formContext.setValue("gymId", gymId);
             setIsLoading(false);
         }
-
-        return () => {
-            dispatch(clearCoachState());
-        };
     }, []);
 
     const fetchCoach = async (gymId: string, coachId: string) => {

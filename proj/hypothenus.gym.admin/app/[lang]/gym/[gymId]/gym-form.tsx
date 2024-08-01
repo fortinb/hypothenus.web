@@ -10,7 +10,7 @@ import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
-import { clearGymState, GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
+import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,7 +47,6 @@ export default function GymForm({ gymId }: { gymId: string }) {
     useEffect(() => {
         if (isLoading && gymId !== "new") {
             if (gymState.gym?.gymId == gymId) {
-                formContext.reset(gymState.gym);
                 setIsLoading(false);
             } else {
                 fetchGym(gymId);
