@@ -3,13 +3,15 @@ import gymsStatePagingReducer from "./slices/gyms-state-paging-slice";
 import gymStateReducer from "./slices/gym-state-slice";
 import coachsStatePagingReducer from "./slices/coachs-state-paging-slice";
 import coachStateReducer from "./slices/coach-state-slice";
+import breadcrumbStateReducer from "./slices/breadcrumb-state-slice";
 
 export const store = configureStore({
   reducer: {
     gymsStatePaging: gymsStatePagingReducer,
     gymState: gymStateReducer,
     coachsStatePaging: coachsStatePagingReducer,
-    coachState: coachStateReducer
+    coachState: coachStateReducer,
+    breadcrumbState: breadcrumbStateReducer
   }
 })
 

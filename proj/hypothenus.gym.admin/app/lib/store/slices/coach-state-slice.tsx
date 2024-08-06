@@ -5,11 +5,13 @@ export interface CoachState {
   coach: Coach;
 }
 
+export const initialState: CoachState = {
+  coach: newCoach()
+}
+
 export const coachStateSlice = createSlice({
   name: 'coachState',
-  initialState: {
-    coach: newCoach()
-  },
+  initialState: initialState,
   reducers: {
     updateCoachState: (state, action: PayloadAction<Coach>) => {
       return {

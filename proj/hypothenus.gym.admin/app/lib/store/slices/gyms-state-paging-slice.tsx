@@ -10,15 +10,17 @@ export interface GymsStatePaging {
   searchCriteria: String
 }
 
+export const initialState: GymsStatePaging = {
+  page: 0,
+  pageSize: DEFAULT_PAGING_SIZE,
+  includeInactive: false,
+  searchActive: false,
+  searchCriteria: ""
+}
+
 export const gymsStatePagingSlice = createSlice({
   name: 'gymsStatePaging',
-  initialState: {
-    page: 0,
-    pageSize: DEFAULT_PAGING_SIZE,
-    includeInactive: false,
-    searchActive: false,
-    searchCriteria: ""
-  },
+  initialState: initialState,
   reducers: {
     includeInactive: (state, action: PayloadAction<boolean>) => {
       //  console.log ("reducer nextPage");

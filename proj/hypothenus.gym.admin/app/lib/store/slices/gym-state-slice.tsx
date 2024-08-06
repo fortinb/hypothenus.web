@@ -5,11 +5,13 @@ export interface GymState {
   gym: Gym;
 }
 
+export const initialState: GymState = {
+  gym: newGym()
+}
+
 export const gymStateSlice = createSlice({
   name: 'gymState',
-  initialState: {
-    gym: newGym()
-  },
+  initialState: initialState,
   reducers: {
     updateGymState: (state, action: PayloadAction<Gym>) => {
       return {

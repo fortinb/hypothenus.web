@@ -10,15 +10,17 @@ export interface CoachsStatePaging {
   searchCriteria: String
 }
 
+export const initialState: CoachsStatePaging = {
+  page: 0,
+  pageSize: DEFAULT_PAGING_SIZE,
+  includeInactive: false,
+  searchActive: false,
+  searchCriteria: ""
+}
+
 export const coachsStatePagingSlice = createSlice({
   name: 'coachsStatePaging',
-  initialState: {
-    page: 0,
-    pageSize: DEFAULT_PAGING_SIZE,
-    includeInactive: false,
-    searchActive: false,
-    searchCriteria: ""
-  },
+  initialState: initialState,
   reducers: {
     includeInactive: (state, action: PayloadAction<boolean>) => {
       //  console.log ("reducer nextPage");

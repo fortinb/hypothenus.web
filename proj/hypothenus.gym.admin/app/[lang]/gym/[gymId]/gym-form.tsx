@@ -7,9 +7,10 @@ import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import GymInfo from "@/app/[lang]/components/gym/gym-info";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
-import { useTranslation } from "@/app/i18n/i18n";
+import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
+import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
@@ -37,13 +38,13 @@ export default function GymForm({ gymId }: { gymId: string }) {
     const [isActivating, setIsActivating] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+    const toggleSuccess = () => setSuccess(false);
+
     const formContext = useForm<Gym>({
         defaultValues: gymState.gym,
         resolver: zodResolver(GymSchema),
     });
    
-    const toggleSuccess = () => setSuccess(false);
-
     useEffect(() => {
         if (isLoading && gymId !== "new") {
             if (gymState.gym?.gymId == gymId) {
@@ -64,6 +65,15 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let gym: Gym = response.data;
         dispatch(updateGymState(gym));
         formContext.reset(gym);
+
+        const crumb: Crumb = {
+            id: "gym.[gymId].page",
+            href: `/${i18n.resolvedLanguage}/gym/${gymId}`,
+            crumb: gym.name
+          };
+
+        dispatch(pushBreadcrumb(crumb));
+
         setIsLoading(false);
     }
 

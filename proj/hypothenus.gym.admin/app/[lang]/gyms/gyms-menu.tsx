@@ -1,15 +1,15 @@
 "use client"
 
+import i18n, { useTranslation } from "@/app/i18n/i18n";
 import Link from "next/link";
 import { ChangeEvent } from "react";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../lib/hooks/useStore";
 import { GymsStatePaging, includeInactive } from "../../lib/store/slices/gyms-state-paging-slice";
-import i18n, { useTranslation } from "@/app/i18n/i18n";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 
 export default function GymsMenu() {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);

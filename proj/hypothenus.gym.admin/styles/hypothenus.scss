@@ -39,6 +39,8 @@ $accordion-button-padding-y: 10px;
 $accordion-icon-color: $white;
 $accordion-icon-active-color: $white;
 
+$breadcrumb-divider-color: $secondary;
+
 $focus-ring-color: #3b88fc;
 $enable-shadows: true;
 
@@ -309,6 +311,23 @@ footer {
   
 }
 
+// breadcrumb
+.breadcrumb-item.active {
+    color: $button-primary-disabled;
+    font-weight: 100;
+}
+
+.breadcrumb-item > a {
+    color: $button-primary;
+   // font-weight: bolder;
+}
+
+.breadcrumb-item > a:hover {
+    color: $button-primary-hover;
+    font-weight: bold;
+    border-bottom: none;
+}
+
 //Link
 .link-element {
     color: $text-secondary-light;
@@ -322,6 +341,11 @@ footer {
 
 .link-element:hover {
     border-bottom: $secondary 2px solid;
+}
+
+.link-disabled {
+    pointer-events: none;
+    opacity:0.7;
 }
 
 // cards
@@ -513,7 +537,3 @@ textarea {
     resize: none;
 }
 
-.link-disabled {
-    pointer-events: none;
-    opacity:0.7;
-}
