@@ -64,16 +64,6 @@ export default function CoachsMenu({ gymId }: { gymId: string }) {
             </Col>
           </Row>
         </Container>
-        <div className="d-flex flex-row align-items-end h-100">
-                <div className="d-flex  flex-fill flex-row  align-items-end justify-content-center h-100 pb-2">
-                  <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="coach_menu_back_tooltip">{t("list.menu.managementTooltip")}</Tooltip>}>
-                    <Link className="btn btn-primary ms-2" href={`/${i18n.resolvedLanguage}/gyms/${gymId}`} ><i className="icon icon-light bi bi-backspace me-2"></i>
-                      {t("list.menu.management", { name: gymState.gym.name })}
-                    </Link>
-                  </OverlayTrigger>
-                </div>
-           
-        </div>
       </div>
     </div>
   );

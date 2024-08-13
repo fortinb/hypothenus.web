@@ -32,13 +32,6 @@ export default function CoachMenu({ gymId, coachId }: { gymId: string, coachId: 
           </div>
         </div>
       </div>
-      <div className="d-flex flex-row flex-fill align-items-center justify-content-center">
-        <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="coach_menu_back_tooltip">{t("menu.managementTooltip")}</Tooltip>}>
-          <Link className="btn btn-primary ms-2" href={`/${i18n.resolvedLanguage}/gyms/${gymId}/coachs`} ><i className="icon icon-light bi bi-backspace me-2"></i>
-            {t("menu.management")}
-          </Link>
-        </OverlayTrigger>
-      </div>
     </div>
   );
 }

@@ -10,11 +10,12 @@ import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
+import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CoachState, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -25,7 +26,8 @@ import { z } from "zod";
 export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: string }) {
     const { t } = useTranslation("entity");
     const router = useRouter();
-
+    const pathname = usePathname();
+    
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
 
@@ -48,6 +50,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     useEffect(() => {
         if (isLoading && coachId !== "new") {
             if (coachState.coach?.id == coachId) {
+                initBreadcrumb(formatName(coachState.coach?.person))
                 setIsLoading(false);
             } else {
                 fetchCoach(gymId, coachId);
@@ -62,11 +65,22 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         }
     }, []);
 
+    function initBreadcrumb(name: string) {
+        const crumb: Crumb = {
+            id: "coach.[coachId].page",
+            href: pathname,
+            crumb: name
+          };
+
+        dispatch(pushBreadcrumb(crumb));
+    }
+
     const fetchCoach = async (gymId: string, coachId: string) => {
         let response = await axiosInstance.get(`/api/gyms/${gymId}/coachs/${coachId}`);
         let coach: Coach = response.data;
         dispatch(updateCoachState(coach));
         formContext.reset(coach);
+        initBreadcrumb(formatName(coach?.person));
         setIsLoading(false);
     }
 

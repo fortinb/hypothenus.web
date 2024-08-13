@@ -7,7 +7,7 @@ import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import GymInfo from "@/app/[lang]/components/gym/gym-info";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
