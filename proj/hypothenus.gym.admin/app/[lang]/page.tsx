@@ -3,18 +3,32 @@
 import Image from 'next/image';
 import Carousel from 'react-bootstrap/Carousel';
 import Container from "react-bootstrap/Container";
-import { useTranslation } from '../i18n/i18n';
+import i18n, { useTranslation } from '../i18n/i18n';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../lib/hooks/useStore';
+import { Crumb, resetBreadcrumbs } from '../lib/store/slices/breadcrumb-state-slice';
 
 export default function Home() {
   const { t } = useTranslation("home");
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const crumb: Crumb = {
+      id: "home.page",
+      href: `/${i18n.resolvedLanguage}`,
+      crumb: t("breadcrumb")
+    };
+
+    dispatch(resetBreadcrumbs(crumb));
+  }, []);
 
   return (
     <main className="main-bg-gradient overflow-auto">
       <div className="d-flex flex-row w-100 h-100">
         <div className="flex-column flex-fill justify-content-between w-50 h-100">
           <Container fluid="true">
-                <h1 className="text-tertiary">{t("header.hypothenus")}</h1>
-                <h2 className="text-primary">{t("header.title")}</h2>
+            <h1 className="text-tertiary">{t("header.hypothenus")}</h1>
+            <h2 className="text-primary">{t("header.title")}</h2>
           </Container>
         </div>
         <div className="flex-column flex-fill justify-content-between w-50 h-100">
@@ -40,8 +54,8 @@ export default function Home() {
                   alt="Hypothenus"
                 />
                 <Carousel.Caption>
-                <h3>{t("captions.image2.title")}</h3>
-                <p>{t("captions.image2.text")}</p>
+                  <h3>{t("captions.image2.title")}</h3>
+                  <p>{t("captions.image2.text")}</p>
                 </Carousel.Caption>
               </Carousel.Item>
             </Carousel>

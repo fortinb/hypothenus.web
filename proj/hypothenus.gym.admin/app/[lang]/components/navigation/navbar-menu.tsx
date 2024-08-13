@@ -22,7 +22,9 @@ export default function NavbarMenu() {
     }
 
     changeLanguage(languageRequested);
-    router.push(pathname.replace(params.lang, languageRequested));
+    router.push(`/${languageRequested}`);
+    
+   // router.push(pathname.replace(params.lang, languageRequested));
   }
   
   

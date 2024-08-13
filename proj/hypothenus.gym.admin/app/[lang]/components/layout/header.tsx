@@ -8,10 +8,9 @@ export default function Header() {
     <div>
       <header className="navbar shadow sticky-top p-0">
         <NavbarMenu />
-
       </header>
       <div className="d-flex flex-row justify-content-start ms-5">
-          <NavBreadcrumb ></NavBreadcrumb>
+          <NavBreadcrumb />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function CoachListDetails({ coach }: { coach: Coach }) {
       <Card>
         <Card.Body className={"m-2" + (coach.active == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/${coach.gymId}/coachs/${coach.id}`}> {formatName(coach.person)}</Link>
+            <Link className="link-element" href={`/${i18n.resolvedLanguage}/gyms/${coach.gymId}/coachs/${coach.id}`}> {formatName(coach.person)}</Link>
           </Card.Title>
           <Card.Text>
             <Link className="link-element" href={`mailto:${coach.person.email}`}>{coach.person.email}</Link><br />

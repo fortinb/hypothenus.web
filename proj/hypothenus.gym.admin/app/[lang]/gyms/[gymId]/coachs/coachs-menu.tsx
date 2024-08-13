@@ -45,7 +45,7 @@ export default function CoachsMenu({ gymId }: { gymId: string }) {
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/${gymId}/coachs/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gyms/${gymId}/coachs/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("list.menu.add")}</span>
@@ -67,7 +67,7 @@ export default function CoachsMenu({ gymId }: { gymId: string }) {
         <div className="d-flex flex-row align-items-end h-100">
                 <div className="d-flex  flex-fill flex-row  align-items-end justify-content-center h-100 pb-2">
                   <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="coach_menu_back_tooltip">{t("list.menu.managementTooltip")}</Tooltip>}>
-                    <Link className="btn btn-primary ms-2" href={`/${i18n.resolvedLanguage}/gym/${gymId}`} ><i className="icon icon-light bi bi-backspace me-2"></i>
+                    <Link className="btn btn-primary ms-2" href={`/${i18n.resolvedLanguage}/gyms/${gymId}`} ><i className="icon icon-light bi bi-backspace me-2"></i>
                       {t("list.menu.management", { name: gymState.gym.name })}
                     </Link>
                   </OverlayTrigger>

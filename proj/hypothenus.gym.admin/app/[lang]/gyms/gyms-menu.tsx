@@ -38,7 +38,7 @@ export default function GymsMenu() {
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gym/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                    <Link className="link-element" href={`/${i18n.resolvedLanguage}/gyms/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("list.menu.add")}</span>

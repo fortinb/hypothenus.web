@@ -6,15 +6,17 @@ import GymsMenu from "./gyms-menu";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { useEffect } from "react";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
+import { usePathname } from "next/navigation";
 
 export default function Gyms() {
   const { t } = useTranslation("gym");
   const dispatch = useAppDispatch();
-
+  const pathname = usePathname();
+  
   useEffect(() => {
     const crumb: Crumb = {
       id: "gyms.page",
-      href: `/${i18n.resolvedLanguage}/gyms`,
+      href: pathname,
       crumb: t("breadcrumb")
     };
 

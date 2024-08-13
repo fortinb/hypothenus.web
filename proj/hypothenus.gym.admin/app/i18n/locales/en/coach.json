@@ -9,6 +9,7 @@
     "resume": {
         "contacts": "Emergency contacts"
     },
+    "breadcrumb": "Coachs",
     "list": {
         "menu": {
             "gym": "{{name}}",

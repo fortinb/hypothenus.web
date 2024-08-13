@@ -15,7 +15,7 @@ import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ import { z } from "zod";
 export default function GymForm({ gymId }: { gymId: string }) {
     const { t } = useTranslation("entity");
     const router = useRouter();
+    const pathname = usePathname();
 
     const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
@@ -48,6 +49,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
     useEffect(() => {
         if (isLoading && gymId !== "new") {
             if (gymState.gym?.gymId == gymId) {
+                initBreadcrumb(gymState.gym?.name)
                 setIsLoading(false);
             } else {
                 fetchGym(gymId);
@@ -60,20 +62,24 @@ export default function GymForm({ gymId }: { gymId: string }) {
         }
     }, []);
 
+    function initBreadcrumb(name: string) {
+        const crumb: Crumb = {
+            id: "gym.[gymId].page",
+            href: pathname,
+            crumb: name
+          };
+
+        dispatch(pushBreadcrumb(crumb));
+    }
+
     const fetchGym = async (gymId: string) => {
         let response = await axiosInstance.get(`/api/gyms/${gymId}`);
         let gym: Gym = response.data;
         dispatch(updateGymState(gym));
         formContext.reset(gym);
 
-        const crumb: Crumb = {
-            id: "gym.[gymId].page",
-            href: `/${i18n.resolvedLanguage}/gym/${gymId}`,
-            crumb: gym.name
-          };
-
-        dispatch(pushBreadcrumb(crumb));
-
+        initBreadcrumb(gym?.name);
+       
         setIsLoading(false);
     }
 

@@ -10,6 +10,7 @@
     "resume": {
         "contacts": "Contacts d'urgence"
     },
+    "breadcrumb": "Entraîneurs",
     "list": {
         "menu": {
             "gym": "{{name}}",

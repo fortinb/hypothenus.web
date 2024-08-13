@@ -1,3 +1,5 @@
+"use client"
+
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface Crumb {
@@ -11,7 +13,7 @@ export interface BreadcrumbState {
 }
 
 export const initialState: BreadcrumbState = {
-  breadcrumbs: []
+  breadcrumbs:  []
 }
 
 export const breadcrumbStateSlice = createSlice({
@@ -21,23 +23,34 @@ export const breadcrumbStateSlice = createSlice({
     pushBreadcrumb: (state, action: PayloadAction<Crumb>) => {
 
       const crumbIndex = state.breadcrumbs.findIndex(c => c.id == action.payload.id);
-      if (crumbIndex == -1) {
+      if (crumbIndex === -1) {
         state.breadcrumbs.push(action.payload);
-        return;
+      } else {
+        if (crumbIndex === state.breadcrumbs.length) {
+          return;
+        }
+  
+        state.breadcrumbs.splice(crumbIndex+1);
       }
 
-      if (crumbIndex == state.breadcrumbs.length) {
-        return {
-          ...state,
-        }
-      }
-      state.breadcrumbs.splice(crumbIndex+1);
-      
+      sessionStorage.setItem("breadcrumbs", JSON.stringify(state.breadcrumbs));
+    },
+    initBreadcrumbs: (state) => {
+      try {
+        state.breadcrumbs = JSON.parse(sessionStorage.getItem("breadcrumbs") ?? "[]");
+      } catch (e) {
+        state.breadcrumbs = [];
+      }     
+    },
+    resetBreadcrumbs: (state, action: PayloadAction<Crumb>) => {
+      state.breadcrumbs = [];
+      state.breadcrumbs.push(action.payload);
+      sessionStorage.setItem("breadcrumbs", JSON.stringify(state.breadcrumbs));
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { pushBreadcrumb } = breadcrumbStateSlice.actions
+export const { pushBreadcrumb, initBreadcrumbs, resetBreadcrumbs } = breadcrumbStateSlice.actions
 
 export default breadcrumbStateSlice.reducer
