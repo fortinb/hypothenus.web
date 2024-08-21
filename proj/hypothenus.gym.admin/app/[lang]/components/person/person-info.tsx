@@ -8,24 +8,45 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import DatePicker from "react-datepicker";
-import { Controller, FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
+import { Controller, FieldError, FieldErrorsImpl, Merge, useForm, useFormContext } from "react-hook-form";
 import PersonAddressInfo from "./person-address-info";
 import PersonEmergencyContactInfo from "./person-emergency-contact-info";
 import PersonPhoneInfo from "./person-phone-info";
-import Dropzone from 'react-dropzone'
+import Dropzone, { DropEvent, FileRejection } from 'react-dropzone'
+import { useEffect, useState } from "react";
+import Image from 'next/image';
 
-export default function PersonInfo({ id, formStatefield, isEditMode }:
+export default function PersonInfo({ id, formStatefield, isEditMode, isCancelling, uploadHandler  } :
     {
         id: string,
         formStatefield: string,
-        isEditMode: boolean
+        isEditMode: boolean,
+        isCancelling: boolean,
+        uploadHandler: (file: Blob) => void
     }) {
+
     const { t } = useTranslation("entity");
     const { register, formState: { errors } } = useFormContext();
+    const [photoPreviewUri, setPhotoPreviewUri] = useState<string>();
+
+    useEffect(() => {
+        if (isCancelling === true) {
+            setPhotoPreviewUri(undefined);
+        }
+       
+    }, [isCancelling]);
 
     function getError(): Merge<FieldError, FieldErrorsImpl<Person>> {
         return (errors?.person as unknown as Merge<FieldError, FieldErrorsImpl<Person>>);
     }
+
+    const onDrop = (acceptedFiles: File[], fileRejections: FileRejection[], e: DropEvent) => {
+        acceptedFiles.forEach((file: Blob) => {
+            let imageUrl = URL.createObjectURL(file);
+            setPhotoPreviewUri(imageUrl);
+            uploadHandler(file);
+        })
+    };
 
     return (
         <Container fluid="true">
@@ -63,29 +84,41 @@ export default function PersonInfo({ id, formStatefield, isEditMode }:
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
-                    <Form.Group>
+                    <Form.Group >
                         <Form.Label className="text-primary" htmlFor={`person_input_photoUri_${id}`}>{t("person.photoUri")}</Form.Label>
-                        <Dropzone disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={acceptedFiles => console.log(acceptedFiles)}>
-                            {({ getRootProps, getInputProps }) => (
-                                <section>
-                                    <div className="dropzone"  {...getRootProps()}>
-                                        <input  {...getInputProps()} />
-                                        <div className="d-flex flex-column">
-                                            <div className="d-flex flex-row justify-content-center align-items-center">
-                                                <span className="dropzone-text m-0">Drag 'n' drop picture files here, or click to select</span>
-                                            </div>
-                                            <div className="d-flex flex-row justify-content-center align-items-center">
-                                                <span className="m-0">*.jpg, *.png - max 2MB - 200x200</span>
+                        {isEditMode &&
+                            <Dropzone disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={onDrop}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <section>
+                                        <div className="dropzone"  {...getRootProps()}>
+                                            <input  {...getInputProps()} />
+                                            <div className="d-flex flex-column">
+                                                <div className="d-flex flex-row justify-content-center align-items-center">
+                                                    <span className="dropzone-text ms-2 me-2"> {t("person.image.dropzone")}</span>
+                                                </div>
+                                                <div className="d-flex flex-row justify-content-center align-items-center">
+                                                    <span className="m-0">{t("person.image.attributes")}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </section>
-                            )}
-                        </Dropzone>
-
-                        <Form.Control type="input" id={`person_input_photoUri_${id}`}  {...register(`${formStatefield}.photoUri`)}
-                            className={getError()?.photoUri ? "input-invalid" : ""} />
-                        {getError()?.photoUri && <Form.Text className="text-invalid">{t(getError()?.photoUri?.message ?? "")}</Form.Text>}
+                                    </section>
+                                )}
+                            </Dropzone>
+                        }
+                        <div className="d-flex flex-row justify-content-center mt-2">
+                            <Form.Control type="hidden" id={`person_input_photoContent_${id}`}  {...register(`${formStatefield}.photoContent`)} />
+                            <Controller
+                                name={`${formStatefield}.photoUri`}
+                                render={({ field }) => (
+                                    <Image
+                                        src={photoPreviewUri ? photoPreviewUri : (URL.canParse(field.value) ? field.value : "/images/person.png")}
+                                        width={200}
+                                        height={200}
+                                        alt="Coach photo"
+                                    />
+                                )}
+                            />
+                        </div>
                     </Form.Group>
                 </Col>
             </Row>

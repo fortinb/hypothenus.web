@@ -2,17 +2,15 @@
 
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { CoachsStatePaging, includeInactive } from "@/app/lib/store/slices/coachs-state-paging-slice";
+import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import Link from "next/link";
 import { ChangeEvent } from "react";
-import Form from "react-bootstrap/Form";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../../../lib/hooks/useStore";
-import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../../../lib/hooks/useStore";
 
 export default function CoachsMenu({ gymId }: { gymId: string }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);

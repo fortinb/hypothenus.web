@@ -71,7 +71,11 @@
         "phones": "Phones",
         "contacts": "Emergency contacts",
         "note": "Notes",
-        "communicationLanguage": "Communication language"
+        "communicationLanguage": "Communication language",
+        "image": {
+            "dropzone": "Drag 'n' drop picture file here, or click to select",
+            "attributes": " *.jpg, *.png - max 2MB - 200x200"
+        }
     },
     "coach": {
        "deleteConfirmation": {

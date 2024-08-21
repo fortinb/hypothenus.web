@@ -6,7 +6,11 @@ import { AxiosRequestConfig } from "axios";
 import axiosInstance from "../http/axiosInterceptor";
 import { RequestContext } from "../http/requestContext";
 
-function initRequest(requestContext: RequestContext, params: any): AxiosRequestConfig {
+interface HeaderDefinition {
+  name: string,
+  value: string
+}
+function initRequest(requestContext: RequestContext, params: any, headers?: HeaderDefinition[]): AxiosRequestConfig {
 
   let request: AxiosRequestConfig =
   {
@@ -18,6 +22,16 @@ function initRequest(requestContext: RequestContext, params: any): AxiosRequestC
     params: params
   }
 
+  if (headers) {
+    headers.forEach(header => {
+      if (!request.headers) {
+        request["headers"] = {};
+      }
+
+      request.headers[header.name] = header.value;
+    })
+  }
+ 
   return request;
 }
 
@@ -59,6 +73,18 @@ export async function getCoach(requestContext: RequestContext, gymId: string, co
   const request = initRequest(requestContext, {});
 
   let response = await axiosInstance.get(getURI.valueOf(), request);
+
+  return response.data;
+}
+
+export async function uploadCoachPhoto(requestContext: RequestContext, gymId: string, coachId: string, multipartFormData: FormData): Promise<string> {
+
+  const getURI: String =  `/v1/admin/gyms/${gymId}/coachs/${coachId}/photo`;
+
+  const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
+  const request = initRequest(requestContext, {}, [header]);
+
+  let response = await axiosInstance.post(getURI.valueOf(), multipartFormData, request);
 
   return response.data;
 }

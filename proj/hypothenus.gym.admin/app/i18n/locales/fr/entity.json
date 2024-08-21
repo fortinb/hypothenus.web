@@ -71,7 +71,11 @@
         "phones": "Téléphones",
         "contacts": "Contacts d'urgence",
         "note": "Notes",
-        "communicationLanguage": "Langue de communication"
+        "communicationLanguage": "Langue de communication",
+        "image": {
+            "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
+            "attributes": " *.jpg, *.png - max 2MB - 200x200"
+        }
     },
     "coach": {
         "deleteConfirmation": {

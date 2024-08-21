@@ -25,10 +25,22 @@ export const coachStateSlice = createSlice({
         coach: newCoach()
       }
     },
+    updateCoachPhotoUri: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        coach: {
+          ...state.coach,
+          person: {
+            ...state.coach.person,
+            photoUri: action.payload,
+          }
+        }
+      }
+    }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { updateCoachState, clearCoachState } = coachStateSlice.actions
+export const { updateCoachState, clearCoachState, updateCoachPhotoUri } = coachStateSlice.actions
 
 export default coachStateSlice.reducer

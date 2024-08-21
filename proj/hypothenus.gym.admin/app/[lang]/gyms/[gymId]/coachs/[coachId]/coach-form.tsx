@@ -11,7 +11,7 @@ import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
-import { CoachState, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
+import { CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     const { t } = useTranslation("entity");
     const router = useRouter();
     const pathname = usePathname();
-    
+
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
 
@@ -38,7 +38,9 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isActivating, setIsActivating] = useState<boolean>(false);
+    const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [photoToUpload, setPhotoToUpload] = useState<Blob>();
 
     const formContext = useForm<Coach>({
         defaultValues: coachState.coach,
@@ -46,6 +48,10 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     });
 
     const toggleSuccess = () => setSuccess(false);
+
+    function handlePhotoToUpload(file: Blob) {
+        setPhotoToUpload(file);
+    }
 
     useEffect(() => {
         if (isLoading && coachId !== "new") {
@@ -59,18 +65,22 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
 
         if (isLoading && coachId == "new") {
             setIsEditMode(true);
-           
+
             formContext.setValue("gymId", gymId);
             setIsLoading(false);
         }
-    }, []);
+
+        if (!isLoading) {
+            formContext.reset(coachState.coach);
+        }
+    }, [coachState]);
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
             id: "coach.[coachId].page",
             href: pathname,
             crumb: name
-          };
+        };
 
         dispatch(pushBreadcrumb(crumb));
     }
@@ -79,7 +89,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         let response = await axiosInstance.get(`/api/gyms/${gymId}/coachs/${coachId}`);
         let coach: Coach = response.data;
         dispatch(updateCoachState(coach));
-        formContext.reset(coach);
+
         initBreadcrumb(formatName(coach?.person));
         setIsLoading(false);
     }
@@ -95,24 +105,47 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         }
     }
 
+    const uploadPhoto = async (gymId: string, coachId: string, photo: Blob) => {
+        const formData = new FormData();
+        formData.append('file', photo);
+
+        let response = await axiosInstance.post(`/api/gyms/${gymId}/coachs/${coachId}/photo`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
+
+        return response.data as string;
+    }
+
     const createCoach = async (formData: z.infer<typeof CoachSchema>) => {
+
         let response = await axiosInstance.post(`/api/gyms/${formData.gymId}/coachs`, formData);
+        let coach: Coach = response.data;
 
-        dispatch(updateCoachState(response.data));
-        formContext.reset(response.data);
+        dispatch(updateCoachState(coach));
 
-        setTextSuccess(t("action.saveSuccess"));
-        setSuccess(true);
-        setIsSaving(false);
+        await postSaveCoach(coach);
     }
 
     const saveCoach = async (formData: z.infer<typeof CoachSchema>) => {
         let updatedCoach: Coach = mapForm(formData, coachState.coach);
-        let response = await axiosInstance.put(`/api/gyms/${formData.gymId}/coachs/${updatedCoach.id}`, updatedCoach);
-        let result: Coach = response.data;
 
-        dispatch(updateCoachState(result));
-        formContext.reset(result);
+        let response = await axiosInstance.put(`/api/gyms/${formData.gymId}/coachs/${updatedCoach.id}`, updatedCoach);
+        let coach: Coach = response.data as Coach;
+
+        dispatch(updateCoachState(coach));
+
+        await postSaveCoach(updatedCoach);
+    }
+
+    const postSaveCoach = async (coach: Coach) => {
+
+        if (photoToUpload) {
+            const photoUri = await uploadPhoto(coach.gymId, coach.id, photoToUpload);
+            setPhotoToUpload(undefined);
+            dispatch(updateCoachPhotoUri(photoUri));
+        }
 
         setTextSuccess(t("action.saveSuccess"));
         setSuccess(true);
@@ -122,6 +155,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     const activateCoach = async (gymId: string, coachId: string) => {
         let response = await axiosInstance.post(`/api/gyms/${gymId}/coachs/${coachId}/activate`);
         let coach: Coach = response.data;
+
         dispatch(updateCoachState(coach));
         setIsActivating(false);
         setTextSuccess(t("action.activationSuccess"));
@@ -131,6 +165,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     const deactivateCoach = async (gymId: string, coachId: string) => {
         let response = await axiosInstance.post(`/api/gyms/${gymId}/coachs/${coachId}/deactivate`);
         let coach: Coach = response.data;
+
         dispatch(updateCoachState(coach));
         setIsActivating(false);
         setTextSuccess(t("action.deactivationSuccess"));
@@ -152,7 +187,10 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
     }
 
     function onCancel() {
+        setIsCancelling(true);
         setIsEditMode(false);
+        setPhotoToUpload(undefined);
+
         formContext.reset(coachState.coach);
     }
 
@@ -167,9 +205,15 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
         if (coachState.coach.id !== "") {
-            setIsEditMode(isEditMode ? false : true);
-            formContext.reset(coachState.coach);
+           
+            if (isEditMode === true) {
+                onCancel();
+            } else {
+                setIsEditMode(true);
+                setIsCancelling(false);
+            }
         }
+      
     }
 
     function onDelete(confirmation: boolean) {
@@ -222,7 +266,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.active}
                                         isActivationDisabled={(coachState.coach.id == "" ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
-                                    <CoachInfo coach={coachState.coach} isEditMode={isEditMode} />
+                                    <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling}/>
                                     <hr className="mt-1 mb-1" />
                                     <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="coach_info_form" />
                                 </Form>

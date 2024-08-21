@@ -60,7 +60,11 @@ export default function GymForm({ gymId }: { gymId: string }) {
             setIsEditMode(true);
             setIsLoading(false);
         }
-    }, []);
+
+        if (!isLoading) {
+            formContext.reset(gymState.gym);
+        }
+    }, [gymState]);
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
@@ -76,7 +80,6 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let response = await axiosInstance.get(`/api/gyms/${gymId}`);
         let gym: Gym = response.data;
         dispatch(updateGymState(gym));
-        formContext.reset(gym);
 
         initBreadcrumb(gym?.name);
        
@@ -104,7 +107,6 @@ export default function GymForm({ gymId }: { gymId: string }) {
             setIsEditMode(true);
         } else {
             dispatch(updateGymState(result));
-            formContext.reset(result);
         }
 
         setTextSuccess(t("action.saveSuccess"));
@@ -117,7 +119,6 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let response = await axiosInstance.put(`/api/gyms/${updatedGym.gymId}`, updatedGym);
         let result: Gym = response.data;
 
-        dispatch(updateGymState(result));
         formContext.reset(result);
 
         setTextSuccess(t("action.saveSuccess"));

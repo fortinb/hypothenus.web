@@ -7,9 +7,6 @@ const axiosInstance = axios.create();
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Modify the request config here (e.g., add headers, authentication tokens)
-    config.headers['Content-Type'] = "application/json";
-
     if (process.env.ENVIRONMENT != 'prod') {
       config.headers["x-credentials"] = "Bruno Fortin";
       config.headers["x-authorization"] = "{ \"roles\" : [\"Admin\"] }";

@@ -3,8 +3,6 @@
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import Link from "next/link";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 import { useSelector } from "react-redux";
 
 export default function CoachMenu({ gymId, coachId }: { gymId: string, coachId: string }) {
@@ -16,6 +14,10 @@ export default function CoachMenu({ gymId, coachId }: { gymId: string, coachId: 
     <div className="d-flex flex-column justify-content-start w-100 h-50 page-menu">
       <div className="d-flex flex-row justify-content-center">
         <h2 className="text-secondary pt-4 ps-2">{t("menu.gym", { name: gymState.gym.name })}</h2>
+      </div>
+      <div className="d-flex flex-row justify-content-center">
+        <h3 className="text-secondary pt-0 ps-2">{t("menu.sections")}
+        </h3>
       </div>
       <div className="ps-2 pe-2">
         <hr />
