@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { frCA } from 'date-fns/locale/fr-CA';
 import { enUS } from 'date-fns/locale/en-US';
 import { registerLocale } from  "react-datepicker";
+
 export const fallbackLanguage = "en";
 export const supportedLanguages = [fallbackLanguage, "fr"]
 export const languageCookieName = "language";
@@ -73,7 +74,6 @@ export function useTranslation(namespace?: string, language?: string) {
 
   const { i18n } = translation
   if (runsOnServerSide && language && i18n.resolvedLanguage !== language) {
-    console.log("i18n on server change language " + language);
     i18n.changeLanguage(language);
   } else {
 
@@ -83,8 +83,7 @@ export function useTranslation(namespace?: string, language?: string) {
         return;
       }
 
-      console.log ("cookie  change lalguage " + cookies.language);
-      i18n.changeLanguage(cookies.language);
+       i18n.changeLanguage(cookies.language);
     }, [i18n, language, cookies.language]);
   }
 

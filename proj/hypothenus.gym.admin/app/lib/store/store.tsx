@@ -3,6 +3,8 @@ import gymsStatePagingReducer from "./slices/gyms-state-paging-slice";
 import gymStateReducer from "./slices/gym-state-slice";
 import coachsStatePagingReducer from "./slices/coachs-state-paging-slice";
 import coachStateReducer from "./slices/coach-state-slice";
+import coursesStatePagingReducer from "./slices/courses-state-paging-slice";
+import courseStateReducer from "./slices/course-state-slice";
 import breadcrumbStateReducer from "./slices/breadcrumb-state-slice";
 
 export const store = configureStore({
@@ -11,6 +13,8 @@ export const store = configureStore({
     gymState: gymStateReducer,
     coachsStatePaging: coachsStatePagingReducer,
     coachState: coachStateReducer,
+    coursesStatePaging: coursesStatePagingReducer,
+    courseState: courseStateReducer,
     breadcrumbState: breadcrumbStateReducer
   }
 })

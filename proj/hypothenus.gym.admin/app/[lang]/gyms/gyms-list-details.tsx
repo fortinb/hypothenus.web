@@ -12,7 +12,7 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
   return (
     <div className="col-6 p-2">
       <Card>
-        <Card.Body className={"m-2" + (gym.active == false ? " card-body-inactive" : "")}>
+        <Card.Body className={"m-2" + (gym.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${i18n.resolvedLanguage}/gyms/${gym.gymId}`}> {gym.name}</Link>
           </Card.Title>
@@ -21,7 +21,7 @@ export default function GymListDetails({ gym }: { gym: Gym }) {
             <Link className="link-element" href={`mailto:${gym.email}`}>{gym.email}</Link><br />
             <span className="text-primary">{gym.gymId}</span><br />
 
-            {gym.active == false &&
+            {gym.isActive == false &&
               <div>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
               </div>

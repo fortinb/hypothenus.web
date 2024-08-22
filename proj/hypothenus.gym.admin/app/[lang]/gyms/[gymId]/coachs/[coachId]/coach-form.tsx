@@ -7,7 +7,7 @@ import CoachInfo from "@/app/[lang]/components/coach/coach-info";
 import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
-import { useTranslation } from "@/app/i18n/i18n";
+import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
@@ -64,6 +64,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         }
 
         if (isLoading && coachId == "new") {
+            initBreadcrumb(t("coach.navigation.new"));
             setIsEditMode(true);
 
             formContext.setValue("gymId", gymId);
@@ -72,6 +73,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
 
         if (!isLoading) {
             formContext.reset(coachState.coach);
+            initBreadcrumb(formatName(coachState.coach?.person))
         }
     }, [coachState]);
 
@@ -90,7 +92,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         let coach: Coach = response.data;
         dispatch(updateCoachState(coach));
 
-        initBreadcrumb(formatName(coach?.person));
+     //   initBreadcrumb(formatName(coach?.person));
         setIsLoading(false);
     }
 
@@ -126,6 +128,8 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         dispatch(updateCoachState(coach));
 
         await postSaveCoach(coach);
+
+        router.push(`/${i18n.resolvedLanguage}/gyms/${coach.gymId}/coachs/${coach.id}`);
     }
 
     const saveCoach = async (formData: z.infer<typeof CoachSchema>) => {
@@ -181,8 +185,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push("/coachs");
-
+            router.push(`/gyms/${gymId}/coachs`);
         }, 2000);
     }
 
@@ -235,7 +238,7 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         let updatedCoach: Coach = {
             id: coach.id,
             gymId: coach.gymId,
-            active: coach.active,
+            isActive: coach.isActive,
             person: formData.person,
             messages: undefined,
             createdBy: undefined,
@@ -263,8 +266,8 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
                         <div className="w-100 h-100">
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.active}
-                                        isActivationDisabled={(coachState.coach.id == "" ? true : false)} isActivating={isActivating} />
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.isActive}
+                                        isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                     <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling}/>
                                     <hr className="mt-1 mb-1" />
@@ -286,7 +289,3 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         </ErrorBoundary>
     );
 }
-function dispatch(arg0: any) {
-    throw new Error("Function not implemented.");
-}
-

@@ -13,7 +13,8 @@
         "deactivationSuccess": "Deactivation successfull !"
     },
     "validation": {
-        "emailInvalid": "Email format is invalid."
+        "emailInvalid": "Email format is invalid.",
+        "descriptionRequired": "Description is required."
     },
     "address": {
         "validation": {
@@ -31,8 +32,11 @@
         "zipcode": "Postal code"
     },
     "gym": {
+        "navigation": {
+            "new": "New gym"
+        },
         "validation": {
-            "alreadyExists": "Firstname is required.",
+            "alreadyExists": "Gym code must be unique, code already exists.",
             "codeRequired": "Code is required.",
             "codeMaxLength": "Maximum length for Gym Code is 20 characters.",
             "nameRequired": "Name is required.",
@@ -78,9 +82,32 @@
         }
     },
     "coach": {
+        "navigation": {
+            "new": "New coach"
+        },
        "deleteConfirmation": {
             "title": "Delete {{name}}",
             "text": "Are you sure you want to delete this coach ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
+        }
+    },
+    "course": {
+        "validation": {
+            "alreadyExists": "Course code must be unique, code already exists.",
+            "codeRequired": "Code is required."
+        },
+        "navigation": {
+            "new": "New course"
+        },
+        "code": "Code",
+        "codePlaceholder": "Course unique code",
+        "name": "Course name",
+        "description": "Course description",
+        "deleteConfirmation": {
+            "title": "Delete {{name}}",
+            "text": "Are you sure you want to delete this course ?",
             "yes": "Delete",
             "no": "Cancel",
             "action": "Deleting..."

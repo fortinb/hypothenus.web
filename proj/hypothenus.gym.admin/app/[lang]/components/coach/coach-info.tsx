@@ -1,10 +1,8 @@
 "use client"
 
-import { Coach } from "@/src/lib/entities/coach";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import PersonInfo from "../person/person-info";
-import { useEffect } from "react";
 
 export default function CoachInfo({ isEditMode, isCancelling, uploadHandler  } :
     {

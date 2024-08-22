@@ -6,7 +6,7 @@ export interface Coach extends BaseEntity {
   id?: any;
   gymId: string;
   person: Person;
-  active: boolean;
+  isActive: boolean;
 }
 
 export const newCoach = (): Coach => {
@@ -14,7 +14,7 @@ export const newCoach = (): Coach => {
     id: null,
     gymId: "",
     person: newPerson(),
-    active: false,
+    isActive: false,
     messages: undefined,
     createdBy: undefined,
     modifiedBy: undefined

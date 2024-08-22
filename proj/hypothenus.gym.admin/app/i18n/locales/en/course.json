@@ -1,0 +1,25 @@
+{
+    "menu": {
+        "gym": "{{name}}",
+        "sections": "Course",
+        "info": "Info",
+        "management": "Courses",
+        "managementTooltip": "Back to courses"
+    },
+    "resume": {
+    },
+    "breadcrumb": "Courses",
+    "list": {
+        "menu": {
+            "gym": "{{name}}",
+            "title": "Courses",
+            "add": "Add new course",
+            "inactive": "Inactive",
+            "management": "{{name}}",
+            "managementTooltip": "Back to gym"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

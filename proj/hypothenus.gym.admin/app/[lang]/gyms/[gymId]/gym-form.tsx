@@ -7,7 +7,7 @@ import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import GymInfo from "@/app/[lang]/components/gym/gym-info";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
-import { useTranslation } from "@/app/i18n/i18n";
+import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
@@ -49,7 +49,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
     useEffect(() => {
         if (isLoading && gymId !== "new") {
             if (gymState.gym?.gymId == gymId) {
-                initBreadcrumb(gymState.gym?.name)
+                initBreadcrumb(gymState.gym?.name);
                 setIsLoading(false);
             } else {
                 fetchGym(gymId);
@@ -57,12 +57,14 @@ export default function GymForm({ gymId }: { gymId: string }) {
         }
 
         if (isLoading && gymId == "new") {
+            initBreadcrumb(t("gym.navigation.new"));
             setIsEditMode(true);
             setIsLoading(false);
         }
 
         if (!isLoading) {
             formContext.reset(gymState.gym);
+            initBreadcrumb(gymState.gym?.name);
         }
     }, [gymState]);
 
@@ -106,11 +108,12 @@ export default function GymForm({ gymId }: { gymId: string }) {
             formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists")});
             setIsEditMode(true);
         } else {
+            setSuccess(true);
+            setTextSuccess(t("action.saveSuccess"));
             dispatch(updateGymState(result));
+            router.push(`/${i18n.resolvedLanguage}/gyms/${result.gymId}`);
         }
-
-        setTextSuccess(t("action.saveSuccess"));
-        setSuccess(true);
+      
         setIsSaving(false);
     }
 
@@ -118,9 +121,8 @@ export default function GymForm({ gymId }: { gymId: string }) {
         let updatedGym: Gym = mapForm(formData, gymState.gym);
         let response = await axiosInstance.put(`/api/gyms/${updatedGym.gymId}`, updatedGym);
         let result: Gym = response.data;
-
-        formContext.reset(result);
-
+        dispatch(updateGymState(result));
+ 
         setTextSuccess(t("action.saveSuccess"));
         
         setSuccess(true);
@@ -175,8 +177,12 @@ export default function GymForm({ gymId }: { gymId: string }) {
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
         if (gymState.gym.id !== "") {
-            setIsEditMode(isEditMode ? false : true);
-            formContext.reset(gymState.gym);
+            if (isEditMode === true) {
+                onCancel();
+            } else {
+                setIsEditMode(true);
+              
+            }
         }
     }
 
@@ -202,7 +208,7 @@ export default function GymForm({ gymId }: { gymId: string }) {
             name: formData.name,
             address: formData.address,
             email: formData.email,
-            active: gym.active,
+            isActive: gym.isActive,
             note: formData.note,
             contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
@@ -233,8 +239,8 @@ export default function GymForm({ gymId }: { gymId: string }) {
                         <div className="w-100 h-100">
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.active}
-                                        isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
+                                        isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                     <GymInfo gym={gymState.gym} isEditMode={isEditMode} />
                                     <hr className="mt-1 mb-1" />

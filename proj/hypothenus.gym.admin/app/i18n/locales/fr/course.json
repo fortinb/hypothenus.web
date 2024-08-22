@@ -1,0 +1,26 @@
+{
+    "menu": {
+        "gym": "{{name}}",
+        "sections": "Cours",
+        "info": "Info",
+        "management": "Cours",
+        "managementTooltip": "Retour à la liste des cours"
+       
+    },
+    "resume": {
+    },
+    "breadcrumb": "Cours",
+    "list": {
+        "menu": {
+            "gym": "{{name}}",
+            "title": "Cours",
+            "add": "Ajouter un cour",
+            "inactive": "Inactives",
+            "management": "{{name}}",
+            "managementTooltip": "Retour à la salle de sport"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

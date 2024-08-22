@@ -1,19 +1,20 @@
 {
     "format": {
         "date": "aaaa-mm-jj"
-     },
+    },
     "language": {
         "en": "Anglais",
         "fr": "Français"
     },
-    "action" : {
+    "action": {
         "saveSuccess": "Sauvegarde complétée !",
         "deleteSuccess": "Suppression complétée !",
         "activationSuccess": "Activation complétée !",
         "deactivationSuccess": "Déactivation complétée !"
     },
     "validation": {
-        "emailInvalid": "Le format du courriel est invalide."
+        "emailInvalid": "Le format du courriel est invalide.",
+        "descriptionRequired": "La description est requise."
     },
     "address": {
         "validation": {
@@ -30,9 +31,12 @@
         "state": "Province",
         "zipcode": "Code postal"
     },
-    "gym" : {
+    "gym": {
+        "navigation": {
+            "new": "Nouvelle salle de sports"
+        },
         "validation": {
-            "alreadyExists": "Ce code est déjà existant.",
+            "alreadyExists": "Le code de la salle de sport doit être unique, ce code est déjà existant.",
             "codeRequired": "Le code est requis.",
             "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
             "nameRequired": "Le nom de la salle de sport est requis.",
@@ -78,9 +82,32 @@
         }
     },
     "coach": {
+        "navigation": {
+            "new": "Nouvel entraîneur"
+        },
         "deleteConfirmation": {
             "title": "Supprimer {{name}}",
             "text": "Êtes vous certain de vouloir supprimer cet entraineur ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    },
+    "course": {
+        "validation": {
+            "alreadyExists": "Le code du cours doit être unique, ce code est déjà existant.",
+            "codeRequired": "Le code est requis."
+        },
+        "navigation": {
+            "new": "Nouveau cours"
+        },
+        "code": "Code",
+        "codePlaceholder": "Identification unique",
+        "name": "Nom du cours",
+        "description": "Description du cours",
+        "deleteConfirmation": {
+            "title": "Supprimer {{name}}",
+            "text": "Êtes vous certain de vouloir supprimer ce cours ?",
             "yes": "Supprimer",
             "no": "Annuler",
             "action": "Suppression en cours..."

@@ -7,13 +7,14 @@ import Form from "react-bootstrap/Form";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-export default function FormActionBar({ onEdit, onDelete, onActivation, isActivationChecked, isActivationDisabled, isActivating }:
+export default function FormActionBar({ onEdit, onDelete, onActivation, isActivationChecked, isDeleteDisable, isActivationDisabled, isActivating }:
     {
         onEdit: (e: MouseEvent<HTMLButtonElement>) => void,
         onDelete: (e: MouseEvent<HTMLButtonElement>) => void,
         onActivation: (e: ChangeEvent<HTMLInputElement>) => void,
         isActivationChecked: boolean,
         isActivationDisabled: boolean,
+        isDeleteDisable: boolean,
         isActivating: boolean
     }) {
 
@@ -31,7 +32,7 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isActiva
             <div className="d-flex flex-row justify-content-end">
                 <div className="pe-4">
                     <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_delete_tooltip">{t("form.bar.delete")}</Tooltip>}>
-                        <Button className="btn btn-icon btn-sm" onClick={onDelete}><i className="icon bi bi-trash h5"></i></Button>
+                        <Button className="btn btn-icon btn-sm" disabled={isDeleteDisable} onClick={onDelete}><i className="icon bi bi-trash h5"></i></Button>
                     </OverlayTrigger>
                 </div>
                 <div className="form-check form-switch pe-2">

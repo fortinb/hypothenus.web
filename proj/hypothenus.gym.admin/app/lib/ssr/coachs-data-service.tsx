@@ -50,22 +50,6 @@ export async function fetchCoachs(requestContext: RequestContext, gymId: string,
   return response.data;
 }
 
-export async function searchCoachs(requestContext: RequestContext, gymId: string, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Coach>> {
-
-  const searchURI: String =  `/v1/admin/gyms/${gymId}/coachs/search`;
-
-  const request = initRequest(requestContext, {
-    page: page,
-    pageSize: pageSize,
-    criteria: criteria,
-    includeInactive: includeInactive
-  });
-
-  let response = await axiosInstance.get(searchURI.valueOf(), request);
-
-  return response.data;
-}
-
 export async function getCoach(requestContext: RequestContext, gymId: string, coachId: string): Promise<Coach> {
 
   const getURI: String =  `/v1/admin/gyms/${gymId}/coachs/${coachId}`;

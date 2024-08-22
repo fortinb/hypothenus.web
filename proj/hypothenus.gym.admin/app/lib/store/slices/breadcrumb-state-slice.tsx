@@ -29,7 +29,8 @@ export const breadcrumbStateSlice = createSlice({
         if (crumbIndex === state.breadcrumbs.length) {
           return;
         }
-  
+        
+        state.breadcrumbs[crumbIndex].crumb = action.payload.crumb;
         state.breadcrumbs.splice(crumbIndex+1);
       }
 
