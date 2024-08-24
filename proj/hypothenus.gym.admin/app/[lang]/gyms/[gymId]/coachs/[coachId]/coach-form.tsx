@@ -92,7 +92,6 @@ export default function CoachForm({ gymId, coachId }: { gymId: string, coachId: 
         let coach: Coach = response.data;
         dispatch(updateCoachState(coach));
 
-     //   initBreadcrumb(formatName(coach?.person));
         setIsLoading(false);
     }
 

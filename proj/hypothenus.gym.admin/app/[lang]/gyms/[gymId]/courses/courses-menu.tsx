@@ -30,7 +30,7 @@ export default function CoursesMenu({ gymId }: { gymId: string }) {
       </div>
       <div className="d-flex flex-row justify-content-center">
         <h3 className="text-secondary pt-0 ps-2">{t("list.menu.title")}
-          <i className="icon icon-secondary bi-person-arms-up m-0"></i>
+          <i className="icon icon-secondary bi-bicycle ms-2"></i>
         </h3>
       </div>
       <div className="ps-2 pe-2">

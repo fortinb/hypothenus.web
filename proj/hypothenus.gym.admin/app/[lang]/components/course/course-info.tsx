@@ -23,7 +23,7 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="course_info_form" disabled={!isEditMode} >
             <Container >
                 <Row className="m-2 gx-2">
-                    <Col xs={6} >
+                    <Col xs={4} >
                         <Form.Group>
                             <Form.Label className="text-primary" htmlFor="course_info_input_code">{t("course.code")}</Form.Label>
                             <Form.Control type="input" id="course_info_input_code" placeholder={t("course.codePlaceholder")} {...register("code")}
@@ -38,21 +38,19 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                         <div>
                             <Row className="m-2 gx-2">
                                 <hr />
-                                <Form.Label className="text-secondary h5" >{t(`language.${language}`)}</Form.Label>
+                                <Form.Label className="text-primary h5" >{t(`language.${language}`)}</Form.Label>
                             </Row>
                             <Row className="m-2 gx-2">
-                                <Col xs={6} >
+                                <Col xs={4} >
                                     <Form.Group>
                                         <Form.Label className="text-primary" htmlFor={`course_info_input_name_${index}`}>{t("course.name")}</Form.Label>
-                                        <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`course.name.${index}`} parent="name"></LocalizedStringInfo>
+                                        <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`name.${index}`} parent="name"></LocalizedStringInfo>
                                     </Form.Group>
                                 </Col>
-                            </Row>
-                            <Row className="m-2 gx-2">
-                                <Col xs={12} >
+                                <Col xs={8} >
                                     <Form.Group>
                                         <Form.Label className="text-primary" htmlFor={`course_info_input_description_${index}`}>{t("course.description")}</Form.Label>
-                                        <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={4} language={language as LanguageEnum} formStatefield={`course.description.${index}`} parent="description"></LocalizedStringInfo>
+                                        <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`description.${index}`} parent="description"></LocalizedStringInfo>
                                     </Form.Group>
                                 </Col>
                             </Row>

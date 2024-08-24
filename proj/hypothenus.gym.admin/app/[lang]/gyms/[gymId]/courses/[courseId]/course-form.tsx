@@ -88,7 +88,6 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
         let course: Course = response.data;
         dispatch(updateCourseState(course));
 
-      //  initBreadcrumb(formatName(course?.person));
         setIsLoading(false);
     }
 

@@ -13,8 +13,7 @@
         "deactivationSuccess": "Deactivation successfull !"
     },
     "validation": {
-        "emailInvalid": "Email format is invalid.",
-        "descriptionRequired": "Description is required."
+        "emailInvalid": "Email format is invalid."
     },
     "address": {
         "validation": {
@@ -96,7 +95,8 @@
     "course": {
         "validation": {
             "alreadyExists": "Course code must be unique, code already exists.",
-            "codeRequired": "Code is required."
+            "codeRequired": "Code is required.",
+            "nameRequired": "Course name is required."
         },
         "navigation": {
             "new": "New course"

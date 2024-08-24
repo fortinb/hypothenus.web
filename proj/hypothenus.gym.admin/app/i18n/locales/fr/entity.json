@@ -96,7 +96,8 @@
     "course": {
         "validation": {
             "alreadyExists": "Le code du cours doit être unique, ce code est déjà existant.",
-            "codeRequired": "Le code est requis."
+            "codeRequired": "Le code est requis.",
+            "nameRequired": "Le nom du cours est requis."
         },
         "navigation": {
             "new": "Nouveau cours"

@@ -28,8 +28,8 @@ export const newCourse = (): Course => {
   };
 
   supportedLanguages.forEach(l => {
-    newCourse.name.push(newLocalizedString(l));
-    newCourse.description.push(newLocalizedString(l));
+    newCourse.name.push(newLocalizedString(l as LanguageEnum));
+    newCourse.description.push(newLocalizedString(l as LanguageEnum));
   });
  
   return newCourse;
@@ -49,6 +49,6 @@ export const CourseSchema = z.object({
   id: z.any().nullable(),
   gymId: z.string().min(1),
   code: z.string().min(1, {message: "course.validation.codeRequired"}),
-  name: z.array(LocalizedStringSchema).min(2),
-  description: z.array(LocalizedStringSchema).min(2),
+  name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(1),
+  description: z.array(LocalizedStringSchema(false,"")).min(1)
 });

@@ -15,7 +15,9 @@ export const newLocalizedString = (language: LanguageEnum): LocalizedString => {
   return newLocalizedString;
 }
 
-export const LocalizedStringSchema = z.object({
-  language: z.nativeEnum(LanguageEnum),
-  text: z.string().min(1, {message: "validation.descriptionRequired"})
-});
+export const LocalizedStringSchema = (required: boolean, message: string) => {
+  return z.object({
+    language: z.nativeEnum(LanguageEnum),
+    text: z.string().min(required ? 1 : 0, {message: `${message}`})
+  });
+} 
