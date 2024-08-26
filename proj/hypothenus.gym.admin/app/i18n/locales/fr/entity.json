@@ -97,7 +97,9 @@
         "validation": {
             "alreadyExists": "Le code du cours doit être unique, ce code est déjà existant.",
             "codeRequired": "Le code est requis.",
-            "nameRequired": "Le nom du cours est requis."
+            "nameRequired": "Le nom du cours est requis.",
+            "startDateRequired": "La date de début est requise et doit être plus grande ou égale à la date du jour.",
+            "endDateGreaterThanToday" : "La date de fin doit être plus grande que la date du jour."
         },
         "navigation": {
             "new": "Nouveau cours"
@@ -106,6 +108,10 @@
         "codePlaceholder": "Identification unique",
         "name": "Nom du cours",
         "description": "Description du cours",
+        "datesSection": "Période d'activation",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
+        "coachsSection" : "Entraîneur qualifiés",
         "deleteConfirmation": {
             "title": "Supprimer {{name}}",
             "text": "Êtes vous certain de vouloir supprimer ce cours ?",

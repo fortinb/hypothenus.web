@@ -1,8 +1,10 @@
+import { fallbackLanguage, supportedLanguages } from '@/app/i18n/i18n';
+import moment from 'moment';
 import { z } from 'zod';
 import { BaseEntity } from './baseEntity';
-import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
+import { Coach, CoachSchema } from './coach';
 import { LanguageEnum } from './language';
-import { fallbackLanguage, supportedLanguages } from '@/app/i18n/i18n';
+import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
 
 
 export interface Course extends BaseEntity {
@@ -11,6 +13,9 @@ export interface Course extends BaseEntity {
   code: string;
   name: LocalizedString[];
   description: LocalizedString[];
+  coachs: Coach[];
+  startDate?: any; //Date | undefined | null
+  endDate?: any; //Date | undefined | null
   isActive: boolean;
 }
 
@@ -21,6 +26,9 @@ export const newCourse = (): Course => {
     code: "",
     name: [],
     description: [],
+    coachs: [],
+    startDate: null,
+    endDate: null,
     isActive: false,
     messages: undefined,
     createdBy: undefined,
@@ -50,5 +58,10 @@ export const CourseSchema = z.object({
   gymId: z.string().min(1),
   code: z.string().min(1, {message: "course.validation.codeRequired"}),
   name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(1),
-  description: z.array(LocalizedStringSchema(false,"")).min(1)
+  description: z.array(LocalizedStringSchema(false,"")).min(1),
+  startDate: z.date().min(moment().add(-1, "days").toDate(), {message: "course.validation.startDateRequired"}),
+  endDate: z.date().min(moment().add(-1, "days").toDate() ,{message: "course.validation.endDateGreaterThanToday"}).optional().nullable(), 
+  coachs: z.array(CoachSchema).min(0)
 });
+
+

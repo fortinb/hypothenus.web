@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
+import { Coach, newCoach } from "@/src/lib/entities/coach";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
@@ -108,7 +109,7 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
 
         const duplicate = course.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
         if (duplicate) {
-            formContext.setError("code", { type: "manual", message: t("course.validation.alreadyExists")});
+            formContext.setError("code", { type: "manual", message: t("course.validation.alreadyExists") });
             setIsEditMode(true);
         } else {
             setSuccess(true);
@@ -189,7 +190,7 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
         if (courseState.course.id !== "") {
-           
+
             if (isEditMode === true) {
                 onCancel();
             } else {
@@ -197,7 +198,7 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
                 setIsCancelling(false);
             }
         }
-      
+
     }
 
     function onDelete(confirmation: boolean) {
@@ -222,6 +223,14 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
             code: formData.code,
             name: formData.name,
             description: formData.description,
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+            coachs: formData.coachs.map(c => {
+                const coach: Coach = newCoach();
+                coach.gymId = c.gymId;
+                coach.id = c.id;
+                return coach;
+            }),
             isActive: course.isActive,
             messages: undefined,
             createdBy: undefined,
@@ -250,9 +259,9 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="course_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.id == "" ? true : courseState.course.isActive}
-                                         isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
+                                        isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
-                                    <CourseInfo course={courseState.course} isEditMode={isEditMode} isCancelling={isCancelling}/>
+                                    <CourseInfo course={courseState.course} isEditMode={isEditMode} isCancelling={isCancelling} />
                                     <hr className="mt-1 mb-1" />
                                     <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />
                                 </Form>

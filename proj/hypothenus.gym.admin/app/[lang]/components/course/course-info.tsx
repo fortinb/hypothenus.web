@@ -1,13 +1,15 @@
 "use client"
 
-import { supportedLanguages, useTranslation } from "@/app/i18n/i18n";
+import i18n, { supportedLanguages, useTranslation } from "@/app/i18n/i18n";
 import { Course } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
+import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { useFormContext } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import { Controller, useFormContext } from "react-hook-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
 
 export default function CourseInfo({ course, isEditMode, isCancelling }:
@@ -33,30 +35,93 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                         </Form.Group>
                     </Col>
                 </Row>
-                {supportedLanguages.map((language: string, index: number) => {
-                    return (
-                        <div>
-                            <Row className="m-2 gx-2">
-                                <hr />
-                                <Form.Label className="text-primary h5" >{t(`language.${language}`)}</Form.Label>
-                            </Row>
-                            <Row className="m-2 gx-2">
-                                <Col xs={4} >
-                                    <Form.Group>
-                                        <Form.Label className="text-primary" htmlFor={`course_info_input_name_${index}`}>{t("course.name")}</Form.Label>
-                                        <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`name.${index}`} parent="name"></LocalizedStringInfo>
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={8} >
-                                    <Form.Group>
-                                        <Form.Label className="text-primary" htmlFor={`course_info_input_description_${index}`}>{t("course.description")}</Form.Label>
-                                        <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`description.${index}`} parent="description"></LocalizedStringInfo>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                        </div>
-                    )
-                })}
+
+                <Row className="m-2 gx-2">
+                    <Accordion >
+                        <Accordion.Item eventKey="0" className="pt-2">
+                            <Accordion.Header className={errors.name || errors.description ? "accordeon-header-invalid" : ""}>{t("course.description")}</Accordion.Header>
+                            <Accordion.Body className="p-0">
+                                <Row className="m-2 p-2">
+                                    <Col xs={12} className="p-1" >
+                                        {supportedLanguages.map((language: string, index: number) => {
+                                            return (
+                                                <div>
+                                                    <Row className="m-2 gx-2">
+                                                        <hr />
+                                                        <Form.Label className="text-primary h5" >{t(`language.${language}`)}</Form.Label>
+                                                    </Row>
+                                                    <Row className="m-2 gx-2">
+                                                        <Col xs={4} >
+                                                            <Form.Group>
+                                                                <Form.Label className="text-primary" htmlFor={`course_info_input_name_${index}`}>{t("course.name")}</Form.Label>
+                                                                <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`name.${index}`} parent="name"></LocalizedStringInfo>
+                                                            </Form.Group>
+                                                        </Col>
+                                                        <Col xs={8} >
+                                                            <Form.Group>
+                                                                <Form.Label className="text-primary" htmlFor={`course_info_input_description_${index}`}>{t("course.description")}</Form.Label>
+                                                                <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`description.${index}`} parent="description"></LocalizedStringInfo>
+                                                            </Form.Group>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            )
+                                        })}
+                                    </Col>
+
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1" className="pt-2">
+                            <Accordion.Header className={(errors.startDate || errors.endDate ? "accordeon-header-invalid" : "")}>{t("course.datesSection")}</Accordion.Header>
+                            <Accordion.Body className="p-0">
+                                <Row className="m-2 p-2">
+                                    <Col xs={6} className="p-1" >
+                                        <Form.Group>
+                                            <Form.Label className="text-primary" htmlFor={`course_input_startDate`}>{t("course.startDate")}</Form.Label>
+                                            <br />
+                                            <Controller
+                                                name={`startDate`}
+                                                render={({ field }) => (
+                                                    <DatePicker className={"form-control " + (errors.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={field.value} onChange={(date) => field.onChange(date)}
+                                                        locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                )}
+                                            />
+                                            <br />
+                                            {errors.startDate && <Form.Text className="text-invalid">{t(errors.startDate.message as string)}</Form.Text>}
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={6} className="p-1" >
+                                        <Form.Group>
+                                            <Form.Label className="text-primary" htmlFor={`course_input_endDate`}>{t("course.endDate")}</Form.Label>
+                                            <br />
+                                            <Controller
+                                                name={`endDate`}
+                                                render={({ field }) => (
+                                                    <DatePicker id={`course_input_endDate`} selected={field.value} onChange={(date) => field.onChange(date)} minDate={new Date()}
+                                                        className={"form-control " + (errors.startDate ? " input-invalid " : "")} locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                )}
+                                            />
+                                            <br />
+                                            {errors.endDate && <Form.Text className="text-invalid">{t(errors.endDate.message as string)}</Form.Text>}
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="2" className="pt-2">
+                            <Accordion.Header>{t("course.coachsSection")}</Accordion.Header>
+                            <Accordion.Body className="p-0">
+                                <Row className="m-2 p-2">
+                                    <Col xs={12} className="p-1" >
+
+                                    </Col>
+
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                </Row>
             </Container>
         </fieldset>
     );
