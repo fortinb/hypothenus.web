@@ -18,7 +18,7 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
         isEditMode: boolean,
         isCancelling: boolean
     }) {
-    const { register, formState: { errors } } = useFormContext();
+    const { register, formState: { errors } } = useFormContext<Course>();
     const { t } = useTranslation("entity");
 
     return (
@@ -29,13 +29,11 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                         <Form.Group>
                             <Form.Label className="text-primary" htmlFor="course_info_input_code">{t("course.code")}</Form.Label>
                             <Form.Control type="input" id="course_info_input_code" placeholder={t("course.codePlaceholder")} {...register("code")}
-                                className={errors.code ? "input-invalid" : ""}
-                                disabled={(course.id !== null ? true : false)} />
+                                className={errors.code ? "input-invalid" : ""} disabled={(course.id !== null ? true : false)} />
                             {errors.code && <Form.Text className="text-invalid">{t(errors.code.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>
                 </Row>
-
                 <Row className="m-2 gx-2">
                     <Accordion >
                         <Accordion.Item eventKey="0" className="pt-2">
@@ -68,7 +66,6 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                                             )
                                         })}
                                     </Col>
-
                                 </Row>
                             </Accordion.Body>
                         </Accordion.Item>
@@ -96,10 +93,11 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                                             <Form.Label className="text-primary" htmlFor={`course_input_endDate`}>{t("course.endDate")}</Form.Label>
                                             <br />
                                             <Controller
-                                                name={`endDate`}
+                                                name={"endDate"}
                                                 render={({ field }) => (
-                                                    <DatePicker id={`course_input_endDate`} selected={field.value} onChange={(date) => field.onChange(date)} minDate={new Date()}
-                                                        className={"form-control " + (errors.startDate ? " input-invalid " : "")} locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                    <DatePicker id={`course_input_endDate`} minDate={new Date()} onChange={(date) => field.onChange(date)}
+                                                        selected={field.value}
+                                                        className={"form-control " + (errors.endDate ? " input-invalid " : "")} locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                                                 )}
                                             />
                                             <br />
@@ -114,9 +112,7 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
-
                                     </Col>
-
                                 </Row>
                             </Accordion.Body>
                         </Accordion.Item>

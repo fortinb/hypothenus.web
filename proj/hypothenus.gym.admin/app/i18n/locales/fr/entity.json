@@ -99,7 +99,8 @@
             "codeRequired": "Le code est requis.",
             "nameRequired": "Le nom du cours est requis.",
             "startDateRequired": "La date de début est requise et doit être plus grande ou égale à la date du jour.",
-            "endDateGreaterThanToday" : "La date de fin doit être plus grande que la date du jour."
+            "endDateGreaterThanToday" : "La date de fin doit être plus grande que la date du jour.",
+            "endDateGreaterThanStartDate" : "La date de fin doit être plus grande que la date de début."
         },
         "navigation": {
             "new": "Nouveau cours"

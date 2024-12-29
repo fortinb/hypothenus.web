@@ -45,7 +45,8 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
 
     const formContext = useForm<Course>({
         defaultValues: courseState.course,
-        resolver: zodResolver(CourseSchema),
+        mode: "all",
+        resolver: zodResolver(CourseSchema) 
     });
 
     const toggleSuccess = () => setSuccess(false);
@@ -198,7 +199,6 @@ export default function CourseForm({ gymId, courseId }: { gymId: string, courseI
                 setIsCancelling(false);
             }
         }
-
     }
 
     function onDelete(confirmation: boolean) {

@@ -8,6 +8,8 @@
        
     },
     "resume": {
+        "activatedOn" : "Date de début",
+        "deactivatedOn" : "Date de fin"
     },
     "breadcrumb": "Cours",
     "list": {

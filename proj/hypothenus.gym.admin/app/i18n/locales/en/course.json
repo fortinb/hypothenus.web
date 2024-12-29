@@ -7,6 +7,8 @@
         "managementTooltip": "Back to courses"
     },
     "resume": {
+        "activatedOn" : "Start date",
+        "deactivatedOn" : "End date"
     },
     "breadcrumb": "Courses",
     "list": {

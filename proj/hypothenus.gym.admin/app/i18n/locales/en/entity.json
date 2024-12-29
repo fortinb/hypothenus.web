@@ -98,7 +98,8 @@
             "codeRequired": "Code is required.",
             "nameRequired": "Course name is required.",
             "startDateRequired": "Start date is required, starting today or greater.",
-            "endDateGreaterThanToday" : "End date must be greater than today."
+            "endDateGreaterThanToday" : "End date must be greater than today.",
+            "endDateGreaterThanStartDate" : "End date must be greater than start date."
         },
         "navigation": {
             "new": "New course"
