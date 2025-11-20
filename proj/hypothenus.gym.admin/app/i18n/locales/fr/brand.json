@@ -1,0 +1,25 @@
+{
+    "menu": {
+        "brand": "{{name}}",
+        "sections": "Marque",
+        "info": "Info",
+        "gyms": "Salles de sport",
+        "contacts": "Contacts",
+        "management": "Marques",
+        "managementTooltip": "retour aux marques"
+    },
+    "resume": {
+        "contacts": "Contacts"
+    },
+    "breadcrumb": "Marques",
+    "list": {
+        "menu": {
+            "title": "Marques",
+            "add": "Ajouter une marque",
+            "inactive": "Inactives"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

@@ -30,6 +30,34 @@
         "state": "Province",
         "zipcode": "Postal code"
     },
+    "brand": {
+        "navigation": {
+            "new": "New brand"
+        },
+        "validation": {
+            "alreadyExists": "Brand code must be unique, code already exists.",
+            "codeRequired": "Code is required.",
+            "codeMaxLength": "Maximum length for Gym Code is 20 characters.",
+            "nameRequired": "Name is required.",
+            "nameMaxLength": "Maximum length for Name is 100 characters.",
+            "emailInvalid": "Email format is invalid."
+        },
+        "code": "Code",
+        "codePlaceholder": "Brand unique code",
+        "name": "Name",
+        "email": "Email address",
+        "address": "Address",
+        "phones": "Phones",
+        "contacts": "Contacts",
+        "note": "Notes",
+        "deleteConfirmation": {
+            "title": "Delete {{name}}",
+            "text": "Are you sure you want to delete this brand ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
+        }
+    },
     "gym": {
         "navigation": {
             "new": "New gym"

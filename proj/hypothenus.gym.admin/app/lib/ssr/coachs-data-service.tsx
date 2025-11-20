@@ -37,7 +37,7 @@ function initRequest(requestContext: RequestContext, params: any, headers?: Head
 
 export async function fetchCoachs(requestContext: RequestContext, gymId: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
 
-  const listURI: String = `/v1/admin/gyms/${gymId}/coachs`;
+  const listURI: String = `/v1/gyms/${gymId}/coachs`;
 
   const request = initRequest(requestContext, {
     page: page,
@@ -52,7 +52,7 @@ export async function fetchCoachs(requestContext: RequestContext, gymId: string,
 
 export async function getCoach(requestContext: RequestContext, gymId: string, coachId: string): Promise<Coach> {
 
-  const getURI: String =  `/v1/admin/gyms/${gymId}/coachs/${coachId}`;
+  const getURI: String =  `/v1/gyms/${gymId}/coachs/${coachId}`;
 
   const request = initRequest(requestContext, {});
 
@@ -63,7 +63,7 @@ export async function getCoach(requestContext: RequestContext, gymId: string, co
 
 export async function uploadCoachPhoto(requestContext: RequestContext, gymId: string, coachId: string, multipartFormData: FormData): Promise<string> {
 
-  const getURI: String =  `/v1/admin/gyms/${gymId}/coachs/${coachId}/photo`;
+  const getURI: String =  `/v1/gyms/${gymId}/coachs/${coachId}/photo`;
 
   const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
   const request = initRequest(requestContext, {}, [header]);
@@ -75,7 +75,7 @@ export async function uploadCoachPhoto(requestContext: RequestContext, gymId: st
 
 export async function activateCoach(requestContext: RequestContext, gymId: string, coachId: string): Promise<Coach> {
 
-  const getURI: String =  `/v1/admin/gyms/${gymId}/coachs/${coachId}/activate`;
+  const getURI: String =  `/v1/gyms/${gymId}/coachs/${coachId}/activate`;
 
   const request = initRequest(requestContext, {});
 
@@ -86,7 +86,7 @@ export async function activateCoach(requestContext: RequestContext, gymId: strin
 
 export async function deactivateCoach(requestContext: RequestContext, gymId: string, coachId: string): Promise<Coach> {
 
-  const postURI: String = `/v1/admin/gyms/${gymId}/coachs/${coachId}/deactivate`; 
+  const postURI: String = `/v1/gyms/${gymId}/coachs/${coachId}/deactivate`; 
 
   const request = initRequest(requestContext, {});
 
@@ -97,7 +97,7 @@ export async function deactivateCoach(requestContext: RequestContext, gymId: str
 
 export async function deleteCoach(requestContext: RequestContext, gymId: string, coachId: string): Promise<void> {
 
-  const deleteURI: String = `/v1/admin/gyms/${gymId}/coachs/${coachId}`
+  const deleteURI: String = `/v1/gyms/${gymId}/coachs/${coachId}`
 
   const request = initRequest(requestContext, {});
 
@@ -108,7 +108,7 @@ export async function deleteCoach(requestContext: RequestContext, gymId: string,
 
 export async function createCoach(requestContext: RequestContext, gymId: string, coach: Coach): Promise<Coach> {
 
-  const postURI: String = `/v1/admin/gyms/${gymId}/coachs`;
+  const postURI: String = `/v1/gyms/${gymId}/coachs`;
 
   const request = initRequest(requestContext, {});
 
@@ -119,7 +119,7 @@ export async function createCoach(requestContext: RequestContext, gymId: string,
 
 export async function updateCoach(requestContext: RequestContext, gymId: string, coachId: string, coach: Coach): Promise<Coach> {
 
-  const putURI: String = `/v1/admin/gyms/${gymId}/coachs/${coachId}`;
+  const putURI: String = `/v1/gyms/${gymId}/coachs/${coachId}`;
 
   const request = initRequest(requestContext, {});
 

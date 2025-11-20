@@ -1,6 +1,6 @@
 "use server"
 
-import { Gym } from "@/src//lib/entities/gym";
+import { Brand } from "@/src//lib/entities/brand";
 import { Page } from "@/src//lib/entities/page";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "../http/axiosInterceptor";
@@ -21,9 +21,9 @@ function initRequest(requestContext: RequestContext, params: any): AxiosRequestC
   return request;
 }
 
-export async function fetchGyms(requestContext: RequestContext, brandId: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
+export async function fetchBrands(requestContext: RequestContext, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Brand>> {
 
-  const listURI: String = `/v1/brands/${brandId}/gyms`;
+  const listURI: String = "/v1/brands";
 
   const request = initRequest(requestContext, {
     page: page,
@@ -36,9 +36,9 @@ export async function fetchGyms(requestContext: RequestContext, brandId: string,
   return response.data;
 }
 
-export async function searchGyms(requestContext: RequestContext, brandId: string, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Gym>> {
+export async function searchBrands(requestContext: RequestContext, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Brand>> {
 
-  const searchURI: String = `/v1/brands/${brandId}/gyms/search`;
+  const searchURI: String = "/v1/brands/search";
 
   const request = initRequest(requestContext, {
     page: page,
@@ -52,9 +52,9 @@ export async function searchGyms(requestContext: RequestContext, brandId: string
   return response.data;
 }
 
-export async function getGym(requestContext: RequestContext, brandId: string, gymId: string): Promise<Gym> {
+export async function getBrand(requestContext: RequestContext, brandId: string): Promise<Brand> {
 
-  const getURI: String = `/v1/brands/${brandId}/gyms/${gymId}`;
+  const getURI: String = `/v1/brands/${brandId}`;
 
   const request = initRequest(requestContext, {});
 
@@ -63,9 +63,9 @@ export async function getGym(requestContext: RequestContext, brandId: string, gy
   return response.data;
 }
 
-export async function activateGym(requestContext: RequestContext, brandId: string, gymId: string): Promise<Gym> {
+export async function activateBrand(requestContext: RequestContext, brandId: string): Promise<Brand> {
 
-  const getURI: String = `/v1/brands/${brandId}/gyms/${gymId}/activate`;
+  const getURI: String = `/v1/brands/${brandId}/activate`;
 
   const request = initRequest(requestContext, {});
 
@@ -74,9 +74,9 @@ export async function activateGym(requestContext: RequestContext, brandId: strin
   return response.data;
 }
 
-export async function deactivateGym(requestContext: RequestContext, brandId: string, gymId: string): Promise<Gym> {
+export async function deactivateBrand(requestContext: RequestContext, brandId: string): Promise<Brand> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/deactivate`;
+  const postURI: String = `/v1/brands/${brandId}/deactivate`;
 
   const request = initRequest(requestContext, {});
 
@@ -85,9 +85,9 @@ export async function deactivateGym(requestContext: RequestContext, brandId: str
   return response.data;
 }
 
-export async function deleteGym(requestContext: RequestContext, brandId: string, gymId: string): Promise<void> {
+export async function deleteBrand(requestContext: RequestContext, brandId: string): Promise<void> {
 
-  const deleteURI: String = `/v1/brands/${brandId}/gyms/${gymId}`;
+  const deleteURI: String = `/v1/brands/${brandId}`;
 
   const request = initRequest(requestContext, {});
 
@@ -96,24 +96,24 @@ export async function deleteGym(requestContext: RequestContext, brandId: string,
   return response.data;
 }
 
-export async function createGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
+export async function createBrand(requestContext: RequestContext, brand: Brand): Promise<Brand> {
 
-  const postURI: String = `/v1/brands/${gym.brandId}/gyms`;
+  const postURI: String = "/v1/brands";
 
   const request = initRequest(requestContext, {});
 
-  let response = await axiosInstance.post(postURI.valueOf(), gym, request);
+  let response = await axiosInstance.post(postURI.valueOf(), brand, request);
 
   return response.data;
 }
 
-export async function updateGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
+export async function updateBrand(requestContext: RequestContext, brand: Brand): Promise<Brand> {
 
-  const putURI: String = `/v1/brands/${gym.brandId}/gyms/${gym.gymId}`;
+  const putURI: String = `/v1/brands/${brand.brandId}`;
 
   const request = initRequest(requestContext, {});
 
-  let response = await axiosInstance.put(putURI.valueOf(), gym, request);
+  let response = await axiosInstance.put(putURI.valueOf(), brand, request);
 
   return response.data;
 }

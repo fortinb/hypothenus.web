@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import gymsStatePagingReducer from "./slices/gyms-state-paging-slice";
 import gymStateReducer from "./slices/gym-state-slice";
+import brandsStatePagingReducer from "./slices/brands-state-paging-slice";
+import brandStateReducer from "./slices/brand-state-slice";
 import coachsStatePagingReducer from "./slices/coachs-state-paging-slice";
 import coachStateReducer from "./slices/coach-state-slice";
 import coursesStatePagingReducer from "./slices/courses-state-paging-slice";
@@ -11,6 +13,8 @@ export const store = configureStore({
   reducer: {
     gymsStatePaging: gymsStatePagingReducer,
     gymState: gymStateReducer,
+    brandsStatePaging: brandsStatePagingReducer,
+    brandState: brandStateReducer,
     coachsStatePaging: coachsStatePagingReducer,
     coachState: coachStateReducer,
     coursesStatePaging: coursesStatePagingReducer,

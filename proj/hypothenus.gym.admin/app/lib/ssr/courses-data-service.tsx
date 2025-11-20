@@ -37,7 +37,7 @@ function initRequest(requestContext: RequestContext, params: any, headers?: Head
 
 export async function fetchCourses(requestContext: RequestContext, gymId: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Course>> {
 
-  const listURI: String = `/v1/admin/gyms/${gymId}/courses`;
+  const listURI: String = `/v1/gyms/${gymId}/courses`;
 
   const request = initRequest(requestContext, {
     page: page,
@@ -52,7 +52,7 @@ export async function fetchCourses(requestContext: RequestContext, gymId: string
 
 export async function getCourse(requestContext: RequestContext, gymId: string, courseId: string): Promise<Course> {
 
-  const getURI: String =  `/v1/admin/gyms/${gymId}/courses/${courseId}`;
+  const getURI: String =  `/v1/gyms/${gymId}/courses/${courseId}`;
 
   const request = initRequest(requestContext, {});
 
@@ -63,7 +63,7 @@ export async function getCourse(requestContext: RequestContext, gymId: string, c
 
 export async function activateCourse(requestContext: RequestContext, gymId: string, courseId: string): Promise<Course> {
 
-  const getURI: String =  `/v1/admin/gyms/${gymId}/courses/${courseId}/activate`;
+  const getURI: String =  `/v1/gyms/${gymId}/courses/${courseId}/activate`;
 
   const request = initRequest(requestContext, {});
 
@@ -74,7 +74,7 @@ export async function activateCourse(requestContext: RequestContext, gymId: stri
 
 export async function deactivateCourse(requestContext: RequestContext, gymId: string, courseId: string): Promise<Course> {
 
-  const postURI: String = `/v1/admin/gyms/${gymId}/courses/${courseId}/deactivate`; 
+  const postURI: String = `/v1/gyms/${gymId}/courses/${courseId}/deactivate`; 
 
   const request = initRequest(requestContext, {});
 
@@ -85,7 +85,7 @@ export async function deactivateCourse(requestContext: RequestContext, gymId: st
 
 export async function deleteCourse(requestContext: RequestContext, gymId: string, courseId: string): Promise<void> {
 
-  const deleteURI: String = `/v1/admin/gyms/${gymId}/courses/${courseId}`
+  const deleteURI: String = `/v1/gyms/${gymId}/courses/${courseId}`
 
   const request = initRequest(requestContext, {});
 
@@ -96,7 +96,7 @@ export async function deleteCourse(requestContext: RequestContext, gymId: string
 
 export async function createCourse(requestContext: RequestContext, gymId: string, course: Course): Promise<Course> {
 
-  const postURI: String = `/v1/admin/gyms/${gymId}/courses`;
+  const postURI: String = `/v1/gyms/${gymId}/courses`;
 
   const request = initRequest(requestContext, {});
 
@@ -107,7 +107,7 @@ export async function createCourse(requestContext: RequestContext, gymId: string
 
 export async function updateCourse(requestContext: RequestContext, gymId: string, courseId: string, course: Course): Promise<Course> {
 
-  const putURI: String = `/v1/admin/gyms/${gymId}/courses/${courseId}`;
+  const putURI: String = `/v1/gyms/${gymId}/courses/${courseId}`;
 
   const request = initRequest(requestContext, {});
 

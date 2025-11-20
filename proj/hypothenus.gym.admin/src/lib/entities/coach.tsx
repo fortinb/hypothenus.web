@@ -4,6 +4,7 @@ import { BaseEntity } from './baseEntity';
 
 export interface Coach extends BaseEntity {
   id?: any;
+  brandId: string;
   gymId: string;
   person: Person;
   isActive: boolean;
@@ -12,6 +13,7 @@ export interface Coach extends BaseEntity {
 export const newCoach = (): Coach => {
   let newCoach: Coach = {
     id: null,
+    brandId: "",
     gymId: "",
     person: newPerson(),
     isActive: false,
@@ -25,6 +27,7 @@ export const newCoach = (): Coach => {
 
 export const CoachSchema = z.object({
   id: z.any().nullable(),
+  brandId: z.string().min(1),
   gymId: z.string().min(1),
   person: PersonSchema
 });

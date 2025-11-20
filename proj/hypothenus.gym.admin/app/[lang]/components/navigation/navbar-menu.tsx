@@ -45,7 +45,7 @@ export default function NavbarMenu() {
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                    <Nav.Link as={Link} href={`/${i18n.resolvedLanguage}/gyms`}>{t("navbar.gyms.title")}</Nav.Link>
+                    <Nav.Link as={Link} href={`/${i18n.resolvedLanguage}/brands`}>{t("navbar.brands.title")}</Nav.Link>
                 </div>
               </Nav>
             </div>

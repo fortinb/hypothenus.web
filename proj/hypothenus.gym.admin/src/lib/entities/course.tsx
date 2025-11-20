@@ -9,6 +9,7 @@ import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './lo
 
 export interface Course extends BaseEntity {
   id?: any;
+  brandId: string;
   gymId: string;
   code: string;
   name: LocalizedString[];
@@ -22,6 +23,7 @@ export interface Course extends BaseEntity {
 export const newCourse = (): Course => {
   let newCourse: Course = {
     id: null,
+    brandId: "",
     gymId: "",
     code: "",
     name: [],
@@ -55,6 +57,7 @@ export function getCourseName(course: Course, language?: LanguageEnum): string {
 
 export const CourseSchema = z.object({
   id: z.any().nullable(),
+  brandId: z.string().min(1),
   gymId: z.string().min(1),
   code: z.string().min(1, {message: "course.validation.codeRequired"}),
   name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(1),

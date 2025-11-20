@@ -31,9 +31,37 @@
         "state": "Province",
         "zipcode": "Code postal"
     },
+    "brand": {
+        "navigation": {
+            "new": "Nouvelle marque"
+        },
+        "validation": {
+            "alreadyExists": "Le code de la marque doit être unique, ce code est déjà existant.",
+            "codeRequired": "Le code est requis.",
+            "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
+            "nameRequired": "Le nom de la salle de sport est requis.",
+            "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
+            "emailInvalid": "Le format du courriel est invalide."
+        },
+        "code": "Code",
+        "codePlaceholder": "Identification unique",
+        "name": "Nom",
+        "email": "Courriel",
+        "address": "Adresse",
+        "phones": "Téléphones",
+        "contacts": "Contacts",
+        "note": "Notes",
+        "deleteConfirmation": {
+            "title": "Supprimer {{name}}",
+            "text": "Êtes vous certain de vouloir supprimer cette marque ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    },
     "gym": {
         "navigation": {
-            "new": "Nouvelle salle de sports"
+            "new": "Nouvelle salle de sport"
         },
         "validation": {
             "alreadyExists": "Le code de la salle de sport doit être unique, ce code est déjà existant.",

@@ -1,0 +1,25 @@
+{
+    "menu": {
+        "brand": "{{name}}",
+        "sections": "Brand",
+        "info": "Info",
+        "gyms": "Gyms",
+        "contacts": "Contacts",
+        "management": "Brands",
+        "managementTooltip": "Back to brands management"
+    },
+    "resume": {
+        "contacts": "Contacts"
+    },
+    "breadcrumb": "Brands",
+    "list": {
+        "menu": {
+            "title": "Brands",
+            "add": "Add new brand",
+            "inactive": "Inactive"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}
