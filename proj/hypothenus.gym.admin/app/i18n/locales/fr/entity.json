@@ -133,6 +133,10 @@
         "navigation": {
             "new": "Nouveau cours"
         },
+        "coach": {
+            "available": "Entraineurs disponibles",
+            "selected": "Entraineurs sélectionnés"
+        },
         "code": "Code",
         "codePlaceholder": "Identification unique",
         "name": "Nom du cours",

@@ -64,7 +64,6 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         }
 
         if (isLoading && coachId == "new") {
-            initBreadcrumb(t("coach.navigation.new"));
             setIsEditMode(true);
             
             formContext.setValue("brandId", brandId);
@@ -195,6 +194,9 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         setPhotoToUpload(undefined);
 
         formContext.reset(coachState.coach);
+        if (coachId == "new") {
+             router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms/${gymId}/coachs`);
+        }
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
@@ -268,7 +270,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.isActive}
-                                        isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
+                                         isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                     <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling}/>
                                     <hr className="mt-1 mb-1" />

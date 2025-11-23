@@ -16,7 +16,7 @@ export const newCoach = (): Coach => {
     brandId: "",
     gymId: "",
     person: newPerson(),
-    isActive: false,
+    isActive: true,
     messages: undefined,
     createdBy: undefined,
     modifiedBy: undefined

@@ -31,7 +31,7 @@ export const newCourse = (): Course => {
     coachs: [],
     startDate: moment().toDate(),
     endDate: null,
-    isActive: false,
+    isActive: true,
     messages: undefined,
     createdBy: undefined,
     modifiedBy: undefined

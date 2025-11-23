@@ -3,7 +3,7 @@ import { createCoach, fetchCoachs } from "@/app/lib/ssr/coachs-data-service";
 import { Coach } from "@/src/lib/entities/coach";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { gymId: string} }) {
+export async function GET(req: NextRequest, { params }: { params: { brandId: string, gymId: string} }) {
 
   try {
     const { searchParams } = new URL(req.url);
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: { gymId: strin
       return NextResponse.json("Invalid parameters", { status: 400 });
     }
 
-    const coachsPage = await fetchCoachs(requestContext, params.gymId, page, pageSize, includeInactive);
+    const coachsPage = await fetchCoachs(requestContext, params.brandId, params.gymId, page, pageSize, includeInactive);
 
     return NextResponse.json(coachsPage, { status: 200 });
 
@@ -27,14 +27,14 @@ export async function GET(req: NextRequest, { params }: { params: { gymId: strin
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { gymId: string} }) {
+export async function POST(req: NextRequest, { params }: { params: { brandId: string, gymId: string} }) {
 
   try {
     let coach: Coach = await req.json();
 
     const requestContext = getRequestContext(req);
 
-    coach = await createCoach(requestContext, params.gymId, coach);
+    coach = await createCoach(requestContext, params.brandId, params.gymId, coach);
 
     return NextResponse.json(coach, { status: 200 });
 

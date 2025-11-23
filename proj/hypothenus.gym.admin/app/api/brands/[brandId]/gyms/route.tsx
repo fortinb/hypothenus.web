@@ -28,14 +28,14 @@ export async function GET(req: NextRequest, { params }: { params: { brandId: str
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest,{ params }: { params: { brandId: string } }) {
 
   try {
     let gym: Gym = await req.json();
 
     const requestContext = getRequestContext(req);
 
-    gym = await createGym(requestContext, gym);
+    gym = await createGym(requestContext, params.brandId, gym);
 
     return NextResponse.json(gym, { status: 200 });
 

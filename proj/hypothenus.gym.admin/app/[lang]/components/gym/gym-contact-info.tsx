@@ -20,6 +20,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
     const { formState: { errors } } = useFormContext();
+    
     const formContacts = useFieldArray({
         name: "contacts",
     });

@@ -57,7 +57,8 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
         }
 
         if (isLoading && gymId == "new") {
-            initBreadcrumb(t("gym.navigation.new"));
+            formContext.setValue("brandId", brandId);
+            
             setIsEditMode(true);
             setIsLoading(false);
         }
@@ -164,6 +165,10 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     function onCancel() {
         setIsEditMode(false);
         formContext.reset(gymState.gym);
+
+        if (gymId == "new") {
+            router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms`);
+        }
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
@@ -213,7 +218,6 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
             note: formData.note,
             contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
-            socialMediaAccounts: [],
             messages: undefined,
             createdBy: undefined,
             modifiedBy: undefined
@@ -241,7 +245,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
-                                        isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
+                                         isEditDisable={isEditMode}  isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                     <GymInfo gym={gymState.gym} isEditMode={isEditMode} />
                                     <hr className="mt-1 mb-1" />

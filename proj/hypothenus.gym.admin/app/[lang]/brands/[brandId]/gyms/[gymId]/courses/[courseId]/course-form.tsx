@@ -42,6 +42,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     const [isActivating, setIsActivating] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [availableCoachs, setAvailableCoachs] = useState<Coach[]>([]);
 
     const formContext = useForm<Course>({
         defaultValues: courseState.course,
@@ -52,6 +53,10 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     const toggleSuccess = () => setSuccess(false);
 
     useEffect(() => {
+         if (isLoading) {
+            fetchCoachs(brandId, gymId);
+         }
+      
         if (isLoading && courseId !== "new") {
             if (courseState.course?.id == courseId) {
                 initBreadcrumb(getCourseName(courseState.course, i18n.resolvedLanguage as LanguageEnum));
@@ -62,7 +67,6 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         }
 
         if (isLoading && courseId == "new") {
-            initBreadcrumb(t("course.navigation.new"));
             setIsEditMode(true);
 
             formContext.setValue("brandId", brandId);
@@ -92,6 +96,12 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         dispatch(updateCourseState(course));
 
         setIsLoading(false);
+    }
+
+    const fetchCoachs = async (brandId: string, gymId: string) => {
+        let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}/coachs`);
+        let coachs: Coach[] = response.data;
+        setAvailableCoachs(coachs);
     }
 
     const onSubmit: SubmitHandler<Course> = (formData: z.infer<typeof CourseSchema>) => {
@@ -179,6 +189,9 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         setIsEditMode(false);
 
         formContext.reset(courseState.course);
+        if (courseId == "new") {
+             router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms/${gymId}/courses`);
+        }
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
@@ -261,9 +274,9 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="course_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.id == "" ? true : courseState.course.isActive}
-                                        isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
+                                         isEditDisable={isEditMode} isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
-                                    <CourseInfo course={courseState.course} isEditMode={isEditMode} isCancelling={isCancelling} />
+                                    <CourseInfo course={courseState.course} availableCoachs={availableCoachs} isEditMode={isEditMode} isCancelling={isCancelling} />
                                     <hr className="mt-1 mb-1" />
                                     <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />
                                 </Form>

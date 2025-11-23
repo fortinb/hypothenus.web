@@ -17,14 +17,14 @@ export async function GET(req: NextRequest, { params }: { params: { brandId: str
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest,{ params }: { params: { brandId: string }}) {
 
   let gym: Gym = await req.json();
   try {
 
     const requestContext = getRequestContext(req);
 
-    gym = await updateGym(requestContext, gym);
+    gym = await updateGym(requestContext, params.brandId, gym);
 
     return NextResponse.json(gym, { status: 200 });
 

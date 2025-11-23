@@ -56,7 +56,6 @@ export default function BrandForm({ brandId }: { brandId: string }) {
         }
 
         if (isLoading && brandId == "new") {
-            initBreadcrumb(t("brand.navigation.new"));
             setIsEditMode(true);
             setIsLoading(false);
         }
@@ -155,6 +154,10 @@ export default function BrandForm({ brandId }: { brandId: string }) {
     function onCancel() {
         setIsEditMode(false);
         formContext.reset(brandState.brand);
+
+        if (brandId == "new") {
+            router.push(`/${i18n.resolvedLanguage}/brands`);
+        }
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
@@ -229,7 +232,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.brandId == "" ? true : brandState.brand.isActive}
-                                        isDeleteDisable={(brandState.brand.id == null ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
+                                        isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.id == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                     <BrandInfo brand={brandState.brand} isEditMode={isEditMode} />
                                     <hr className="mt-1 mb-1" />

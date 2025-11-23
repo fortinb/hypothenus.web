@@ -132,6 +132,10 @@
         "navigation": {
             "new": "New course"
         },
+        "coach": {
+            "available": "Available coachs",
+            "selected": "Selected coachs"
+        },
         "code": "Code",
         "codePlaceholder": "Course unique code",
         "name": "Course name",

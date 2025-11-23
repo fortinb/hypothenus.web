@@ -96,9 +96,9 @@ export async function deleteGym(requestContext: RequestContext, brandId: string,
   return response.data;
 }
 
-export async function createGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
+export async function createGym(requestContext: RequestContext, brandId: string,gym: Gym): Promise<Gym> {
 
-  const postURI: String = `/v1/brands/${gym.brandId}/gyms`;
+  const postURI: String = `/v1/brands/${brandId}/gyms`;
 
   const request = initRequest(requestContext, {});
 
@@ -107,9 +107,9 @@ export async function createGym(requestContext: RequestContext, gym: Gym): Promi
   return response.data;
 }
 
-export async function updateGym(requestContext: RequestContext, gym: Gym): Promise<Gym> {
+export async function updateGym(requestContext: RequestContext, brandId: string, gym: Gym): Promise<Gym> {
 
-  const putURI: String = `/v1/brands/${gym.brandId}/gyms/${gym.gymId}`;
+  const putURI: String = `/v1/brands/${brandId}/gyms/${gym.gymId}`;
 
   const request = initRequest(requestContext, {});
 

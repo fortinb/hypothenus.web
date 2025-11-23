@@ -3,12 +3,12 @@ import { deleteCourse, getCourse, updateCourse } from "@/app/lib/ssr/courses-dat
 import { Course } from "@/src/lib/entities/course";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { gymId: string,  courseId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { brandId: string, gymId: string,  courseId: string } }) {
 
   try {
     const requestContext = getRequestContext(req);
 
-    const course = await getCourse(requestContext, params.gymId, params.courseId);
+    const course = await getCourse(requestContext, params.brandId, params.gymId, params.courseId);
 
     return NextResponse.json(course, { status: 200 });
 
@@ -17,14 +17,14 @@ export async function GET(req: NextRequest, { params }: { params: { gymId: strin
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { gymId: string,  courseId: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: { brandId: string, gymId: string,  courseId: string } }) {
 
   let course: Course = await req.json();
   try {
 
     const requestContext = getRequestContext(req);
 
-    course = await updateCourse(requestContext, params.gymId, params.courseId, course);
+    course = await updateCourse(requestContext, params.brandId, params.gymId, params.courseId, course);
 
     return NextResponse.json(course, { status: 200 });
 
@@ -33,13 +33,13 @@ export async function PUT(req: NextRequest, { params }: { params: { gymId: strin
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { gymId: string,  courseId: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { brandId: string, gymId: string,  courseId: string } }) {
 
   try {
 
     const requestContext = getRequestContext(req);
 
-    await deleteCourse(requestContext, params.gymId, params.courseId);
+    await deleteCourse(requestContext, params.brandId, params.gymId, params.courseId);
 
     return NextResponse.json({ status: 200 });
 

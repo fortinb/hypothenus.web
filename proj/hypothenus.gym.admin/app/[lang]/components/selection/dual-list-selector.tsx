@@ -5,87 +5,94 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { useTranslation } from "@/app/i18n/i18n";
-import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
+import Form from "react-bootstrap/Form";
+import { useFormContext, useFieldArray } from 'react-hook-form';
 
-interface Item {
+export interface DualListItem {
     id: string;
-    description: string;
-    [key: string]: any;  // Placeholder for any additional properties
+    description: () => string;
+    source: any;
 }
 
-function DualListSelector({ sourceItems, selectedItems, updateSelectedItems  }:
+function DualListSelector({ sourceItems, sourceLabel, selectedLabel, formStatefield }:
     {
-        sourceItems: Item[],
-        selectedItems: Item[],
-        updateSelectedItems: (selectedItems: Item[]) => void;
+        sourceItems: DualListItem[],
+        sourceLabel: string,
+        selectedLabel: string,
+        formStatefield: string
     }) {
-    const { t } = useTranslation("entity");
+
     const { register, formState: { errors } } = useFormContext();
-    const [availableItems, setAvailableItems] = useState<Item[]>([]);
-    const [chosenItems, setChosenItems] = useState<Item[]>([]);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [availableItems, setAvailableItems] = useState<DualListItem[]>([]);
     const [selectedAvailableId, setSelectedAvailableId] = useState<string | null>(null);
     const [selectedChosenId, setSelectedChosenId] = useState<string | null>(null);
 
-    useEffect(() => {
-        // Initialize lists by filtering out selectedItems from sourceItems
-        const initialAvailableItems = sourceItems
-            .filter((item) => !selectedItems.some((selected) => selected.id === item.id))
-            .sort((a, b) => a.description.localeCompare(b.description));
-        setAvailableItems(initialAvailableItems);
+    const formItems = useFieldArray({
+        name: "dualListSelectedItems",
+    });
 
-        const initialChosenItems = [...selectedItems].sort((a, b) => a.description.localeCompare(b.description));
-        setChosenItems(initialChosenItems);
-    }, [sourceItems, selectedItems]);
+    useEffect(() => {
+        if (isLoading) {
+            const initialAvailableItems = sourceItems
+                .filter((item) => !formItems.fields.some((selected) => selected.id === item.id))
+                .sort((a, b) => a.description().localeCompare(b.description()));
+            setAvailableItems(initialAvailableItems);
+        }
+        // Initialize lists by filtering out selectedItems from sourceItems
+
+
+        /*  const initialSelectedItems = [...selectedItems].sort((a, b) => a.description.localeCompare(b.description));
+          setChosenItems(initialSelectedItems);
+          */
+    }, [sourceItems]);
 
     const moveSelectedToChosen = () => {
         if (!selectedAvailableId) return;
         const item = availableItems.find(i => i.id === selectedAvailableId);
         if (!item) return;
 
+        formItems.prepend(item);
+        //   formItems.fields.sort((a : Item, b: Item) => a.description.localeCompare(b.description));
         const updatedAvailableItems = availableItems.filter((i) => i.id !== item.id);
         setAvailableItems(updatedAvailableItems);
 
-        const updatedChosenItems = [...chosenItems, item].sort((a, b) => a.description.localeCompare(b.description));
-        setChosenItems(updatedChosenItems);
-
+        /*   const updatedChosenItems = [...chosenItems, item].sort((a, b) => a.description.localeCompare(b.description));
+           setChosenItems(updatedChosenItems);
+   */
         setSelectedAvailableId(null);
-
-        updateSelectedItems(updatedChosenItems); //Callback parent to update selected items
     };
 
     const moveSelectedToAvailable = () => {
         if (!selectedChosenId) return;
-        const item = chosenItems.find(i => i.id === selectedChosenId);
+        const item = formItems.fields.find(i => i.id === selectedChosenId);
         if (!item) return;
 
-        const updatedChosenItems = chosenItems.filter((i) => i.id !== item.id);
-        setChosenItems(updatedChosenItems);
-
-        const updatedAvailableItems = [...availableItems, item].sort((a, b) => a.description.localeCompare(b.description));
-        setAvailableItems(updatedAvailableItems);
+        /* const updatedChosenItems = chosenItems.filter((i) => i.id !== item.id);
+         setChosenItems(updatedChosenItems);
+ */
+        //   const updatedAvailableItems = [...availableItems, item].sort((a, b) => a.description.localeCompare(b.description));
+        //    setAvailableItems(updatedAvailableItems);
 
         setSelectedChosenId(null);
-
-        updateSelectedItems(updatedChosenItems);//Callback parent to update selected items
     };
 
 
     return (
-        <Container fluid="true">
+        <Container>
             <Row>
                 <Col>
+                    {sourceLabel}
                     <ListGroup>
                         {availableItems.map((item) => (
                             <ListGroup.Item
                                 key={item.id}
                                 active={selectedAvailableId === item.id}
                                 onClick={() => setSelectedAvailableId(item.id)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                {item.description}
+                                style={{ cursor: 'pointer' }}>
+                                {item.description()}
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
@@ -108,17 +115,24 @@ function DualListSelector({ sourceItems, selectedItems, updateSelectedItems  }:
                     </Button>
                 </Col>
                 <Col>
+                    {selectedLabel}
                     <ListGroup>
-                        {chosenItems.map((item) => (
-                            <ListGroup.Item
+                        {formItems.fields?.map((item: Record<string, any>, index: number) => {
+                            return <ListGroup.Item
                                 key={item.id}
                                 active={selectedChosenId === item.id}
                                 onClick={() => setSelectedChosenId(item.id)}
                                 style={{ cursor: 'pointer' }}
                             >
-                                {item.description}
+                                <Form.Group>
+                                    <Form.Control
+                                        {...register(`${formStatefield}.${index}.id`)}
+                                        type="text"
+                                    />
+                                </Form.Group>
+                                {item.description()}
                             </ListGroup.Item>
-                        ))}
+                        })}
                     </ListGroup>
                 </Col>
             </Row>

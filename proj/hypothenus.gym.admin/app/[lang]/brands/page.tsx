@@ -4,7 +4,7 @@ import { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { useEffect } from "react";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
-import { usePathname, useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import BrandsMenu from "./brands-menu";
 import BrandsListPaging from "./brands-list-paging";
 

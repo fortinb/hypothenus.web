@@ -11,15 +11,41 @@ import Row from "react-bootstrap/Row";
 import DatePicker from "react-datepicker";
 import { Controller, useFormContext } from "react-hook-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
+import DualListSelector, { DualListItem } from "../selection/dual-list-selector";
+import { Coach } from "@/src/lib/entities/coach";
+import { useEffect, useState } from "react";
+import { formatName } from "@/src/lib/entities/person";
 
-export default function CourseInfo({ course, isEditMode, isCancelling }:
+export default function CourseInfo({ course, availableCoachs, isEditMode, isCancelling }:
     {
         course: Course,
+        availableCoachs: Coach[],
         isEditMode: boolean,
         isCancelling: boolean
     }) {
     const { register, formState: { errors } } = useFormContext<Course>();
     const { t } = useTranslation("entity");
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [availableCoachItems, setAvailableCoachItems] = useState<DualListItem[]>([]);
+
+    useEffect(() => {
+        if (isLoading) {
+            // Initialize lists by filtering out selectedItems from sourceItems
+            const initialAvailableItems: DualListItem[] = availableCoachs?.map((coach: Coach) => {
+                return {
+                    id: coach.id,
+                    description: () => {
+                        return formatName(coach.person);
+                    },
+                    source: coach,
+                } as DualListItem;
+            });
+
+            setAvailableCoachItems(initialAvailableItems);
+            setIsLoading(false);
+        }
+    }, [availableCoachs]);
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="course_info_form" disabled={!isEditMode} >
@@ -112,6 +138,7 @@ export default function CourseInfo({ course, isEditMode, isCancelling }:
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
+                                        <DualListSelector formStatefield="selectedCoachs" sourceLabel={t("course.coach.available")} selectedLabel={t("course.coach.selected")} sourceItems={availableCoachItems} ></DualListSelector>
                                     </Col>
                                 </Row>
                             </Accordion.Body>

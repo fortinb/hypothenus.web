@@ -115,8 +115,15 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                                         width={200}
                                         height={200}
                                         alt="Coach photo"
+                                        onError={() => {
+                                                // if preview was set but failed to load, clear it so default will be used
+                                                if (photoPreviewUri) {
+                                                    setPhotoPreviewUri(undefined);
+                                                }
+                                            }}
                                     />
                                 )}
+                                
                             />
                         </div>
                     </Form.Group>

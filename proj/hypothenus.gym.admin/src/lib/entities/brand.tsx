@@ -17,7 +17,7 @@ export interface Brand extends BaseEntity {
 }
 
 export const newBrand = (): Brand => {
-  let newB: Brand = {
+  let newBrand: Brand = {
     id: null,
     brandId: "",
     name: "",
@@ -35,12 +35,12 @@ export const newBrand = (): Brand => {
     modifiedBy: undefined
   };
 
-  return newB;
+  return newBrand;
 }
 
 export const BrandSchema = z.object({
-  brandId: z.string().min(1),
-  name: z.string().min(1),
+  brandId: z.string().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }),
+  name: z.string().min(1, { message: "brand.validation.nameRequired" }).max(100, { message: "brand.validation.nameMaxLength" }),
   address: AddressSchema,
   email: z.string().min(0).email("brand.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),

@@ -49,5 +49,5 @@ export const GymSchema = z.object({
   email: z.string().min(0).email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),
   phoneNumbers: z.array(PhoneNumberSchema).min(1),
-  contacts: z.array(ContactSchema).min(1)
+  contacts: z.array(ContactSchema)
 });
