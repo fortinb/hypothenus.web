@@ -13,7 +13,7 @@ import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
-import { formatName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
@@ -55,12 +55,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
     useEffect(() => {
         if (isLoading && coachId !== "new") {
-            if (coachState.coach?.id == coachId) {
-                initBreadcrumb(formatName(coachState.coach?.person))
-                setIsLoading(false);
-            } else {
-                fetchCoach(gymId, coachId);
-            }
+            fetchCoach(gymId, coachId);
         }
 
         if (isLoading && coachId == "new") {
@@ -73,7 +68,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
         if (!isLoading) {
             formContext.reset(coachState.coach);
-            initBreadcrumb(formatName(coachState.coach?.person))
+            initBreadcrumb(formatPersonName(coachState.coach?.person))
         }
     }, [coachState]);
 
@@ -278,7 +273,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
                                 </Form>
 
                                 <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("coach.deleteConfirmation.title", { name: formatName(coachState.coach.person) })} text={t("coach.deleteConfirmation.text")}
+                                <ModalConfirmation title={t("coach.deleteConfirmation.title", { name: formatPersonName(coachState.coach.person) })} text={t("coach.deleteConfirmation.text")}
                                     yesText={t("coach.deleteConfirmation.yes")} noText={t("coach.deleteConfirmation.no")}
                                     actionText={t("coach.deleteConfirmation.action")}
                                     isAction={isDeleting}

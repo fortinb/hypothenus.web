@@ -15,7 +15,7 @@ export default function NavBreadcrumb() {
     if (breadcrumbState.breadcrumbs.length === 0) {
        dispatch(initBreadcrumbs());
     }
-  }, []);
+  });
 
   return (
     <div className="d-flex flex-row justify-content-center text-secondary fw-bold pe-3">

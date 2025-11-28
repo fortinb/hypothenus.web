@@ -44,6 +44,18 @@ $breadcrumb-divider-color: $secondary;
 $focus-ring-color: #3b88fc;
 $enable-shadows: true;
 
+$list-group-color:$gray-900;
+$list-group-bg:  $gray-400;
+$list-group-border-color:$gray-500;
+$list-group-border-width: 1px;
+$list-group-border-radius:  10px;
+$list-group-hover-bg: $gray-500;
+$list-group-hover-color: $gray-900;
+$list-group-active-bg: $info;  
+$list-group-active-color: $white;
+$list-group-disabled-color: $white;
+$list-group-disabled-bg: $info;
+
 // 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/variables-dark";
@@ -245,7 +257,7 @@ footer {
 
 .accordion-button:disabled {
     box-shadow: none;
-    opacity: 0.7;
+    opacity: 0.65;
 }
 
 .accordion-button:not(.collapsed) {
@@ -504,6 +516,13 @@ footer {
 .btn-icon {
     padding: 1;
 }
+//list group
+.list-group-item.disabled {
+    opacity: 0.7;
+    background-color: $list-group-disabled-bg;
+    color: $list-group-disabled-color;
+}
+
 //form controls
 .form-control:disabled {
     opacity: 0.7;

@@ -3,7 +3,7 @@
 import { useTranslation } from "@/app/i18n/i18n";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import { formatAddress } from "@/src/lib/entities/address";
-import { Contact, formatName } from "@/src/lib/entities/contact";
+import { Contact, formatContactName } from "@/src/lib/entities/contact";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -40,7 +40,7 @@ export default function GymResume() {
             <Col xs={12} >
               <hr />
               <p className="card-text">
-                <span className="text-secondary fw-bolder">{formatName(contact)}</span><br />
+                <span className="text-secondary fw-bolder">{formatContactName(contact)}</span><br />
                 <span className="text-primary">{contact.description}</span><br />
                 <Link className="link-element" href={`mailto:${contact?.email}`}>{contact.email}</Link><br />
                 <span className="text-primary">{contact.phoneNumbers[0]?.number}</span><br />

@@ -45,20 +45,15 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
         defaultValues: gymState.gym,
         resolver: zodResolver(GymSchema),
     });
-   
+
     useEffect(() => {
         if (isLoading && gymId !== "new") {
-            if (gymState.gym?.gymId == gymId) {
-                initBreadcrumb(gymState.gym?.name);
-                setIsLoading(false);
-            } else {
-                fetchGym(gymId);
-            }
+            fetchGym(gymId);
         }
 
         if (isLoading && gymId == "new") {
             formContext.setValue("brandId", brandId);
-            
+
             setIsEditMode(true);
             setIsLoading(false);
         }
@@ -74,7 +69,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
             id: "gym.[gymId].page",
             href: pathname,
             crumb: name
-          };
+        };
 
         dispatch(pushBreadcrumb(crumb));
     }
@@ -85,7 +80,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
         dispatch(updateGymState(gym));
 
         initBreadcrumb(gym?.name);
-       
+
         setIsLoading(false);
     }
 
@@ -106,7 +101,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
         let result: Gym = response.data;
         const duplicate = result.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
         if (duplicate) {
-            formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists")});
+            formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists") });
             setIsEditMode(true);
         } else {
             setSuccess(true);
@@ -114,7 +109,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
             dispatch(updateGymState(result));
             router.push(`/${i18n.resolvedLanguage}/brands/${result.brandId}/gyms/${result.gymId}`);
         }
-      
+
         setIsSaving(false);
     }
 
@@ -123,9 +118,9 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
         let response = await axiosInstance.put(`/api/brands/${brandId}/gyms/${updatedGym.gymId}`, updatedGym);
         let result: Gym = response.data;
         dispatch(updateGymState(result));
- 
+
         setTextSuccess(t("action.saveSuccess"));
-        
+
         setSuccess(true);
         setIsSaving(false);
     }
@@ -186,7 +181,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
                 onCancel();
             } else {
                 setIsEditMode(true);
-              
+
             }
         }
     }
@@ -245,7 +240,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
-                                         isEditDisable={isEditMode}  isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
+                                        isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                     <GymInfo gym={gymState.gym} isEditMode={isEditMode} />
                                     <hr className="mt-1 mb-1" />
@@ -253,7 +248,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
                                 </Form>
 
                                 <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("gym.deleteConfirmation.title", {name: gymState.gym.name })} text={t("gym.deleteConfirmation.text")}
+                                <ModalConfirmation title={t("gym.deleteConfirmation.title", { name: gymState.gym.name })} text={t("gym.deleteConfirmation.text")}
                                     yesText={t("gym.deleteConfirmation.yes")} noText={t("gym.deleteConfirmation.no")}
                                     actionText={t("gym.deleteConfirmation.action")}
                                     isAction={isDeleting}

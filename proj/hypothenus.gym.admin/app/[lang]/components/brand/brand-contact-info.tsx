@@ -1,6 +1,6 @@
 "use client"
 
-import { Contact, formatName, newContact } from "@/src/lib/entities/contact";
+import { Contact, formatContactName, newContact } from "@/src/lib/entities/contact";
 import { MouseEvent, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
@@ -69,7 +69,7 @@ export default function BrandContactInfo({ isEditMode }: { isEditMode: boolean }
                     {formContacts.fields?.map((contact: Record<string, any>, index: number) => {
 
                         return <Accordion.Item key={index} eventKey={index.toString()} className="pt-2">
-                            <Accordion.Header className={"accordion-header-light" + (getError(index) ? " accordeon-header-invalid" : "")}>{formatName(contact as Contact)}</Accordion.Header>
+                            <Accordion.Header className={"accordion-header-light" + (getError(index) ? " accordeon-header-invalid" : "")}>{formatContactName(contact as Contact)}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Card>
                                     <Card.Body className="">

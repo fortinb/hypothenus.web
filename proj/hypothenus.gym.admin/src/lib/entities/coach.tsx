@@ -10,6 +10,12 @@ export interface Coach extends BaseEntity {
   isActive: boolean;
 }
 
+export interface CoachReference extends BaseEntity {
+  id?: any;
+  brandId: string;
+  gymId: string;
+}
+
 export const newCoach = (): Coach => {
   let newCoach: Coach = {
     id: null,
@@ -30,4 +36,10 @@ export const CoachSchema = z.object({
   brandId: z.string().min(1),
   gymId: z.string().min(1),
   person: PersonSchema
+});
+
+export const CoachReferenceSchema = z.object({
+  id: z.any().nullable(),
+  brandId: z.string().min(1),
+  gymId: z.string().min(1)
 });

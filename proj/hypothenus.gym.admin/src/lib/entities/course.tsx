@@ -2,9 +2,10 @@ import { fallbackLanguage, supportedLanguages } from '@/app/i18n/i18n';
 import moment from 'moment';
 import { z } from 'zod';
 import { BaseEntity } from './baseEntity';
-import { Coach, CoachSchema } from './coach';
+import { Coach, CoachReferenceSchema, CoachSchema } from './coach';
 import { LanguageEnum } from './language';
 import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
+import { DualListItem } from '@/app/[lang]/components/selection/dual-list-selector';
 
 
 export interface Course extends BaseEntity {
@@ -34,7 +35,7 @@ export const newCourse = (): Course => {
     isActive: true,
     messages: undefined,
     createdBy: undefined,
-    modifiedBy: undefined
+    modifiedBy: undefined,
   };
 
   supportedLanguages.forEach(l => {
@@ -67,15 +68,9 @@ export const CourseSchema = z.object({
       message: "course.validation.startDateRequired"
     }),
   endDate: z.date().min(moment().add(-1, "days").toDate()).optional().nullable(), 
-  coachs: z.array(CoachSchema).min(0)
+  coachs: z.array(CoachReferenceSchema).min(0).nullable(),
 }).refine((course) => !course.endDate || (moment(course.endDate).format("YYYMMDD") >= moment(course.startDate).format("YYYMMDD")), {
   message: "course.validation.endDateGreaterThanStartDate",
   path: ["endDate"], // path of error
  });
-
-/*rules={{
-  validate: value =>
-      value == null || "course.validation.endDateGreaterThanStartDate"
-}}
-  */
 

@@ -25,7 +25,7 @@ export const newContact = (): Contact => {
   return newContact;
 }
 
-export function formatName(contact: Contact): string {
+export function formatContactName(contact: Contact): string {
   return (contact?.firstname ?? "") + " " + (contact?.lastname ?? "");
 }
 

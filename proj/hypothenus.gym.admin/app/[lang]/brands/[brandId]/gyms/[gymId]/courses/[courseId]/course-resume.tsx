@@ -22,6 +22,7 @@ export default function CourseResume() {
           {courseState.course.name?.map((name: LocalizedString, index: number) => {
 
             if (name.language === i18n.resolvedLanguage as LanguageEnum) {
+              
               return <span className="text-secondary fw-bolder">{name.text}</span>
              }
           })}

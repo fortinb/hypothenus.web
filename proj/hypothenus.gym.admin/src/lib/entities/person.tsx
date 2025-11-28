@@ -36,7 +36,7 @@ export const newPerson = (): Person => {
   return newPerson;
 }
 
-export function formatName(person: Person): string {
+export function formatPersonName(person: Person): string {
   return `${person?.firstname ?? ""} ${person?.lastname ?? ""}`;
 }
 

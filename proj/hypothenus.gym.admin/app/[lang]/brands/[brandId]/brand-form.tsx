@@ -47,12 +47,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
 
     useEffect(() => {
         if (isLoading && brandId !== "new") {
-            if (brandState.brand?.brandId == brandId) {
-                initBreadcrumb(brandState.brand?.name);
-                setIsLoading(false);
-            } else {
-                fetchBrand(brandId);
-            }
+           fetchBrand(brandId);
         }
 
         if (isLoading && brandId == "new") {

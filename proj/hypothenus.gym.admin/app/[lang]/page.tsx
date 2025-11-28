@@ -20,7 +20,7 @@ export default function Home() {
     };
 
     dispatch(resetBreadcrumbs(crumb));
-  }, []);
+  });
 
   return (
     <main className="main-bg-gradient overflow-auto">

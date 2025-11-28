@@ -2,7 +2,7 @@
 
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { Coach } from "@/src//lib/entities/coach";
-import { formatName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/person";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
 import Image from 'next/image';
@@ -15,7 +15,7 @@ export default function CoachListDetails({ coach }: { coach: Coach }) {
       <Card>
         <Card.Body className={"m-2" + (coach.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${i18n.resolvedLanguage}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`}> {formatName(coach.person)}</Link>
+            <Link className="link-element" href={`/${i18n.resolvedLanguage}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`}> {formatPersonName(coach.person)}</Link>
           </Card.Title>
           <Card.Text>
             <Link className="link-element" href={`mailto:${coach.person.email}`}>{coach.person.email}</Link><br />
