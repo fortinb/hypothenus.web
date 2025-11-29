@@ -66,22 +66,10 @@ function DualListSelector({ availableItems, formStateField, sourceLabel, selecte
 
     return (
         <Container>
-            <Row >
-                <Col>
-                    <div className="d-flex flex-row justify-content-center align-items-center">
-                        <Form.Label className="text-primary" >{sourceLabel}</Form.Label>
-                    </div>
-                </Col>
-                 <Col></Col>
-                <Col>
-                    <div className="d-flex flex-row justify-content-center align-items-center">
-                        <Form.Label className="text-primary" >{selectedLabel}</Form.Label>
-                    </div>
-                </Col>
-            </Row>
             <Row>
-                <Col>
-                    <ListGroup>
+                <Col className="d-flex flex-column justify-content-top align-items-center w=100">
+                    <Form.Label className="text-primary" >{sourceLabel}</Form.Label>
+                    <ListGroup className="w-100">
                         {availableItems.map((item) => (
                             <ListGroup.Item className="list-group-item-action"
                                 key={item.id}
@@ -94,46 +82,43 @@ function DualListSelector({ availableItems, formStateField, sourceLabel, selecte
                         ))}
                     </ListGroup>
                 </Col>
-                <Col xs="auto" className="d-flex flex-column justify-content-top ajlign-items-center">
+                <Col xs="auto" className="d-flex flex-column justify-content-center align-items-center h=100">
+                    <Button
+                        variant="primary"
+                        className="mb-2"
+                        onClick={moveAvailableToSelected}
+                        disabled={!isEditMode}
+                    >
+                        <i className="icon icon-light bi bi-chevron-right h7"></i>
+                    </Button>
+                    <Button
+                        variant="primary"
+                        className="mb-2"
+                        onClick={moveAllAvailableToSelected}
+                        disabled={!isEditMode}
+                    >
+                        <i className="icon icon-light bi bi-chevron-double-right h7"></i>
+                    </Button>
+                    <Button
+                        className="mb-2"
+                        variant="secondary"
+                        onClick={moveAllSelectedToAvailable}
+                        disabled={!isEditMode}
+                    >
+                       <i className="icon icon-light bi bi-chevron-double-left h7"></i>
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onClick={moveSelectedToAvailable}
+                        disabled={!isEditMode}
+                    >
+                     <i className="icon icon-light bi bi-chevron-left h7"></i>
+                    </Button>
 
-                    <div className="d-flex flex-column justify-content-center align-items-center h=100">
-                        <Button
-                            variant="primary"
-                            className="mb-2"
-                            onClick={moveAllAvailableToSelected}
-                            disabled={!isEditMode}
-                        >
-                            &gt;&gt;
-                        </Button>
-                        <Button
-                            className="mb-2"
-                            variant="secondary"
-                            onClick={moveAllSelectedToAvailable}
-                            disabled={!isEditMode}
-                        >
-                            &lt;&lt;
-                        </Button>
-                    </div>
-                    <div className="d-flex flex-column flex-fill justify-content-center align-items-center h=100">
-                        <Button
-                            variant="primary"
-                            className="mb-2"
-                            onClick={moveAvailableToSelected}
-                            disabled={!isEditMode}
-                        >
-                            &gt;
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            onClick={moveSelectedToAvailable}
-                            disabled={!isEditMode}
-                        >
-                            &lt;
-                        </Button>
-                    </div>
                 </Col>
-                <Col>
-                    <ListGroup >
+                <Col className="d-flex flex-column justify-content-top align-items-center">
+                    <Form.Label className="text-primary" >{selectedLabel}</Form.Label>
+                    <ListGroup className="w-100">
                         {selectedItems?.map((item: DualListItem, index: number) => {
                             return <ListGroup.Item className="list-group-item-action"
                                 key={item.id}
@@ -154,16 +139,48 @@ function DualListSelector({ availableItems, formStateField, sourceLabel, selecte
 }
 
 export default DualListSelector;
-/*     
-  <Form.Group>
-                                    <Form.Control type="text" {...register(`${formStatefield}.${index}`)} value={item.id} />
-                                    {item.description()}
-                                </Form.Group>
 
-<Form.Group>
-                                        <Form.Control
-                                            {...register(`${formStatefield}.${index}.description`)}
-                                            type="label">
+/*
+ const onCoachItemAdded = (item?: DualListItem, addAll: boolean = false) => {
 
-                                        </Form.Control>
-                                    </Form.Group>*/ 
+        if (!addAll) {
+            if (!item) return;
+            append(item);
+            const updatedAvailableItems = availableCoachItems.filter((i) => i.reference !== item.reference);
+            setAvailableCoachItems(updatedAvailableItems);
+        }
+
+        if (addAll) {
+            availableCoachItems.forEach(item => append(item));
+            setAvailableCoachItems([]);
+        }
+    };
+
+    const onCoachItemRemoved = (index: number, removeAll: boolean = false) => {
+
+        if (!removeAll) {
+            if (index < 0) return;
+
+            const item = formContext.getValues(`selectedCoachItems.${index}`);
+            if (!item) return;
+
+            // Remove from RHF field array
+            remove(index);
+
+            const updatedAvailableItems = [...availableCoachItems, item].sort((a, b) => a.label.localeCompare(b.label));
+            setAvailableCoachItems(updatedAvailableItems);
+        }
+
+        if (removeAll) {
+            const removedItems = formContext.getValues("selectedCoachItems");
+            if (removedItems.length > 0) {
+                const updatedAvailableItems = [...availableCoachItems, ...removedItems].sort((a, b) => a.label.localeCompare(b.label));
+                setAvailableCoachItems(updatedAvailableItems);
+            }
+
+            remove();
+        }
+    };
+    
+                 <DualListSelector formStateField={formCoachsStateField} isEditMode={isEditMode} onSelectedItemAdded={onCoachItemAdded} onSelectedItemRemoved={onCoachItemRemoved} sourceLabel={t("course.coach.available")} selectedLabel={t("course.coach.selected")} availableItems={availableCoachItems} ></DualListSelector>
+                 */ 

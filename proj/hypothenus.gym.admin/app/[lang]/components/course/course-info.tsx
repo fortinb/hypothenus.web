@@ -4,23 +4,31 @@ import i18n, { supportedLanguages, useTranslation } from "@/app/i18n/i18n";
 import { Course } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import Accordion from "react-bootstrap/Accordion";
+import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import DatePicker from "react-datepicker";
+import Select from "react-select";
 import { Controller, useFormContext } from "react-hook-form";
-import LocalizedStringInfo from "../localized/localized-string-info";
-import DualListSelector, { DualListItem } from "../selection/dual-list-selector";
 import { CourseFormData } from "../../brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
+import LocalizedStringInfo from "../localized/localized-string-info";
+import { Coach } from "@/src/lib/entities/coach";
 
-export default function CourseInfo({ course, availableCoachItems, formCoachsStateField, onCoachItemAdded, onCoachItemRemoved, isEditMode, isCancelling }:
+export interface SelectItem {
+    coach: Coach;
+    label: string;
+    value: string;
+}
+
+export default function CourseInfo({ course, availableCoachItems, formCoachsStateField, isEditMode, isCancelling }:
     {
         course: Course,
-        availableCoachItems: DualListItem[],
+        availableCoachItems: SelectItem[],
         formCoachsStateField: string,
-        onCoachItemAdded: (item?: DualListItem, addAll?: boolean) => void,
-        onCoachItemRemoved: (index: number, removeAll: boolean) => void
         isEditMode: boolean,
         isCancelling: boolean
     }) {
@@ -118,7 +126,28 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
-                                        <DualListSelector formStateField={formCoachsStateField} isEditMode={isEditMode} onSelectedItemAdded={onCoachItemAdded} onSelectedItemRemoved={onCoachItemRemoved} sourceLabel={t("course.coach.available")} selectedLabel={t("course.coach.selected")} availableItems={availableCoachItems} ></DualListSelector>
+                                        <Controller
+                                            name={`${formCoachsStateField}`}
+                                            render={({ field }) => (
+                                                <div>
+                                                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_cource_info_coach_add_all_tooltip">{t("course.coach.addAll")}</Tooltip>}>
+                                                        <Button className="btn btn-icon btn-sm mb-2" disabled={!isEditMode} onClick={() => field.onChange(availableCoachItems)}><i className="icon icon-light bi bi-chevron-double-right h7"></i></Button>
+                                                    </OverlayTrigger>
+                                                    <Select
+                                                        {...field}
+                                                        isMulti
+                                                        options={availableCoachItems}
+                                                        onChange={(selected) => field.onChange(selected)}
+                                                        value={field.value}
+                                                        hideSelectedOptions={true}
+                                                        closeMenuOnSelect={false}
+                                                        placeholder={t("course.coach.selected")}
+                                                    />
+                                                </div>
+                                            )}
+
+                                        />
+
                                     </Col>
                                 </Row>
                             </Accordion.Body>

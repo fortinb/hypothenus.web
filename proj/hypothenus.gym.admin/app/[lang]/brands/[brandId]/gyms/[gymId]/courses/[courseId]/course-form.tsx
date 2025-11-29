@@ -3,11 +3,11 @@
 import FormActionBar from "@/app/[lang]/components/actions/form-action-bar";
 import FormActionButtons from "@/app/[lang]/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/[lang]/components/actions/modal-confirmation";
-import CourseInfo from "@/app/[lang]/components/course/course-info";
+import CourseInfo, { SelectItem } from "@/app/[lang]/components/course/course-info";
 import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
-import { DualListItem } from "@/app/[lang]/components/selection/dual-list-selector";
+
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
@@ -28,7 +28,7 @@ import { z } from "zod";
 
 export interface CourseFormData {
     course: Course;
-    selectedCoachItems: DualListItem[];
+    selectedCoachItems: SelectItem[];
 }
 
 export const CourseFormSchema = z.object({
@@ -56,9 +56,9 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [availableCoachs, setAvailableCoachs] = useState<Coach[]>([]);
-    const [availableCoachItems, setAvailableCoachItems] = useState<DualListItem[]>([]);
-    const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<DualListItem[]>([]);
-    //const { control, handleSubmit } = useForm<FormInputs>()
+    const [availableCoachItems, setAvailableCoachItems] = useState<SelectItem[]>([]);
+    const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<SelectItem[]>([]);
+
     const formContext = useForm<CourseFormData>({
         defaultValues: {
             course: courseState.course,
@@ -68,7 +68,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         resolver: zodResolver(CourseFormSchema)
     });
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields } = useFieldArray({
         control: formContext.control,
         name: "selectedCoachItems"
     });
@@ -96,19 +96,17 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
         // Initialize DualList Coachs Items
         if (!isLoading && isCoachsLoaded && !isCoachsItemsInitialized) {
-            const availableItems: DualListItem[] = availableCoachs?.map((coach: Coach) => {
+            const availableItems: SelectItem[] = availableCoachs?.map((coach: Coach) => {
                 return {
-                    id: coach.id,
-                    description: () => {
-                        return formatPersonName(coach.person);
-                    },
-                    source: coach,
-                } as DualListItem;
+                    coach: coach,
+                    label: formatPersonName(coach.person),
+                    value: coach.id,
+                } as SelectItem;
             });
 
             const initialAvailableCoachItems = availableItems
-                .filter((item) => !courseState.course.coachs?.some((selected) => selected.id === item.id))
-                .sort((a, b) => a.description().localeCompare(b.description()));
+                .filter((item) => !courseState.course.coachs?.some((selected) => selected.id === item.coach))
+                .sort((a, b) => a.label.localeCompare(b.label));
 
             setAvailableCoachItems(initialAvailableCoachItems);
 
@@ -137,56 +135,13 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         dispatch(pushBreadcrumb(crumb));
     }
 
-    const onCoachItemAdded = (item?: DualListItem, addAll: boolean = false) => {
-
-        if (!addAll) {
-            if (!item) return;
-            append(item);
-            const updatedAvailableItems = availableCoachItems.filter((i) => i.id !== item.id);
-            setAvailableCoachItems(updatedAvailableItems);
-        }
-
-        if (addAll) {
-            availableCoachItems.forEach(item => append(item));
-            setAvailableCoachItems([]);
-        }
-    };
-
-    const onCoachItemRemoved = (index: number, removeAll: boolean = false) => {
-
-        if (!removeAll) {
-            if (index < 0) return;
-
-            const item = formContext.getValues(`selectedCoachItems.${index}`);
-            if (!item) return;
-
-            // Remove from RHF field array
-            remove(index);
-
-            const updatedAvailableItems = [...availableCoachItems, item].sort((a, b) => a.description().localeCompare(b.description()));
-            setAvailableCoachItems(updatedAvailableItems);
-        }
-
-        if (removeAll) {
-            const removedItems = formContext.getValues("selectedCoachItems");
-            if (removedItems.length > 0) {
-                const updatedAvailableItems = [...availableCoachItems, ...removedItems].sort((a, b) => a.description().localeCompare(b.description()));
-                setAvailableCoachItems(updatedAvailableItems);
-            }
-
-            remove();
-        }
-    };
-
     function initSelectedCoachItems() {
-        const initialSelectedCoachItems: DualListItem[] = courseState.course.coachs?.map((coach: Coach) => {
+        const initialSelectedCoachItems: SelectItem[] = courseState.course.coachs?.map((coach: Coach) => {
             return {
-                id: coach.id,
-                description: () => {
-                    return formatPersonName(coach.person);
-                },
-                source: coach,
-            } as DualListItem;
+                coach: coach,
+                label: formatPersonName(coach.person),
+                value: coach.id,
+            } as SelectItem;
         });
 
         setOriginalSelectedCoachItems(initialSelectedCoachItems);
@@ -231,7 +186,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             setSuccess(true);
             setTextSuccess(t("action.saveSuccess"));
             dispatch(updateCourseState(course));
-            setOriginalSelectedCoachItems(formData.selectedCoachItems as DualListItem[]);
+            setOriginalSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
 
             await postSaveCourse(course);
 
@@ -246,7 +201,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         let course: Course = response.data as Course;
 
         dispatch(updateCourseState(course));
-        setOriginalSelectedCoachItems(formData.selectedCoachItems as DualListItem[]);
+        setOriginalSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
 
         await postSaveCourse(updatedCourse);
     }
@@ -354,7 +309,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             startDate: formData.course.startDate,
             endDate: formData.course.endDate,
             coachs: formData.selectedCoachItems.map((item) => {
-                return item.source as Coach;
+                return item.coach as Coach;
             }),
             isActive: course.isActive,
             messages: undefined,
@@ -386,7 +341,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.id == "" ? true : courseState.course.isActive}
                                         isEditDisable={isEditMode} isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
-                                    <CourseInfo course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} onCoachItemAdded={onCoachItemAdded} onCoachItemRemoved={onCoachItemRemoved} isEditMode={isEditMode} isCancelling={isCancelling} />
+                                    <CourseInfo course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
                                     <hr className="mt-1 mb-1" />
                                     <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />
                                 </Form>

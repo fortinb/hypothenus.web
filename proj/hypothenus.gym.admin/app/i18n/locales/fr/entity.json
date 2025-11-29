@@ -135,7 +135,8 @@
         },
         "coach": {
             "available": "Entraineurs disponibles",
-            "selected": "Entraineurs qualifiés"
+            "selected": "Entraineurs qualifiés",
+            "addAll": "Sélectionnez tout"
         },
         "code": "Code",
         "codePlaceholder": "Identification unique",

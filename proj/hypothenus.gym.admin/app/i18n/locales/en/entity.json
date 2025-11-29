@@ -134,7 +134,8 @@
         },
         "coach": {
             "available": "Available coachs",
-            "selected": "Qualified coachs"
+            "selected": "Qualified coachs",
+            "addAll": "Select All"
         },
         "code": "Code",
         "codePlaceholder": "Course unique code",
