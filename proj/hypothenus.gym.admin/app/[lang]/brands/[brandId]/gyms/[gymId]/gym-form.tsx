@@ -204,8 +204,8 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     function mapForm(formData: z.infer<typeof GymSchema>, gym: Gym): Gym {
         let updatedGym: Gym = {
             id: gym.id,
-            brandId: gym.brandId,
-            gymId: gym.gymId,
+            brandId: formData.brandId,
+            gymId: formData.gymId,
             name: formData.name,
             address: formData.address,
             email: formData.email,

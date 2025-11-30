@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: { brandId: str
     const requestContext = getRequestContext(req);
 
     const page: number = parseInt(searchParams.get("page") ?? "0");
-    const pageSize: number = parseInt(searchParams.get("pageSize") ?? "10");
+    const pageSize: number = parseInt(searchParams.get("pageSize") ?? "6");
     const includeInactive: boolean = (searchParams.get("includeInactive")?.toLocaleLowerCase() == "true" ? true : false);
 
     if (isNaN(page) || isNaN(pageSize)) {

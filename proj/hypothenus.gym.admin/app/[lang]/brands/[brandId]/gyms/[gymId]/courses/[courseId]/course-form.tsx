@@ -14,7 +14,7 @@ import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { Coach } from "@/src/lib/entities/coach";
-import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
+import { Course, CourseSchema, getCourseName, parseCourse } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { formatPersonName } from "@/src/lib/entities/person";
@@ -45,6 +45,9 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isCourseLoading, setIsCourseLoading] = useState<boolean>(false);
+    const [isCourseLoaded, setIsCourseLoaded] = useState<boolean>(false);
+    const [isCoachsLoading, setIsCoachsLoading] = useState<boolean>(false);
     const [isCoachsLoaded, setIsCoachsLoaded] = useState<boolean>(false);
     const [isCoachsItemsInitialized, setIsCoachsItemInitialized] = useState<boolean>(false);
     const [success, setSuccess] = useState(false);
@@ -57,12 +60,12 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [availableCoachs, setAvailableCoachs] = useState<Coach[]>([]);
     const [availableCoachItems, setAvailableCoachItems] = useState<SelectItem[]>([]);
-    const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<SelectItem[]>([]);
+    const [initialSelectedCoachItems, setInitialSelectedCoachItems] = useState<SelectItem[]>([]);
 
     const formContext = useForm<CourseFormData>({
         defaultValues: {
             course: courseState.course,
-            selectedCoachItems: originalSelectedCoachItems
+            selectedCoachItems: initialSelectedCoachItems
         },
         mode: "all",
         resolver: zodResolver(CourseFormSchema)
@@ -77,9 +80,14 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
     useEffect(() => {
         if (isLoading) {
-
-            if (courseId !== "new") {
+            if (courseId !== "new" && !isCourseLoaded && !isCourseLoading) {
                 fetchCourse(gymId, courseId);
+                setIsCourseLoading(true);
+            }
+
+            if (!isCoachsLoaded && !isCoachsLoading) {
+                fetchCoachs(brandId, gymId);
+                setIsCoachsLoading(true);
             }
 
             if (courseId == "new") {
@@ -88,14 +96,10 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                 formContext.setValue("course.gymId", gymId);
                 setIsLoading(false);
             }
-
-            if (!isCoachsLoaded) {
-                fetchCoachs(brandId, gymId);
-            }
         }
 
         // Initialize DualList Coachs Items
-        if (!isLoading && isCoachsLoaded && !isCoachsItemsInitialized) {
+        if (isCoachsLoaded && !isCoachsItemsInitialized) {
             const availableItems: SelectItem[] = availableCoachs?.map((coach: Coach) => {
                 return {
                     coach: coach,
@@ -110,17 +114,20 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
             setAvailableCoachItems(initialAvailableCoachItems);
 
-            initSelectedCoachItems();
-
             setIsCoachsItemInitialized(true);
         }
 
-        if (!isLoading && isCoachsItemsInitialized && courseId !== "new") {
+        if (isCoachsLoaded && isCourseLoaded && isCoachsItemsInitialized && courseId !== "new") {
+            const initialSelectedCoachItems: SelectItem[] = initSelectedCoachItems();
+            setInitialSelectedCoachItems(initialSelectedCoachItems);
+
             formContext.reset({
                 course: courseState.course,
-                selectedCoachItems: originalSelectedCoachItems
+                selectedCoachItems: initialSelectedCoachItems
             },);
-            initBreadcrumb(getCourseName(courseState.course, i18n.resolvedLanguage as LanguageEnum))
+
+            initBreadcrumb(getCourseName(courseState.course, i18n.resolvedLanguage as LanguageEnum));
+            setIsLoading(false);
         }
 
     }, [courseState, availableCoachs, isCoachsItemsInitialized]);
@@ -135,7 +142,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         dispatch(pushBreadcrumb(crumb));
     }
 
-    function initSelectedCoachItems() {
+    function initSelectedCoachItems() : SelectItem[] {
         const initialSelectedCoachItems: SelectItem[] = courseState.course.coachs?.map((coach: Coach) => {
             return {
                 coach: coach,
@@ -144,15 +151,16 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             } as SelectItem;
         });
 
-        setOriginalSelectedCoachItems(initialSelectedCoachItems);
+    
+        return initialSelectedCoachItems;
     }
 
     const fetchCourse = async (gymId: string, courseId: string) => {
         let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
-        let course: Course = response.data;
+        let course: Course = parseCourse(response.data);
 
         dispatch(updateCourseState(course));
-        setIsLoading(false);
+        setIsCourseLoaded(true);
     }
 
     const fetchCoachs = async (brandId: string, gymId: string) => {
@@ -175,8 +183,10 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const createCourse = async (formData: z.infer<typeof CourseFormSchema>) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${formData.course.gymId}/courses`, formData.course);
-        let course: Course = response.data;
+        let newCourse: Course = mapForm(formData, courseState.course);
+
+        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${formData.course.gymId}/courses`, newCourse);
+        let course: Course = parseCourse(response.data);
 
         const duplicate = course.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
         if (duplicate) {
@@ -186,7 +196,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             setSuccess(true);
             setTextSuccess(t("action.saveSuccess"));
             dispatch(updateCourseState(course));
-            setOriginalSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
+            setInitialSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
 
             await postSaveCourse(course);
 
@@ -198,10 +208,10 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         let updatedCourse: Course = mapForm(formData, courseState.course);
 
         let response = await axiosInstance.put(`/api/brands/${brandId}/gyms/${formData.course.gymId}/courses/${updatedCourse.id}`, updatedCourse);
-        let course: Course = response.data as Course;
+        let course: Course = parseCourse(response.data);
 
         dispatch(updateCourseState(course));
-        setOriginalSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
+        setInitialSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
 
         await postSaveCourse(updatedCourse);
     }
@@ -254,7 +264,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
         formContext.reset({
             course: courseState.course,
-            selectedCoachItems: originalSelectedCoachItems
+            selectedCoachItems: initialSelectedCoachItems
         },);
 
         if (courseId == "new") {
@@ -300,9 +310,9 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
     function mapForm(formData: z.infer<typeof CourseFormSchema>, course: Course): Course {
         let updatedCourse: Course = {
-            id: course.id,
-            brandId: course.brandId,
-            gymId: course.gymId,
+            id: formData.course.id,
+            brandId: formData.course.brandId,
+            gymId: formData.course.gymId,
             code: formData.course.code,
             name: formData.course.name,
             description: formData.course.description,
@@ -333,7 +343,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                     </div>
                 }
 
-                {!isLoading && isCoachsItemsInitialized &&
+                {!isLoading && 
                     <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
                         <div className="w-100 h-100">
                             <FormProvider {...formContext} >

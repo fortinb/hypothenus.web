@@ -94,7 +94,7 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                                             <Controller
                                                 name={`course.startDate`}
                                                 render={({ field }) => (
-                                                    <DatePicker className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={field.value} onChange={(date) => field.onChange(date)}
+                                                    <DatePicker className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={field.value as Date} onChange={(date) => field.onChange(date)}
                                                         locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                                                 )}
                                             />
@@ -141,7 +141,12 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                                                         value={field.value}
                                                         hideSelectedOptions={true}
                                                         closeMenuOnSelect={false}
+                                                        isDisabled={!isEditMode}
                                                         placeholder={t("course.coach.selected")}
+                                                        noOptionsMessage={() => t("course.coach.selected")}
+                                                        classNames={{
+                                                            multiValueRemove: () => "select-multi-remove"
+                                                        }}
                                                     />
                                                 </div>
                                             )}

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export const DEFAULT_PAGING_SIZE: number = 10;
+export const DEFAULT_PAGING_SIZE: number = 6;
 
 export interface BrandsStatePaging {
   page: number;

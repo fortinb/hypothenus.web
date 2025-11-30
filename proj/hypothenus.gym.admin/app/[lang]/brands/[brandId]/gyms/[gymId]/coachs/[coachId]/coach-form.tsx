@@ -234,8 +234,8 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     function mapForm(formData: z.infer<typeof CoachSchema>, coach: Coach): Coach {
         let updatedCoach: Coach = {
             id: coach.id,
-            brandId: coach.brandId,
-            gymId: coach.gymId,
+            brandId: formData.brandId,
+            gymId: formData.gymId,
             isActive: coach.isActive,
             person: formData.person,
             messages: undefined,
