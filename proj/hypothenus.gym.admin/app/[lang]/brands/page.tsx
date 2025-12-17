@@ -21,7 +21,7 @@ export default function Brands() {
     };
 
     dispatch(pushBreadcrumb(crumb));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">

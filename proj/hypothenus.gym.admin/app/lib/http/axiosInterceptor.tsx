@@ -1,4 +1,4 @@
-"use server";
+"use client"
 
 import axios from 'axios'
 
@@ -7,15 +7,15 @@ const axiosInstance = axios.create();
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (process.env.ENVIRONMENT != 'prod') {
-      config.headers["x-credentials"] = "Bruno Fortin";
-      config.headers["x-authorization"] = "{ \"roles\" : [\"Admin\"] }";
-    }
+    config.headers["x-tracking-number"] = "1234";
+    config.headers["x-credentials"] = "Bruno Fortin";
+    config.headers["authorization"] = "{ \"roles\" : [\"Admin\"] }";
 
     return config;
   },
   (error) => {
     // Handle request errors here
+
     return Promise.reject(error);
   }
 );
@@ -23,20 +23,21 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
+    // Modify the response data here (e.g., parse, transform)
     return response;
   },
   (error) => {
     console.log(error);
 
     // Handle response errors here
-    switch (error?.response?.status) {
+    switch (error.response.status) {
       case 401:
         break;
       default:
         break;
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error as Error);
   }
 );
 

@@ -1,9 +1,7 @@
 "use client"
 
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Gym } from "@/src/lib/entities/gym";
 import { Page } from "@/src/lib/entities/page";
-import { AxiosRequestConfig } from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
@@ -13,6 +11,7 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "@/app/lib/store/slices/gyms-state-paging-slice";
 import GymsList from "./gyms-list";
 import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
+import { fetchGyms, searchGyms } from "@/app/lib/data/gyms-data-service";
 
 export default function GymsListPaging({ brandId }: { brandId: string }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
@@ -37,18 +36,7 @@ export default function GymsListPaging({ brandId }: { brandId: string }) {
   const fetchGymsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
     setIsLoading(true);
 
-    const requestContext: AxiosRequestConfig =
-    {
-      params: {
-        page: page,
-        pageSize: pageSize,
-        includeInactive: includeInactive
-      }
-    };
-
-    let response = await axiosInstance.get(`/api/brands/${brandId}/gyms`, requestContext);
-
-    let pageOfGyms: Page<Gym> = response.data;
+   let pageOfGyms: Page<Gym> = await fetchGyms(brandId, page, pageSize, includeInactive);
 
     setPageOfGyms(pageOfGyms);
     if (pageOfGyms?.content && pageOfGyms?.pageable) {
@@ -61,19 +49,7 @@ export default function GymsListPaging({ brandId }: { brandId: string }) {
   const searchGymsPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
     setIsLoading(true);
 
-    const requestContext: AxiosRequestConfig =
-    {
-      params: {
-        page: page,
-        pageSize: pageSize,
-        includeInactive: includeInactive,
-        criteria: criteria
-      }
-    };
-
-    let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/search`, requestContext);
-
-    let pageOfGyms: Page<Gym> = response.data;
+    let pageOfGyms: Page<Gym> = await searchGyms(brandId, page, pageSize, includeInactive, criteria);
 
     setPageOfGyms(pageOfGyms);
 

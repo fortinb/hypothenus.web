@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import BrandForm from "./brand-form";
 import BrandMenu from "./brand-menu";
 import BrandResume from "./brand-resume";
+
 export default function Brand() {
   const params = useParams<{ brandId: string; }>();
     

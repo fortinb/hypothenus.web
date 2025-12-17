@@ -1,6 +1,6 @@
 "use client"
 
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslation } from "@/app/i18n/i18n";
 import GymsListPaging from "./gyms-list-paging";
 import GymsMenu from "./gyms-menu";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -22,7 +22,7 @@ export default function Gyms() {
     };
 
     dispatch(pushBreadcrumb(crumb));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">

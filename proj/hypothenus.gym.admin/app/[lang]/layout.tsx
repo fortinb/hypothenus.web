@@ -2,14 +2,14 @@
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Footer from "./components/layout/footer";
 import Header from "./components/layout/header";
 import StoreProvider from '../lib/store/store-provider';
 import "/styles/hypothenus.scss";
-import i18n, { useTranslation } from "../i18n/i18n";
 import { useParams } from "next/navigation";
+import i18n, {changeLanguage, fallbackLanguage, languageCookieName, supportedLanguages, useTranslation} from "../i18n/i18n";
 
 export default function RootLayout({
   children,
@@ -18,6 +18,13 @@ export default function RootLayout({
 }>) {
   const params = useParams<{ lang: string }>();
   const { t } = useTranslation("translation", params.lang);
+
+  useEffect(() => {
+    const languageRequested = supportedLanguages.find((language) => params.lang ?? fallbackLanguage);
+    if (languageRequested && languageRequested !== i18n.resolvedLanguage) {
+        changeLanguage(languageRequested);
+    }
+  }, [params.lang]);
 
   return (
 

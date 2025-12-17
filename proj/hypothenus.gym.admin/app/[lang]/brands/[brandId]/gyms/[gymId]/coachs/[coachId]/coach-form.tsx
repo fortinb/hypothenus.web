@@ -9,7 +9,6 @@ import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
@@ -21,6 +20,7 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
+import { delCoach, postActivateCoach, getCoach, postCoach, putCoach, postDeactivateCoach, uploadCoachPhoto } from "@/app/lib/data/coachs-data-service";
 
 
 export default function CoachForm({ brandId, gymId, coachId }: { brandId: string; gymId: string, coachId: string }) {
@@ -83,8 +83,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     }
 
     const fetchCoach = async (gymId: string, coachId: string) => {
-        let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
-        let coach: Coach = response.data;
+        let coach: Coach = await getCoach(brandId, gymId, coachId);
         dispatch(updateCoachState(coach));
 
         setIsLoading(false);
@@ -104,24 +103,18 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     const uploadPhoto = async (gymId: string, coachId: string, photo: Blob) => {
         const formData = new FormData();
         formData.append('file', photo);
+      
+        let response =  await uploadCoachPhoto(brandId, gymId, coachId, formData);
 
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/photo`, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        });
-
-        return response.data as string;
+        return response;
     }
 
     const createCoach = async (formData: z.infer<typeof CoachSchema>) => {
-
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${formData.gymId}/coachs`, formData);
-        let coach: Coach = response.data;
+        let coach: Coach = await postCoach(brandId, gymId, formData as Coach);
 
         dispatch(updateCoachState(coach));
 
-        await postSaveCoach(coach);
+        await afterSaveCoach(coach);
 
         router.push(`/${i18n.resolvedLanguage}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`);
     }
@@ -129,15 +122,13 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     const saveCoach = async (formData: z.infer<typeof CoachSchema>) => {
         let updatedCoach: Coach = mapForm(formData, coachState.coach);
 
-        let response = await axiosInstance.put(`/api/brands/${brandId}/gyms/${formData.gymId}/coachs/${updatedCoach.id}`, updatedCoach);
-        let coach: Coach = response.data as Coach;
-
+        let coach: Coach = await putCoach(brandId, gymId, coachId, updatedCoach);
         dispatch(updateCoachState(coach));
 
-        await postSaveCoach(updatedCoach);
+        await afterSaveCoach(updatedCoach);
     }
 
-    const postSaveCoach = async (coach: Coach) => {
+    const afterSaveCoach = async (coach: Coach) => {
 
         if (photoToUpload) {
             const photoUri = await uploadPhoto(coach.gymId, coach.id, photoToUpload);
@@ -151,8 +142,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     }
 
     const activateCoach = async (gymId: string, coachId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/activate`);
-        let coach: Coach = response.data;
+        let coach: Coach = await postActivateCoach(brandId, gymId, coachId);
 
         dispatch(updateCoachState(coach));
         setIsActivating(false);
@@ -161,8 +151,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     }
 
     const deactivateCoach = async (gymId: string, coachId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/deactivate`);
-        let coach: Coach = response.data;
+        let coach: Coach = await postDeactivateCoach(brandId, gymId, coachId);
 
         dispatch(updateCoachState(coach));
         setIsActivating(false);
@@ -171,7 +160,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     }
 
     const deleteCoach = async (gymId: string, coachId: string) => {
-        await axiosInstance.delete(`/api/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
+        await delCoach(brandId, gymId, coachId);
 
         setTextSuccess(t("action.deleteSuccess"));
         setSuccess(true);

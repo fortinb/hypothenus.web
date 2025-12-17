@@ -9,7 +9,7 @@ import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
+import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
@@ -21,6 +21,8 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
+import { delGym, postActivateGym, getGym, postGym, putGym, postDeactivateGym } from "@/app/lib/data/gyms-data-service";
+
 
 export default function GymForm({ brandId, gymId }: { brandId: string; gymId: string }) {
     const { t } = useTranslation("entity");
@@ -75,8 +77,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     }
 
     const fetchGym = async (gymId: string) => {
-        let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}`);
-        let gym: Gym = response.data;
+        let gym: Gym =  await getGym(brandId, gymId);
         dispatch(updateGymState(gym));
 
         initBreadcrumb(gym?.name);
@@ -96,9 +97,8 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     }
 
     const createGym = async (formData: z.infer<typeof GymSchema>) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms`, formData);
+        let result: Gym = await postGym(brandId, formData as Gym);
 
-        let result: Gym = response.data;
         const duplicate = result.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
         if (duplicate) {
             formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists") });
@@ -115,8 +115,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
 
     const saveGym = async (formData: z.infer<typeof GymSchema>) => {
         let updatedGym: Gym = mapForm(formData, gymState.gym);
-        let response = await axiosInstance.put(`/api/brands/${brandId}/gyms/${updatedGym.gymId}`, updatedGym);
-        let result: Gym = response.data;
+        let result: Gym = await putGym(brandId, updatedGym);
         dispatch(updateGymState(result));
 
         setTextSuccess(t("action.saveSuccess"));
@@ -126,8 +125,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     }
 
     const activateGym = async (gymId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/activate`);
-        let gym: Gym = response.data;
+        let gym: Gym = await postActivateGym(brandId, gymId);
         dispatch(updateGymState(gym));
         setIsActivating(false);
         setTextSuccess(t("action.activationSuccess"));
@@ -135,8 +133,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     }
 
     const deactivateGym = async (gymId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/deactivate`);
-        let gym: Gym = response.data;
+        let gym: Gym = await postDeactivateGym(brandId, gymId);
         dispatch(updateGymState(gym));
         setIsActivating(false);
         setTextSuccess(t("action.deactivationSuccess"));
@@ -144,8 +141,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     }
 
     const deleteGym = async (gymId: string) => {
-        await axiosInstance.delete(`/api/brands/${brandId}/gyms/${gymId}`);
-
+        await delGym(brandId, gymId);
         setTextSuccess(t("action.deleteSuccess"));
         setSuccess(true);
 

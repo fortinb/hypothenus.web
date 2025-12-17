@@ -7,10 +7,9 @@ import CourseInfo, { SelectItem } from "@/app/[lang]/components/course/course-in
 import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
-
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
+import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { Coach } from "@/src/lib/entities/coach";
@@ -25,6 +24,9 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
+import { delCourse, postActivateCourse, getCourse, postCourse, putCourse, postDeactivateCourse } from "@/app/lib/data/courses-data-service";
+import { fetchCoachs } from "@/app/lib/data/coachs-data-service";
+import { Page } from "@/src/lib/entities/page";
 
 export interface CourseFormData {
     course: Course;
@@ -86,7 +88,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             }
 
             if (!isCoachsLoaded && !isCoachsLoading) {
-                fetchCoachs(brandId, gymId);
+                fetchCoachsPage(brandId, gymId);
                 setIsCoachsLoading(true);
             }
 
@@ -156,16 +158,15 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const fetchCourse = async (gymId: string, courseId: string) => {
-        let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
-        let course: Course = parseCourse(response.data);
+        let course: Course = await getCourse(brandId, gymId, courseId);
 
         dispatch(updateCourseState(course));
         setIsCourseLoaded(true);
     }
 
-    const fetchCoachs = async (brandId: string, gymId: string) => {
-        let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}/coachs?page=0&pageSize=1000&includeInactive=false`);
-        let coachs: Coach[] = response.data.content;
+    const fetchCoachsPage = async (brandId: string, gymId: string) => {
+        let pageOfCoachs: Page<Coach> =  await fetchCoachs(brandId, gymId, 0, 1000, false);
+        let coachs: Coach[] = pageOfCoachs.content;
 
         setAvailableCoachs(coachs);
         setIsCoachsLoaded(true);
@@ -184,9 +185,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
     const createCourse = async (formData: z.infer<typeof CourseFormSchema>) => {
         let newCourse: Course = mapForm(formData, courseState.course);
-
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${formData.course.gymId}/courses`, newCourse);
-        let course: Course = parseCourse(response.data);
+        let course: Course = await postCourse(brandId, gymId, newCourse);
 
         const duplicate = course.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
         if (duplicate) {
@@ -198,7 +197,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             dispatch(updateCourseState(course));
             setInitialSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
 
-            await postSaveCourse(course);
+            await afterSaveCourse(course);
 
             router.push(`/${i18n.resolvedLanguage}/brands/${course.brandId}/gyms/${course.gymId}/courses/${course.id}`);
         }
@@ -207,24 +206,22 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     const saveCourse = async (formData: z.infer<typeof CourseFormSchema>) => {
         let updatedCourse: Course = mapForm(formData, courseState.course);
 
-        let response = await axiosInstance.put(`/api/brands/${brandId}/gyms/${formData.course.gymId}/courses/${updatedCourse.id}`, updatedCourse);
-        let course: Course = parseCourse(response.data);
+        let course: Course = await putCourse(brandId, gymId, courseId, updatedCourse);
 
         dispatch(updateCourseState(course));
         setInitialSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
 
-        await postSaveCourse(updatedCourse);
+        await afterSaveCourse(updatedCourse);
     }
 
-    const postSaveCourse = async (course: Course) => {
+    const afterSaveCourse = async (course: Course) => {
         setTextSuccess(t("action.saveSuccess"));
         setSuccess(true);
         setIsSaving(false);
     }
 
     const activateCourse = async (gymId: string, courseId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/courses/${courseId}/activate`);
-        let course: Course = response.data;
+        let course: Course =  await postActivateCourse(brandId, gymId, courseId);
 
         dispatch(updateCourseState(course));
         setIsActivating(false);
@@ -233,8 +230,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const deactivateCourse = async (gymId: string, courseId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/gyms/${gymId}/courses/${courseId}/deactivate`);
-        let course: Course = response.data;
+        let course: Course =  await postDeactivateCourse(brandId, gymId, courseId);
 
         dispatch(updateCourseState(course));
         setIsActivating(false);
@@ -243,7 +239,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const deleteCourse = async (gymId: string, courseId: string) => {
-        await axiosInstance.delete(`/api/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
+        await delCourse(brandId, gymId, courseId);
 
         setTextSuccess(t("action.deleteSuccess"));
         setSuccess(true);

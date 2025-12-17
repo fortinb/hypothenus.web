@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import i18n, {changeLanguage, fallbackLanguage, languageCookieName, supportedLanguages} from "./app/i18n/i18n";
 
 
-export function middleware(req: NextRequest) {
+export function xxmiddleware(req: NextRequest) {
     if (req.nextUrl.pathname.indexOf('icon') > -1 || req.nextUrl.pathname.indexOf('chrome') > -1) {
         return NextResponse.next();
     }

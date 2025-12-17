@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   sassOptions: { includePaths: ["./styles/scss"] },
   images: {
+    unoptimized: true,
     domains: ['lorempixel.com'],
-    // OR (preferred for HTTP/HTTPS/patterns):
-    // remotePatterns: [
-    //   { protocol: 'http', hostname: 'lorempixel.com', pathname: '/**' }
-    // ]
   },
 };
 

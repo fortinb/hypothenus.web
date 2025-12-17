@@ -1,9 +1,7 @@
 "use client"
 
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Brand } from "@/src/lib/entities/brand";
 import { Page } from "@/src/lib/entities/page";
-import { AxiosRequestConfig } from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
@@ -13,6 +11,7 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { BrandsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "@/app/lib/store/slices/brands-state-paging-slice";
 import BrandsList from "./brands-list";
 import { clearBrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { fetchBrands, searchBrands } from "@/app/lib/data/brands-data-service";
 
 export default function BrandsListPaging() {
   const brandsStatePaging: BrandsStatePaging = useSelector((state: any) => state.brandsStatePaging);
@@ -32,23 +31,12 @@ export default function BrandsListPaging() {
       fetchBrandsPage(brandsStatePaging.page, brandsStatePaging.pageSize, brandsStatePaging.includeInactive);
     }
 
-  }, [brandsStatePaging]);
+  }, [dispatch, brandsStatePaging]);
 
   const fetchBrandsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
     setIsLoading(true);
 
-    const requestContext: AxiosRequestConfig =
-    {
-      params: {
-        page: page,
-        pageSize: pageSize,
-        includeInactive: includeInactive
-      }
-    };
-
-    let response = await axiosInstance.get(`/api/brands`, requestContext);
-
-    let pageOfBrands: Page<Brand> = response.data;
+    const pageOfBrands: Page<Brand> = await fetchBrands(page, pageSize, includeInactive);
 
     setPageOfBrands(pageOfBrands);
     if (pageOfBrands?.content && pageOfBrands?.pageable) {
@@ -61,19 +49,7 @@ export default function BrandsListPaging() {
   const searchBrandsPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
     setIsLoading(true);
 
-    const requestContext: AxiosRequestConfig =
-    {
-      params: {
-        page: page,
-        pageSize: pageSize,
-        includeInactive: includeInactive,
-        criteria: criteria
-      }
-    };
-
-    let response = await axiosInstance.get(`/api/brands/search`, requestContext);
-
-    let pageOfBrands: Page<Brand> = response.data;
+    const pageOfBrands: Page<Brand> = await searchBrands(page, pageSize, includeInactive, criteria);
 
     setPageOfBrands(pageOfBrands);
 

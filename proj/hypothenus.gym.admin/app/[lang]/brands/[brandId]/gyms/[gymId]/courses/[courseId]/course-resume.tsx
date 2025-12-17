@@ -23,7 +23,7 @@ export default function CourseResume() {
 
             if (name.language === i18n.resolvedLanguage as LanguageEnum) {
               
-              return <span className="text-secondary fw-bolder">{name.text}</span>
+              return <span key={index} className="text-secondary fw-bolder">{name.text}</span>
              }
           })}
          </h2>

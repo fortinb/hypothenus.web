@@ -3,7 +3,7 @@
 import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
 import Loader from "@/app/[lang]/components/navigation/loader";
 import PagingNavigation from "@/app/[lang]/components/navigation/paging-navigation";
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
+import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { CoursesStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/courses-state-paging-slice";
 import { Course } from "@/src/lib/entities/course";
 import { Page } from "@/src/lib/entities/page";
@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoursesList from "./courses-list";
 import { clearCourseState } from "@/app/lib/store/slices/course-state-slice";
+import { fetchCourses } from "@/app/lib/data/courses-data-service";
 
 export default function CoursesListPaging({ brandId, gymId }: { brandId: string; gymId: string }) {
   const coursesStatePaging: CoursesStatePaging = useSelector((state: any) => state.coursesStatePaging);
@@ -28,23 +29,12 @@ export default function CoursesListPaging({ brandId, gymId }: { brandId: string;
 
     fetchCoursesPage(coursesStatePaging.page, coursesStatePaging.pageSize, coursesStatePaging.includeInactive);
 
-  }, [coursesStatePaging]);
+  }, [dispatch, coursesStatePaging]);
 
   const fetchCoursesPage = async (page: number, pageSize: number, includeInactive: boolean) => {
     setIsLoading(true);
 
-    const requestContext: AxiosRequestConfig =
-    {
-      params: {
-        page: page,
-        pageSize: pageSize,
-        includeInactive: includeInactive
-      }
-    };
-
-    let response = await axiosInstance.get(`/api/brands/${brandId}/gyms/${gymId}/courses`, requestContext);
-
-    let pageOfCourses: Page<Course> = response.data;
+    let pageOfCourses: Page<Course> = await fetchCourses(brandId, gymId, page, pageSize, includeInactive);
 
     setPageOfCourses(pageOfCourses);
     if (pageOfCourses?.content && pageOfCourses?.pageable) {

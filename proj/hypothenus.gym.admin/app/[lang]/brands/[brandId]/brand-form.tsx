@@ -9,7 +9,6 @@ import Loader from "@/app/[lang]/components/navigation/loader";
 import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import axiosInstance from "@/app/lib/http/axiosInterceptorClient";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { BrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
@@ -20,6 +19,7 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
+import { delBrand, postActivateBrand, getBrand, postBrand, putBrand, postDeactivateBrand } from "@/app/lib/data/brands-data-service";
 
 export default function BrandForm({ brandId }: { brandId: string }) {
     const { t } = useTranslation("entity");
@@ -72,8 +72,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
     }
 
     const fetchBrand = async (brandId: string) => {
-        let response = await axiosInstance.get(`/api/brands/${brandId}`);
-        let brand: Brand = response.data;
+        let brand: Brand = await getBrand(brandId);
         dispatch(updateBrandState(brand));
 
         initBreadcrumb(brand?.name);
@@ -92,9 +91,8 @@ export default function BrandForm({ brandId }: { brandId: string }) {
     }
 
     const createBrand = async (formData: z.infer<typeof BrandSchema>) => {
-        let response = await axiosInstance.post(`/api/brands`, formData);
+        let result: Brand = await postBrand(formData as Brand);
 
-        let result: Brand = response.data;
         setSuccess(true);
         setTextSuccess(t("action.saveSuccess"));
         dispatch(updateBrandState(result));
@@ -105,8 +103,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
 
     const saveBrand = async (formData: z.infer<typeof BrandSchema>) => {
         let updatedBrand: Brand = mapForm(formData, brandState.brand);
-        let response = await axiosInstance.put(`/api/brands/${updatedBrand.brandId}`, updatedBrand);
-        let result: Brand = response.data;
+        let result: Brand = await putBrand(updatedBrand);
         dispatch(updateBrandState(result));
 
         setTextSuccess(t("action.saveSuccess"));
@@ -115,8 +112,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
     }
 
     const activateBrand = async (brandId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/activate`);
-        let brand: Brand = response.data;
+        let brand: Brand = await postActivateBrand(brandId);
         dispatch(updateBrandState(brand));
         setIsActivating(false);
         setTextSuccess(t("action.activationSuccess"));
@@ -124,8 +120,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
     }
 
     const deactivateBrand = async (brandId: string) => {
-        let response = await axiosInstance.post(`/api/brands/${brandId}/deactivate`);
-        let brand: Brand = response.data;
+        let brand: Brand = await postDeactivateBrand(brandId);
         dispatch(updateBrandState(brand));
         setIsActivating(false);
         setTextSuccess(t("action.deactivationSuccess"));
@@ -133,8 +128,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
     }
 
     const deleteBrand = async (brandId: string) => {
-        await axiosInstance.delete(`/api/brands/${brandId}`);
-
+        await delBrand(brandId);
         setTextSuccess(t("action.deleteSuccess"));
         setSuccess(true);
 
