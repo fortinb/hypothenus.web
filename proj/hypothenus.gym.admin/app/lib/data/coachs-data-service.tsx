@@ -15,7 +15,7 @@ function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestCon
 
   let request: AxiosRequestConfig =
   {
-    baseURL: process.env.HYPOTHENUS_ADMIN_MS_BASE_URL,
+    baseURL: process.env.NEXT_PUBLIC_HYPOTHENUS_ADMIN_MS_BASE_URL,
     params: params
   }
 

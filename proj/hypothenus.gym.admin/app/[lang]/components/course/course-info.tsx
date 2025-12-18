@@ -17,6 +17,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { CourseFormData } from "../../brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
 import { Coach } from "@/src/lib/entities/coach";
+import moment from "moment";
 
 export interface SelectItem {
     coach: Coach;
@@ -94,7 +95,7 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                                             <Controller
                                                 name={`course.startDate`}
                                                 render={({ field }) => (
-                                                    <DatePicker className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={field.value as Date} onChange={(date) => field.onChange(date)}
+                                                    <DatePicker className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={moment(field.value).toDate()} onChange={(date) => field.onChange(date?.toISOString())}
                                                         locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                                                 )}
                                             />
@@ -109,8 +110,8 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                                             <Controller
                                                 name={"course.endDate"}
                                                 render={({ field }) => (
-                                                    <DatePicker id={`course_input_endDate`} minDate={new Date()} onChange={(date) => field.onChange(date)}
-                                                        selected={field.value}
+                                                    <DatePicker id={`course_input_endDate`} minDate={new Date()} onChange={(date) => field.onChange(date?.toISOString() ?? undefined)}
+                                                        selected={!field.value ? null : moment(field.value).toDate()}
                                                         className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                                                 )}
                                             />

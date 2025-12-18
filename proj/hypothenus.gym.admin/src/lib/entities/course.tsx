@@ -2,10 +2,9 @@ import { fallbackLanguage, supportedLanguages } from '@/app/i18n/i18n';
 import moment from 'moment';
 import { z } from 'zod';
 import { BaseEntity } from './baseEntity';
-import { Coach, CoachReferenceSchema, CoachSchema } from './coach';
+import { Coach, CoachReferenceSchema } from './coach';
 import { LanguageEnum } from './language';
 import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
-import { DualListItem } from '@/app/[lang]/components/selection/dual-list-selector';
 
 
 export interface Course extends BaseEntity {
@@ -16,8 +15,8 @@ export interface Course extends BaseEntity {
   name: LocalizedString[];
   description: LocalizedString[];
   coachs: Coach[];
-  startDate: Date;
-  endDate?: any; //Date | undefined | null
+  startDate: string;
+  endDate?: any; 
   isActive: boolean;
 }
 
@@ -25,10 +24,10 @@ export const parseCourse = (data: any): Course => {
   let course: Course = data;
 
   if (data.startDate) {
-    course.startDate = moment(data.startDate).toDate();
+    course.startDate = moment(data.startDate).toDate().toISOString();
   }
   if (data.endDate) {
-    course.endDate = moment(data.endDate).toDate();
+    course.endDate = moment(data.endDate).toDate().toISOString();
   }
 
   return course;
@@ -44,8 +43,8 @@ export const newCourse = (): Course => {
     name: [],
     description: [],
     coachs: [],
-    startDate: moment().toDate(),
-    endDate: null,
+    startDate: moment().toDate().toISOString(),
+    endDate: undefined,
     isActive: true,
     messages: undefined,
     createdBy: undefined,
@@ -77,11 +76,8 @@ export const CourseSchema = z.object({
   code: z.string().min(1, { message: "course.validation.codeRequired" }),
   name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(1),
   description: z.array(LocalizedStringSchema(false, "")).min(1),
-  startDate: z.date().min(moment().add(-1, "days").toDate(), { message: "course.validation.startDateRequired" }).optional().nullable()
-    .refine((startDate) => startDate !== null && startDate !== undefined, {
-      message: "course.validation.startDateRequired"
-    }),
-  endDate: z.date().min(moment().add(-1, "days").toDate()).optional().nullable(),
+  startDate: z.string().min(1, { message: "course.validation.startDateRequired" }),
+  endDate: z.any().nullable(),
   coachs: z.array(CoachReferenceSchema).min(0).nullable(),
 }).refine((course) => !course.endDate || (moment(course.endDate).format("YYYMMDD") >= moment(course.startDate).format("YYYMMDD")), {
   message: "course.validation.endDateGreaterThanStartDate",

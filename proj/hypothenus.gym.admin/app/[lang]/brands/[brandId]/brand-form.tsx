@@ -92,10 +92,11 @@ export default function BrandForm({ brandId }: { brandId: string }) {
 
     const createBrand = async (formData: z.infer<typeof BrandSchema>) => {
         let result: Brand = await postBrand(formData as Brand);
-
+        dispatch(updateBrandState(result));
+        
         setSuccess(true);
         setTextSuccess(t("action.saveSuccess"));
-        dispatch(updateBrandState(result));
+  
         router.push(`/${i18n.resolvedLanguage}/brands/${result.brandId}`);
 
         setIsSaving(false);
