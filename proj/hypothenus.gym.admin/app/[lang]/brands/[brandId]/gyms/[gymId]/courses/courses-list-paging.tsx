@@ -1,8 +1,8 @@
 "use client"
 
-import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
-import Loader from "@/app/[lang]/components/navigation/loader";
-import PagingNavigation from "@/app/[lang]/components/navigation/paging-navigation";
+import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
+import Loader from "@/app/ui/components/navigation/loader";
+import PagingNavigation from "@/app/ui/components/navigation/paging-navigation";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { CoursesStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/courses-state-paging-slice";
 import { Course } from "@/src/lib/entities/course";

@@ -1,7 +1,7 @@
 import moment from "moment";
 
 
-export function formatDate(date: Date): string {
+export function formatDate(date: string): string {
   
     if (date) {
         return moment(date).format("YYYY-MM-DD");

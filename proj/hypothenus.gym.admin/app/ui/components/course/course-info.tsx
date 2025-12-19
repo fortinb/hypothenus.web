@@ -14,10 +14,10 @@ import Row from "react-bootstrap/Row";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { Controller, useFormContext } from "react-hook-form";
-import { CourseFormData } from "../../brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
-import LocalizedStringInfo from "../localized/localized-string-info";
 import { Coach } from "@/src/lib/entities/coach";
 import moment from "moment";
+import { CourseFormData } from "@/app/[lang]/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
+import LocalizedStringInfo from "../localized/localized-string-info";
 
 export interface SelectItem {
     coach: Coach;

@@ -1,12 +1,12 @@
 "use client"
 
-import FormActionBar from "@/app/[lang]/components/actions/form-action-bar";
-import FormActionButtons from "@/app/[lang]/components/actions/form-action-buttons";
-import ModalConfirmation from "@/app/[lang]/components/actions/modal-confirmation";
-import CourseInfo, { SelectItem } from "@/app/[lang]/components/course/course-info";
-import ErrorBoundary from "@/app/[lang]/components/errors/error-boundary";
-import Loader from "@/app/[lang]/components/navigation/loader";
-import ToastSuccess from "@/app/[lang]/components/notifications/toast-success";
+import FormActionBar from "@/app/ui/components/actions/form-action-bar";
+import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
+import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
+import CourseInfo, { SelectItem } from "@/app/ui/components/course/course-info";
+import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
+import Loader from "@/app/ui/components/navigation/loader";
+import ToastSuccess from "@/app/ui/components/notifications/toast-success";
 import i18n, { useTranslation } from "@/app/i18n/i18n";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
