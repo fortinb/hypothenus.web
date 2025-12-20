@@ -1,6 +1,6 @@
 {
     "menu": {
-        "brand": "{{name}}",
+        "brand": "{name}",
         "sections": "Marque",
         "info": "Info",
         "gyms": "Salles de sport",

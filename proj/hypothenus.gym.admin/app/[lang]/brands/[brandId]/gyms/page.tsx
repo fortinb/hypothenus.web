@@ -1,39 +1,35 @@
-"use client"
-
-import { useTranslations } from "next-intl";
+import { getTranslations } from 'next-intl/server';
+import { Breadcrumb } from '@/app/ui/components/navigation/breadcrumb';
 import GymsListPaging from "./gyms-list-paging";
 import GymsMenu from "./gyms-menu";
-import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { useEffect } from "react";
-import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
-import { usePathname, useParams } from "next/navigation";
 
-export default function Gyms() {
-  const t = useTranslations("gym");
-  const dispatch = useAppDispatch();
-  const pathname = usePathname();
-  const params = useParams<{ brandId: string }>();
-  
-  useEffect(() => {
-    const crumb: Crumb = {
-      id: "gyms.page",
-      href: pathname,
-      crumb: t("breadcrumb")
-    };
+interface PageProps {
+  params: { lang: string, brandId: string };
+}
 
-    dispatch(pushBreadcrumb(crumb));
-  }, [dispatch]);
+export default async function Gyms({ params }: PageProps) {
+  const t = await getTranslations({ locale: params.lang, namespace: "gym" });
 
   return (
-    <div className="d-flex justify-content-between w-100 h-100">
-      <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-        <GymsMenu brandId={params.brandId} />
-      </div>
-      <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <GymsListPaging brandId={params.brandId} />
-      </div>
-      <div className="d-flex flex-column justify-content-between w-25 h-100">
+    <div>
+      <Breadcrumb
+        crumb={{
+          reset: false,
+          id: "gyms.page",
+          href: `/${params.lang}/brands/${params.brandId}/gyms`,
+          crumb: t("breadcrumb")
+        }}
+      />
+      <div className="d-flex justify-content-between w-100 h-100">
+        <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
+          <GymsMenu brandId={params.brandId} />
+        </div>
+        <div className="d-flex flex-column justify-content-between w-50 h-100">
+          <GymsListPaging brandId={params.brandId} />
+        </div>
+        <div className="d-flex flex-column justify-content-between w-25 h-100">
 
+        </div>
       </div>
     </div>
   );

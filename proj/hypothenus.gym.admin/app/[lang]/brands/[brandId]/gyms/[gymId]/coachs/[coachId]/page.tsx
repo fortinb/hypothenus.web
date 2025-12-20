@@ -1,11 +1,14 @@
-"use client"
 
 import { useParams } from "next/navigation";
 import CoachForm from "./coach-form";
 import CoachMenu from "./coach-menu";
 import CoachResume from "./coach-resume";
-export default function Coach() {
-  const params = useParams<{ brandId: string; gymId: string; coachId: string }>();
+
+interface PageProps {
+  params: { lang: string, brandId: string, gymId: string, courseId: string, coachId: string };
+}
+
+export default async function Coach({ params }: PageProps) {
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">

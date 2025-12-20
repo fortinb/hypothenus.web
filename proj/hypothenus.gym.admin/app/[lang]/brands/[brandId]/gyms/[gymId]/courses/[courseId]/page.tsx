@@ -1,11 +1,12 @@
-"use client"
-
-import { useParams } from "next/navigation";
 import CourseForm from "./course-form";
 import CourseMenu from "./course-menu";
 import CourseResume from "./course-resume";
-export default function Course() {
-  const params = useParams<{ brandId: string; gymId: string; courseId: string }>();
+
+interface PageProps {
+  params: { lang: string, brandId: string, gymId: string, courseId: string };
+}
+
+export default async function Course({ params }: PageProps) {
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">

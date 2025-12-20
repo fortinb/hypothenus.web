@@ -1,6 +1,6 @@
 {
     "menu": {
-        "gym": "{{name}}",
+        "gym": "{name}",
         "sections": "Course",
         "info": "Info",
         "management": "Courses",
@@ -13,11 +13,11 @@
     "breadcrumb": "Courses",
     "list": {
         "menu": {
-            "gym": "{{name}}",
+            "gym": "{name}",
             "title": "Courses",
             "add": "Add new course",
             "inactive": "Inactive",
-            "management": "{{name}}",
+            "management": "{name}",
             "managementTooltip": "Back to gym"
         },
         "details": {

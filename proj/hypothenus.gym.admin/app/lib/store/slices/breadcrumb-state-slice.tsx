@@ -3,6 +3,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface Crumb {
+  reset: boolean,
   href: string,
   id: string,
   crumb: string,

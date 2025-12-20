@@ -52,7 +52,7 @@
         "contacts": "Contacts",
         "note": "Notes",
         "deleteConfirmation": {
-            "title": "Supprimer {{name}}",
+            "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer cette marque ?",
             "yes": "Supprimer",
             "no": "Annuler",
@@ -80,7 +80,7 @@
         "contacts": "Contacts",
         "note": "Notes",
         "deleteConfirmation": {
-            "title": "Supprimer {{name}}",
+            "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer cette salle de sport ?",
             "yes": "Supprimer",
             "no": "Annuler",
@@ -114,7 +114,7 @@
             "new": "Nouvel entraîneur"
         },
         "deleteConfirmation": {
-            "title": "Supprimer {{name}}",
+            "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer cet entraineur ?",
             "yes": "Supprimer",
             "no": "Annuler",
@@ -147,7 +147,7 @@
         "endDate": "Date de fin",
         "coachsSection" : "Entraîneur qualifiés",
         "deleteConfirmation": {
-            "title": "Supprimer {{name}}",
+            "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer ce cours ?",
             "yes": "Supprimer",
             "no": "Annuler",

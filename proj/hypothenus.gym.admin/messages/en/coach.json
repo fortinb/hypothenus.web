@@ -1,6 +1,6 @@
 {
     "menu": {
-        "gym": "{{name}}",
+        "gym": "{name}",
         "sections": "Coach",
         "info": "Info",
         "management": "Coachs",
@@ -12,11 +12,11 @@
     "breadcrumb": "Coachs",
     "list": {
         "menu": {
-            "gym": "{{name}}",
+            "gym": "{name}",
             "title": "Coachs",
             "add": "Add new coach",
             "inactive": "Inactive",
-            "management": "{{name}}",
+            "management": "{name}",
             "managementTooltip": "Back to gym"
         },
         "details": {
