@@ -1,33 +1,26 @@
 "use client";
 
-import i18n, { changeLanguage, useTranslation } from "@/app/i18n/i18n";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Image from 'next/image';
 import Link from "next/link";
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 export default function NavbarMenu() {
-  const pathname = usePathname();
-  const router = useRouter();
   const params = useParams<{ lang: string }>();
-  const { t } = useTranslation("layout");
+  const t = useTranslations("layout");
+  const router = useRouter();
+  const pathname = usePathname();
 
-  function languageRedirect(languageRequested: string) {
-   
-    if (!pathname.startsWith(`/${params.lang}`)) {
-      return;
-    }
+  function changeLanguage(language: string) {
 
-    changeLanguage(languageRequested);
-    router.push(`/${languageRequested}`);
-    
-   // router.push(pathname.replace(params.lang, languageRequested));
+    router.push(`/${language}${pathname.substring(3)}`);
   }
-  
-  
+
   return (
     <Navbar expand="lg" className="container-xxl bd-gutter flex-wrap flex-lg-nowrap" >
       <Container className="container-fluid">
@@ -38,14 +31,14 @@ export default function NavbarMenu() {
               <Nav className="mb-2 mb-lg-0">
                 <div className="mt-2 mt-lg-0 me-2">
                   <Nav.Link as={Link} className="nav-link-img p-2" href="/">
-                    <Image src="/images/logo_transparent.png" 
+                    <Image src="/images/logo_transparent.png"
                       width={86}
-                      height={32} 
+                      height={32}
                       alt="Hypothenus"></Image>
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                    <Nav.Link as={Link} href={`/${i18n.resolvedLanguage}/brands`}>{t("navbar.brands.title")}</Nav.Link>
+                  <Nav.Link as={Link} href={`/${params.lang}/brands`}>{t("navbar.brands.title")}</Nav.Link>
                 </div>
               </Nav>
             </div>
@@ -56,18 +49,18 @@ export default function NavbarMenu() {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => languageRedirect("en")}>
-                      {t("navbar.language.en")}
-                      {params.lang=="en" &&
-                        <i className="bi bi-check"></i>
-                      }
+                  <Dropdown.Item onClick={() => changeLanguage("en")}>
+                    {t("navbar.language.en")}
+                    {params.lang == "en" &&
+                      <i className="bi bi-check"></i>
+                    }
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={() => languageRedirect("fr")}>
+                  <Dropdown.Item onClick={() => changeLanguage("fr")}>
                     {t("navbar.language.fr")}
-                    {params.lang=="fr" &&
-                        <i className="bi bi-check"></i>
-                      }
-                    </Dropdown.Item>
+                    {params.lang == "fr" &&
+                      <i className="bi bi-check"></i>
+                    }
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>

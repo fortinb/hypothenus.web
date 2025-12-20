@@ -11,10 +11,10 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { FieldError, FieldErrorsImpl, Merge, useFieldArray, useFormContext } from "react-hook-form";
 import ModalConfirmation from "../actions/modal-confirmation";
 import ContactInfo from "../contact/contact-info";
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 
 export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);

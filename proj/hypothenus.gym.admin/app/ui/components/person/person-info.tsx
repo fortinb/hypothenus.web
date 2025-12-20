@@ -1,6 +1,6 @@
 "use client"
 
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { Person } from "@/src/lib/entities/person";
 import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
@@ -15,8 +15,9 @@ import PersonPhoneInfo from "./person-phone-info";
 import Dropzone, { DropEvent, FileRejection } from 'react-dropzone'
 import { useEffect, useState } from "react";
 import Image from 'next/image';
+import { useParams } from "next/navigation";
 
-export default function PersonInfo({ id, formStatefield, isEditMode, isCancelling, uploadHandler  } :
+export default function PersonInfo({ id, formStatefield, isEditMode, isCancelling, uploadHandler }:
     {
         id: string,
         formStatefield: string,
@@ -25,7 +26,8 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
         uploadHandler: (file: Blob) => void
     }) {
 
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
+    const params = useParams<{ lang: string }>();
     const { register, formState: { errors } } = useFormContext();
     const [photoPreviewUri, setPhotoPreviewUri] = useState<string>();
 
@@ -33,7 +35,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
         if (isCancelling === true) {
             setPhotoPreviewUri(undefined);
         }
-       
+
     }, [isCancelling]);
 
     function getError(): Merge<FieldError, FieldErrorsImpl<Person>> {
@@ -78,7 +80,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                             name={`${formStatefield}.dateOfBirth`}
                             render={({ field }) => (
                                 <DatePicker id={`person_input_dateOfBirth_${id}`} selected={field.value} onChange={(date) => field.onChange(date)}
-                                    className={"form-control "} locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                    className={"form-control "} locale={params.lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                             )}
                         />
                     </Form.Group>
@@ -116,14 +118,14 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                                         height={200}
                                         alt="Coach photo"
                                         onError={() => {
-                                                // if preview was set but failed to load, clear it so default will be used
-                                                if (photoPreviewUri) {
-                                                    setPhotoPreviewUri(undefined);
-                                                }
-                                            }}
+                                            // if preview was set but failed to load, clear it so default will be used
+                                            if (photoPreviewUri) {
+                                                setPhotoPreviewUri(undefined);
+                                            }
+                                        }}
                                     />
                                 )}
-                                
+
                             />
                         </div>
                     </Form.Group>

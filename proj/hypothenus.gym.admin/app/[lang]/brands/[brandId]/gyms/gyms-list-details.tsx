@@ -1,20 +1,22 @@
 "use client";
 
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { Gym } from "@/src//lib/entities/gym";
 import { formatAddress } from "@/src/lib/entities/address";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
+import { useParams } from 'next/navigation';
 
 export default function GymListDetails({ gym }: {gym: Gym }) {
-  const { t } = useTranslation("gym");
-
+  const t = useTranslations("gym");
+  const params = useParams<{ lang: string }>();
+  
   return (
     <div className="col-6 p-2">
       <Card>
         <Card.Body className={"m-2" + (gym.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${i18n.resolvedLanguage}/brands/${gym.brandId}/gyms/${gym.gymId}`}> {gym.name}</Link>
+            <Link className="link-element" href={`/${params.lang}/brands/${gym.brandId}/gyms/${gym.gymId}`}> {gym.name}</Link>
           </Card.Title>
           <Card.Text>
             <span className="text-primary">{formatAddress(gym.address)}</span><br />

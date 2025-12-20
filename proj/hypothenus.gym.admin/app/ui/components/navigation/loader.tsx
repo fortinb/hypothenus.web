@@ -1,9 +1,9 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 
 export default function Loader() {
-  const { t } = useTranslation("navigation");
+  const t = useTranslations("navigation");
   
   return (
     <div className="d-flex flex-row justify-content-center text-secondary fw-bold pe-3">

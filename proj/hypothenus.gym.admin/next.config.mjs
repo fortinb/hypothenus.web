@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 
+import createNextIntlPlugin from "next-intl/plugin";
+
 const nextConfig = {
  /* output: "export", */
   reactStrictMode: true,
@@ -10,4 +12,9 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default createNextIntlPlugin({
+  // path to the request config
+  localeConfig: "./i18n/request.ts",
+})(nextConfig);
+
+//export default nextConfig;

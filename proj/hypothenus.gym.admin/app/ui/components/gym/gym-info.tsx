@@ -10,7 +10,7 @@ import { useFormContext } from "react-hook-form";
 import GymAddressInfo from "./gym-address-info";
 import GymContactInfo from "./gym-contact-info";
 import GymPhoneInfo from "./gym-phone-info";
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 
 export default function GymInfo({ gym, isEditMode }:
     {
@@ -18,7 +18,7 @@ export default function GymInfo({ gym, isEditMode }:
         isEditMode: boolean
     }) {
     const { register, formState: { errors } } = useFormContext();
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="gym_info_form" disabled={!isEditMode} >

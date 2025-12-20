@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, MouseEvent } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -19,7 +19,7 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isEditDi
         isActivating: boolean
     }) {
 
-    const { t } = useTranslation("action");
+    const t = useTranslations("action");
 
     return (
         <div className="d-flex flex-row justify-content-between align-items-center">

@@ -7,13 +7,13 @@ import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import BrandInfo from "@/app/ui/components/brand/brand-info";
 import Loader from "@/app/ui/components/navigation/loader";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { BrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -21,8 +21,11 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 import { delBrand, postActivateBrand, getBrand, postBrand, putBrand, postDeactivateBrand } from "@/app/lib/data/brands-data-service";
 
-export default function BrandForm({ brandId }: { brandId: string }) {
-    const { t } = useTranslation("entity");
+export default function BrandForm() {
+    const t = useTranslations("entity");
+
+    const params = useParams<{ lang: string, brandId: string; }>();
+    const brandId = params.brandId;
     const router = useRouter();
     const pathname = usePathname();
 
@@ -97,7 +100,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
         setSuccess(true);
         setTextSuccess(t("action.saveSuccess"));
   
-        router.push(`/${i18n.resolvedLanguage}/brands/${result.brandId}`);
+        router.push(`/${params.lang}/brands/${result.brandId}`);
 
         setIsSaving(false);
     }
@@ -136,7 +139,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push(`/${i18n.resolvedLanguage}/brands`);
+            router.push(`/${params.lang}/brands`);
 
         }, 2000);
     }
@@ -146,7 +149,7 @@ export default function BrandForm({ brandId }: { brandId: string }) {
         formContext.reset(brandState.brand);
 
         if (brandId == "new") {
-            router.push(`/${i18n.resolvedLanguage}/brands`);
+            router.push(`/${params.lang}/brands`);
         }
     }
 

@@ -1,6 +1,5 @@
 "use client"
 
-import i18n, { supportedLanguages, useTranslation } from "@/app/i18n/i18n";
 import { Course } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import Accordion from "react-bootstrap/Accordion";
@@ -18,6 +17,9 @@ import { Coach } from "@/src/lib/entities/coach";
 import moment from "moment";
 import { CourseFormData } from "@/app/[lang]/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 export interface SelectItem {
     coach: Coach;
@@ -34,7 +36,8 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
         isCancelling: boolean
     }) {
     const { register, formState: { errors } } = useFormContext<CourseFormData>();
-    const { t } = useTranslation("entity");
+    const params = useParams<{ lang: string }>();
+    const t = useTranslations("entity");
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="course_info_form" disabled={!isEditMode} >
@@ -56,7 +59,7 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
-                                        {supportedLanguages.map((language: string, index: number) => {
+                                        {routing.locales.map((language: string, index: number) => {
                                             return (
                                                 <div key={language}>
                                                     <Row className="m-2 gx-2">
@@ -96,7 +99,7 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                                                 name={`course.startDate`}
                                                 render={({ field }) => (
                                                     <DatePicker className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={moment(field.value).toDate()} onChange={(date) => field.onChange(date?.toISOString())}
-                                                        locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                        locale={params.lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                                                 )}
                                             />
                                             <br />
@@ -112,7 +115,7 @@ export default function CourseInfo({ course, availableCoachItems, formCoachsStat
                                                 render={({ field }) => (
                                                     <DatePicker id={`course_input_endDate`} minDate={new Date()} onChange={(date) => field.onChange(date?.toISOString() ?? undefined)}
                                                         selected={!field.value ? null : moment(field.value).toDate()}
-                                                        className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} locale={i18n.resolvedLanguage} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                        className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} locale={params.lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                                                 )}
                                             />
                                             <br />

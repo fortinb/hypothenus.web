@@ -6,7 +6,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { useFormContext } from "react-hook-form";
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import BrandAddressInfo from "./brand-address-info";
 import BrandPhoneInfo from "./brand-phone-info";
 import BrandContactInfo from "./brand-contact-info";
@@ -17,7 +17,7 @@ export default function BrandInfo({ brand, isEditMode }:
         isEditMode: boolean
     }) {
     const { register, formState: { errors } } = useFormContext();
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="brand_info_form" disabled={!isEditMode} >

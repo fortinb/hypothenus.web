@@ -1,21 +1,23 @@
 "use client";
 
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { Course } from "@/src//lib/entities/course";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
 import { getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
+import { useParams } from "next/navigation";
 
 export default function CourseListDetails({ course }: { course: Course }) {
-  const { t } = useTranslation("course");
+  const params = useParams<{ lang: string }>();
+  const t = useTranslations("course");
 
   return (
     <div className="col-6 p-2">
       <Card>
         <Card.Body className={"m-2" + (course.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${i18n.resolvedLanguage}/brands/${course.brandId}/gyms/${course.gymId}/courses/${course.id}`}> {getCourseName(course, i18n.resolvedLanguage as LanguageEnum )}</Link>
+            <Link className="link-element" href={`/${params.lang}/brands/${course.brandId}/gyms/${course.gymId}/courses/${course.id}`}> {getCourseName(course, params.lang as LanguageEnum )}</Link>
           </Card.Title>
           <Card.Text>
             {course.isActive == false &&

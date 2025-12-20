@@ -1,4 +1,3 @@
-"use client"
 
 import NavBreadcrumb from "../navigation/breadcrumb";
 import NavbarMenu from "../navigation/navbar-menu";
@@ -10,7 +9,7 @@ export default function Header() {
         <NavbarMenu />
       </header>
       <div className="d-flex flex-row justify-content-start ms-5">
-          <NavBreadcrumb />
+        <NavBreadcrumb />
       </div>
     </div>
   );

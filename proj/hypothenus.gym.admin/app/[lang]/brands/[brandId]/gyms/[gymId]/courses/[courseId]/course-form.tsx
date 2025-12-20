@@ -7,7 +7,7 @@ import CourseInfo, { SelectItem } from "@/app/ui/components/course/course-info";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import Loader from "@/app/ui/components/navigation/loader";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
@@ -18,7 +18,7 @@ import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -39,10 +39,10 @@ export const CourseFormSchema = z.object({
 });
 
 export default function CourseForm({ brandId, gymId, courseId }: { brandId: string; gymId: string, courseId: string }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
     const router = useRouter();
     const pathname = usePathname();
-
+    const params = useParams<{ lang: string }>();
     const courseState: CourseState = useSelector((state: any) => state.courseState);
     const dispatch = useAppDispatch();
 
@@ -128,7 +128,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                 selectedCoachItems: initialSelectedCoachItems
             },);
 
-            initBreadcrumb(getCourseName(courseState.course, i18n.resolvedLanguage as LanguageEnum));
+            initBreadcrumb(getCourseName(courseState.course, params.lang as LanguageEnum));
             setIsLoading(false);
         }
 
@@ -199,7 +199,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
             await afterSaveCourse(course);
 
-            router.push(`/${i18n.resolvedLanguage}/brands/${course.brandId}/gyms/${course.gymId}/courses/${course.id}`);
+            router.push(`/${params.lang}/brands/${course.brandId}/gyms/${course.gymId}/courses/${course.id}`);
         }
     }
 
@@ -247,7 +247,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms/${gymId}/courses`);
+            router.push(`/${params.lang}/brands/${brandId}/gyms/${gymId}/courses`);
         }, 2000);
     }
 
@@ -264,7 +264,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         },);
 
         if (courseId == "new") {
-            router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms/${gymId}/courses`);
+            router.push(`/${params.lang}/brands/${brandId}/gyms/${gymId}/courses`);
         }
     }
 
@@ -353,7 +353,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                                 </Form>
 
                                 <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("course.deleteConfirmation.title", { name: getCourseName(courseState.course, i18n.resolvedLanguage as LanguageEnum) })} text={t("course.deleteConfirmation.text")}
+                                <ModalConfirmation title={t("course.deleteConfirmation.title", { name: getCourseName(courseState.course, params.lang as LanguageEnum) })} text={t("course.deleteConfirmation.text")}
                                     yesText={t("course.deleteConfirmation.yes")} noText={t("course.deleteConfirmation.no")}
                                     actionText={t("course.deleteConfirmation.action")}
                                     isAction={isDeleting}

@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 import PhoneNumberInfo from "./phone-number-info";
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
 
 export default function ContactInfo({ index, id, formStatefield, parent }:
@@ -18,7 +18,7 @@ export default function ContactInfo({ index, id, formStatefield, parent }:
         formStatefield: string,
         parent?: string
     }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {

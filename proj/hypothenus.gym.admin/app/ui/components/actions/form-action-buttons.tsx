@@ -1,10 +1,10 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import Button from "react-bootstrap/Button";
 
 export default function FormActionButtons({ isSaving, isEditMode, formId, onCancel }: { isSaving: boolean, isEditMode: boolean, formId: string, onCancel: () => void }) {
-    const { t } = useTranslation("action");
+    const t = useTranslations("action");
     
     return (
         <div className="d-flex flex-row justify-content-between" >

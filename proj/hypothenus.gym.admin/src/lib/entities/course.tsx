@@ -1,10 +1,10 @@
-import { fallbackLanguage, supportedLanguages } from '@/app/i18n/i18n';
 import moment from 'moment';
 import { z } from 'zod';
 import { BaseEntity } from './baseEntity';
 import { Coach, CoachReferenceSchema } from './coach';
 import { LanguageEnum } from './language';
 import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
+import { routing } from '@/i18n/routing';
 
 
 export interface Course extends BaseEntity {
@@ -51,7 +51,7 @@ export const newCourse = (): Course => {
     modifiedBy: undefined,
   };
 
-  supportedLanguages.forEach(l => {
+  routing.locales.forEach(l => {
     newCourse.name.push(newLocalizedString(l as LanguageEnum));
     newCourse.description.push(newLocalizedString(l as LanguageEnum));
   });
@@ -63,7 +63,7 @@ export function getCourseName(course: Course, language?: LanguageEnum): string {
 
   let name = course.name?.find(c => c.language === language);
   if (!name) {
-    name = course.name?.find(c => c.language == fallbackLanguage as LanguageEnum);
+    name = course.name?.find(c => c.language == routing.defaultLocale as LanguageEnum);
   }
 
   return name?.text ?? "";

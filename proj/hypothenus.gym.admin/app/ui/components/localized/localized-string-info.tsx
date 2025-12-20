@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { LocalizedString } from "@/src/lib/entities/localizedString";
@@ -16,7 +16,7 @@ export default function LocalizedStringInfo({ index, id, language, formStatefiel
         parent?: string,
         nbRows: number
     }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<LocalizedString>> {

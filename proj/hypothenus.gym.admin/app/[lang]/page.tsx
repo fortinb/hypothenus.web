@@ -3,19 +3,21 @@
 import Image from 'next/image';
 import Carousel from 'react-bootstrap/Carousel';
 import Container from "react-bootstrap/Container";
-import i18n, { useTranslation } from '../i18n/i18n';
+import { useTranslations } from "next-intl";
 import { useEffect } from 'react';
 import { useAppDispatch } from '../lib/hooks/useStore';
 import { Crumb, resetBreadcrumbs } from '../lib/store/slices/breadcrumb-state-slice';
+import { useParams } from 'next/navigation';
 
 export default function Home() {
-  const { t } = useTranslation("home");
+  const t = useTranslations("home");
+  const params = useParams<{ lang: string }>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const crumb: Crumb = {
       id: "home.page",
-      href: `/${i18n.resolvedLanguage}`,
+      href: `/${params.lang}`,
       crumb: t("breadcrumb")
     };
 

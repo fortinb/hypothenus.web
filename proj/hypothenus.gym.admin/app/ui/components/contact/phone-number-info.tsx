@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
 import { PhoneNumber, PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
 import Form from "react-bootstrap/Form";
@@ -14,7 +14,7 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
         formStatefield: string,
         parent?: string
     }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<PhoneNumber>> {

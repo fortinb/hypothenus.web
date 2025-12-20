@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
 import { Address } from "@/src/lib/entities/address";
 import Col from "react-bootstrap/Col";
@@ -15,7 +15,7 @@ export default function AddressInfo({ id, formStatefield, parent }:
         formStatefield: string,
         parent?: string
     }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
     const { register, formState: { errors } } = useFormContext();
 
     function getError(): Merge<FieldError, FieldErrorsImpl<Address>> {

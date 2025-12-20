@@ -7,14 +7,14 @@ import CoachInfo from "@/app/ui/components/coach/coach-info";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import Loader from "@/app/ui/components/navigation/loader";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -24,10 +24,11 @@ import { delCoach, postActivateCoach, getCoach, postCoach, putCoach, postDeactiv
 
 
 export default function CoachForm({ brandId, gymId, coachId }: { brandId: string; gymId: string, coachId: string }) {
-    const { t } = useTranslation("entity");
+    const t = useTranslations("entity");
     const router = useRouter();
     const pathname = usePathname();
-
+    const params = useParams<{ lang: string }>();
+    
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
 
@@ -60,7 +61,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
         if (isLoading && coachId == "new") {
             setIsEditMode(true);
-            
+
             formContext.setValue("brandId", brandId);
             formContext.setValue("gymId", gymId);
             setIsLoading(false);
@@ -103,8 +104,8 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     const uploadPhoto = async (gymId: string, coachId: string, photo: Blob) => {
         const formData = new FormData();
         formData.append('file', photo);
-      
-        let response =  await uploadCoachPhoto(brandId, gymId, coachId, formData);
+
+        let response = await uploadCoachPhoto(brandId, gymId, coachId, formData);
 
         return response;
     }
@@ -116,7 +117,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
         await afterSaveCoach(coach);
 
-        router.push(`/${i18n.resolvedLanguage}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`);
+        router.push(`/${params.lang}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`);
     }
 
     const saveCoach = async (formData: z.infer<typeof CoachSchema>) => {
@@ -168,7 +169,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms/${gymId}/coachs`);
+            router.push(`/${params.lang}/brands/${brandId}/gyms/${gymId}/coachs`);
         }, 2000);
     }
 
@@ -179,7 +180,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
         formContext.reset(coachState.coach);
         if (coachId == "new") {
-             router.push(`/${i18n.resolvedLanguage}/brands/${brandId}/gyms/${gymId}/coachs`);
+            router.push(`/${params.lang}/brands/${brandId}/gyms/${gymId}/coachs`);
         }
     }
 
@@ -194,7 +195,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
         if (coachState.coach.id !== "") {
-           
+
             if (isEditMode === true) {
                 onCancel();
             } else {
@@ -202,7 +203,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
                 setIsCancelling(false);
             }
         }
-      
+
     }
 
     function onDelete(confirmation: boolean) {
@@ -254,9 +255,9 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
                             <FormProvider {...formContext} >
                                 <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                     <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.isActive}
-                                         isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
+                                        isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
-                                    <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling}/>
+                                    <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
                                     <hr className="mt-1 mb-1" />
                                     <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="coach_info_form" />
                                 </Form>

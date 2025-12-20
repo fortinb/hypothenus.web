@@ -1,11 +1,11 @@
-import { useTranslation } from '@/app/i18n/i18n';
 import Image from 'next/image';
 import React from "react";
 import Container from "react-bootstrap/Container";
+import { useTranslations } from "next-intl";
 
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = React.useState("");
-  const { t } = useTranslation("layout");
+  const t = useTranslations("layout");
 
   const promiseRejectionHandler = React.useCallback((event: any) => {
     setError(event.reason);

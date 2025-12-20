@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { FormEventHandler, MouseEventHandler, ReactEventHandler } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -29,7 +29,7 @@ export default function PagingNavigation(
       searchActive: boolean
     }
 ) {
-  const { t } = useTranslation("navigation");
+  const t = useTranslations("navigation");
 
   return (
     <Container >

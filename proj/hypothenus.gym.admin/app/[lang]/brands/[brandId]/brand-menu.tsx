@@ -1,16 +1,18 @@
 "use client"
 
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
+import { useParams } from "next/navigation";
 
-export default function BrandMenu({ brandId}: { brandId: string; }) {
+export default function BrandMenu() {
   const brandState: BrandState = useSelector((state: any) => state.brandState);
-  const { t } = useTranslation("brand");
+  const params = useParams<{ lang: string }>();
+  const t = useTranslations("brand");
 
   return (
 
@@ -28,7 +30,7 @@ export default function BrandMenu({ brandId}: { brandId: string; }) {
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className={"link-element" + (brandState.brand.id == null ? " link-element-disabled" : "")} href={`/${i18n.resolvedLanguage}/brands/${brandId}`}><i className="icon icon-secondary bi bi-buildings h1 m-0"></i></Link>
+                    <Link className={"link-element" + (brandState.brand.id == null ? " link-element-disabled" : "")} href={`/${params.lang}/brands/${brandState.brand.id}`}><i className="icon icon-secondary bi bi-buildings h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("menu.info")}</span>
@@ -40,7 +42,7 @@ export default function BrandMenu({ brandId}: { brandId: string; }) {
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className={"link-element" + (brandState.brand.id == null ? " link-element-disabled" : "")} href={`/${i18n.resolvedLanguage}/brands/${brandId}/gyms`}><i className="icon icon-secondary bi-building h1 m-0"></i></Link>
+                    <Link className={"link-element" + (brandState.brand.id == null ? " link-element-disabled" : "")} href={`/${params.lang}/brands/${brandState.brand.id}/gyms`}><i className="icon icon-secondary bi-building h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("menu.gyms")}</span>

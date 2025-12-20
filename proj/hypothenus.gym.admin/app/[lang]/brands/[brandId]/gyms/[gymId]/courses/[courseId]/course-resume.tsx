@@ -1,6 +1,6 @@
 "use client"
 
-import i18n, { useTranslation } from "@/app/i18n/i18n";
+import { useTranslations } from "next-intl";
 import { CourseState } from "@/app/lib/store/slices/course-state-slice";
 import { formatDate } from "@/app/lib/utils/dateUtils";
 import { LanguageEnum } from "@/src/lib/entities/language";
@@ -9,10 +9,12 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
+import { useParams } from "next/navigation";
 
 export default function CourseResume() {
   const courseState: CourseState = useSelector((state: any) => state.courseState);
-  const { t } = useTranslation("course");
+  const params = useParams<{ lang: string }>();
+  const t = useTranslations("course");
 
   return (
 
@@ -21,12 +23,12 @@ export default function CourseResume() {
         <h2 className="text-secondary pt-4 ps-2">
           {courseState.course.name?.map((name: LocalizedString, index: number) => {
 
-            if (name.language === i18n.resolvedLanguage as LanguageEnum) {
-              
+            if (name.language === params.lang as LanguageEnum) {
+
               return <span key={index} className="text-secondary fw-bolder">{name.text}</span>
-             }
+            }
           })}
-         </h2>
+        </h2>
       </div>
       <div className="ps-2 pe-2">
         <hr />
@@ -38,7 +40,7 @@ export default function CourseResume() {
 
         {courseState.course.description?.map((description: LocalizedString, index: number) => {
 
-          if (description.language === i18n.resolvedLanguage as LanguageEnum) {
+          if (description.language === params.lang as LanguageEnum) {
             return <Row key={index} className="gx-2">
               <Col xs={12} >
                 <p className="card-text">
