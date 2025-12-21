@@ -29,7 +29,7 @@ export default function GymInfo({ gym, isEditMode }:
                             <Form.Label className="text-primary" htmlFor="gym_info_input_code">{t("gym.code")}</Form.Label>
                             <Form.Control type="input" id="gym_info_input_code" placeholder={t("gym.codePlaceholder")} {...register("gymId")}
                                 className={errors.gymId ? "input-invalid" : ""}
-                                disabled={(gym?.gymId ? true : false)} />
+                                disabled={(gym?.gymId !== "new" ? true : false)} />
                             {errors.gymId && <Form.Text className="text-invalid">{t(errors.gymId.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>

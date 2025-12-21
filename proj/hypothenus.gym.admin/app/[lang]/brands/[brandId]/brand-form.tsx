@@ -66,6 +66,7 @@ export default function BrandForm() {
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
+            reset: false,
             id: "brand.[brandId].page",
             href: pathname,
             crumb: name

@@ -5,11 +5,9 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import GymInfo from "@/app/ui/components/gym/gym-info";
-import Loader from "@/app/ui/components/navigation/loader";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
@@ -21,10 +19,9 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delGym, postActivateGym, getGym, postGym, putGym, postDeactivateGym } from "@/app/lib/data/gyms-data-service";
+import { delGym, postActivateGym, postGym, putGym, postDeactivateGym } from "@/app/lib/data/gyms-data-service";
 
-
-export default function GymForm({ brandId, gymId }: { brandId: string; gymId: string }) {
+export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymId: string, gym: Gym }) {
     const t = useTranslations("entity");
     const router = useRouter();
     const pathname = usePathname();
@@ -32,7 +29,6 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
     const params = useParams<{ lang: string }>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -44,45 +40,29 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     const toggleSuccess = () => setSuccess(false);
 
     const formContext = useForm<Gym>({
-        defaultValues: gymState.gym,
+        defaultValues: gym,
         resolver: zodResolver(GymSchema),
     });
 
     useEffect(() => {
-        if (isLoading && gymId !== "new") {
-            fetchGym(gymId);
-        }
+        dispatch(updateGymState(gym));
 
-        if (isLoading && gymId == "new") {
-            formContext.setValue("brandId", brandId);
-
+        if (gym?.gymId === "new") {
             setIsEditMode(true);
-            setIsLoading(false);
         }
 
-        if (!isLoading) {
-            formContext.reset(gymState.gym);
-            initBreadcrumb(gymState.gym?.name);
-        }
-    }, [gymState]);
+        initBreadcrumb(gymState.gym?.name);
+    }, [dispatch, gym]);
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
+            reset: false,
             id: "gym.[gymId].page",
             href: pathname,
             crumb: name
         };
 
         dispatch(pushBreadcrumb(crumb));
-    }
-
-    const fetchGym = async (gymId: string) => {
-        let gym: Gym =  await getGym(brandId, gymId);
-        dispatch(updateGymState(gym));
-
-        initBreadcrumb(gym?.name);
-
-        setIsLoading(false);
     }
 
     const onSubmit: SubmitHandler<Gym> = (formData: z.infer<typeof GymSchema>) => {
@@ -107,6 +87,7 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
             setSuccess(true);
             setTextSuccess(t("action.saveSuccess"));
             dispatch(updateGymState(result));
+
             router.push(`/${params.lang}/brands/${result.brandId}/gyms/${result.gymId}`);
         }
 
@@ -218,42 +199,35 @@ export default function GymForm({ brandId, gymId }: { brandId: string; gymId: st
     }
 
     return (
+
         <ErrorBoundary>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
                 <div className="ps-2 pe-2">
                     <hr className="mt-0 mb-0" />
                 </div>
 
-                {isLoading &&
-                    <div className="flex-fill w-100 h-100">
-                        <Loader />
+                <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
+                    <div className="w-100 h-100">
+                        <FormProvider {...formContext} >
+                            <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
+                                <hr className="mt-1" />
+                                <GymInfo gym={gymState.gym} isEditMode={isEditMode} />
+                                <hr className="mt-1 mb-1" />
+                                <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
+                            </Form>
+
+                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                            <ModalConfirmation title={t("gym.deleteConfirmation.title", { name: gymState.gym.name })} text={t("gym.deleteConfirmation.text")}
+                                yesText={t("gym.deleteConfirmation.yes")} noText={t("gym.deleteConfirmation.no")}
+                                actionText={t("gym.deleteConfirmation.action")}
+                                isAction={isDeleting}
+                                show={showDeleteConfirmation} handleResult={onDelete} />
+
+                        </FormProvider>
                     </div>
-                }
-
-                {!isLoading &&
-                    <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
-                        <div className="w-100 h-100">
-                            <FormProvider {...formContext} >
-                                <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
-                                        isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
-                                    <hr className="mt-1" />
-                                    <GymInfo gym={gymState.gym} isEditMode={isEditMode} />
-                                    <hr className="mt-1 mb-1" />
-                                    <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
-                                </Form>
-
-                                <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("gym.deleteConfirmation.title", { name: gymState.gym.name })} text={t("gym.deleteConfirmation.text")}
-                                    yesText={t("gym.deleteConfirmation.yes")} noText={t("gym.deleteConfirmation.no")}
-                                    actionText={t("gym.deleteConfirmation.action")}
-                                    isAction={isDeleting}
-                                    show={showDeleteConfirmation} handleResult={onDelete} />
-
-                            </FormProvider>
-                        </div>
-                    </div>
-                }
+                </div>
             </div>
         </ErrorBoundary>
     );

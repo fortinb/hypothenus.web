@@ -75,6 +75,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
+            reset: false,
             id: "coach.[coachId].page",
             href: pathname,
             crumb: name

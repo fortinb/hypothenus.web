@@ -136,6 +136,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
+            reset: false,
             id: "course.[courseId].page",
             href: pathname,
             crumb: name
@@ -144,7 +145,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
         dispatch(pushBreadcrumb(crumb));
     }
 
-    function initSelectedCoachItems() : SelectItem[] {
+    function initSelectedCoachItems(): SelectItem[] {
         const initialSelectedCoachItems: SelectItem[] = courseState.course.coachs?.map((coach: Coach) => {
             return {
                 coach: coach,
@@ -153,7 +154,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
             } as SelectItem;
         });
 
-    
+
         return initialSelectedCoachItems;
     }
 
@@ -165,7 +166,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const fetchCoachsPage = async (brandId: string, gymId: string) => {
-        let pageOfCoachs: Page<Coach> =  await fetchCoachs(brandId, gymId, 0, 1000, false);
+        let pageOfCoachs: Page<Coach> = await fetchCoachs(brandId, gymId, 0, 1000, false);
         let coachs: Coach[] = pageOfCoachs.content;
 
         setAvailableCoachs(coachs);
@@ -221,7 +222,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const activateCourse = async (gymId: string, courseId: string) => {
-        let course: Course =  await postActivateCourse(brandId, gymId, courseId);
+        let course: Course = await postActivateCourse(brandId, gymId, courseId);
 
         dispatch(updateCourseState(course));
         setIsActivating(false);
@@ -230,7 +231,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
     }
 
     const deactivateCourse = async (gymId: string, courseId: string) => {
-        let course: Course =  await postDeactivateCourse(brandId, gymId, courseId);
+        let course: Course = await postDeactivateCourse(brandId, gymId, courseId);
 
         dispatch(updateCourseState(course));
         setIsActivating(false);
@@ -339,7 +340,7 @@ export default function CourseForm({ brandId, gymId, courseId }: { brandId: stri
                     </div>
                 }
 
-                {!isLoading && 
+                {!isLoading &&
                     <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
                         <div className="w-100 h-100">
                             <FormProvider {...formContext} >
