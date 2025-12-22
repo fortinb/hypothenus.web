@@ -13,7 +13,7 @@ export interface Person {
   address: Address;
   phoneNumbers: PhoneNumber[];
   contacts: Contact[];
-  photoUri?: string;
+  photoUri: string;
   communicationLanguage : LanguageEnum
   note: string;
 }
@@ -23,7 +23,7 @@ export const newPerson = (): Person => {
     firstname: "",
     lastname: "",
     dateOfBirth: undefined,
-    photoUri: undefined,
+    photoUri: "",
     email: undefined,
     address: newAddress(),
     phoneNumbers: [
@@ -60,7 +60,7 @@ export const PersonSchema = z.object({
   address: AddressSchemaOptional,
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
   contacts: z.array(ContactSchema).min(0),
-  photoUri: z.string().min(0).nullable().optional().or(z.literal("")),
+  photoUri: z.string().min(0),
   communicationLanguage: z.nativeEnum(LanguageEnum),
   note: z.string().min(0),
 });

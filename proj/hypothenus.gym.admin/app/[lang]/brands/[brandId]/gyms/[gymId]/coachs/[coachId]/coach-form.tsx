@@ -53,13 +53,14 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     // Watch the entire form
     const formData = formContext.watch();
-    
- 
     useEffect(() => {
-        // Log the data to the console every time it changes
-        const errors = formContext.formState.errors;
-        console.log("Current Form Data:", formData);
-        console.log("Current Form errors:", errors);
+        // Log the data to the console every time there is an error
+        const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
+        if (hasErrors)  {
+            console.log("Current Form errors:", formContext.formState.errors);
+        }
+          
+       // console.log("Current Form Data:", formData);
     }, [formData]);
 
     useEffect(() => {
