@@ -7,11 +7,11 @@ interface PageProps {
   params: { lang: string, brandId: string };
 }
 
-export default async function Gyms({ params }: PageProps) {
+export default async function GymsPage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: "gym" });
 
   return (
-    <div>
+    <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{
           reset: false,
@@ -20,16 +20,15 @@ export default async function Gyms({ params }: PageProps) {
           crumb: t("breadcrumb")
         }}
       />
-      <div className="d-flex justify-content-between w-100 h-100">
-        <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-          <GymsMenu brandId={params.brandId} />
-        </div>
-        <div className="d-flex flex-column justify-content-between w-50 h-100">
-          <GymsListPaging brandId={params.brandId} />
-        </div>
-        <div className="d-flex flex-column justify-content-between w-25 h-100">
 
-        </div>
+      <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
+        <GymsMenu lang={params.lang} brandId={params.brandId} />
+      </div>
+      <div className="d-flex flex-column justify-content-between w-50 h-100">
+        <GymsListPaging lang={params.lang} brandId={params.brandId} />
+      </div>
+      <div className="d-flex flex-column justify-content-between w-25 h-100">
+
       </div>
     </div>
   );

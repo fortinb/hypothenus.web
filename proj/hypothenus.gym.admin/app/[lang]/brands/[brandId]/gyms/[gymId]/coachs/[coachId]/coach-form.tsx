@@ -5,7 +5,6 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import CoachInfo from "@/app/ui/components/coach/coach-info";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
-import Loader from "@/app/ui/components/navigation/loader";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -14,25 +13,23 @@ import { CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/sto
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delCoach, postActivateCoach, getCoach, postCoach, putCoach, postDeactivateCoach, uploadCoachPhoto } from "@/app/lib/data/coachs-data-service";
+import { delCoach, postActivateCoach, postCoach, putCoach, postDeactivateCoach, uploadCoachPhoto } from "@/app/lib/data/coachs-data-service-client";
 
 
-export default function CoachForm({ brandId, gymId, coachId }: { brandId: string; gymId: string, coachId: string }) {
+export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { lang: string; brandId: string; gymId: string, coachId: string, coach: Coach }) {
     const t = useTranslations("entity");
     const router = useRouter();
     const pathname = usePathname();
-    const params = useParams<{ lang: string }>();
-    
+
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -44,7 +41,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
     const [photoToUpload, setPhotoToUpload] = useState<Blob>();
 
     const formContext = useForm<Coach>({
-        defaultValues: coachState.coach,
+        defaultValues: coach,
         resolver: zodResolver(CoachSchema),
     });
 
@@ -54,24 +51,26 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         setPhotoToUpload(file);
     }
 
+    // Watch the entire form
+    const formData = formContext.watch();
+    
+ 
     useEffect(() => {
-        if (isLoading && coachId !== "new") {
-            fetchCoach(gymId, coachId);
-        }
+        // Log the data to the console every time it changes
+        const errors = formContext.formState.errors;
+        console.log("Current Form Data:", formData);
+        console.log("Current Form errors:", errors);
+    }, [formData]);
 
-        if (isLoading && coachId == "new") {
+    useEffect(() => {
+        dispatch(updateCoachState(coach));
+
+        if (coachId === "new") {
             setIsEditMode(true);
-
-            formContext.setValue("brandId", brandId);
-            formContext.setValue("gymId", gymId);
-            setIsLoading(false);
         }
 
-        if (!isLoading) {
-            formContext.reset(coachState.coach);
-            initBreadcrumb(formatPersonName(coachState.coach?.person))
-        }
-    }, [coachState]);
+        // initBreadcrumb(formatPersonName(coachState.coach?.person))
+    }, [dispatch, coach]);
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
@@ -82,13 +81,6 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         };
 
         dispatch(pushBreadcrumb(crumb));
-    }
-
-    const fetchCoach = async (gymId: string, coachId: string) => {
-        let coach: Coach = await getCoach(brandId, gymId, coachId);
-        dispatch(updateCoachState(coach));
-
-        setIsLoading(false);
     }
 
     const onSubmit: SubmitHandler<Coach> = (formData: z.infer<typeof CoachSchema>) => {
@@ -118,7 +110,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
         await afterSaveCoach(coach);
 
-        router.push(`/${params.lang}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`);
+        router.push(`/${lang}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`);
     }
 
     const saveCoach = async (formData: z.infer<typeof CoachSchema>) => {
@@ -141,6 +133,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         setTextSuccess(t("action.saveSuccess"));
         setSuccess(true);
         setIsSaving(false);
+        setIsEditMode(true);
     }
 
     const activateCoach = async (gymId: string, coachId: string) => {
@@ -170,7 +163,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push(`/${params.lang}/brands/${brandId}/gyms/${gymId}/coachs`);
+            router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs`);
         }, 2000);
     }
 
@@ -181,7 +174,7 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
 
         formContext.reset(coachState.coach);
         if (coachId == "new") {
-            router.push(`/${params.lang}/brands/${brandId}/gyms/${gymId}/coachs`);
+            router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs`);
         }
     }
 
@@ -244,36 +237,28 @@ export default function CoachForm({ brandId, gymId, coachId }: { brandId: string
                     <hr className="mt-0 mb-0" />
                 </div>
 
-                {isLoading &&
-                    <div className="flex-fill w-100 h-100">
-                        <Loader />
+                <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
+                    <div className="w-100 h-100">
+                        <FormProvider {...formContext} >
+                            <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
+                                <hr className="mt-1" />
+                                <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
+                                <hr className="mt-1 mb-1" />
+                                <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="coach_info_form" />
+                            </Form>
+
+                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                            <ModalConfirmation title={t("coach.deleteConfirmation.title", { name: formatPersonName(coachState.coach.person) })} text={t("coach.deleteConfirmation.text")}
+                                yesText={t("coach.deleteConfirmation.yes")} noText={t("coach.deleteConfirmation.no")}
+                                actionText={t("coach.deleteConfirmation.action")}
+                                isAction={isDeleting}
+                                show={showDeleteConfirmation} handleResult={onDelete} />
+
+                        </FormProvider>
                     </div>
-                }
-
-                {!isLoading &&
-                    <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
-                        <div className="w-100 h-100">
-                            <FormProvider {...formContext} >
-                                <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.isActive}
-                                        isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
-                                    <hr className="mt-1" />
-                                    <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
-                                    <hr className="mt-1 mb-1" />
-                                    <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="coach_info_form" />
-                                </Form>
-
-                                <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("coach.deleteConfirmation.title", { name: formatPersonName(coachState.coach.person) })} text={t("coach.deleteConfirmation.text")}
-                                    yesText={t("coach.deleteConfirmation.yes")} noText={t("coach.deleteConfirmation.no")}
-                                    actionText={t("coach.deleteConfirmation.action")}
-                                    isAction={isDeleting}
-                                    show={showDeleteConfirmation} handleResult={onDelete} />
-
-                            </FormProvider>
-                        </div>
-                    </div>
-                }
+                </div>
             </div>
         </ErrorBoundary>
     );

@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Address, AddressSchema, AddressSchemaOptional, newAddress } from "./address";
 import { Contact, ContactSchema } from "./contact";
 import { LanguageEnum } from "./language";
@@ -7,7 +8,7 @@ import { z } from 'zod';
 export interface Person {
   firstname: string;
   lastname: string;
-  dateOfBirth?: any; //Date | undefined | null
+  dateOfBirth?: any; 
   email?: string;
   address: Address;
   phoneNumbers: PhoneNumber[];
@@ -36,6 +37,16 @@ export const newPerson = (): Person => {
   return newPerson;
 }
 
+export const parsePerson = (data: any): Person => {
+  let person: Person = data;
+
+  if (data.dateOfBirth) {
+    person.dateOfBirth = moment(data.dateOfBirth).toDate().toISOString();
+  }
+
+  return person;
+}
+
 export function formatPersonName(person: Person): string {
   return `${person?.firstname ?? ""} ${person?.lastname ?? ""}`;
 }
@@ -44,12 +55,12 @@ export const PersonSchema = z.object({
   id: z.any().nullable(),
   firstname: z.string().min(1, {message: "person.validation.firstnameRequired"}),
   lastname: z.string().min(1, {message: "person.validation.lastnameRequired"}),
-  dateOfBirth: z.date().optional().nullable(), 
+  dateOfBirth: z.any().nullable(),
   email: z.string().min(0).email("validation.emailInvalid").optional().or(z.literal("")),
   address: AddressSchemaOptional,
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
   contacts: z.array(ContactSchema).min(0),
-  photoUri: z.string().min(0).optional().or(z.literal("")),
+  photoUri: z.string().min(0).nullable().optional().or(z.literal("")),
   communicationLanguage: z.nativeEnum(LanguageEnum),
   note: z.string().min(0),
 });

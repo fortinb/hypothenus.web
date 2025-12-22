@@ -13,22 +13,22 @@ import { GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delGym, postActivateGym, postGym, putGym, postDeactivateGym } from "@/app/lib/data/gyms-data-service";
+import { delGym, postActivateGym, postGym, putGym, postDeactivateGym } from "@/app/lib/data/gyms-data-service-client";
 
-export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymId: string, gym: Gym }) {
+export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; brandId: string; gymId: string, gym: Gym }) {
     const t = useTranslations("entity");
     const router = useRouter();
     const pathname = usePathname();
 
     const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
-    const params = useParams<{ lang: string }>();
+
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -47,11 +47,11 @@ export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymI
     useEffect(() => {
         dispatch(updateGymState(gym));
 
-        if (gym?.gymId === "new") {
+        if (gymId === "new") {
             setIsEditMode(true);
         }
 
-        initBreadcrumb(gymState.gym?.name);
+     //   initBreadcrumb(gymState.gym?.name);
     }, [dispatch, gym]);
 
     function initBreadcrumb(name: string) {
@@ -88,7 +88,7 @@ export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymI
             setTextSuccess(t("action.saveSuccess"));
             dispatch(updateGymState(result));
 
-            router.push(`/${params.lang}/brands/${result.brandId}/gyms/${result.gymId}`);
+            router.push(`/${lang}/brands/${result.brandId}/gyms/${result.gymId}`);
         }
 
         setIsSaving(false);
@@ -103,6 +103,7 @@ export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymI
 
         setSuccess(true);
         setIsSaving(false);
+        setIsEditMode(true);
     }
 
     const activateGym = async (gymId: string) => {
@@ -129,7 +130,7 @@ export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymI
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push(`/${params.lang}/brands/${brandId}/gyms`);
+            router.push(`/${lang}/brands/${brandId}/gyms`);
 
         }, 2000);
     }
@@ -139,7 +140,7 @@ export default function GymForm({ brandId, gymId, gym }: { brandId: string; gymI
         formContext.reset(gymState.gym);
 
         if (gymId == "new") {
-            router.push(`/${params.lang}/brands/${brandId}/gyms`);
+            router.push(`/${lang}/brands/${brandId}/gyms`);
         }
     }
 

@@ -5,18 +5,16 @@ import { Gym } from "@/src//lib/entities/gym";
 import { formatAddress } from "@/src/lib/entities/address";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
-import { useParams } from 'next/navigation';
 
-export default function GymListDetails({ gym }: {gym: Gym }) {
+export default function GymListDetails({ lang, brandId, gymId, gym }: { lang: string; brandId: string; gymId: string; gym: Gym }) {
   const t = useTranslations("gym");
-  const params = useParams<{ lang: string }>();
   
   return (
     <div className="col-6 p-2">
       <Card>
         <Card.Body className={"m-2" + (gym.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${params.lang}/brands/${gym.brandId}/gyms/${gym.gymId}`}> {gym.name}</Link>
+            <Link className="link-element" href={`/${lang}/brands/${brandId}/gyms/${gymId}`}> {gym.name}</Link>
           </Card.Title>
           <Card.Text>
             <span className="text-primary">{formatAddress(gym.address)}</span><br />

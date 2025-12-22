@@ -20,6 +20,7 @@ import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import "@/app/lib/i18n/datepicker-locales"; 
 
 export interface SelectItem {
     coach: Coach;

@@ -11,9 +11,9 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoachsList from "./coachs-list";
 import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
-import { fetchCoachs } from "@/app/lib/data/coachs-data-service";
+import { fetchCoachs } from "@/app/lib/data/coachs-data-service-client";
 
-export default function CoachsListPaging({ brandId, gymId }: { brandId: string; gymId: string }) {
+export default function CoachsListPaging({ lang, brandId, gymId }: { lang: string; brandId: string; gymId: string }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
   const dispatch = useAppDispatch();
 
@@ -77,7 +77,7 @@ export default function CoachsListPaging({ brandId, gymId }: { brandId: string; 
 
         {!isLoading &&
           <div className="overflow-auto flex-fill w-100 h-100">
-            <CoachsList pageOfCoachs={pageOfCoachs} />
+            <CoachsList lang={lang} brandId={brandId} gymId={gymId} pageOfCoachs={pageOfCoachs} />
           </div>
         }
 

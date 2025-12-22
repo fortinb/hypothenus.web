@@ -13,10 +13,9 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { useParams } from "next/navigation";
 
-export default function CoachsMenu({ brandId, gymId }: { brandId: string; gymId: string }) {
+export default function CoachsMenu({ lang, brandId, gymId }: { lang: string; brandId: string; gymId: string }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
   const gymState: GymState = useSelector((state: any) => state.gymState);
-  const params = useParams<{ lang: string }>();
   
   const dispatch = useAppDispatch();
   const t = useTranslations("coach");
@@ -46,7 +45,7 @@ export default function CoachsMenu({ brandId, gymId }: { brandId: string; gymId:
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${params.lang}/brands/${brandId}/gyms/${gymId}/coachs/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                    <Link className="link-element" href={`/${lang}/brands/${brandId}/gyms/${gymId}/coachs/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("list.menu.add")}</span>

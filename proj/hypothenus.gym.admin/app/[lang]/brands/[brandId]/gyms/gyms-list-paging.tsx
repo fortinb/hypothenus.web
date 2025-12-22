@@ -11,9 +11,9 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "@/app/lib/store/slices/gyms-state-paging-slice";
 import GymsList from "./gyms-list";
 import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
-import { fetchGyms, searchGyms } from "@/app/lib/data/gyms-data-service";
+import { fetchGyms, searchGyms } from "@/app/lib/data/gyms-data-service-client";
 
-export default function GymsListPaging({ brandId }: { brandId: string }) {
+export default function GymsListPaging({ lang, brandId }: { lang: string; brandId: string }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
   const dispatch = useAppDispatch();
 
@@ -119,7 +119,7 @@ export default function GymsListPaging({ brandId }: { brandId: string }) {
 
         {!isLoading &&
           <div className="overflow-auto flex-fill w-100 h-100">
-            <GymsList pageOfGyms={pageOfGyms} />
+            <GymsList lang={lang} brandId={brandId} pageOfGyms={pageOfGyms} />
           </div>
         }
 

@@ -5,7 +5,6 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import BrandInfo from "@/app/ui/components/brand/brand-info";
-import Loader from "@/app/ui/components/navigation/loader";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -13,26 +12,23 @@ import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-s
 import { BrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delBrand, postActivateBrand, getBrand, postBrand, putBrand, postDeactivateBrand } from "@/app/lib/data/brands-data-service";
+import { delBrand, postActivateBrand, postBrand, putBrand, postDeactivateBrand } from "@/app/lib/data/brands-data-service-client";
 
-export default function BrandForm() {
+export default function BrandForm({ lang, brandId, brand }: { lang: string; brandId: string; brand: Brand }) {
     const t = useTranslations("entity");
 
-    const params = useParams<{ lang: string, brandId: string; }>();
-    const brandId = params.brandId;
     const router = useRouter();
     const pathname = usePathname();
 
     const brandState: BrandState = useSelector((state: any) => state.brandState);
     const dispatch = useAppDispatch();
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -44,25 +40,19 @@ export default function BrandForm() {
     const toggleSuccess = () => setSuccess(false);
 
     const formContext = useForm<Brand>({
-        defaultValues: brandState.brand,
+        defaultValues: brand,
         resolver: zodResolver(BrandSchema),
     });
 
     useEffect(() => {
-        if (isLoading && brandId !== "new") {
-           fetchBrand(brandId);
-        }
+        dispatch(updateBrandState(brand));
 
-        if (isLoading && brandId == "new") {
+        if (brandId === "new") {
             setIsEditMode(true);
-            setIsLoading(false);
         }
 
-        if (!isLoading) {
-            formContext.reset(brandState.brand);
-            initBreadcrumb(brandState.brand?.name);
-        }
-    }, [brandState]);
+      //  initBreadcrumb(brandState.brand?.name);
+    }, [brand]);
 
     function initBreadcrumb(name: string) {
         const crumb: Crumb = {
@@ -73,14 +63,6 @@ export default function BrandForm() {
         };
 
         dispatch(pushBreadcrumb(crumb));
-    }
-
-    const fetchBrand = async (brandId: string) => {
-        let brand: Brand = await getBrand(brandId);
-        dispatch(updateBrandState(brand));
-
-        initBreadcrumb(brand?.name);
-        setIsLoading(false);
     }
 
     const onSubmit: SubmitHandler<Brand> = (formData: z.infer<typeof BrandSchema>) => {
@@ -97,11 +79,11 @@ export default function BrandForm() {
     const createBrand = async (formData: z.infer<typeof BrandSchema>) => {
         let result: Brand = await postBrand(formData as Brand);
         dispatch(updateBrandState(result));
-        
+
         setSuccess(true);
         setTextSuccess(t("action.saveSuccess"));
-  
-        router.push(`/${params.lang}/brands/${result.brandId}`);
+
+        router.push(`/${lang}/brands/${result.brandId}`);
 
         setIsSaving(false);
     }
@@ -114,6 +96,7 @@ export default function BrandForm() {
         setTextSuccess(t("action.saveSuccess"));
         setSuccess(true);
         setIsSaving(false);
+        setIsEditMode(true);
     }
 
     const activateBrand = async (brandId: string) => {
@@ -140,7 +123,7 @@ export default function BrandForm() {
         setTimeout(function () {
             setShowDeleteConfirmation(false);
             setIsDeleting(false);
-            router.push(`/${params.lang}/brands`);
+            router.push(`/${lang}/brands`);
 
         }, 2000);
     }
@@ -150,7 +133,7 @@ export default function BrandForm() {
         formContext.reset(brandState.brand);
 
         if (brandId == "new") {
-            router.push(`/${params.lang}/brands`);
+            router.push(`/${lang}/brands`);
         }
     }
 
@@ -214,36 +197,29 @@ export default function BrandForm() {
                     <hr className="mt-0 mb-0" />
                 </div>
 
-                {isLoading &&
-                    <div className="flex-fill w-100 h-100">
-                        <Loader />
+                <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
+                    <div className="w-100 h-100">
+                        <FormProvider {...formContext} >
+                            <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.brandId == "" ? true : brandState.brand.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.id == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
+                                <hr className="mt-1" />
+                                <BrandInfo brand={brandState.brand} isEditMode={isEditMode} />
+                                <hr className="mt-1 mb-1" />
+                                <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="brand_info_form" />
+                            </Form>
+
+                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                            <ModalConfirmation title={t("brand.deleteConfirmation.title", { name: brandState.brand.name })} text={t("brand.deleteConfirmation.text")}
+                                yesText={t("brand.deleteConfirmation.yes")} noText={t("brand.deleteConfirmation.no")}
+                                actionText={t("brand.deleteConfirmation.action")}
+                                isAction={isDeleting}
+                                show={showDeleteConfirmation} handleResult={onDelete} />
+
+                        </FormProvider>
                     </div>
-                }
+                </div>
 
-                {!isLoading &&
-                    <div className="d-flex flex-column justify-content-between w-100 h-100 overflow-hidden ps-2 pe-2">
-                        <div className="w-100 h-100">
-                            <FormProvider {...formContext} >
-                                <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.brandId == "" ? true : brandState.brand.isActive}
-                                        isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.id == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
-                                    <hr className="mt-1" />
-                                    <BrandInfo brand={brandState.brand} isEditMode={isEditMode} />
-                                    <hr className="mt-1 mb-1" />
-                                    <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="brand_info_form" />
-                                </Form>
-
-                                <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
-                                <ModalConfirmation title={t("brand.deleteConfirmation.title", { name: brandState.brand.name })} text={t("brand.deleteConfirmation.text")}
-                                    yesText={t("brand.deleteConfirmation.yes")} noText={t("brand.deleteConfirmation.no")}
-                                    actionText={t("brand.deleteConfirmation.action")}
-                                    isAction={isDeleting}
-                                    show={showDeleteConfirmation} handleResult={onDelete} />
-
-                            </FormProvider>
-                        </div>
-                    </div>
-                }
             </div>
         </ErrorBoundary>
     );

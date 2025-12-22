@@ -3,18 +3,17 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
-import { useParams } from 'next/navigation';
 import { formatAddress } from "@/src/lib/entities/address";
 
-export default function BrandListDetails({ brand }: { brand: any }) {
+export default function BrandListDetails({ lang, brandId, brand }: { lang: string; brandId: string; brand: any }) {
   const t = useTranslations("brand");
-  const params = useParams<{ lang: string }>();
+
   return (
     <div className="col-6 p-2">
       <Card>
         <Card.Body className={"m-2"}>
           <Card.Title>
-            <Link className="link-element" href={`/${params.lang}/brands/${brand.brandId}`}>
+            <Link className="link-element" href={`/${lang}/brands/${brandId}`}>
               {brand.name}
             </Link>
           </Card.Title>

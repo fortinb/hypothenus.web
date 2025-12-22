@@ -8,11 +8,11 @@ interface PageProps {
   params: { lang: string, brandId: string, gymId: string };
 }
 
-export default async function Courses({ params }: PageProps) {
+export default async function CoursesPage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: "course" });
 
   return (
-    <div>
+    <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{
           reset: false,
@@ -22,16 +22,14 @@ export default async function Courses({ params }: PageProps) {
         }}
       />
 
-      <div className="d-flex justify-content-between w-100 h-100">
-        <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-          <CoursesMenu brandId={params.brandId} gymId={params.gymId} />
-        </div>
-        <div className="d-flex flex-column justify-content-between w-50 h-100">
-          <CoursesListPaging brandId={params.brandId} gymId={params.gymId} />
-        </div>
-        <div className="d-flex flex-column justify-content-between w-25 h-100">
+      <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
+        <CoursesMenu lang={params.lang} brandId={params.brandId} gymId={params.gymId} />
+      </div>
+      <div className="d-flex flex-column justify-content-between w-50 h-100">
+        <CoursesListPaging lang={params.lang} brandId={params.brandId} gymId={params.gymId} />
+      </div>
+      <div className="d-flex flex-column justify-content-between w-25 h-100">
 
-        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { newPerson, Person, PersonSchema } from './person';
+import { newPerson, parsePerson, Person, PersonSchema } from './person';
 import { BaseEntity } from './baseEntity';
 
 export interface Coach extends BaseEntity {
@@ -29,6 +29,14 @@ export const newCoach = (): Coach => {
   };
 
   return newCoach;
+}
+
+export const parseCoach = (data: any): Coach => {
+  let coach: Coach = data;
+
+  coach.person = parsePerson(data.person);
+
+  return coach;
 }
 
 export const CoachSchema = z.object({

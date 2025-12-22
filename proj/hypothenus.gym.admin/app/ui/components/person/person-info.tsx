@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslations } from "next-intl";
+import {  useTranslations } from "next-intl";
 import { Person } from "@/src/lib/entities/person";
 import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
@@ -16,6 +16,8 @@ import Dropzone, { DropEvent, FileRejection } from 'react-dropzone'
 import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { useParams } from "next/navigation";
+import moment from "moment";
+import "@/app/lib/i18n/datepicker-locales"; 
 
 export default function PersonInfo({ id, formStatefield, isEditMode, isCancelling, uploadHandler }:
     {
@@ -79,7 +81,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                         <Controller
                             name={`${formStatefield}.dateOfBirth`}
                             render={({ field }) => (
-                                <DatePicker id={`person_input_dateOfBirth_${id}`} selected={field.value} onChange={(date) => field.onChange(date)}
+                                <DatePicker id={`person_input_dateOfBirth_${id}`} selected={!field.value ? null : moment(field.value).toDate()} onChange={(date) => field.onChange(date?.toISOString() ?? undefined)}
                                     className={"form-control "} locale={params.lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
                             )}
                         />
