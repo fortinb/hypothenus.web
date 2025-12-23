@@ -41,7 +41,8 @@
             "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
             "nameRequired": "Le nom de la salle de sport est requis.",
             "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
-            "emailInvalid": "Le format du courriel est invalide."
+            "emailInvalid": "Le format du courriel est invalide.",
+            "noSpaceAllowed": "Les espaces ne sont pas autorisés."
         },
         "code": "Code",
         "codePlaceholder": "Identification unique",
@@ -69,7 +70,8 @@
             "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
             "nameRequired": "Le nom de la salle de sport est requis.",
             "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
-            "emailInvalid": "Le format du courriel est invalide."
+            "emailInvalid": "Le format du courriel est invalide.",
+            "noSpaceAllowed": "Les espaces ne sont pas autorisés."
         },
         "code": "Code",
         "codePlaceholder": "Identification unique",

@@ -15,7 +15,6 @@ export default async function GymPage({ params }: PageProps) {
 
   if (params.gymId === "new") {
     gym = newGym();
-    gym.gymId = "new";
     gym.brandId = params.brandId;
   } else {
     gym = await getGym(params.brandId, params.gymId);

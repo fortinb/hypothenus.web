@@ -3,7 +3,7 @@
 import FormActionBar from "@/app/ui/components/actions/form-action-bar";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
-import CourseInfo, { SelectItem } from "@/app/ui/components/course/course-info";
+import CourseInfo from "@/app/ui/components/course/course-info";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import ToastSuccess from "@/app/ui/components/notifications/toast-success";
 import { useTranslations } from "next-intl";
@@ -14,7 +14,6 @@ import { Coach } from "@/src/lib/entities/coach";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
-import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
@@ -23,11 +22,11 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-
 import { useSelector } from "react-redux";
 import { z } from "zod";
 import { delCourse, postActivateCourse, postCourse, putCourse, postDeactivateCourse } from "@/app/lib/data/courses-data-service-client";
-
+import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 
 export interface CourseFormData {
     course: Course;
-    selectedCoachItems: SelectItem[];
+    selectedCoachItems: CoachSelectedItem[];
 }
 
 export const CourseFormSchema = z.object({
@@ -35,7 +34,16 @@ export const CourseFormSchema = z.object({
     selectedCoachItems: z.any().array().min(0)
 });
 
-export default function CourseForm({ lang, brandId, gymId, courseId, course, coachs}: { lang: string; brandId: string; gymId: string, courseId: string, course: Course, coachs: Coach[] }) {
+export default function CourseForm({ lang, brandId, gymId, courseId, course, initialAvailableCoachItems, initialSelectedCoachItems  }: {
+        lang: string;
+        brandId: string;
+        gymId: string,
+        courseId: string,
+        course: Course,
+        coachs: Coach[],
+        initialAvailableCoachItems: CoachSelectedItem[],
+        initialSelectedCoachItems: CoachSelectedItem[]
+}) {
     const t = useTranslations("entity");
     const router = useRouter();
     const pathname = usePathname();
@@ -52,9 +60,9 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
     const [isActivating, setIsActivating] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-    const [availableCoachs, setAvailableCoachs] = useState<Coach[]>([]);
-    const [availableCoachItems, setAvailableCoachItems] = useState<SelectItem[]>([]);
-    const [initialSelectedCoachItems, setInitialSelectedCoachItems] = useState<SelectItem[]>([]);
+    const [availableCoachItems, setAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
+    const [originalAvailableCoachItems, setOriginalAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
+    const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<CoachSelectedItem[]>([]);
 
     const formContext = useForm<CourseFormData>({
         defaultValues: {
@@ -81,25 +89,14 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
 
         // Initialize Coachs Items
         if (!isCoachsItemsInitialized) {
-            setAvailableCoachs(coachs);
-            const availableItems: SelectItem[] = availableCoachs?.map((coach: Coach) => {
-                return {
-                    coach: coach,
-                    label: formatPersonName(coach.person),
-                    value: coach.id,
-                } as SelectItem;
-            });
-
-            const initialAvailableCoachItems = availableItems
-                .filter((item) => !courseState.course.coachs?.some((selected) => selected.id === item.coach))
-                .sort((a, b) => a.label.localeCompare(b.label));
-
+            setOriginalAvailableCoachItems(initialAvailableCoachItems);
+            setOriginalSelectedCoachItems(initialSelectedCoachItems);
             setAvailableCoachItems(initialAvailableCoachItems);
 
             setIsCoachsItemInitialized(true);
         }
 
-      //  initBreadcrumb(getCourseName(courseState.course, lang as LanguageEnum));
+        //  initBreadcrumb(getCourseName(courseState.course, lang as LanguageEnum));
     }, [dispatch, course]);
 
     function initBreadcrumb(name: string) {
@@ -111,19 +108,6 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
         };
 
         dispatch(pushBreadcrumb(crumb));
-    }
-
-    function initSelectedCoachItems(): SelectItem[] {
-        const initialSelectedCoachItems: SelectItem[] = courseState.course.coachs?.map((coach: Coach) => {
-            return {
-                coach: coach,
-                label: formatPersonName(coach.person),
-                value: coach.id,
-            } as SelectItem;
-        });
-
-
-        return initialSelectedCoachItems;
     }
 
     const onSubmit: SubmitHandler<CourseFormData> = (formData: z.infer<typeof CourseFormSchema>) => {
@@ -149,7 +133,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
             setSuccess(true);
             setTextSuccess(t("action.saveSuccess"));
             dispatch(updateCourseState(course));
-            setInitialSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
+            setOriginalSelectedCoachItems(formData.selectedCoachItems as CoachSelectedItem[]);
 
             await afterSaveCourse(course);
 
@@ -163,7 +147,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
         let course: Course = await putCourse(brandId, gymId, courseId, updatedCourse);
 
         dispatch(updateCourseState(course));
-        setInitialSelectedCoachItems(formData.selectedCoachItems as SelectItem[]);
+        setOriginalSelectedCoachItems(formData.selectedCoachItems as CoachSelectedItem[]);
 
         await afterSaveCourse(updatedCourse);
     }
@@ -210,12 +194,12 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
         setIsCancelling(true);
         setIsEditMode(false);
 
-        // Reset selected coahch items to initial state
-        initSelectedCoachItems();
+        // Reset coach items to initial state
+        setAvailableCoachItems(originalAvailableCoachItems);
 
         formContext.reset({
             course: courseState.course,
-            selectedCoachItems: initialSelectedCoachItems
+            selectedCoachItems: originalSelectedCoachItems
         },);
 
         if (courseId == "new") {
@@ -295,7 +279,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, coa
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.id == "" ? true : courseState.course.isActive}
                                     isEditDisable={isEditMode} isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
-                                <CourseInfo course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
+                                <CourseInfo lang={lang} course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />
                             </Form>

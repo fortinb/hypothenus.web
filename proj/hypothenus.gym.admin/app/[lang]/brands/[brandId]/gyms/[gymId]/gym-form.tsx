@@ -14,12 +14,12 @@ import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delGym, postActivateGym, postGym, putGym, postDeactivateGym } from "@/app/lib/data/gyms-data-service-client";
+import { activateGymAction, createGymAction, deactivateGymAction, deleteGymAction, saveGymAction } from "./actions";
 
 export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; brandId: string; gymId: string, gym: Gym }) {
     const t = useTranslations("entity");
@@ -28,13 +28,12 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
-
+    const [isSaving, startTransitionSave] = useTransition();
+    const [isActivating, startTransitionActivate] = useTransition();
+    const [isDeleting, startTransitionDelete] = useTransition();
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const [isSaving, setIsSaving] = useState<boolean>(false);
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [isActivating, setIsActivating] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const toggleSuccess = () => setSuccess(false);
@@ -51,7 +50,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
             setIsEditMode(true);
         }
 
-     //   initBreadcrumb(gymState.gym?.name);
+        //   initBreadcrumb(gymState.gym?.name);
     }, [dispatch, gym]);
 
     function initBreadcrumb(name: string) {
@@ -67,72 +66,75 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const onSubmit: SubmitHandler<Gym> = (formData: z.infer<typeof GymSchema>) => {
         setIsEditMode(false);
-        setIsSaving(true);
 
-        if (gymState.gym.id == null) {
-            createGym(formData);
+        let gym: Gym = mapForm(formData, gymState.gym);
+
+        if (gymId === "new") {
+            createGym(gym);
         } else {
-            saveGym(formData);
+            saveGym(gym);
         }
     }
 
-    const createGym = async (formData: z.infer<typeof GymSchema>) => {
-        let result: Gym = await postGym(brandId, formData as Gym);
+    const createGym = (gym: Gym) => {
+        startTransitionSave(async () => {
+            let result: Gym = await createGymAction(brandId, gym, `/${lang}/brands/${brandId}/gyms/${gym.gymId}`);
 
-        const duplicate = result.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
-        if (duplicate) {
-            formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists") });
-            setIsEditMode(true);
-        } else {
-            setSuccess(true);
-            setTextSuccess(t("action.saveSuccess"));
+            const duplicate = result.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
+            if (duplicate) {
+                formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists") });
+                setIsEditMode(true);
+            } else {
+                setSuccess(true);
+                setTextSuccess(t("action.saveSuccess"));
+                dispatch(updateGymState(result));
+
+                router.push(`/${lang}/brands/${result.brandId}/gyms/${result.gymId}`);
+            }
+        });
+    }
+
+    const saveGym = (gym: Gym) => {
+        startTransitionSave(async () => {
+            let result: Gym = await saveGymAction(brandId, gymId, gym, `/${lang}/brands/${brandId}/gyms/${gymId}`);
             dispatch(updateGymState(result));
 
-            router.push(`/${lang}/brands/${result.brandId}/gyms/${result.gymId}`);
-        }
+            setTextSuccess(t("action.saveSuccess"));
+            setSuccess(true);
 
-        setIsSaving(false);
-    }
-
-    const saveGym = async (formData: z.infer<typeof GymSchema>) => {
-        let updatedGym: Gym = mapForm(formData, gymState.gym);
-        let result: Gym = await putGym(brandId, updatedGym);
-        dispatch(updateGymState(result));
-
-        setTextSuccess(t("action.saveSuccess"));
-
-        setSuccess(true);
-        setIsSaving(false);
-        setIsEditMode(true);
+            setIsEditMode(true);
+        });
     }
 
     const activateGym = async (gymId: string) => {
-        let gym: Gym = await postActivateGym(brandId, gymId);
-        dispatch(updateGymState(gym));
-        setIsActivating(false);
-        setTextSuccess(t("action.activationSuccess"));
-        setSuccess(true);
+        startTransitionActivate(async () => {
+            let gym: Gym = await activateGymAction(brandId, gymId, `/${lang}/brands/${brandId}`);
+            dispatch(updateGymState(gym));
+            setTextSuccess(t("action.activationSuccess"));
+            setSuccess(true);
+        });
     }
 
     const deactivateGym = async (gymId: string) => {
-        let gym: Gym = await postDeactivateGym(brandId, gymId);
-        dispatch(updateGymState(gym));
-        setIsActivating(false);
-        setTextSuccess(t("action.deactivationSuccess"));
-        setSuccess(true);
+        startTransitionActivate(async () => {
+            let gym: Gym = await deactivateGymAction(brandId, gymId, `/${lang}/brands/${brandId}`);
+            dispatch(updateGymState(gym));
+            setTextSuccess(t("action.deactivationSuccess"));
+            setSuccess(true);
+        });
     }
 
     const deleteGym = async (gymId: string) => {
-        await delGym(brandId, gymId);
-        setTextSuccess(t("action.deleteSuccess"));
-        setSuccess(true);
-
-        setTimeout(function () {
+        startTransitionDelete(async () => {
+            await deleteGymAction(brandId, gymId);
+            setTextSuccess(t("action.deleteSuccess"));
+            setSuccess(true);
             setShowDeleteConfirmation(false);
-            setIsDeleting(false);
-            router.push(`/${lang}/brands/${brandId}/gyms`);
+            setTimeout(function () {
+                router.push(`/${lang}/brands/${brandId}/gyms`);
 
-        }, 2000);
+            }, 1000);
+        });
     }
 
     function onCancel() {
@@ -145,7 +147,6 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
-        setIsActivating(true);
         if (e.currentTarget.checked) {
             activateGym(gymState.gym.gymId);
         } else {
@@ -166,7 +167,6 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-            setIsDeleting(true);
             deleteGym(gymState.gym.gymId);
         } else {
             setShowDeleteConfirmation(false);

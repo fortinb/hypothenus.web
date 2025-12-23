@@ -39,7 +39,7 @@ export const newBrand = (): Brand => {
 }
 
 export const BrandSchema = z.object({
-  brandId: z.string().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }),
+  brandId: z.string().trim().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }).regex(/^\S+$/, 'brand.validation.noSpaceAllowed'),
   name: z.string().min(1, { message: "brand.validation.nameRequired" }).max(100, { message: "brand.validation.nameMaxLength" }),
   address: AddressSchema,
   email: z.string().min(0).email("brand.validation.emailInvalid").optional().or(z.literal("")),

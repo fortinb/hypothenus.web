@@ -40,7 +40,8 @@
             "codeMaxLength": "Maximum length for Gym Code is 20 characters.",
             "nameRequired": "Name is required.",
             "nameMaxLength": "Maximum length for Name is 100 characters.",
-            "emailInvalid": "Email format is invalid."
+            "emailInvalid": "Email format is invalid.",
+            "noSpaceAllowed": "Spaces are not allowed."
         },
         "code": "Code",
         "codePlaceholder": "Brand unique code",
@@ -68,7 +69,8 @@
             "codeMaxLength": "Maximum length for Gym Code is 20 characters.",
             "nameRequired": "Name is required.",
             "nameMaxLength": "Maximum length for Name is 100 characters.",
-            "emailInvalid": "Email format is invalid."
+            "emailInvalid": "Email format is invalid.",
+            "noSpaceAllowed": "Spaces are not allowed."
         },
         "code": "Code",
         "codePlaceholder": "Gym unique code",

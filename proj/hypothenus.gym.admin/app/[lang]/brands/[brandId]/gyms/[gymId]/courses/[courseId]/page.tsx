@@ -8,6 +8,8 @@ import { Coach } from "@/src/lib/entities/coach";
 import { fetchCoachs } from "@/app/lib/data/coachs-data-service";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { LanguageEnum } from "@/src/lib/entities/language";
+import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
+import { formatPersonName } from "@/src/lib/entities/person";
 
 interface PageProps {
   params: { lang: string, brandId: string, gymId: string, courseId: string };
@@ -34,6 +36,22 @@ export default async function CoursePage({ params }: PageProps) {
 
   let coachs: Coach[] = pageOfCoachs.content;
 
+  const availableCoachItems: CoachSelectedItem[] = coachs?.map((coach: Coach) => {
+    return {
+      coach: coach,
+      label: formatPersonName(coach.person),
+      value: coach.id,
+    } as CoachSelectedItem;
+  });
+
+  const initialAvailableCoachItems = availableCoachItems
+    .filter((item) => !course.coachs?.some((selected) => selected.id === item.coach))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+  const initialSelectedCoachItems = availableCoachItems
+    .filter((item) => course.coachs?.some((selected) => selected.id === item.coach))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
   return (
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
@@ -49,7 +67,7 @@ export default async function CoursePage({ params }: PageProps) {
         <CourseMenu lang={params.lang} brandId={params.brandId} gymId={params.gymId} courseId={params.courseId} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <CourseForm lang={params.lang} brandId={params.brandId} gymId={params.gymId} courseId={params.courseId} course={course} coachs={coachs} />
+        <CourseForm lang={params.lang} brandId={params.brandId} gymId={params.gymId} courseId={params.courseId} course={course} coachs={coachs} initialAvailableCoachItems={initialAvailableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
         <CourseResume lang={params.lang} />

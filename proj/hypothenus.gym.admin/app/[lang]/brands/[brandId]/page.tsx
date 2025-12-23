@@ -16,7 +16,6 @@ export default async function BrandPage({ params }: PageProps) {
 
   if (params.brandId === "new") {
     brand = newBrand();
-    brand.brandId = "new";
   } else {
     brand = await getBrand(params.brandId);
   }
