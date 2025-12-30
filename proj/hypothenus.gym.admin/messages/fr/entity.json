@@ -8,9 +8,13 @@
     },
     "action": {
         "saveSuccess": "Sauvegarde complétée !",
+        "saveError": "Sauvegarde échouée !",
         "deleteSuccess": "Suppression complétée !",
+        "deleteError": "Suppression échouée !",
         "activationSuccess": "Activation complétée !",
-        "deactivationSuccess": "Déactivation complétée !"
+        "activationError": "Échec de l'activation !",
+        "deactivationSuccess": "Déactivation complétée !",
+        "deactivationError": "Échec de la déactivation !"
     },
     "validation": {
         "emailInvalid": "Le format du courriel est invalide.",

@@ -4,8 +4,7 @@ import { BaseEntity } from './baseEntity';
 import { Coach, CoachReferenceSchema } from './coach';
 import { LanguageEnum } from './language';
 import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
-import { routing } from '@/i18n/routing';
-
+import { localesConfig } from "@/i18n/locales-client";
 
 export interface Course extends BaseEntity {
   id?: any;
@@ -51,7 +50,7 @@ export const newCourse = (): Course => {
     modifiedBy: undefined,
   };
 
-  routing.locales.forEach(l => {
+  localesConfig.locales.forEach(l => {
     newCourse.name.push(newLocalizedString(l as LanguageEnum));
     newCourse.description.push(newLocalizedString(l as LanguageEnum));
   });
@@ -63,7 +62,7 @@ export function getCourseName(course: Course, language?: LanguageEnum): string {
 
   let name = course.name?.find(c => c.language === language);
   if (!name) {
-    name = course.name?.find(c => c.language == routing.defaultLocale as LanguageEnum);
+    name = course.name?.find(c => c.language == localesConfig.defaultLocale as LanguageEnum);
   }
 
   return name?.text ?? "";

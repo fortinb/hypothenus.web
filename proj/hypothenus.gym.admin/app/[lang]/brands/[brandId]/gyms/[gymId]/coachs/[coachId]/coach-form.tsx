@@ -14,12 +14,14 @@ import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delCoach, postActivateCoach, postCoach, putCoach, postDeactivateCoach, uploadCoachPhoto } from "@/app/lib/data/coachs-data-service-client";
+import { uploadCoachPhoto } from "@/app/lib/data/coachs-data-service-client";
+import { activateCoachAction, createCoachAction, deactivateCoachAction, deleteCoachAction, saveCoachAction } from "./actions";
+import { ActionResult } from "@/app/lib/http/action-result";
 
 
 export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { lang: string; brandId: string; gymId: string, coachId: string, coach: Coach }) {
@@ -30,12 +32,12 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
 
+    const [isSaving, startTransitionSave] = useTransition();
+    const [isActivating, startTransitionActivate] = useTransition();
+    const [isDeleting, startTransitionDelete] = useTransition();
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const [isSaving, setIsSaving] = useState<boolean>(false);
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [isActivating, setIsActivating] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [photoToUpload, setPhotoToUpload] = useState<Blob>();
@@ -56,11 +58,11 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     useEffect(() => {
         // Log the data to the console every time there is an error
         const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-        if (hasErrors)  {
+        if (hasErrors) {
             console.log("Current Form errors:", formContext.formState.errors);
         }
-          
-       // console.log("Current Form Data:", formData);
+
+        // console.log("Current Form Data:", formData);
     }, [formData]);
 
     useEffect(() => {
@@ -86,12 +88,13 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     const onSubmit: SubmitHandler<Coach> = (formData: z.infer<typeof CoachSchema>) => {
         setIsEditMode(false);
-        setIsSaving(true);
 
-        if (coachState.coach.id == null) {
-            createCoach(formData);
+        let coach: Coach = mapForm(formData, coachState.coach);
+
+        if (coachId == "new") {
+            createCoach(coach);
         } else {
-            saveCoach(formData);
+            saveCoach(coach);
         }
     }
 
@@ -104,68 +107,97 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         return response;
     }
 
-    const createCoach = async (formData: z.infer<typeof CoachSchema>) => {
-        let coach: Coach = await postCoach(brandId, gymId, formData as Coach);
+    const createCoach = (coach: Coach) => {
+        startTransitionSave(async () => {
+            let result: ActionResult<Coach> = await createCoachAction(brandId, gymId, coach);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.saveError"));
+                setIsEditMode(true);
+            } else {
+                dispatch(updateCoachState(result.data));
 
-        dispatch(updateCoachState(coach));
+                await afterSaveCoach(result.data);
 
-        await afterSaveCoach(coach);
+                setTextSuccess(t("action.saveSuccess"));
+                setSuccess(true);
+                setIsEditMode(false);
 
-        router.push(`/${lang}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${coach.id}`);
+                router.push(`/${lang}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${result.data.id}`);
+            }
+        });
     }
 
-    const saveCoach = async (formData: z.infer<typeof CoachSchema>) => {
-        let updatedCoach: Coach = mapForm(formData, coachState.coach);
+    const saveCoach = (coach: Coach) => {
+        startTransitionSave(async () => {
+            let result: ActionResult<Coach> = await saveCoachAction(brandId, gymId, coachId, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.saveError"));
+            } else {
+                dispatch(updateCoachState(result.data));
 
-        let coach: Coach = await putCoach(brandId, gymId, coachId, updatedCoach);
-        dispatch(updateCoachState(coach));
+                await afterSaveCoach(result.data);
 
-        await afterSaveCoach(updatedCoach);
+                setTextSuccess(t("action.saveSuccess"));
+                setSuccess(true);
+                setIsEditMode(true);
+            }
+        });
     }
 
     const afterSaveCoach = async (coach: Coach) => {
-
         if (photoToUpload) {
             const photoUri = await uploadPhoto(coach.gymId, coach.id, photoToUpload);
             setPhotoToUpload(undefined);
             dispatch(updateCoachPhotoUri(photoUri));
         }
-
-        setTextSuccess(t("action.saveSuccess"));
-        setSuccess(true);
-        setIsSaving(false);
-        setIsEditMode(true);
     }
 
     const activateCoach = async (gymId: string, coachId: string) => {
-        let coach: Coach = await postActivateCoach(brandId, gymId, coachId);
-
-        dispatch(updateCoachState(coach));
-        setIsActivating(false);
-        setTextSuccess(t("action.activationSuccess"));
-        setSuccess(true);
+        startTransitionActivate(async () => {
+            let result: ActionResult<Coach> = await activateCoachAction(brandId, gymId, coachId, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.activationError"));
+            } else {
+                dispatch(updateCoachState(result.data));
+                setTextSuccess(t("action.activationSuccess"));
+                setSuccess(true);
+            }
+        });
     }
 
     const deactivateCoach = async (gymId: string, coachId: string) => {
-        let coach: Coach = await postDeactivateCoach(brandId, gymId, coachId);
-
-        dispatch(updateCoachState(coach));
-        setIsActivating(false);
-        setTextSuccess(t("action.deactivationSuccess"));
-        setSuccess(true);
+        startTransitionActivate(async () => {
+            let result: ActionResult<Coach> = await deactivateCoachAction(brandId, gymId, coachId, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.deactivationError"));
+            } else {
+                dispatch(updateCoachState(result.data));
+                setTextSuccess(t("action.deactivationSuccess"));
+                setSuccess(true);
+            }
+        });
     }
 
     const deleteCoach = async (gymId: string, coachId: string) => {
-        await delCoach(brandId, gymId, coachId);
+        startTransitionDelete(async () => {
+            let result: ActionResult<void> = await deleteCoachAction(brandId, gymId, coachId);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.deleteError"));
+            } else {
+                setTextSuccess(t("action.deleteSuccess"));
+                setSuccess(true);
+                setShowDeleteConfirmation(false);
+                setTimeout(function () {
+                    router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs`);
 
-        setTextSuccess(t("action.deleteSuccess"));
-        setSuccess(true);
-
-        setTimeout(function () {
-            setShowDeleteConfirmation(false);
-            setIsDeleting(false);
-            router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs`);
-        }, 2000);
+                }, 1000);
+            }
+        });
     }
 
     function onCancel() {
@@ -180,7 +212,6 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
-        setIsActivating(true);
         if (e.currentTarget.checked) {
             activateCoach(coachState.coach.gymId, coachState.coach.id);
         } else {
@@ -198,12 +229,10 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
                 setIsCancelling(false);
             }
         }
-
     }
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-            setIsDeleting(true);
             deleteCoach(coachState.coach.gymId, coachState.coach.id);
         } else {
             setShowDeleteConfirmation(false);

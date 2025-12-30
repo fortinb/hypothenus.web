@@ -17,9 +17,9 @@ import moment from "moment";
 import { CourseFormData } from "@/app/[lang]/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
-import { routing } from "@/i18n/routing";
 import "@/app/lib/i18n/datepicker-locales"; 
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
+import { localesConfig } from "@/i18n/locales-client";
 
 export default function CourseInfo({ lang, course, availableCoachItems, formCoachsStateField, isEditMode, isCancelling }:
     {
@@ -53,7 +53,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
-                                        {routing.locales.map((language: string, index: number) => {
+                                        {localesConfig.locales.map((language: string, index: number) => {
                                             return (
                                                 <div key={language}>
                                                     <Row className="m-2 gx-2">

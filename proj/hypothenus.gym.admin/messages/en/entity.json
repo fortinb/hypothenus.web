@@ -1,16 +1,20 @@
 {
     "format": {
         "date": "yyyy-mm-dd"
-     },
+    },
     "language": {
         "en": "English",
         "fr": "French"
     },
-    "action" : {
+    "action": {
         "saveSuccess": "Saving successfull !",
+        "saveError": "Saving failed !",
         "deleteSuccess": "Delete successfull !",
+        "deleteError": "Delete failed !",
         "activationSuccess": "Activation successfull !",
-        "deactivationSuccess": "Deactivation successfull !"
+        "activationError": "Activation failed !",
+        "deactivationSuccess": "Deactivation successfull !",
+        "deactivationError": "Deactivation failed !"
     },
     "validation": {
         "emailInvalid": "Email format is invalid."
@@ -114,7 +118,7 @@
         "navigation": {
             "new": "New coach"
         },
-       "deleteConfirmation": {
+        "deleteConfirmation": {
             "title": "Delete {name}",
             "text": "Are you sure you want to delete this coach ?",
             "yes": "Delete",
@@ -128,8 +132,8 @@
             "codeRequired": "Code is required.",
             "nameRequired": "Course name is required.",
             "startDateRequired": "Start date is required, starting today or greater.",
-            "endDateGreaterThanToday" : "End date must be greater than today.",
-            "endDateGreaterThanStartDate" : "End date must be greater than start date."
+            "endDateGreaterThanToday": "End date must be greater than today.",
+            "endDateGreaterThanStartDate": "End date must be greater than start date."
         },
         "navigation": {
             "new": "New course"
@@ -146,7 +150,7 @@
         "datesSection": "Activation period",
         "startDate": "Start date",
         "endDate": "End date",
-        "coachsSection" : "Qualified coachs",  
+        "coachsSection": "Qualified coachs",
         "deleteConfirmation": {
             "title": "Delete {name}",
             "text": "Are you sure you want to delete this course ?",

@@ -55,3 +55,59 @@ export async function getCoach(brandId: string, gymId: string, coachId: string):
 
   return parseCoach(response.data);
 }
+
+export async function postActivateCoach(brandId: string, gymId: string, coachId: string): Promise<Coach> {
+
+  const postURI: String =  `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/activate`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return response.data;
+}
+
+export async function postDeactivateCoach(brandId: string, gymId: string, coachId: string): Promise<Coach> {
+
+  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/deactivate`; 
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return response.data;
+}
+
+export async function delCoach(brandId: string, gymId: string, coachId: string): Promise<void> {
+
+  const delURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.delete(delURI.valueOf(), request);
+
+  return response.data;
+}
+
+export async function postCoach(brandId: string, gymId: string, coach: Coach): Promise<Coach> {
+
+  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), coach, request);
+ 
+  return parseCoach(response.data);
+}
+
+export async function putCoach(brandId: string, gymId: string, coachId: string, coach: Coach): Promise<Coach> {
+
+  const putURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.put(putURI.valueOf(), coach, request);
+
+
+  return parseCoach(response.data);
+}

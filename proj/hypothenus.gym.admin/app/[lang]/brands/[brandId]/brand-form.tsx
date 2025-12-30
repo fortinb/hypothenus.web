@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 import { activateBrandAction, createBrandAction, deactivateBrandAction, deleteBrandAction, saveBrandAction } from "./actions";
 import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
+import { ActionResult } from "@/app/lib/http/action-result";
 
 export default function BrandForm({ lang, brandId, brand }: { lang: string; brandId: string; brand: Brand }) {
     const t = useTranslations("entity");
@@ -79,65 +80,93 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     const createBrand = (brand: Brand) => {
-
         startTransitionSave(async () => {
-            let result: Brand = await createBrandAction(brand, `/${lang}/brands/${brand.brandId}`);
-            const duplicate = result.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
-            if (duplicate) {
-                formContext.setError("brandId", { type: "manual", message: t("brand.validation.alreadyExists") });
+            let result: ActionResult<Brand> = await createBrandAction(brand);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.saveError"));
                 setIsEditMode(true);
-            } else {
-                setSuccess(true);
-                setTextSuccess(t("action.saveSuccess"));
-                dispatch(updateBrandState(result));
+            }
+            else {
+                const duplicate = result.data.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
+                if (duplicate) {
+                    formContext.setError("brandId", { type: "manual", message: t("brand.validation.alreadyExists") });
+                    setIsEditMode(true);
+                } else {
+                    setSuccess(true);
+                    setTextSuccess(t("action.saveSuccess"));
+                    dispatch(updateBrandState(result.data));
 
-                router.push(`/${lang}/brands/${result.brandId}`);
+                    router.push(`/${lang}/brands/${result.data.brandId}`);
+                }
             }
 
         });
     }
 
     const saveBrand = (brand: Brand) => {
-
         startTransitionSave(async () => {
-            let result: Brand = await saveBrandAction(brandId, brand, `/${lang}/brands/${brand.brandId}`);
-            dispatch(updateBrandState(result));
+            let result: ActionResult<Brand> = await saveBrandAction(brandId, brand, `/${lang}/brands/${brand.brandId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.saveError"));
+            }
+            else {
+                dispatch(updateBrandState(result.data));
 
-            setTextSuccess(t("action.saveSuccess"));
-            setSuccess(true);
-
-            setIsEditMode(true);
+                setTextSuccess(t("action.saveSuccess"));
+                setSuccess(true);
+                setIsEditMode(true);
+            }
         });
     }
 
     const activateBrand = async (brandId: string) => {
         startTransitionActivate(async () => {
-            let brand: Brand = await activateBrandAction(brandId, `/${lang}/brands/${brandId}`);
-            dispatch(updateBrandState(brand));
-            setTextSuccess(t("action.activationSuccess"));
-            setSuccess(true);
+            let result: ActionResult<Brand> = await activateBrandAction(brandId, `/${lang}/brands/${brandId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.activationError"));
+            }
+            else {
+                dispatch(updateBrandState(result.data));
+                setTextSuccess(t("action.activationSuccess"));
+                setSuccess(true);
+            }
         });
     }
 
     const deactivateBrand = async (brandId: string) => {
         startTransitionActivate(async () => {
-            let brand: Brand = await deactivateBrandAction(brandId, `/${lang}/brands/${brandId}`);
-            dispatch(updateBrandState(brand));
-            setTextSuccess(t("action.deactivationSuccess"));
-            setSuccess(true);
+            let result: ActionResult<Brand> = await deactivateBrandAction(brandId, `/${lang}/brands/${brandId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.deactivationError"));
+            }
+            else {
+                dispatch(updateBrandState(result.data));
+                setTextSuccess(t("action.deactivationSuccess"));
+                setSuccess(true);
+            }
         });
     }
 
     const deleteBrand = async (brandId: string) => {
         startTransitionDelete(async () => {
-            await deleteBrandAction(brandId);
-            setTextSuccess(t("action.deleteSuccess"));
-            setSuccess(true);
-            setShowDeleteConfirmation(false);
+            let result: ActionResult<void> = await deleteBrandAction(brandId);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.deleteError"));
+            }
+            else {
+                setTextSuccess(t("action.deleteSuccess"));
+                setSuccess(true);
+                setShowDeleteConfirmation(false);
 
-            setTimeout(function () {
-                router.push(`/${lang}/brands`);
-            }, 1000);
+                setTimeout(function () {
+                    router.push(`/${lang}/brands`);
+                }, 1000);
+            }
         });
     }
 

@@ -43,7 +43,7 @@ export const newGym = (): Gym => {
 
 export const GymSchema = z.object({
   brandId: z.string().min(1),
-  gymId: z.string().trim().min(1, { message: "gym.validation.codeRequired"}).max(20, { message:"gym.validation.codeMaxLength"}).regex(/^\S+$/, 'gym.validation.noSpaceAllowed'),
+  gymId: z.string().trim().min(1, { message: "gym.validation.codeRequired"}).max(20, { message:"gym.validation.codeMaxLength"}).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
   name: z.string().min(1, { message:  "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength"}),
   address: AddressSchema,
   email: z.string().min(0).email("gym.validation.emailInvalid").optional().or(z.literal("")),

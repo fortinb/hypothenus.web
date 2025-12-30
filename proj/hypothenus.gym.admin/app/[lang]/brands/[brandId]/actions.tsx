@@ -1,66 +1,92 @@
 "use server"
 
 import { delBrand, postActivateBrand, postBrand, postDeactivateBrand, putBrand } from '@/app/lib/data/brands-data-service';
+import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action-result';
 import { Brand } from '@/src/lib/entities/brand';
 import { revalidatePath } from 'next/cache';
 
-export async function saveBrandAction(brandId: string, data: Brand, path: string): Promise<Brand> {
+export async function saveBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!data.id)
-    throw new Error('Id is required');
+  if (!brandId || !data.id)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (data.brandId !== brandId)
-    throw new Error('Brand mismatch');
+    return failure({ type: ErrorType.Validation, message: 'Brand mismatch' });
 
-  // 2. Persist (DB, API, etc.)
-  let result: Brand = await putBrand(data);
+  try {
+    // 2. Persist 
+    let result: Brand = await putBrand(data);
 
-  // 3. Revalidate cached pages
-  revalidatePath(path);
+    // 3. Revalidate cached pages
+    revalidatePath(path);
 
-  return result;
+    return success(result);
+  } catch (error: any) {
+    return failure(error);
+  }
 }
 
-export async function createBrandAction(data: Brand, path: string): Promise<Brand> {
+export async function createBrandAction(data: Brand): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
 
-  // 2. Persist (DB, API, etc.)
-  let result: Brand = await postBrand(data);
+  try {
+    // 2. Persist
+    let result: Brand = await postBrand(data);
 
-  // 3. Revalidate cached pages
-  revalidatePath(path);
-
-  return result;
+    return success(result);
+  } catch (error: any) {
+    return failure(error);
+  }
 }
 
-export async function activateBrandAction(brandId: string, path: string): Promise<Brand> {
+export async function activateBrandAction(brandId: string, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
+  if (!brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
 
-  // 2. Persist (DB, API, etc.)
-  let result: Brand = await postActivateBrand(brandId);
+  try {
+    // 2. Persist (DB, API, etc.)
+    let result: Brand = await postActivateBrand(brandId);
 
-  // 3. Revalidate cached pages
-  revalidatePath(path);
+    // 3. Revalidate cached pages
+    revalidatePath(path);
 
-  return result;
+    return success(result);
+  } catch (error: any) {
+    return failure(error);
+  }
 }
 
-export async function deactivateBrandAction(brandId: string, path: string): Promise<Brand> {
+export async function deactivateBrandAction(brandId: string, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
+  if (!brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
 
-  // 2. Persist (DB, API, etc.)
-  let result: Brand = await postDeactivateBrand(brandId);
+  try {
+    // 2. Persist (DB, API, etc.)
+    let result: Brand = await postDeactivateBrand(brandId);
 
-  // 3. Revalidate cached pages
-  revalidatePath(path);
+    // 3. Revalidate cached pages
+    revalidatePath(path);
 
-  return result;
+    return success(result);
+  } catch (error: any) {
+    return failure(error);
+  }
 }
 
-export async function deleteBrandAction(brandId: string): Promise<void> {
+export async function deleteBrandAction(brandId: string): Promise<ActionResult<void>> {
   // 1. Validation (server-side)
+  if (!brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  
+  try {
+    // 2. Persist (DB, API, etc.)
+    await delBrand(brandId);
 
-  // 2. Persist (DB, API, etc.)
-  await delBrand(brandId);
-
-  return;
+    return success(undefined);
+  } catch (error: any) {
+    return failure(error);
+  }
 }

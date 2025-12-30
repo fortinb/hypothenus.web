@@ -16,13 +16,15 @@ import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { delCourse, postActivateCourse, postCourse, putCourse, postDeactivateCourse } from "@/app/lib/data/courses-data-service-client";
+
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
+import { activateCourseAction, createCourseAction, deactivateCourseAction, deleteCourseAction, saveCourseAction } from "./actions";
+import { ActionResult } from "@/app/lib/http/action-result";
 
 export interface CourseFormData {
     course: Course;
@@ -34,15 +36,15 @@ export const CourseFormSchema = z.object({
     selectedCoachItems: z.any().array().min(0)
 });
 
-export default function CourseForm({ lang, brandId, gymId, courseId, course, initialAvailableCoachItems, initialSelectedCoachItems  }: {
-        lang: string;
-        brandId: string;
-        gymId: string,
-        courseId: string,
-        course: Course,
-        coachs: Coach[],
-        initialAvailableCoachItems: CoachSelectedItem[],
-        initialSelectedCoachItems: CoachSelectedItem[]
+export default function CourseForm({ lang, brandId, gymId, courseId, course, initialAvailableCoachItems, initialSelectedCoachItems }: {
+    lang: string;
+    brandId: string;
+    gymId: string,
+    courseId: string,
+    course: Course,
+    coachs: Coach[],
+    initialAvailableCoachItems: CoachSelectedItem[],
+    initialSelectedCoachItems: CoachSelectedItem[]
 }) {
     const t = useTranslations("entity");
     const router = useRouter();
@@ -51,13 +53,13 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const courseState: CourseState = useSelector((state: any) => state.courseState);
     const dispatch = useAppDispatch();
 
+    const [isSaving, startTransitionSave] = useTransition();
+    const [isActivating, startTransitionActivate] = useTransition();
+    const [isDeleting, startTransitionDelete] = useTransition();
     const [isCoachsItemsInitialized, setIsCoachsItemInitialized] = useState<boolean>(false);
     const [success, setSuccess] = useState(false);
     const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const [isSaving, setIsSaving] = useState<boolean>(false);
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [isActivating, setIsActivating] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [availableCoachItems, setAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
@@ -112,82 +114,102 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const onSubmit: SubmitHandler<CourseFormData> = (formData: z.infer<typeof CourseFormSchema>) => {
         setIsEditMode(false);
-        setIsSaving(true);
 
-        if (courseState.course.id == null) {
-            createCourse(formData);
+        let course: Course = mapForm(formData, courseState.course);
+
+        if (courseId == "new") {
+            createCourse(course, formData.selectedCoachItems);
         } else {
-            saveCourse(formData);
+            saveCourse(course, formData.selectedCoachItems);
         }
     }
 
-    const createCourse = async (formData: z.infer<typeof CourseFormSchema>) => {
-        let newCourse: Course = mapForm(formData, courseState.course);
-        let course: Course = await postCourse(brandId, gymId, newCourse);
+    const createCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
+        startTransitionSave(async () => {
+            let result: ActionResult<Course> = await createCourseAction(brandId, gymId, course);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.saveError"));
+                setIsEditMode(true);
+            } else {
+                const duplicate = result.data.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
+                if (duplicate) {
+                    formContext.setError("course.code", { type: "manual", message: t("course.validation.alreadyExists") });
+                    setIsEditMode(true);
+                } else {
+                    setSuccess(true);
+                    setTextSuccess(t("action.saveSuccess"));
+                    setIsEditMode(false);
+                    dispatch(updateCourseState(result.data));
+                    setOriginalSelectedCoachItems(selectedCoachItems as CoachSelectedItem[]);
 
-        const duplicate = course.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
-        if (duplicate) {
-            formContext.setError("course.code", { type: "manual", message: t("course.validation.alreadyExists") });
-            setIsEditMode(true);
-        } else {
-            setSuccess(true);
-            setTextSuccess(t("action.saveSuccess"));
-            dispatch(updateCourseState(course));
-            setOriginalSelectedCoachItems(formData.selectedCoachItems as CoachSelectedItem[]);
-
-            await afterSaveCourse(course);
-
-            router.push(`/${lang}/brands/${course.brandId}/gyms/${course.gymId}/courses/${course.id}`);
-        }
+                    router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses/${result.data.id}`);
+                }
+            }
+        });
     }
 
-    const saveCourse = async (formData: z.infer<typeof CourseFormSchema>) => {
-        let updatedCourse: Course = mapForm(formData, courseState.course);
+    const saveCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
+        startTransitionSave(async () => {
+            let result: ActionResult<Course> = await saveCourseAction(brandId, gymId, courseId, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.saveError"));
+            } else {
+                dispatch(updateCourseState(result.data));
+                setOriginalSelectedCoachItems(selectedCoachItems as CoachSelectedItem[]);
 
-        let course: Course = await putCourse(brandId, gymId, courseId, updatedCourse);
-
-        dispatch(updateCourseState(course));
-        setOriginalSelectedCoachItems(formData.selectedCoachItems as CoachSelectedItem[]);
-
-        await afterSaveCourse(updatedCourse);
-    }
-
-    const afterSaveCourse = async (course: Course) => {
-        setTextSuccess(t("action.saveSuccess"));
-        setSuccess(true);
-        setIsSaving(false);
-        setIsEditMode(true);
+                setTextSuccess(t("action.saveSuccess"));
+                setSuccess(true);
+                setIsEditMode(true);
+            }
+        });
     }
 
     const activateCourse = async (gymId: string, courseId: string) => {
-        let course: Course = await postActivateCourse(brandId, gymId, courseId);
-
-        dispatch(updateCourseState(course));
-        setIsActivating(false);
-        setTextSuccess(t("action.activationSuccess"));
-        setSuccess(true);
+        startTransitionActivate(async () => {
+            let result: ActionResult<Course> = await activateCourseAction(brandId, gymId, courseId, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.activationError"));
+            } else {
+                dispatch(updateCourseState(result.data));
+                setTextSuccess(t("action.activationSuccess"));
+                setSuccess(true);
+            }
+        });
     }
 
     const deactivateCourse = async (gymId: string, courseId: string) => {
-        let course: Course = await postDeactivateCourse(brandId, gymId, courseId);
-
-        dispatch(updateCourseState(course));
-        setIsActivating(false);
-        setTextSuccess(t("action.deactivationSuccess"));
-        setSuccess(true);
+        startTransitionActivate(async () => {
+            let result: ActionResult<Course> = await deactivateCourseAction(brandId, gymId, courseId, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.deactivationError"));
+            } else {
+                dispatch(updateCourseState(result.data));
+                setTextSuccess(t("action.deactivationSuccess"));
+                setSuccess(true);
+            }
+        });
     }
 
     const deleteCourse = async (gymId: string, courseId: string) => {
-        await delCourse(brandId, gymId, courseId);
+        startTransitionDelete(async () => {
+            let result: ActionResult<void> = await deleteCourseAction(brandId, gymId, courseId);
+            if (!result.ok) {
+                setSuccess(false);
+                setTextSuccess(t("action.deleteError"));
+            } else {
+                setTextSuccess(t("action.deleteSuccess"));
+                setSuccess(true);
+                setShowDeleteConfirmation(false);
+                setTimeout(function () {
+                    router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses`);
 
-        setTextSuccess(t("action.deleteSuccess"));
-        setSuccess(true);
-
-        setTimeout(function () {
-            setShowDeleteConfirmation(false);
-            setIsDeleting(false);
-            router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses`);
-        }, 2000);
+                }, 1000);
+            }
+        });
     }
 
     function onCancel() {
@@ -208,7 +230,6 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
-        setIsActivating(true);
         if (e.currentTarget.checked) {
             activateCourse(courseState.course.gymId, courseState.course.id);
         } else {
@@ -230,7 +251,6 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-            setIsDeleting(true);
             deleteCourse(courseState.course.gymId, courseState.course.id);
         } else {
             setShowDeleteConfirmation(false);
