@@ -1,6 +1,7 @@
 "use client"
 
 import axios from 'axios'
+import { normalizeApiError } from './action-result';
 
 const axiosInstance = axios.create();
 
@@ -15,7 +16,6 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     // Handle request errors here
-
     return Promise.reject(error);
   }
 );
@@ -27,17 +27,16 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error);
+    try {
+      console.log(error);
 
-    // Handle response errors here
-    switch (error.response.status) {
-      case 401:
-        break;
-      default:
-        break;
+      // Handle response errors here
+      const normalizedError = normalizeApiError(error);
+      return Promise.reject(normalizedError);
+    } catch (e) {
+      console.log(e);
+      return Promise.reject(error);
     }
-
-    return Promise.reject(error as Error);
   }
 );
 

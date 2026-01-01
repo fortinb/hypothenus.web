@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ErrorType, ResultError } from './action-result';
+import { normalizeApiError } from './action-result';
 
 const axiosInstance = axios.create();
 
@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     // Handle request errors here
-
     return Promise.reject(error);
   }
 );
@@ -22,34 +21,20 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
+    // Modify the response data here (e.g., parse, transform)
     return response;
   },
   (error) => {
-    // Handle response errors here
-    const normalizedError = normalizeApiError(error);
-    return Promise.reject(normalizedError);
+    try {
+      console.log(error);
+
+      const normalizedError = normalizeApiError(error);
+       return Promise.reject(normalizedError);
+    } catch (e) {
+      console.log(e);
+      return Promise.reject(error);
+    }
   }
 );
-
-function normalizeApiError(error: unknown): ResultError {
-  if (!axios.isAxiosError(error)) {
-    return { type: ErrorType.Unknown, message: 'An unknown error occurred' };
-  }
-
-  const status = error.response?.status;
-
-  switch (status) {
-    case 400:
-      return { type: ErrorType.Validation, details: error.response?.data, message: 'validation error' };
-    case 401:
-      return { type: ErrorType.Unauthorized, message: 'Unauthorized' };
-    case 403:
-      return { type: ErrorType.Forbidden, message: 'Forbidden' };
-    case 409:
-      return { type: ErrorType.Conflict, message: 'Conflict' };
-    default:
-      return { type: ErrorType.Server, message: error.response?.data || 'An unknown error occurred' };
-  }
-}
 
 export default axiosInstance;; 

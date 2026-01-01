@@ -53,6 +53,7 @@ export async function postActivateBrand(brandId: string): Promise<Brand> {
   const request = initRequest({});
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+  const data = response.data;
 
   return response.data;
 }
@@ -79,3 +80,40 @@ export async function delBrand(brandId: string): Promise<void> {
   return response.data;
 }
 
+function findInvalidValue(
+  value: any,
+  path = "root"
+): string | null {
+  if (value === undefined) {
+    return `${path} is undefined`;
+  }
+
+  if (
+    typeof value === "bigint" ||
+    typeof value === "symbol" ||
+    typeof value === "function"
+  ) {
+    return `${path} has invalid type: ${typeof value}`;
+  }
+
+  if (value instanceof Date) {
+    return `${path} is Date`;
+  }
+
+  if (Array.isArray(value)) {
+    for (let i = 0; i < value.length; i++) {
+      const r = findInvalidValue(value[i], `${path}[${i}]`);
+      if (r) return r;
+    }
+    return null;
+  }
+
+  if (value && typeof value === "object") {
+    for (const key of Object.keys(value)) {
+      const r = findInvalidValue(value[key], `${path}.${key}`);
+      if (r) return r;
+    }
+  }
+
+  return null;
+}

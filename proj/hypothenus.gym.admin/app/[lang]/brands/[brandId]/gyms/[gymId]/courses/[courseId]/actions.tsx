@@ -5,21 +5,18 @@ import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action
 import { Course } from '@/src/lib/entities/course';
 import { revalidatePath } from 'next/cache';
 
-export async function saveCourseAction(brandId: string, gymId: string, courseId: string, data: Course, path: string): Promise<ActionResult<Course>> {
+export async function saveCourseAction(courseId: string, data: Course, path: string): Promise<ActionResult<Course>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !courseId || !data.id)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId, CourseId and Id are required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'Brand mismatch' });
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });
+  if (!data.brandId || !data.gymId || !data.id)
+    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and Id are required' });  
+  if (!courseId || !data.id)
+    return failure({ type: ErrorType.Validation, message: 'CourseId and Id are required' });
   if (data.id !== courseId) 
     return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {
     // 2. Persist 
-    let result: Course = await putCourse(brandId, gymId, courseId, data);
-
+    let result: Course = await putCourse(data.brandId, data.gymId, courseId, data);
     // 3. Revalidate cached pages
     revalidatePath(path);
 
@@ -29,18 +26,34 @@ export async function saveCourseAction(brandId: string, gymId: string, courseId:
   }
 }
 
-export async function createCourseAction(brandId: string, gymId: string, data: Course): Promise<ActionResult<Course>> {
+export async function createCourseAction(data: Course): Promise<ActionResult<Course>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId and GymId are required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'Brand mismatch' });
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });  
+  if (!data.brandId || !data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId are required' });  
 
   try {
     // 2. Persist
-    let result: Course = await postCourse(brandId, gymId, data);
+    let result: Course = await postCourse(data.brandId, data.gymId, data);
+    return success(result);
+  } catch (error: any) {
+    return failure(error);
+  }
+}
+
+export async function activateCourseAction(courseId: string, data: Course,path: string): Promise<ActionResult<Course>> {
+  // 1. Validation (server-side)
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
+  if (data.id !== courseId)
+    return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
+
+  try {
+    // 2. Persist (DB, API, etc.)
+    let result: Course = await postActivateCourse(data.brandId, data.gymId, courseId);
+    // 3. Revalidate cached pages
+    revalidatePath(path);
 
     return success(result);
   } catch (error: any) {
@@ -48,14 +61,18 @@ export async function createCourseAction(brandId: string, gymId: string, data: C
   }
 }
 
-export async function activateCourseAction(brandId: string, gymId: string, courseId: string, path: string): Promise<ActionResult<Course>> {
+export async function deactivateCourseAction(courseId: string, data: Course,path: string): Promise<ActionResult<Course>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !courseId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and CourseId are required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
+  if (data.id !== courseId)
+    return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Course = await postActivateCourse(brandId, gymId, courseId);
+    let result: Course = await postDeactivateCourse(data.brandId, data.gymId, courseId);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -66,32 +83,18 @@ export async function activateCourseAction(brandId: string, gymId: string, cours
   }
 }
 
-export async function deactivateCourseAction(brandId: string, gymId: string,courseId: string, path: string): Promise<ActionResult<Course>> {
+export async function deleteCourseAction(courseId: string, data: Course): Promise<ActionResult<void>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !courseId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and CourseId are required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
+  if (data.id !== courseId)
+    return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Course = await postDeactivateCourse(brandId, gymId, courseId);
-
-    // 3. Revalidate cached pages
-    revalidatePath(path);
-
-    return success(result);
-  } catch (error: any) {
-    return failure(error);
-  }
-}
-
-export async function deleteCourseAction(brandId: string, gymId: string,courseId: string): Promise<ActionResult<void>> {
-  // 1. Validation (server-side)
-  if (!brandId || !gymId || !courseId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and CourseId are required' });
-  
-  try {
-    // 2. Persist (DB, API, etc.)
-    await delCourse(brandId, gymId, courseId);
+    await delCourse(data.brandId, data.gymId, courseId);
 
     return success(undefined);
   } catch (error: any) {

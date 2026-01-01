@@ -40,9 +40,6 @@ export const parseCoach = (data: any): Coach => {
 }
 
 export const CoachSchema = z.object({
-  id: z.any().nullable(),
-  brandId: z.string().min(1),
-  gymId: z.string().min(1),
   person: PersonSchema
 });
 

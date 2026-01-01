@@ -1,0 +1,12 @@
+{
+    "http": {
+        "status": {
+            "400": "Validation error - Bad request",
+            "401": "Unauthorized",
+            "403": "Service forbidden",
+            "409": "Conflict",
+            "503": "Service unavailable",
+            "500": "Internal server error"
+        }
+    }
+}

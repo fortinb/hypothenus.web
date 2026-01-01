@@ -5,11 +5,11 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import CourseInfo from "@/app/ui/components/course/course-info";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
-import ToastSuccess from "@/app/ui/components/notifications/toast-success";
+import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
-import { CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
+import { clearCourseState, CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { Coach } from "@/src/lib/entities/coach";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
@@ -24,10 +24,11 @@ import { z } from "zod";
 
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { activateCourseAction, createCourseAction, deactivateCourseAction, deleteCourseAction, saveCourseAction } from "./actions";
-import { ActionResult } from "@/app/lib/http/action-result";
+import { useToastResult } from "@/app/lib/hooks/useToastResult";
+import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 
 export interface CourseFormData {
-    course: Course;
+    course: z.infer<typeof CourseSchema>;
     selectedCoachItems: CoachSelectedItem[];
 }
 
@@ -53,22 +54,28 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const courseState: CourseState = useSelector((state: any) => state.courseState);
     const dispatch = useAppDispatch();
 
-    const [isSaving, startTransitionSave] = useTransition();
-    const [isActivating, startTransitionActivate] = useTransition();
-    const [isDeleting, startTransitionDelete] = useTransition();
+    // Form State
     const [isCoachsItemsInitialized, setIsCoachsItemInitialized] = useState<boolean>(false);
-    const [success, setSuccess] = useState(false);
-    const [textSuccess, setTextSuccess] = useState("");
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [availableCoachItems, setAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
     const [originalAvailableCoachItems, setOriginalAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
     const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<CoachSelectedItem[]>([]);
+    const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
+    } = useCrudActions<Course>({
+        actions: {
+            create: createCourseAction,
+            save: saveCourseAction,
+            activate: activateCourseAction,
+            deactivate: deactivateCourseAction,
+            delete: deleteCourseAction
+        }
+    });
 
     const formContext = useForm<CourseFormData>({
         defaultValues: {
-            course: course,
+            course: mapEntityToForm(course),
             selectedCoachItems: initialSelectedCoachItems
         },
         mode: "all",
@@ -80,7 +87,8 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
         name: "selectedCoachItems"
     });
 
-    const toggleSuccess = () => setSuccess(false);
+    // Toast Result State
+    const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
 
     useEffect(() => {
         dispatch(updateCourseState(course));
@@ -115,7 +123,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const onSubmit: SubmitHandler<CourseFormData> = (formData: z.infer<typeof CourseFormSchema>) => {
         setIsEditMode(false);
 
-        let course: Course = mapForm(formData, courseState.course);
+        let course: Course = mapFormToEntity(formData, courseState.course);
 
         if (courseId == "new") {
             createCourse(course, formData.selectedCoachItems);
@@ -125,91 +133,84 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     const createCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
-        startTransitionSave(async () => {
-            let result: ActionResult<Course> = await createCourseAction(brandId, gymId, course);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.saveError"));
-                setIsEditMode(true);
-            } else {
-                const duplicate = result.data.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
+        createEntity(
+            course,
+            (entity) => {
+                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("course.code", { type: "manual", message: t("course.validation.alreadyExists") });
                     setIsEditMode(true);
                 } else {
-                    setSuccess(true);
-                    setTextSuccess(t("action.saveSuccess"));
-                    setIsEditMode(false);
-                    dispatch(updateCourseState(result.data));
-                    setOriginalSelectedCoachItems(selectedCoachItems as CoachSelectedItem[]);
+                    setOriginalSelectedCoachItems(selectedCoachItems);
 
-                    router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses/${result.data.id}`);
+                    router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses/${entity.id}`);
                 }
+            },
+            (result) => {
+                showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
+                setIsEditMode(true);
             }
-        });
+        );
     }
 
     const saveCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
-        startTransitionSave(async () => {
-            let result: ActionResult<Course> = await saveCourseAction(brandId, gymId, courseId, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.saveError"));
-            } else {
-                dispatch(updateCourseState(result.data));
-                setOriginalSelectedCoachItems(selectedCoachItems as CoachSelectedItem[]);
+        saveEntity(
+            course.id, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            async (entity) => {
+                dispatch(updateCourseState(entity));
+                setOriginalSelectedCoachItems(selectedCoachItems);
 
-                setTextSuccess(t("action.saveSuccess"));
-                setSuccess(true);
+                showResultToast(true, t("action.saveSuccess"));
+                setIsEditMode(true);
+            },
+            (result) => {
+                showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
             }
-        });
+        );
     }
 
-    const activateCourse = async (gymId: string, courseId: string) => {
-        startTransitionActivate(async () => {
-            let result: ActionResult<Course> = await activateCourseAction(brandId, gymId, courseId, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.activationError"));
-            } else {
-                dispatch(updateCourseState(result.data));
-                setTextSuccess(t("action.activationSuccess"));
-                setSuccess(true);
+    const activateCourse = (course: Course) => {
+        activateEntity(
+            course.id, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            (entity) => {
+                dispatch(updateCourseState(entity));
+                showResultToast(true, t("action.activationSuccess"));
+            },
+            (result) => {
+                showResultToast(false, t("action.activationError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
-    const deactivateCourse = async (gymId: string, courseId: string) => {
-        startTransitionActivate(async () => {
-            let result: ActionResult<Course> = await deactivateCourseAction(brandId, gymId, courseId, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${courseId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.deactivationError"));
-            } else {
-                dispatch(updateCourseState(result.data));
-                setTextSuccess(t("action.deactivationSuccess"));
-                setSuccess(true);
+    const deactivateCourse = (course: Course) => {
+        deactivateEntity(
+            course.id, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            (entity) => {
+                dispatch(updateCourseState(entity));
+                showResultToast(true, t("action.deactivationSuccess"));
+            },
+            (result) => {
+                showResultToast(false, t("action.deactivationError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
-    const deleteCourse = async (gymId: string, courseId: string) => {
-        startTransitionDelete(async () => {
-            let result: ActionResult<void> = await deleteCourseAction(brandId, gymId, courseId);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.deleteError"));
-            } else {
-                setTextSuccess(t("action.deleteSuccess"));
-                setSuccess(true);
+    const deleteCourse = (course: Course) => {
+        deleteEntity(
+            course.id, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            () => {
+                dispatch(clearCourseState());
+                showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
                     router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses`);
-
                 }, 1000);
+            },
+            (result) => {
+                showResultToast(false, t("action.deleteError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
     function onCancel() {
@@ -231,9 +232,9 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
         if (e.currentTarget.checked) {
-            activateCourse(courseState.course.gymId, courseState.course.id);
+            activateCourse(courseState.course);
         } else {
-            deactivateCourse(courseState.course.gymId, courseState.course.id);
+            deactivateCourse(courseState.course);
         }
     }
 
@@ -251,7 +252,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-            deleteCourse(courseState.course.gymId, courseState.course.id);
+            deleteCourse(courseState.course);
         } else {
             setShowDeleteConfirmation(false);
         }
@@ -263,11 +264,24 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
         }
     }
 
-    function mapForm(formData: z.infer<typeof CourseFormSchema>, course: Course): Course {
+    function mapEntityToForm(course: Course): z.infer<typeof CourseSchema> {
+        return {
+            code: course.code,
+            name: course.name,
+            description: course.description,
+            startDate: course.startDate,
+            endDate: course.endDate,
+            coachs: course.coachs.map((coach) => {
+                return coach as Coach;
+            })
+        }
+    }
+
+    function mapFormToEntity(formData: z.infer<typeof CourseFormSchema>, course: Course): Course {
         let updatedCourse: Course = {
-            id: formData.course.id,
-            brandId: formData.course.brandId,
-            gymId: formData.course.gymId,
+            id: course.id,
+            brandId: course.brandId,
+            gymId: course.gymId,
             code: formData.course.code,
             name: formData.course.name,
             description: formData.course.description,
@@ -278,8 +292,8 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             }),
             isActive: course.isActive,
             messages: undefined,
-            createdBy: undefined,
-            modifiedBy: undefined,
+            createdBy: course.createdBy,
+            modifiedBy: course.modifiedBy
         };
 
         return updatedCourse;
@@ -304,7 +318,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />
                             </Form>
 
-                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                            <ToastResult show={showResult} result={resultStatus} text={resultText} errorTextCode={resultErrorTextCode} toggleShow={toggleShowResult} />
                             <ModalConfirmation title={t("course.deleteConfirmation.title", { name: getCourseName(courseState.course, lang as LanguageEnum) })} text={t("course.deleteConfirmation.text")}
                                 yesText={t("course.deleteConfirmation.yes")} noText={t("course.deleteConfirmation.no")}
                                 actionText={t("course.deleteConfirmation.action")}

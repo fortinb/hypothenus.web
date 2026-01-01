@@ -5,20 +5,18 @@ import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action
 import { Coach } from '@/src/lib/entities/coach';
 import { revalidatePath } from 'next/cache';
 
-export async function saveCoachAction(brandId: string, gymId: string, coachId: string, data: Coach, path: string): Promise<ActionResult<Coach>> {
+export async function saveCoachAction(coachId: string, data: Coach, path: string): Promise<ActionResult<Coach>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !coachId || !data.id)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId, CoachId and Id are required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'Brand mismatch' });
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });
+  if (!data.brandId || !data.gymId || !data.id)
+    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and Id are required' });  
+  if (!coachId || !data.id)
+    return failure({ type: ErrorType.Validation, message: 'CoachId and Id are required' });
   if (data.id !== coachId) 
     return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
 
   try {
     // 2. Persist 
-    let result: Coach = await putCoach(brandId, gymId, coachId, data);
+    let result: Coach = await putCoach(data.brandId, data.gymId, coachId, data);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -29,33 +27,32 @@ export async function saveCoachAction(brandId: string, gymId: string, coachId: s
   }
 }
 
-export async function createCoachAction(brandId: string, gymId: string, data: Coach): Promise<ActionResult<Coach>> {
+export async function createCoachAction(data: Coach): Promise<ActionResult<Coach>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId and GymId are required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'Brand mismatch' });
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });  
+  if (!data.brandId || !data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId are required' });  
 
   try {
     // 2. Persist
-    let result: Coach = await postCoach(brandId, gymId, data);
-
+    let result: Coach = await postCoach(data.brandId, data.gymId, data);
     return success(result);
   } catch (error: any) {
     return failure(error);
   }
 }
 
-export async function activateCoachAction(brandId: string, gymId: string, coachId: string, path: string): Promise<ActionResult<Coach>> {
+export async function activateCoachAction(coachId: string, data: Coach, path: string): Promise<ActionResult<Coach>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !coachId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and CoachId are required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
+  if (data.id !== coachId)
+    return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Coach = await postActivateCoach(brandId, gymId, coachId);
+    let result: Coach = await postActivateCoach(data.brandId, data.gymId, coachId);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -66,15 +63,18 @@ export async function activateCoachAction(brandId: string, gymId: string, coachI
   }
 }
 
-export async function deactivateCoachAction(brandId: string, gymId: string,coachId: string, path: string): Promise<ActionResult<Coach>> {
+export async function deactivateCoachAction(coachId: string, data: Coach, path: string): Promise<ActionResult<Coach>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !coachId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and CoachId are required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
+  if (data.id !== coachId)
+    return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Coach = await postDeactivateCoach(brandId, gymId, coachId);
-
+    let result: Coach = await postDeactivateCoach(data.brandId, data.gymId, coachId);
     // 3. Revalidate cached pages
     revalidatePath(path);
 
@@ -84,15 +84,19 @@ export async function deactivateCoachAction(brandId: string, gymId: string,coach
   }
 }
 
-export async function deleteCoachAction(brandId: string, gymId: string,coachId: string): Promise<ActionResult<void>> {
+export async function deleteCoachAction(coachId: string, data: Coach): Promise<ActionResult<void>> {
   // 1. Validation (server-side)
-  if (!brandId || !gymId || !coachId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and CoachId are required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.gymId)
+    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
+  if (data.id !== coachId)
+    return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
   
   try {
     // 2. Persist (DB, API, etc.)
-    await delCoach(brandId, gymId, coachId);
-
+    await delCoach(data.brandId, data.gymId, coachId);
+    
     return success(undefined);
   } catch (error: any) {
     return failure(error);

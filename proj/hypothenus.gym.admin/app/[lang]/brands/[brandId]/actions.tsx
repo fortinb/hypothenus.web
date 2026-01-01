@@ -7,10 +7,10 @@ import { revalidatePath } from 'next/cache';
 
 export async function saveBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!brandId || !data.id)
+  if (!data.brandId || !data.id || !brandId)
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'Brand mismatch' });
+    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });
 
   try {
     // 2. Persist 
@@ -40,10 +40,14 @@ export async function createBrandAction(data: Brand): Promise<ActionResult<Brand
   }
 }
 
-export async function activateBrandAction(brandId: string, path: string): Promise<ActionResult<Brand>> {
+export async function activateBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
   if (!brandId)
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (data.brandId !== brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });  
 
   try {
     // 2. Persist (DB, API, etc.)
@@ -51,17 +55,21 @@ export async function activateBrandAction(brandId: string, path: string): Promis
 
     // 3. Revalidate cached pages
     revalidatePath(path);
-
+    
     return success(result);
   } catch (error: any) {
     return failure(error);
   }
 }
 
-export async function deactivateBrandAction(brandId: string, path: string): Promise<ActionResult<Brand>> {
+export async function deactivateBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
   if (!brandId)
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (data.brandId !== brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });    
 
   try {
     // 2. Persist (DB, API, etc.)
@@ -76,10 +84,14 @@ export async function deactivateBrandAction(brandId: string, path: string): Prom
   }
 }
 
-export async function deleteBrandAction(brandId: string): Promise<ActionResult<void>> {
+export async function deleteBrandAction(brandId: string, data: Brand): Promise<ActionResult<void>> {
   // 1. Validation (server-side)
   if (!brandId)
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });  
+  if (data.brandId !== brandId)
+    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });  
   
   try {
     // 2. Persist (DB, API, etc.)

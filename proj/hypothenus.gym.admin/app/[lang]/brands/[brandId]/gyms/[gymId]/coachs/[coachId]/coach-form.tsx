@@ -5,11 +5,11 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import CoachInfo from "@/app/ui/components/coach/coach-info";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
-import ToastSuccess from "@/app/ui/components/notifications/toast-success";
+import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
-import { CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
+import { clearCoachState, CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,8 +21,8 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 import { uploadCoachPhoto } from "@/app/lib/data/coachs-data-service-client";
 import { activateCoachAction, createCoachAction, deactivateCoachAction, deleteCoachAction, saveCoachAction } from "./actions";
-import { ActionResult } from "@/app/lib/http/action-result";
-
+import { useToastResult } from "@/app/lib/hooks/useToastResult";
+import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 
 export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { lang: string; brandId: string; gymId: string, coachId: string, coach: Coach }) {
     const t = useTranslations("entity");
@@ -32,22 +32,29 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
 
-    const [isSaving, startTransitionSave] = useTransition();
-    const [isActivating, startTransitionActivate] = useTransition();
-    const [isDeleting, startTransitionDelete] = useTransition();
-    const [success, setSuccess] = useState(false);
-    const [textSuccess, setTextSuccess] = useState("");
+    // Form state
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [photoToUpload, setPhotoToUpload] = useState<Blob>();
+    const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
+    } = useCrudActions<Coach>({
+        actions: {
+            create: createCoachAction,
+            save: saveCoachAction,
+            activate: activateCoachAction,
+            deactivate: deactivateCoachAction,
+            delete: deleteCoachAction
+        }
+    });
 
     const formContext = useForm<Coach>({
-        defaultValues: coach,
+        defaultValues: mapEntityToForm(coach),
         resolver: zodResolver(CoachSchema),
     });
 
-    const toggleSuccess = () => setSuccess(false);
+    // Toast Result State
+    const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
 
     function handlePhotoToUpload(file: Blob) {
         setPhotoToUpload(file);
@@ -55,6 +62,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     // Watch the entire form
     const formData = formContext.watch();
+
     useEffect(() => {
         // Log the data to the console every time there is an error
         const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
@@ -86,10 +94,10 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         dispatch(pushBreadcrumb(crumb));
     }
 
-    const onSubmit: SubmitHandler<Coach> = (formData: z.infer<typeof CoachSchema>) => {
+    const onSubmit: SubmitHandler<Coach> = async (formData: z.infer<typeof CoachSchema>) => {
         setIsEditMode(false);
 
-        let coach: Coach = mapForm(formData, coachState.coach);
+        let coach: Coach = mapFormToEntity(formData, coachState.coach);
 
         if (coachId == "new") {
             createCoach(coach);
@@ -108,42 +116,39 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     const createCoach = (coach: Coach) => {
-        startTransitionSave(async () => {
-            let result: ActionResult<Coach> = await createCoachAction(brandId, gymId, coach);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.saveError"));
+        createEntity(
+            coach,
+            async (entity) => {
+                dispatch(updateCoachState(entity));
+
+                await afterSaveCoach(entity);
+
+                showResultToast(true, t("action.saveSuccess"));
+                router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${entity.id}`);
+            },
+            (result) => {
+                showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
-            } else {
-                dispatch(updateCoachState(result.data));
-
-                await afterSaveCoach(result.data);
-
-                setTextSuccess(t("action.saveSuccess"));
-                setSuccess(true);
-                setIsEditMode(false);
-
-                router.push(`/${lang}/brands/${coach.brandId}/gyms/${coach.gymId}/coachs/${result.data.id}`);
             }
-        });
+        );
     }
 
     const saveCoach = (coach: Coach) => {
-        startTransitionSave(async () => {
-            let result: ActionResult<Coach> = await saveCoachAction(brandId, gymId, coachId, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.saveError"));
-            } else {
-                dispatch(updateCoachState(result.data));
+        saveEntity(
+            coach.id, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            async (entity) => {
+                dispatch(updateCoachState(entity));
 
-                await afterSaveCoach(result.data);
+                await afterSaveCoach(entity);
 
-                setTextSuccess(t("action.saveSuccess"));
-                setSuccess(true);
+                showResultToast(true, t("action.saveSuccess"));
+                setIsEditMode(true);
+            },
+            (result) => {
+                showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
             }
-        });
+        );
     }
 
     const afterSaveCoach = async (coach: Coach) => {
@@ -154,50 +159,47 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         }
     }
 
-    const activateCoach = async (gymId: string, coachId: string) => {
-        startTransitionActivate(async () => {
-            let result: ActionResult<Coach> = await activateCoachAction(brandId, gymId, coachId, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.activationError"));
-            } else {
-                dispatch(updateCoachState(result.data));
-                setTextSuccess(t("action.activationSuccess"));
-                setSuccess(true);
+    const activateCoach = (coach: Coach) => {
+        activateEntity(
+            coach.id, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            (entity) => {
+                dispatch(updateCoachState(entity));
+                showResultToast(true, t("action.activationSuccess"));
+            },
+            (result) => {
+                showResultToast(false, t("action.activationError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
-    const deactivateCoach = async (gymId: string, coachId: string) => {
-        startTransitionActivate(async () => {
-            let result: ActionResult<Coach> = await deactivateCoachAction(brandId, gymId, coachId, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.deactivationError"));
-            } else {
-                dispatch(updateCoachState(result.data));
-                setTextSuccess(t("action.deactivationSuccess"));
-                setSuccess(true);
+    const deactivateCoach = (coach: Coach) => {
+        deactivateEntity(
+            coach.id, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            (entity) => {
+                dispatch(updateCoachState(entity));
+                showResultToast(true, t("action.deactivationSuccess"));
+            },
+            (result) => {
+                showResultToast(false, t("action.deactivationError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
-    const deleteCoach = async (gymId: string, coachId: string) => {
-        startTransitionDelete(async () => {
-            let result: ActionResult<void> = await deleteCoachAction(brandId, gymId, coachId);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.deleteError"));
-            } else {
-                setTextSuccess(t("action.deleteSuccess"));
-                setSuccess(true);
+    const deleteCoach = (coach: Coach) => {
+        deleteEntity(
+            coach.id, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            () => {
+                dispatch(clearCoachState());
+                showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
                     router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs`);
-
                 }, 1000);
+            },
+            (result) => {
+                showResultToast(false, t("action.deleteError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
     function onCancel() {
@@ -206,6 +208,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         setPhotoToUpload(undefined);
 
         formContext.reset(coachState.coach);
+
         if (coachId == "new") {
             router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs`);
         }
@@ -213,9 +216,9 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
         if (e.currentTarget.checked) {
-            activateCoach(coachState.coach.gymId, coachState.coach.id);
+            activateCoach(coachState.coach);
         } else {
-            deactivateCoach(coachState.coach.gymId, coachState.coach.id);
+            deactivateCoach(coachState.coach);
         }
     }
 
@@ -233,7 +236,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-            deleteCoach(coachState.coach.gymId, coachState.coach.id);
+           deleteCoach(coachState.coach);
         } else {
             setShowDeleteConfirmation(false);
         }
@@ -245,16 +248,22 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         }
     }
 
-    function mapForm(formData: z.infer<typeof CoachSchema>, coach: Coach): Coach {
+    function mapEntityToForm(coach: Coach): z.infer<typeof CoachSchema> {
+            return {
+                person: coach.person,
+            };
+        }
+
+    function mapFormToEntity(formData: z.infer<typeof CoachSchema>, coach: Coach): Coach {
         let updatedCoach: Coach = {
             id: coach.id,
-            brandId: formData.brandId,
-            gymId: formData.gymId,
+            brandId: coach.brandId,
+            gymId: coach.gymId,
             isActive: coach.isActive,
             person: formData.person,
             messages: undefined,
-            createdBy: undefined,
-            modifiedBy: undefined
+            createdBy: coach.createdBy,
+            modifiedBy: coach.modifiedBy
         };
 
         return updatedCoach;
@@ -279,7 +288,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="coach_info_form" />
                             </Form>
 
-                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                            <ToastResult show={showResult} result={resultStatus} text={resultText} errorTextCode={resultErrorTextCode} toggleShow={toggleShowResult} />
                             <ModalConfirmation title={t("coach.deleteConfirmation.title", { name: formatPersonName(coachState.coach.person) })} text={t("coach.deleteConfirmation.text")}
                                 yesText={t("coach.deleteConfirmation.yes")} noText={t("coach.deleteConfirmation.no")}
                                 actionText={t("coach.deleteConfirmation.action")}

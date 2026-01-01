@@ -69,9 +69,6 @@ export function getCourseName(course: Course, language?: LanguageEnum): string {
 }
 
 export const CourseSchema = z.object({
-  id: z.any().nullable(),
-  brandId: z.string().min(1),
-  gymId: z.string().min(1),
   code: z.string().min(1, { message: "course.validation.codeRequired" }),
   name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(1),
   description: z.array(LocalizedStringSchema(false, "")).min(1),

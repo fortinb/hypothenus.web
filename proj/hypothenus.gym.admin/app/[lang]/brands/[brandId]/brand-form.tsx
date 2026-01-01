@@ -5,11 +5,11 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import BrandInfo from "@/app/ui/components/brand/brand-info";
-import ToastSuccess from "@/app/ui/components/notifications/toast-success";
+import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
-import { BrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { BrandState, clearBrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
@@ -20,7 +20,8 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 import { activateBrandAction, createBrandAction, deactivateBrandAction, deleteBrandAction, saveBrandAction } from "./actions";
 import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
-import { ActionResult } from "@/app/lib/http/action-result";
+import { useToastResult } from "@/app/lib/hooks/useToastResult";
+import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 
 export default function BrandForm({ lang, brandId, brand }: { lang: string; brandId: string; brand: Brand }) {
     const t = useTranslations("entity");
@@ -31,20 +32,27 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     const brandState: BrandState = useSelector((state: any) => state.brandState);
     const dispatch = useAppDispatch();
 
-    const [isSaving, startTransitionSave] = useTransition();
-    const [isActivating, startTransitionActivate] = useTransition();
-    const [isDeleting, startTransitionDelete] = useTransition();
-    const [success, setSuccess] = useState(false);
-    const [textSuccess, setTextSuccess] = useState("");
+    // Form State
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-    const toggleSuccess = () => setSuccess(false);
+    const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
+    } = useCrudActions<Brand>({
+        actions: {
+            create: createBrandAction,
+            save: saveBrandAction,
+            activate: activateBrandAction,
+            deactivate: deactivateBrandAction,
+            delete: deleteBrandAction
+        }
+    });
 
     const formContext = useForm<Brand>({
-        defaultValues: brand,
+        defaultValues: mapEntityToForm(brand),
         resolver: zodResolver(BrandSchema),
     });
+
+    // Toast Result State
+    const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
 
     useEffect(() => {
         dispatch(updateBrandState(brand));
@@ -70,7 +78,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     const onSubmit: SubmitHandler<Brand> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);
 
-        let brand: Brand = mapForm(formData, brandState.brand);
+        let brand: Brand = mapFormToEntity(formData, brandState.brand);
 
         if (brandId === "new") {
             createBrand(brand);
@@ -80,99 +88,86 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     const createBrand = (brand: Brand) => {
-        startTransitionSave(async () => {
-            let result: ActionResult<Brand> = await createBrandAction(brand);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.saveError"));
-                setIsEditMode(true);
-            }
-            else {
-                const duplicate = result.data.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
+        createEntity(
+            brand,
+            (entity) => {
+                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("brandId", { type: "manual", message: t("brand.validation.alreadyExists") });
                     setIsEditMode(true);
                 } else {
-                    setSuccess(true);
-                    setTextSuccess(t("action.saveSuccess"));
-                    dispatch(updateBrandState(result.data));
-
-                    router.push(`/${lang}/brands/${result.data.brandId}`);
+                    dispatch(updateBrandState(entity));
+                    showResultToast(true, t("action.saveSuccess"));
+                    router.push(`/${lang}/brands/${entity.brandId}`);
                 }
+            },
+            (result) => {
+                showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
+                setIsEditMode(true);
             }
-
-        });
+        );
     }
 
     const saveBrand = (brand: Brand) => {
-        startTransitionSave(async () => {
-            let result: ActionResult<Brand> = await saveBrandAction(brandId, brand, `/${lang}/brands/${brand.brandId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.saveError"));
-            }
-            else {
-                dispatch(updateBrandState(result.data));
-
-                setTextSuccess(t("action.saveSuccess"));
-                setSuccess(true);
+        saveEntity(
+            brandId, brand, `/${lang}/brands/${brand.brandId}`,
+            (entity) => {
+                dispatch(updateBrandState(entity));
+                showResultToast(true, t("action.saveSuccess"));
+                setIsEditMode(true);
+            },
+            (result) => {
+                showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
             }
-        });
+        );
     }
 
-    const activateBrand = async (brandId: string) => {
-        startTransitionActivate(async () => {
-            let result: ActionResult<Brand> = await activateBrandAction(brandId, `/${lang}/brands/${brandId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.activationError"));
+    const activateBrand = (brand: Brand) => {
+        activateEntity(
+            brandId, brand, `/${lang}/brands/${brand.brandId}`,
+            (entity) => {
+                dispatch(updateBrandState(entity));
+                showResultToast(true, t("action.activationSuccess"));
+            },
+            (result) => {
+                showResultToast(false, t("action.activationError"), !result.ok ? result.error?.message : undefined);
             }
-            else {
-                dispatch(updateBrandState(result.data));
-                setTextSuccess(t("action.activationSuccess"));
-                setSuccess(true);
-            }
-        });
+        );
     }
 
-    const deactivateBrand = async (brandId: string) => {
-        startTransitionActivate(async () => {
-            let result: ActionResult<Brand> = await deactivateBrandAction(brandId, `/${lang}/brands/${brandId}`);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.deactivationError"));
+    const deactivateBrand = (brand: Brand) => {
+        deactivateEntity(
+            brandId, brand, `/${lang}/brands/${brand.brandId}`,
+            (entity) => {
+                dispatch(updateBrandState(entity));
+                showResultToast(true, t("action.deactivationSuccess"));
+            },
+            (result) => {
+                showResultToast(false, t("action.deactivationError"), !result.ok ? result.error?.message : undefined);
             }
-            else {
-                dispatch(updateBrandState(result.data));
-                setTextSuccess(t("action.deactivationSuccess"));
-                setSuccess(true);
-            }
-        });
+        );
     }
 
-    const deleteBrand = async (brandId: string) => {
-        startTransitionDelete(async () => {
-            let result: ActionResult<void> = await deleteBrandAction(brandId);
-            if (!result.ok) {
-                setSuccess(false);
-                setTextSuccess(t("action.deleteError"));
-            }
-            else {
-                setTextSuccess(t("action.deleteSuccess"));
-                setSuccess(true);
+    const deleteBrand = (brand: Brand) => {
+        deleteEntity(
+            brandId, brand, `/${lang}/brands/${brand.brandId}`,
+            () => {
+                dispatch(clearBrandState());
+                showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
-
                 setTimeout(function () {
                     router.push(`/${lang}/brands`);
                 }, 1000);
+            },
+            (result) => {
+                showResultToast(false, t("action.deleteError"), !result.ok ? result.error?.message : undefined);
             }
-        });
+        );
     }
 
     function onCancel() {
         setIsEditMode(false);
-
         formContext.reset(brandState.brand);
 
         if (brandId == "new") {
@@ -182,9 +177,9 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     function onActivation(e: ChangeEvent<HTMLInputElement>) {
         if (e.currentTarget.checked) {
-            activateBrand(brandState.brand.brandId);
+            activateBrand(brandState.brand);
         } else {
-            deactivateBrand(brandState.brand.brandId);
+            deactivateBrand(brandState.brand);
         }
     }
 
@@ -200,7 +195,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-            deleteBrand(brandState.brand.brandId);
+            deleteBrand(brandState.brand);
         } else {
             setShowDeleteConfirmation(false);
         }
@@ -212,20 +207,32 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
         }
     }
 
-    function mapForm(formData: z.infer<typeof BrandSchema>, brand: Brand): Brand {
+    function mapEntityToForm(brand: Brand): z.infer<typeof BrandSchema> {
+        return {
+            brandId: brand.brandId,
+            name: brand.name,
+            address: brand.address,
+            email: brand.email,
+            note: brand.note,
+            contacts: brand.contacts,
+            phoneNumbers: brand.phoneNumbers
+        };
+    }
+
+    function mapFormToEntity(formData: z.infer<typeof BrandSchema>, brand: Brand): Brand {
         let updatedBrand: Brand = {
             id: brand.id,
             brandId: formData.brandId,
             name: formData.name,
             address: formData.address,
             email: formData.email,
-            isActive: brand.isActive,
             note: formData.note,
             contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
+            isActive: brand.isActive,
             messages: undefined,
-            createdBy: undefined,
-            modifiedBy: undefined
+            createdBy: brand.createdBy,
+            modifiedBy: brand.modifiedBy
         };
 
         return updatedBrand;
@@ -250,7 +257,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="brand_info_form" />
                             </Form>
 
-                            <ToastSuccess show={success} text={textSuccess} toggleShow={toggleSuccess} />
+                            <ToastResult show={showResult} result={resultStatus} text={resultText} errorTextCode={resultErrorTextCode} toggleShow={toggleShowResult} />
                             <ModalConfirmation title={t("brand.deleteConfirmation.title", { name: brandState.brand.name })} text={t("brand.deleteConfirmation.text")}
                                 yesText={t("brand.deleteConfirmation.yes")} noText={t("brand.deleteConfirmation.no")}
                                 actionText={t("brand.deleteConfirmation.action")}
