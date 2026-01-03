@@ -2,7 +2,7 @@ import { Brand, newBrand } from "@/src/lib/entities/brand";
 import BrandForm from "./brand-form";
 import BrandMenu from "./brand-menu";
 import BrandResume from "./brand-resume";
-import { getBrand } from "@/app/lib/data/brands-data-service";
+import { getBrand } from "@/app/lib/services/brands-data-service";
 import { getTranslations } from "next-intl/server";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 
@@ -11,7 +11,6 @@ interface PageProps {
 }
 
 export default async function BrandPage({ params }: PageProps) {
-  const t = await getTranslations({ locale: params.lang, namespace: "entity" });
   let brand: Brand;
 
   if (params.brandId === "new") {
@@ -27,7 +26,8 @@ export default async function BrandPage({ params }: PageProps) {
           reset: false,
           id: "brand.[brandId].page",
           href: `/${params.lang}/brands/${params.brandId}`,
-          crumb: brand.name
+          key: brand.name,
+          namespace: ""
         }}
       />
 

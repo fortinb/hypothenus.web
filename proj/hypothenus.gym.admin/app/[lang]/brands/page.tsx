@@ -10,7 +10,6 @@ interface PageProps {
 }
 
 export default async function BrandsPage({ params }: PageProps) {
-  const t = await getTranslations({ locale: params.lang, namespace: "brand" });
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">
@@ -19,7 +18,8 @@ export default async function BrandsPage({ params }: PageProps) {
           reset: false,
           id: "brands.page",
           href: `/${params.lang}/brands`,
-          crumb: t("breadcrumb")
+          key: "breadcrumb",
+          namespace: "brand"
         }}
       />
 

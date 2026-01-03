@@ -11,7 +11,7 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { BrandsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "@/app/lib/store/slices/brands-state-paging-slice";
 import BrandsList from "./brands-list";
 import { clearBrandState } from "@/app/lib/store/slices/brand-state-slice";
-import { fetchBrands, searchBrands } from "@/app/lib/data/brands-data-service-client";
+import { fetchBrands, searchBrands } from "@/app/lib/services/brands-data-service-client";
 
 export default function BrandsListPaging({ lang }: { lang: string }) {
   const brandsStatePaging: BrandsStatePaging = useSelector((state: any) => state.brandsStatePaging);

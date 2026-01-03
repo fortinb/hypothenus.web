@@ -1,5 +1,5 @@
 
-import { getCoach } from "@/app/lib/data/coachs-data-service";
+import { getCoach } from "@/app/lib/services/coachs-data-service";
 import CoachForm from "./coach-form";
 import CoachMenu from "./coach-menu";
 import CoachResume from "./coach-resume";
@@ -29,7 +29,8 @@ export default async function CoachPage({ params }: PageProps) {
           reset: false,
           id: "coach.[coachId].page",
           href: `/${params.lang}/brands/${params.brandId}/gyms/${params.gymId}/coachs/${params.coachId}`,
-          crumb: formatPersonName(coach.person)
+          key: formatPersonName(coach.person),
+          namespace: ""
         }}
       />
 

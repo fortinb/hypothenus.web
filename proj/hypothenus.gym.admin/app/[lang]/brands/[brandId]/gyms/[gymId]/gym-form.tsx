@@ -59,20 +59,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
         if (gymId === "new") {
             setIsEditMode(true);
         }
-
-        //   initBreadcrumb(gymState.gym?.name);
     }, [dispatch, gym]);
-
-    function initBreadcrumb(name: string) {
-        const crumb: Crumb = {
-            reset: false,
-            id: "gym.[gymId].page",
-            href: pathname,
-            crumb: name
-        };
-
-        dispatch(pushBreadcrumb(crumb));
-    }
 
     const onSubmit: SubmitHandler<Gym> = (formData: z.infer<typeof GymSchema>) => {
         setIsEditMode(false);

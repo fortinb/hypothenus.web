@@ -133,7 +133,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                                     </OverlayTrigger>
                                                     <Select
                                                         {...field}
-                                                        isMulti
+                                                        isMulti={true}
                                                         options={availableCoachItems}
                                                         onChange={(selected) => field.onChange(selected)}
                                                         value={field.value}

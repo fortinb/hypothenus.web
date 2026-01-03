@@ -9,7 +9,7 @@ export default function ToastResult({ show, result, text, errorTextCode, toggleS
     return (
         <Toast className= {(result ? "toast-success" : "toast-error")} onClose={toggleShow} show={show} autohide={true} delay={3000} animation={true} role="alert">
             <Toast.Body className="d-flex flex-row justify-content-center">
-                {text} {(errorTextCode ? ` - (${t(errorTextCode)})` : "")}
+                {text} {(errorTextCode ? ` - ${t(errorTextCode)}` : "")}
             </Toast.Body>
         </Toast>
     );

@@ -8,7 +8,6 @@ interface PageProps {
 }
 
 export default async function GymsPage({ params }: PageProps) {
-  const t = await getTranslations({ locale: params.lang, namespace: "gym" });
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">
@@ -17,7 +16,8 @@ export default async function GymsPage({ params }: PageProps) {
           reset: false,
           id: "gyms.page",
           href: `/${params.lang}/brands/${params.brandId}/gyms`,
-          crumb: t("breadcrumb")
+          key: "breadcrumb",
+          namespace: "gym"
         }}
       />
 

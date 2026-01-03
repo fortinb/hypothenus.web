@@ -1,4 +1,4 @@
-import { getGym } from "@/app/lib/data/gyms-data-service";
+import { getGym } from "@/app/lib/services/gyms-data-service";
 import GymForm from "./gym-form";
 import GymMenu from "./gym-menu";
 import GymResume from "./gym-resume";
@@ -27,7 +27,8 @@ export default async function GymPage({ params }: PageProps) {
           reset: false,
           id: "gym.[gymId].page",
           href: `/${params.lang}/brands/${params.brandId}/gyms/${params.gymId}`,
-          crumb: gym.name
+          key: gym.name,
+          namespace: ""
         }}
       />
 

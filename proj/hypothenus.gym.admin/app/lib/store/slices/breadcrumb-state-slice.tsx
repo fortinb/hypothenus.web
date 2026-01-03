@@ -6,7 +6,8 @@ export interface Crumb {
   reset: boolean,
   href: string,
   id: string,
-  crumb: string,
+  key: string,
+  namespace: string
 }
 
 export interface BreadcrumbState {
@@ -31,7 +32,7 @@ export const breadcrumbStateSlice = createSlice({
           return;
         }
         
-        state.breadcrumbs[crumbIndex].crumb = action.payload.crumb;
+        state.breadcrumbs[crumbIndex].key = action.payload.key;
         state.breadcrumbs.splice(crumbIndex+1);
       }
 

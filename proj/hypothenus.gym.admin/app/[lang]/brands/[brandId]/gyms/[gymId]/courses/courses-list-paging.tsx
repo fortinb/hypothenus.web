@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoursesList from "./courses-list";
 import { clearCourseState } from "@/app/lib/store/slices/course-state-slice";
-import { fetchCourses } from "@/app/lib/data/courses-data-service-client";
+import { fetchCourses } from "@/app/lib/services/courses-data-service-client";
 
 export default function CoursesListPaging({ lang, brandId, gymId }: { lang: string; brandId: string; gymId: string }) {
   const coursesStatePaging: CoursesStatePaging = useSelector((state: any) => state.coursesStatePaging);

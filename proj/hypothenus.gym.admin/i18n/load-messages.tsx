@@ -6,6 +6,7 @@ const namespaces = [
     "coach",
     "course",
     "entity",
+    "errors",
     "gym",
     "home",
     "layout",

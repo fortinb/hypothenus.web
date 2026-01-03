@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoachsList from "./coachs-list";
 import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
-import { fetchCoachs } from "@/app/lib/data/coachs-data-service-client";
+import { fetchCoachs } from "@/app/lib/services/coachs-data-service-client";
 
 export default function CoachsListPaging({ lang, brandId, gymId }: { lang: string; brandId: string; gymId: string }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);

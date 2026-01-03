@@ -446,6 +446,17 @@ footer {
     float: right;
 }
 
+.toast-error {
+    background-color: $toast-error;
+    color: $text-bright;
+    font-weight: bold;
+    border: none;
+    position: absolute;
+    bottom: 4%;
+    right: 1%;
+    float: right;
+}
+
 //animation
 .animate-opacity-for-pending {
     animation: opacityAnimation 1.5s ease-in-out infinite;

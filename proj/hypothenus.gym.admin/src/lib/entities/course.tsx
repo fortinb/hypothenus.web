@@ -74,7 +74,7 @@ export const CourseSchema = z.object({
   description: z.array(LocalizedStringSchema(false, "")).min(1),
   startDate: z.string().min(1, { message: "course.validation.startDateRequired" }),
   endDate: z.any().nullable(),
-  coachs: z.array(CoachReferenceSchema).min(0).nullable(),
+  coachs: z.array(CoachReferenceSchema).min(0).nullable().optional(),
 }).refine((course) => !course.endDate || (moment(course.endDate).format("YYYMMDD") >= moment(course.startDate).format("YYYMMDD")), {
   message: "course.validation.endDateGreaterThanStartDate",
   path: ["endDate"], // path of error

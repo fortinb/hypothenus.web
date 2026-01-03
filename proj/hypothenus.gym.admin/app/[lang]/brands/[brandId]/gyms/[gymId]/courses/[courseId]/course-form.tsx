@@ -8,7 +8,6 @@ import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { clearCourseState, CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { Coach } from "@/src/lib/entities/coach";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
@@ -60,7 +59,6 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [availableCoachItems, setAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
-    const [originalAvailableCoachItems, setOriginalAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
     const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<CoachSelectedItem[]>([]);
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<Course>({
@@ -99,26 +97,25 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
         // Initialize Coachs Items
         if (!isCoachsItemsInitialized) {
-            setOriginalAvailableCoachItems(initialAvailableCoachItems);
             setOriginalSelectedCoachItems(initialSelectedCoachItems);
             setAvailableCoachItems(initialAvailableCoachItems);
 
             setIsCoachsItemInitialized(true);
         }
-
-        //  initBreadcrumb(getCourseName(courseState.course, lang as LanguageEnum));
     }, [dispatch, course]);
 
-    function initBreadcrumb(name: string) {
-        const crumb: Crumb = {
-            reset: false,
-            id: "course.[courseId].page",
-            href: pathname,
-            crumb: name
-        };
+    // Watch the entire form
+    //const formData = formContext.watch();
 
-        dispatch(pushBreadcrumb(crumb));
-    }
+   /* useEffect(() => {
+        // Log the data to the console every time there is an error
+        const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
+        if (hasErrors) {
+            console.log("Current Form errors:", formContext.formState.errors);
+        }
+
+        // console.log("Current Form Data:", formData);
+    }, [formData]); */
 
     const onSubmit: SubmitHandler<CourseFormData> = (formData: z.infer<typeof CourseFormSchema>) => {
         setIsEditMode(false);
@@ -217,9 +214,6 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
         setIsCancelling(true);
         setIsEditMode(false);
 
-        // Reset coach items to initial state
-        setAvailableCoachItems(originalAvailableCoachItems);
-
         formContext.reset({
             course: courseState.course,
             selectedCoachItems: originalSelectedCoachItems
@@ -271,8 +265,8 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             description: course.description,
             startDate: course.startDate,
             endDate: course.endDate,
-            coachs: course.coachs.map((coach) => {
-                return coach as Coach;
+            coachs: course.coachs?.map((coach) => {
+                return coach;
             })
         }
     }

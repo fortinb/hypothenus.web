@@ -8,7 +8,6 @@ interface PageProps {
 }
 
 export default async function Coachs({ params }: PageProps) {
-  const t = await getTranslations({ locale: params.lang, namespace: "coach" });
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">
@@ -17,7 +16,8 @@ export default async function Coachs({ params }: PageProps) {
           reset: false,
           id: "coachs.page",
           href: `/${params.lang}/brands/${params.brandId}/gyms/${params.gymId}/coachs`,
-          crumb: t("breadcrumb")
+          key: "breadcrumb",
+          namespace: "coach"
         }}
       />
 

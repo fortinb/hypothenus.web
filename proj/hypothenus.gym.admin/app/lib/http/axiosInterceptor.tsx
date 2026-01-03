@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
       console.log(error);
 
       const normalizedError = normalizeApiError(error);
-       return Promise.reject(normalizedError);
+      return Promise.reject(normalizedError);
     } catch (e) {
       console.log(e);
       return Promise.reject(error);

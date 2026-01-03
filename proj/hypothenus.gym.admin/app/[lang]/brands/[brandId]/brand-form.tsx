@@ -61,19 +61,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
             setIsEditMode(true);
         }
 
-        //  initBreadcrumb(brandState.brand?.name);
     }, [brand]);
-
-    function initBreadcrumb(name: string) {
-        const crumb: Crumb = {
-            reset: false,
-            id: "brand.[brandId].page",
-            href: pathname,
-            crumb: name
-        };
-
-        dispatch(pushBreadcrumb(crumb));
-    }
 
     const onSubmit: SubmitHandler<Brand> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);

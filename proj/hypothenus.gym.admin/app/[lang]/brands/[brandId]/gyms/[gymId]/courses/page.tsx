@@ -9,7 +9,6 @@ interface PageProps {
 }
 
 export default async function CoursesPage({ params }: PageProps) {
-  const t = await getTranslations({ locale: params.lang, namespace: "course" });
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">
@@ -18,7 +17,8 @@ export default async function CoursesPage({ params }: PageProps) {
           reset: false,
           id: "courses.page",
           href: `/${params.lang}/brands/${params.brandId}/gyms/${params.gymId}/courses`,
-          crumb: t("breadcrumb")
+          key: "breadcrumb",
+          namespace: "course"
         }}
       />
 

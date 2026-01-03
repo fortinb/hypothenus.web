@@ -8,7 +8,6 @@ import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { clearCoachState, CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatPersonName } from "@/src/lib/entities/person";
@@ -19,7 +18,7 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { uploadCoachPhoto } from "@/app/lib/data/coachs-data-service-client";
+import { uploadCoachPhoto } from "@/app/lib/services/coachs-data-service-client";
 import { activateCoachAction, createCoachAction, deactivateCoachAction, deleteCoachAction, saveCoachAction } from "./actions";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
@@ -61,9 +60,9 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     // Watch the entire form
-    const formData = formContext.watch();
+   // const formData = formContext.watch();
 
-    useEffect(() => {
+ /*   useEffect(() => {
         // Log the data to the console every time there is an error
         const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
         if (hasErrors) {
@@ -72,6 +71,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
         // console.log("Current Form Data:", formData);
     }, [formData]);
+    */
 
     useEffect(() => {
         dispatch(updateCoachState(coach));
@@ -79,20 +79,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         if (coachId === "new") {
             setIsEditMode(true);
         }
-
-        // initBreadcrumb(formatPersonName(coachState.coach?.person))
     }, [dispatch, coach]);
-
-    function initBreadcrumb(name: string) {
-        const crumb: Crumb = {
-            reset: false,
-            id: "coach.[coachId].page",
-            href: pathname,
-            crumb: name
-        };
-
-        dispatch(pushBreadcrumb(crumb));
-    }
 
     const onSubmit: SubmitHandler<Coach> = async (formData: z.infer<typeof CoachSchema>) => {
         setIsEditMode(false);

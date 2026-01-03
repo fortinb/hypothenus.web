@@ -11,7 +11,7 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria, setSearchCriteria } from "@/app/lib/store/slices/gyms-state-paging-slice";
 import GymsList from "./gyms-list";
 import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
-import { fetchGyms, searchGyms } from "@/app/lib/data/gyms-data-service-client";
+import { fetchGyms, searchGyms } from "@/app/lib/services/gyms-data-service-client";
 
 export default function GymsListPaging({ lang, brandId }: { lang: string; brandId: string }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);

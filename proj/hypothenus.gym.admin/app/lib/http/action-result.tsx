@@ -34,9 +34,11 @@ export function normalizeApiError(error: unknown): ResultError {
   if (!axios.isAxiosError(error)) {
     return { type: ErrorType.Unknown, message: 'An unknown error occurred' };
   }
+  if (error.code && error.code === 'ECONNREFUSED') {
+    return { type: ErrorType.NotAvailable, message: 'http.status.503' };
+  }
 
   const status = error.response?.status;
-
   switch (status) {
     case 400:
       return { status: status, type: ErrorType.Validation, details: error.response?.data, message: 'http.status.400' };
