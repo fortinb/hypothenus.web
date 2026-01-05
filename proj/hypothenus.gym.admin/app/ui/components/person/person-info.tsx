@@ -118,7 +118,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                                         src={photoPreviewUri ? photoPreviewUri : (URL.canParse(field.value) ? field.value : "/images/person.png")}
                                         width={200}
                                         height={200}
-                                        alt="Coach photo"
+                                        alt={t("person.photoAlt")}
                                         onError={() => {
                                             // if preview was set but failed to load, clear it so default will be used
                                             if (photoPreviewUri) {

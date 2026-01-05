@@ -22,8 +22,10 @@ export function useCrudActions<T>({
   const [isActivating, startActivate] = useTransition();
   const [isDeleting, startDelete] = useTransition();
 
-  const createEntity = (entity: T, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
+  const createEntity = (entity: T, beforeSave?: (entity: T) => void, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
     startSave(async () => {
+      beforeSave?.(entity);
+      
       const result = await actions.create(entity);
 
       if (!result.ok) {
@@ -35,8 +37,10 @@ export function useCrudActions<T>({
     });
   };
 
-  const saveEntity = (entityId: string, entity: T, entityPath?: string, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
+  const saveEntity = (entityId: string, entity: T, entityPath?: string, beforeSave?: (entity: T) => void, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
     startSave(async () => {
+      beforeSave?.(entity);
+
       const result = await actions.save(entityId, entity, entityPath);
 
       if (!result.ok) {

@@ -14,8 +14,8 @@ import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -25,6 +25,7 @@ import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { activateCourseAction, createCourseAction, deactivateCourseAction, deleteCourseAction, saveCourseAction } from "./actions";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
+import { localesConfigLanguageOrder } from "@/i18n/locales-client";
 
 export interface CourseFormData {
     course: z.infer<typeof CourseSchema>;
@@ -48,7 +49,6 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 }) {
     const t = useTranslations("entity");
     const router = useRouter();
-    const pathname = usePathname();
 
     const courseState: CourseState = useSelector((state: any) => state.courseState);
     const dispatch = useAppDispatch();
@@ -107,15 +107,15 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     // Watch the entire form
     //const formData = formContext.watch();
 
-   /* useEffect(() => {
-        // Log the data to the console every time there is an error
-        const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-        if (hasErrors) {
-            console.log("Current Form errors:", formContext.formState.errors);
-        }
-
-        // console.log("Current Form Data:", formData);
-    }, [formData]); */
+    /* useEffect(() => {
+         // Log the data to the console every time there is an error
+         const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
+         if (hasErrors) {
+             console.log("Current Form errors:", formContext.formState.errors);
+         }
+ 
+         // console.log("Current Form Data:", formData);
+     }, [formData]); */
 
     const onSubmit: SubmitHandler<CourseFormData> = (formData: z.infer<typeof CourseFormSchema>) => {
         setIsEditMode(false);
@@ -132,6 +132,10 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const createCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
         createEntity(
             course,
+            // Before save
+            (_entity) => {
+            },
+            // Success
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
                 if (duplicate) {
@@ -143,6 +147,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                     router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/courses/${entity.id}`);
                 }
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
@@ -153,6 +158,10 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const saveCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
         saveEntity(
             course.id, course, `/${lang}/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            // Before save
+            (_entity) => {
+            },
+            // Success
             async (entity) => {
                 dispatch(updateCourseState(entity));
                 setOriginalSelectedCoachItems(selectedCoachItems);
@@ -160,6 +169,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
@@ -261,8 +271,16 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     function mapEntityToForm(course: Course): z.infer<typeof CourseSchema> {
         return {
             code: course.code,
-            name: course.name,
-            description: course.description,
+            name: course.name.sort((a, b) => {
+                const orderA = localesConfigLanguageOrder[a.language] ?? 999;  // Default to 999 if not in order
+                const orderB = localesConfigLanguageOrder[b.language] ?? 999;
+                return orderA - orderB;
+            }),
+            description: course.description.sort((a, b) => {
+                const orderA = localesConfigLanguageOrder[a.language] ?? 999;
+                const orderB = localesConfigLanguageOrder[b.language] ?? 999;
+                return orderA - orderB;
+            }),
             startDate: course.startDate,
             endDate: course.endDate,
             coachs: course.coachs?.map((coach) => {

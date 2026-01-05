@@ -10,6 +10,7 @@ export interface Brand extends BaseEntity {
   name: string;
   address: Address;
   email?: string;
+  logoUri?: any;
   isActive: boolean;
   note: string;
   contacts: Contact[];
@@ -23,6 +24,7 @@ export const newBrand = (): Brand => {
     name: "",
     address: newAddress(),
     email: undefined,
+    logoUri: undefined,    
     isActive: true,
     note: "",
     contacts: [newContact()],

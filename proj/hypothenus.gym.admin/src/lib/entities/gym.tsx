@@ -11,6 +11,7 @@ export interface Gym extends BaseEntity {
   name: string;
   address: Address;
   email?: string;
+  logoUri?: any;
   isActive: boolean;
   note: string;
   contacts: Contact[];
@@ -25,6 +26,7 @@ export const newGym = (): Gym => {
     name: "",
     address: newAddress(),
     email: undefined,
+    logoUri: undefined,
     isActive: true,
     note: "",
     contacts: [
@@ -42,8 +44,8 @@ export const newGym = (): Gym => {
 }
 
 export const GymSchema = z.object({
-  gymId: z.string().trim().min(1, { message: "gym.validation.codeRequired"}).max(20, { message:"gym.validation.codeMaxLength"}).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
-  name: z.string().min(1, { message:  "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength"}),
+  gymId: z.string().trim().min(1, { message: "gym.validation.codeRequired" }).max(20, { message: "gym.validation.codeMaxLength" }).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
+  name: z.string().min(1, { message: "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength" }),
   address: AddressSchema,
   email: z.string().min(0).email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),

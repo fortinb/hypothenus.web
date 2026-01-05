@@ -8,12 +8,12 @@ import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { clearCoachState, CoachState, updateCoachPhotoUri, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
+import { clearCoachState, CoachState, updateCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { Coach, CoachSchema } from "@/src/lib/entities/coach";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -26,7 +26,6 @@ import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { lang: string; brandId: string; gymId: string, coachId: string, coach: Coach }) {
     const t = useTranslations("entity");
     const router = useRouter();
-    const pathname = usePathname();
 
     const coachState: CoachState = useSelector((state: any) => state.coachState);
     const dispatch = useAppDispatch();
@@ -105,14 +104,18 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     const createCoach = (coach: Coach) => {
         createEntity(
             coach,
+            // Before save
+            async (entity) => {
+                await beforeSave(entity);
+            },
+            // Success
             async (entity) => {
                 dispatch(updateCoachState(entity));
-
-                await afterSaveCoach(entity);
 
                 showResultToast(true, t("action.saveSuccess"));
                 router.push(`/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${entity.id}`);
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
@@ -123,14 +126,18 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     const saveCoach = (coach: Coach) => {
         saveEntity(
             coach.id, coach, `/${lang}/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            // Before save
+            async (entity) => {
+                await beforeSave(entity);
+            },
+            // Success
             async (entity) => {
                 dispatch(updateCoachState(entity));
-
-                await afterSaveCoach(entity);
 
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
@@ -138,11 +145,11 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         );
     }
 
-    const afterSaveCoach = async (coach: Coach) => {
+    const beforeSave = async (coach: Coach) => {
         if (photoToUpload) {
             const photoUri = await uploadPhoto(coach.gymId, coach.id, photoToUpload);
+            coach.person.photoUri = photoUri;
             setPhotoToUpload(undefined);
-            dispatch(updateCoachPhotoUri(photoUri));
         }
     }
 

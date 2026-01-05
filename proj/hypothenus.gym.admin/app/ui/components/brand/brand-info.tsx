@@ -10,14 +10,36 @@ import { useTranslations } from "next-intl";
 import BrandAddressInfo from "./brand-address-info";
 import BrandPhoneInfo from "./brand-phone-info";
 import BrandContactInfo from "./brand-contact-info";
+import Dropzone, { DropEvent, FileRejection } from 'react-dropzone'
+import Image from "next/image";
+import { Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
 
-export default function BrandInfo({ brand, isEditMode }:
+export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandler }:
     {
         brand: any,
-        isEditMode: boolean
+        isEditMode: boolean,
+        isCancelling: boolean,
+        uploadHandler: (file: Blob) => void
     }) {
     const { register, formState: { errors } } = useFormContext();
     const t = useTranslations("entity");
+    const [logoPreviewUri, setLogoPreviewUri] = useState<string>();
+
+    useEffect(() => {
+        if (isCancelling === true) {
+            setLogoPreviewUri(undefined);
+        }
+
+    }, [isCancelling]);
+
+    const onDrop = (acceptedFiles: File[], fileRejections: FileRejection[], e: DropEvent) => {
+        acceptedFiles.forEach((file: Blob) => {
+            let imageUrl = URL.createObjectURL(file);
+            setLogoPreviewUri(imageUrl);
+            uploadHandler(file);
+        })
+    };
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="brand_info_form" disabled={!isEditMode} >
@@ -30,6 +52,51 @@ export default function BrandInfo({ brand, isEditMode }:
                                 className={errors.brandId ? "input-invalid" : ""}
                                 disabled={(brand?.brandId ? true : false)} />
                             {errors.brandId && <Form.Text className="text-invalid">{t(errors.brandId.message as string)}</Form.Text>}
+                        </Form.Group>
+                    </Col>
+                    <Col xs={6} >
+                        <Form.Group >
+                            <Form.Label className="text-primary" htmlFor={`brand_input_logoUri`}>{t("brand.logoUri")}</Form.Label>
+                            {isEditMode &&
+                                <Dropzone disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={onDrop}>
+                                    {({ getRootProps, getInputProps }) => (
+                                        <section>
+                                            <div className="dropzone"  {...getRootProps()}>
+                                                <input  {...getInputProps()} />
+                                                <div className="d-flex flex-column">
+                                                    <div className="d-flex flex-row justify-content-center align-items-center">
+                                                        <span className="dropzone-text ms-2 me-2"> {t("brand.image.dropzone")}</span>
+                                                    </div>
+                                                    <div className="d-flex flex-row justify-content-center align-items-center">
+                                                        <span className="m-0">{t("brand.image.attributes")}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    )}
+                                </Dropzone>
+                            }
+                            <div className="d-flex flex-row justify-content-center mt-2">
+                                <Form.Control type="hidden" id={`brand_input_logoContent`}  {...register("logoContent")} />
+                                <Controller
+                                    name={"logoUri"}
+                                    render={({ field }) => (
+                                        <Image
+                                            src={logoPreviewUri ? logoPreviewUri : (URL.canParse(field.value) ? field.value : "/images/defaultLogo.png")}
+                                            width={200}
+                                            height={200}
+                                            alt={t("brand.logoAlt")}
+                                            onError={() => {
+                                                // if preview was set but failed to load, clear it so default will be used
+                                                if (logoPreviewUri) {
+                                                    setLogoPreviewUri(undefined);
+                                                }
+                                            }}
+                                        />
+                                    )}
+
+                                />
+                            </div>
                         </Form.Group>
                     </Col>
                 </Row>

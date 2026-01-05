@@ -8,13 +8,12 @@ import GymInfo from "@/app/ui/components/gym/gym-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { clearGymState, GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -22,11 +21,11 @@ import { z } from "zod";
 import { activateGymAction, createGymAction, deactivateGymAction, deleteGymAction, saveGymAction } from "./actions";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
+import { uploadGymLogo } from "@/app/lib/services/gyms-data-service-client";
 
 export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; brandId: string; gymId: string, gym: Gym }) {
     const t = useTranslations("entity");
     const router = useRouter();
-    const pathname = usePathname();
 
     const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
@@ -34,6 +33,8 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     // Form State
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [isCancelling, setIsCancelling] = useState<boolean>(false);
+    const [logoToUpload, setLogoToUpload] = useState<Blob>();
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<Gym>({
         actions: {
@@ -52,6 +53,10 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     // Toast Result State
     const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
+
+    function handleLogoToUpload(file: Blob) {
+        setLogoToUpload(file);
+    }
 
     useEffect(() => {
         dispatch(updateGymState(gym));
@@ -73,9 +78,23 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
         }
     }
 
+    const uploadLogo = async (gymId: string, logo: Blob) => {
+        const formData = new FormData();
+        formData.append('file', logo);
+
+        let response = await uploadGymLogo(brandId, gymId, formData);
+
+        return response;
+    }
+
     const createGym = (gym: Gym) => {
         createEntity(
             gym,
+            // Before save
+            async (entity) => {
+                await beforeSave(entity);
+            },
+            // Success
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
                 if (duplicate) {
@@ -87,6 +106,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
                     router.push(`/${lang}/brands/${brandId}/gyms/${entity.gymId}`);
                 }
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
@@ -97,18 +117,32 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     const saveGym = (gym: Gym) => {
         saveEntity(
             gymId, gym, `/${lang}/brands/${brandId}/gyms/${gymId}`,
+            // Before save
+            async (entity) => {
+                await beforeSave(entity);
+            },
+            // Success
             (entity) => {
                 dispatch(updateGymState(entity));
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
             }
         );
     }
-    
+
+    const beforeSave = async (gym: Gym) => {
+        if (logoToUpload) {
+            const logoUri = await uploadLogo(gym.gymId, logoToUpload);
+            gym.logoUri = logoUri;
+            setLogoToUpload(undefined);
+        }
+    }
+
     const activateGym = (gym: Gym) => {
         activateEntity(
             gymId, gym, `/${lang}/brands/${brandId}/gyms/${gymId}`,
@@ -153,6 +187,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     }
 
     function onCancel() {
+        setIsCancelling(true);
         setIsEditMode(false);
         formContext.reset(gymState.gym);
 
@@ -175,6 +210,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
                 onCancel();
             } else {
                 setIsEditMode(true);
+                setIsCancelling(false);
             }
         }
     }
@@ -213,6 +249,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
             name: formData.name,
             address: formData.address,
             email: formData.email,
+            logoUri: gym.logoUri,
             isActive: gym.isActive,
             note: formData.note,
             contacts: formData.contacts,
@@ -240,7 +277,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
                                     isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.id == null ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
-                                <GymInfo gym={gymState.gym} isEditMode={isEditMode} />
+                                <GymInfo gym={gymState.gym} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
                             </Form>

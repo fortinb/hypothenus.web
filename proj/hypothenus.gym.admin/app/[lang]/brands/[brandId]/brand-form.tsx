@@ -8,12 +8,11 @@ import BrandInfo from "@/app/ui/components/brand/brand-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { Crumb, pushBreadcrumb } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import { BrandState, clearBrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -22,12 +21,11 @@ import { activateBrandAction, createBrandAction, deactivateBrandAction, deleteBr
 import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
+import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
 
 export default function BrandForm({ lang, brandId, brand }: { lang: string; brandId: string; brand: Brand }) {
     const t = useTranslations("entity");
-
     const router = useRouter();
-    const pathname = usePathname();
 
     const brandState: BrandState = useSelector((state: any) => state.brandState);
     const dispatch = useAppDispatch();
@@ -35,6 +33,8 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     // Form State
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [isCancelling, setIsCancelling] = useState<boolean>(false);
+    const [logoToUpload, setLogoToUpload] = useState<Blob>();
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<Brand>({
         actions: {
@@ -53,6 +53,10 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     // Toast Result State
     const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
+
+    function handleLogoToUpload(file: Blob) {
+        setLogoToUpload(file);
+    }
 
     useEffect(() => {
         dispatch(updateBrandState(brand));
@@ -75,9 +79,23 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
         }
     }
 
+    const uploadLogo = async (gymId: string, logo: Blob) => {
+        const formData = new FormData();
+        formData.append('file', logo);
+
+        let response = await uploadBrandLogo(brandId, formData);
+
+        return response;
+    }
+
     const createBrand = (brand: Brand) => {
         createEntity(
             brand,
+            // Before save
+            async (entity) => {
+                await beforeSave(entity);
+            },
+            // Success
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
                 if (duplicate) {
@@ -89,6 +107,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
                     router.push(`/${lang}/brands/${entity.brandId}`);
                 }
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
@@ -99,16 +118,30 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     const saveBrand = (brand: Brand) => {
         saveEntity(
             brandId, brand, `/${lang}/brands/${brand.brandId}`,
+            // Before save
+            async (entity) => {
+                await beforeSave(entity);
+            },
+            // Success            
             (entity) => {
                 dispatch(updateBrandState(entity));
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
+            // Error
             (result) => {
                 showResultToast(false, t("action.saveError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
             }
         );
+    }
+
+    const beforeSave = async (brand: Brand) => {
+        if (logoToUpload) {
+            const logoUri = await uploadLogo(brand.brandId, logoToUpload);
+            brand.logoUri = logoUri;
+            setLogoToUpload(undefined);
+        }
     }
 
     const activateBrand = (brand: Brand) => {
@@ -156,6 +189,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     function onCancel() {
         setIsEditMode(false);
+        setIsCancelling(true);
         formContext.reset(brandState.brand);
 
         if (brandId == "new") {
@@ -177,6 +211,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
                 onCancel();
             } else {
                 setIsEditMode(true);
+                setIsCancelling(false);
             }
         }
     }
@@ -214,6 +249,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
             name: formData.name,
             address: formData.address,
             email: formData.email,
+            logoUri: brand.logoUri,
             note: formData.note,
             contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
@@ -240,7 +276,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.brandId == "" ? true : brandState.brand.isActive}
                                     isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.id == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
-                                <BrandInfo brand={brandState.brand} isEditMode={isEditMode} />
+                                <BrandInfo brand={brandState.brand} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="brand_info_form" />
                             </Form>
