@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { Address, AddressSchema, newAddress } from "./address";
 import { BaseEntity } from "./baseEntity";
-import { Contact, ContactSchema, newContact } from "./contact";
+import { Contact, ContactSchema, newContact, parseContact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
 
 export interface Brand extends BaseEntity {
@@ -24,7 +24,7 @@ export const newBrand = (): Brand => {
     name: "",
     address: newAddress(),
     email: undefined,
-    logoUri: undefined,    
+    logoUri: undefined,
     isActive: true,
     note: "",
     contacts: [newContact()],
@@ -38,6 +38,26 @@ export const newBrand = (): Brand => {
   };
 
   return newBrand;
+}
+
+export const parseBrand = (data: any): Brand => {
+  let brand: Brand = data;
+
+  // Ensure at least one Mobile and one Business phone number
+  const hasMobile = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
+  const hasBusiness = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+  if (!hasMobile) {
+    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+  }
+
+  if (!hasBusiness) {
+    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+  }
+
+  // Parse each contact in the contacts array
+  brand.contacts = brand.contacts?.map(contact => parseContact(contact));
+
+  return brand;
 }
 
 export const BrandSchema = z.object({

@@ -1,4 +1,4 @@
-import { Gym } from "@/src//lib/entities/gym";
+import { Gym, parseGym } from "@/src//lib/entities/gym";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 
@@ -21,7 +21,7 @@ export async function getGym(brandId: string, gymId: string): Promise<Gym> {
 
   let response = await axiosInstance.get(getURI.valueOf(), request);
 
-  return response.data;
+ return parseGym(response.data);
 }
 
 export async function postActivateGym(brandId: string, gymId: string): Promise<Gym> {
@@ -32,7 +32,7 @@ export async function postActivateGym(brandId: string, gymId: string): Promise<G
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
-  return response.data;
+  return parseGym(response.data);
 }
 
 export async function postDeactivateGym(brandId: string, gymId: string): Promise<Gym> {
@@ -43,7 +43,7 @@ export async function postDeactivateGym(brandId: string, gymId: string): Promise
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
-  return response.data;
+ return parseGym(response.data);
 }
 
 export async function delGym(brandId: string, gymId: string): Promise<void> {
@@ -65,7 +65,7 @@ export async function postGym(brandId: string,gym: Gym): Promise<Gym> {
 
   let response = await axiosInstance.post(postURI.valueOf(), gym, request);
 
-  return response.data;
+  return parseGym(response.data);
 }
 
 export async function putGym(brandId: string, gym: Gym): Promise<Gym> {
@@ -76,6 +76,6 @@ export async function putGym(brandId: string, gym: Gym): Promise<Gym> {
 
   let response = await axiosInstance.put(putURI.valueOf(), gym, request);
 
-  return response.data;
+ return parseGym(response.data);
 }
 

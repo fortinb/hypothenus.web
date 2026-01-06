@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { Address, AddressSchema, newAddress } from "./address";
 import { BaseEntity } from "./baseEntity";
-import { Contact, ContactSchema, newContact } from "./contact";
+import { Contact, ContactSchema, newContact, parseContact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
 
 export interface Gym extends BaseEntity {
@@ -41,6 +41,27 @@ export const newGym = (): Gym => {
   };
 
   return newGym;
+}
+
+export const parseGym = (data: any): Gym => {
+  let gym: Gym = data;
+
+  // Ensure at least one Mobile and one Business phone number
+  const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
+  const hasBusiness = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+  
+  if (!hasMobile) {
+    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+  }
+
+  if (!hasBusiness) {
+    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+  }
+
+  // Parse each contact in the contacts array
+  gym.contacts = gym.contacts?.map(contact => parseContact(contact));
+
+  return gym;
 }
 
 export const GymSchema = z.object({

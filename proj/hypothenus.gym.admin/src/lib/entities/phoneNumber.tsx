@@ -6,6 +6,12 @@ export enum PhoneNumberTypeEnum {
   Mobile = "Mobile"
 }
 
+export const phoneNumberOrder: Record<string, number> = {
+  "Business": 1,
+  "Mobile": 2,
+  "Home": 3
+};
+
 export interface PhoneNumber {
   id?: any,
   number: string;

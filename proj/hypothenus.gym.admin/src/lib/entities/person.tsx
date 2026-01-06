@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Address, AddressSchema, AddressSchemaOptional, newAddress } from "./address";
-import { Contact, ContactSchema } from "./contact";
+import { Contact, ContactSchema, parseContact } from "./contact";
 import { LanguageEnum } from "./language";
 import { newPhoneNumber, PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum } from "./phoneNumber"
 import { z } from 'zod';
@@ -43,6 +43,21 @@ export const parsePerson = (data: any): Person => {
   if (data.dateOfBirth) {
     person.dateOfBirth = moment(data.dateOfBirth).toDate().toISOString();
   }
+
+  // Ensure at least one Mobile and one Business phone number
+  const hasMobile = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
+  const hasBusiness = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+
+  if (!hasMobile) {
+    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+  }
+
+  if (!hasBusiness) {
+    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+  }
+
+   // Parse each contact in the person's contacts array
+  person.contacts = person.contacts?.map(contact => parseContact(contact));
 
   return person;
 }

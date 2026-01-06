@@ -32,7 +32,7 @@ export default function GymInfo({ gym, isEditMode, isCancelling, uploadHandler }
             setLogoPreviewUri(undefined);
         }
 
-    }, [isCancelling]);
+    }, [isCancelling, logoPreviewUri]);
 
     const onDrop = (acceptedFiles: File[], fileRejections: FileRejection[], e: DropEvent) => {
         acceptedFiles.forEach((file: Blob) => {

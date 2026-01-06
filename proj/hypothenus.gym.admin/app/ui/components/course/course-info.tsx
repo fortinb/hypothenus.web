@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { Controller, useFormContext } from "react-hook-form";
 import moment from "moment";
-import { CourseFormData } from "@/app/[lang]/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
+import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
 import "@/app/lib/i18n/datepicker-locales"; 

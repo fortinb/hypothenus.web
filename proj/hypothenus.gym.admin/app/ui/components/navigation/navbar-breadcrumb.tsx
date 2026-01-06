@@ -23,7 +23,7 @@ export default function NavbarBreadcrumb() {
     if (breadcrumbState.breadcrumbs.length === 0) {
       dispatch(initBreadcrumbs());
     }
-  }, [breadcrumbState.breadcrumbs.length, dispatch]);
+  }, [dispatch, breadcrumbState]);
 
   return (
     <div className="d-flex flex-row justify-content-center text-secondary fw-bold pe-3">

@@ -25,6 +25,24 @@ export const newContact = (): Contact => {
   return newContact;
 }
 
+export const parseContact = (data: any): Contact => {
+  let contact: Contact = data;
+
+  // Ensure at least one Mobile and one Business phone number
+  const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
+  const hasBusiness = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+
+  if (!hasMobile) {
+    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+  }
+
+  if (!hasBusiness) {
+    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+  }
+
+  return contact;
+}
+
 export function formatContactName(contact: Contact): string {
   return (contact?.firstname ?? "") + " " + (contact?.lastname ?? "");
 }

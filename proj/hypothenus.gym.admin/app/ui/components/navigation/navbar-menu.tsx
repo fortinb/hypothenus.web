@@ -30,7 +30,7 @@ export default function NavbarMenu() {
             <div>
               <Nav className="mb-2 mb-lg-0">
                 <div className="mt-2 mt-lg-0 me-2">
-                  <Nav.Link as={Link} className="nav-link-img p-2" href="/">
+                  <Nav.Link as={Link} className="nav-link-img p-2" href={`/${params.lang}`}>
                     <Image src="/images/logo_transparent.png"
                       width={86}
                       height={32}
@@ -38,7 +38,7 @@ export default function NavbarMenu() {
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                  <Nav.Link as={Link} href={`/${params.lang}/brands`}>{t("navbar.brands.title")}</Nav.Link>
+                  <Nav.Link as={Link} href={`/${params.lang}/admin/brands`}>{t("navbar.brands.title")}</Nav.Link>
                 </div>
               </Nav>
             </div>

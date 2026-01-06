@@ -1,4 +1,4 @@
-import { Brand } from "@/src/lib/entities/brand";
+import { Brand, parseBrand } from "@/src/lib/entities/brand";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 
@@ -13,7 +13,7 @@ function initRequest(params: any): AxiosRequestConfig {
   return request;
 }
 
-export async function getBrand( brandId: string): Promise<Brand> {
+export async function getBrand(brandId: string): Promise<Brand> {
 
   const getURI: String = `/v1/brands/${brandId}`;
 
@@ -21,7 +21,7 @@ export async function getBrand( brandId: string): Promise<Brand> {
 
   let response = await axiosInstance.get(getURI.valueOf(), request);
 
-  return response.data;
+  return parseBrand(response.data);
 }
 
 export async function postBrand(brand: Brand): Promise<Brand> {
@@ -32,7 +32,7 @@ export async function postBrand(brand: Brand): Promise<Brand> {
 
   let response = await axiosInstance.post(postURI.valueOf(), brand, request);
 
-  return response.data;
+  return parseBrand(response.data);
 }
 
 export async function putBrand(brand: Brand): Promise<Brand> {
@@ -43,7 +43,7 @@ export async function putBrand(brand: Brand): Promise<Brand> {
 
   let response = await axiosInstance.put(putURI.valueOf(), brand, request);
 
-  return response.data;
+  return parseBrand(response.data);
 }
 
 export async function postActivateBrand(brandId: string): Promise<Brand> {
@@ -55,7 +55,7 @@ export async function postActivateBrand(brandId: string): Promise<Brand> {
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
   const data = response.data;
 
-  return response.data;
+  return parseBrand(response.data);
 }
 
 export async function postDeactivateBrand(brandId: string): Promise<Brand> {
@@ -66,7 +66,7 @@ export async function postDeactivateBrand(brandId: string): Promise<Brand> {
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
-  return response.data;
+  return parseBrand(response.data);
 }
 
 export async function delBrand(brandId: string): Promise<void> {

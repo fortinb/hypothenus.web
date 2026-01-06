@@ -64,7 +64,7 @@ export async function postActivateCoach(brandId: string, gymId: string, coachId:
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
-  return response.data;
+  return parseCoach(response.data);
 }
 
 export async function postDeactivateCoach(brandId: string, gymId: string, coachId: string): Promise<Coach> {
@@ -75,7 +75,7 @@ export async function postDeactivateCoach(brandId: string, gymId: string, coachI
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
-  return response.data;
+  return parseCoach(response.data);
 }
 
 export async function delCoach(brandId: string, gymId: string, coachId: string): Promise<void> {

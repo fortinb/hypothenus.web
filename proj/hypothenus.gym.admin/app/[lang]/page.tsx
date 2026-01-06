@@ -1,4 +1,4 @@
-import { Breadcrumb } from '../ui/components/navigation/breadcrumb';
+import { Breadcrumb } from '@/app/ui/components/navigation/breadcrumb';
 import Home from './home';
 
 interface PageProps {
