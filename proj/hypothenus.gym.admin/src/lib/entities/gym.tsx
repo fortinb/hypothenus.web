@@ -49,13 +49,13 @@ export const parseGym = (data: any): Gym => {
   // Ensure at least one Mobile and one Business phone number
   const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
   const hasBusiness = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
-  
-  if (!hasMobile) {
-    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
-  }
 
   if (!hasBusiness) {
     gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+  }
+    
+  if (!hasMobile) {
+    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
   }
 
   // Parse each contact in the contacts array

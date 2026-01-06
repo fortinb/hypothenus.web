@@ -7,9 +7,9 @@ export enum PhoneNumberTypeEnum {
 }
 
 export const phoneNumberOrder: Record<string, number> = {
-  "Business": 1,
-  "Mobile": 2,
-  "Home": 3
+  "Home": 1,
+  "Business": 2,
+  "Mobile": 3
 };
 
 export interface PhoneNumber {

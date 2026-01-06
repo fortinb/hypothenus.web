@@ -28,16 +28,16 @@ export const newContact = (): Contact => {
 export const parseContact = (data: any): Contact => {
   let contact: Contact = data;
 
-  // Ensure at least one Mobile and one Business phone number
+  // Ensure at least one Mobile and one Home phone number
   const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
-  const hasBusiness = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+  const hasHome = contact.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Home);
+
+  if (!hasHome) {
+    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Home));
+  }
 
   if (!hasMobile) {
     contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
-  }
-
-  if (!hasBusiness) {
-    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
   }
 
   return contact;

@@ -46,12 +46,13 @@ export const parseBrand = (data: any): Brand => {
   // Ensure at least one Mobile and one Business phone number
   const hasMobile = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
   const hasBusiness = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
-  if (!hasMobile) {
-    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
-  }
 
   if (!hasBusiness) {
     brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+  }
+
+  if (!hasMobile) {
+    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
   }
 
   // Parse each contact in the contacts array

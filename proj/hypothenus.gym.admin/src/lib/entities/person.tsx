@@ -8,13 +8,13 @@ import { z } from 'zod';
 export interface Person {
   firstname: string;
   lastname: string;
-  dateOfBirth?: any; 
+  dateOfBirth?: any;
   email?: string;
   address: Address;
   phoneNumbers: PhoneNumber[];
   contacts: Contact[];
   photoUri?: any;
-  communicationLanguage : LanguageEnum
+  communicationLanguage: LanguageEnum
   note: string;
 }
 
@@ -44,19 +44,19 @@ export const parsePerson = (data: any): Person => {
     person.dateOfBirth = moment(data.dateOfBirth).toDate().toISOString();
   }
 
-  // Ensure at least one Mobile and one Business phone number
+  // Ensure at least one Mobile and one Home phone number
   const hasMobile = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
-  const hasBusiness = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+  const hasHome = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Home);
+
+  if (!hasHome) {
+    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Home));
+  }
 
   if (!hasMobile) {
     person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
   }
 
-  if (!hasBusiness) {
-    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
-  }
-
-   // Parse each contact in the person's contacts array
+  // Parse each contact in the person's contacts array
   person.contacts = person.contacts?.map(contact => parseContact(contact));
 
   return person;
@@ -68,8 +68,8 @@ export function formatPersonName(person: Person): string {
 
 export const PersonSchema = z.object({
   id: z.any().nullable(),
-  firstname: z.string().min(1, {message: "person.validation.firstnameRequired"}),
-  lastname: z.string().min(1, {message: "person.validation.lastnameRequired"}),
+  firstname: z.string().min(1, { message: "person.validation.firstnameRequired" }),
+  lastname: z.string().min(1, { message: "person.validation.lastnameRequired" }),
   dateOfBirth: z.any().nullable(),
   email: z.string().min(0).email("validation.emailInvalid").optional().or(z.literal("")),
   address: AddressSchemaOptional,
