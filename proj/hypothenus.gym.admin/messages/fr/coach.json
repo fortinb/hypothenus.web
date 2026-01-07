@@ -18,7 +18,7 @@
             "add": "Ajouter un entraîneur",
             "inactive": "Inactives",
             "management": "{name}",
-            "managementTooltip": "Retour à la salle de sport"
+            "managementTooltip": "Retour au studio"
         },
         "details": {
             "inactive": "Inactive"

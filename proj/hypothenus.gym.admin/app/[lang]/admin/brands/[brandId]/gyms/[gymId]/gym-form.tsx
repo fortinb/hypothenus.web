@@ -47,7 +47,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
         }
     });
 
-    const formContext = useForm<Gym>({
+    const formContext = useForm<z.infer<typeof GymSchema>>({
         defaultValues: mapEntityToForm(gym),
         resolver: zodResolver(GymSchema),
     });
@@ -67,7 +67,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
         }
     }, [dispatch, gym, gymId]);
 
-    const onSubmit: SubmitHandler<Gym> = (formData: z.infer<typeof GymSchema>) => {
+    const onSubmit: SubmitHandler<z.infer<typeof GymSchema>> = (formData: z.infer<typeof GymSchema>) => {
         setIsEditMode(false);
 
         let gym: Gym = mapFormToEntity(formData, gymState.gym);
@@ -237,7 +237,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
             address: gym.address,
             email: gym.email,
             note: gym.note,
-            contacts: gym.contacts, 
+            contacts: gym.contacts,
             phoneNumbers: [...gym.phoneNumbers].sort((a, b) => {
                 const orderA = phoneNumberOrder[a.type] ?? 999;
                 const orderB = phoneNumberOrder[b.type] ?? 999;
@@ -247,24 +247,16 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     }
 
     function mapFormToEntity(formData: z.infer<typeof GymSchema>, gym: Gym): Gym {
-        let updatedGym: Gym = {
-            id: gym.id,
-            brandId: gym.brandId,
+        return {
+            ...gym,  // Preserve original properties like id, isActive, messages, etc.
             gymId: formData.gymId,
             name: formData.name,
             address: formData.address,
             email: formData.email,
-            logoUri: gym.logoUri,
-            isActive: gym.isActive,
             note: formData.note,
             contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
-            messages: undefined,
-            createdBy: gym.createdBy,
-            modifiedBy: gym.modifiedBy
         };
-
-        return updatedGym;
     }
 
     return (

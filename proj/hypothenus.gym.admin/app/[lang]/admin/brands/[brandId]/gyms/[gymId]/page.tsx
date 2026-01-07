@@ -7,17 +7,19 @@ import { newGym } from "@/src/lib/entities/gym";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 
 interface PageProps {
-  params: { lang: string, brandId: string, gymId: string };
+  params: Promise<{ lang: string; brandId: string; gymId: string }>;
 }
 
 export default async function GymPage({ params }: PageProps) {
+  const { lang, brandId, gymId } = await params;
+
   let gym: Gym;
 
-  if (params.gymId === "new") {
+  if (gymId === "new") {
     gym = newGym();
-    gym.brandId = params.brandId;
+    gym.brandId = brandId;
   } else {
-    gym = await getGym(params.brandId, params.gymId);
+    gym = await getGym(brandId, gymId);
   }
 
   return (
@@ -26,22 +28,23 @@ export default async function GymPage({ params }: PageProps) {
         crumb={{
           reset: false,
           id: "gym.[gymId].page",
-          href: `/${params.lang}/admin/brands/${params.brandId}/gyms/${params.gymId}`,
-          key: gym.name,
+          locale: `${lang}`,
+          href: `/admin/brands/${brandId}/gyms/${gymId}`,
+          key: "",
+          value: gym.name,
           namespace: ""
         }}
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <GymMenu lang={params.lang} brandId={params.brandId} gymId={params.gymId} />
+        <GymMenu lang={lang} brandId={brandId} gymId={gymId} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <GymForm lang={params.lang} brandId={params.brandId} gymId={params.gymId} gym={gym} />
+        <GymForm lang={lang} brandId={brandId} gymId={gymId} gym={gym} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
         <GymResume />
       </div>
     </div>
-
   );
 }

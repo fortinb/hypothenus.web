@@ -284,16 +284,18 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             startDate: course.startDate,
             endDate: course.endDate,
             coachs: course.coachs?.map((coach) => {
-                return coach;
+                return {
+                    id: coach.id,
+                    brandId: coach.brandId,
+                    gymId: coach.gymId
+                }
             })
         }
     }
 
     function mapFormToEntity(formData: z.infer<typeof CourseFormSchema>, course: Course): Course {
-        let updatedCourse: Course = {
-            id: course.id,
-            brandId: course.brandId,
-            gymId: course.gymId,
+        return {
+            ...course,  // Preserve original properties like id, isActive, messages, etc.
             code: formData.course.code,
             name: formData.course.name,
             description: formData.course.description,
@@ -302,13 +304,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             coachs: formData.selectedCoachItems.map((item) => {
                 return item.coach as Coach;
             }),
-            isActive: course.isActive,
-            messages: undefined,
-            createdBy: course.createdBy,
-            modifiedBy: course.modifiedBy
         };
-
-        return updatedCourse;
     }
 
     return (

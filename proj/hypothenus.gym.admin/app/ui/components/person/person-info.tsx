@@ -81,8 +81,14 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                         <Controller
                             name={`${formStatefield}.dateOfBirth`}
                             render={({ field }) => (
-                                <DatePicker id={`person_input_dateOfBirth_${id}`} selected={!field.value ? null : moment(field.value).toDate()} onChange={(date) => field.onChange(date?.toISOString() ?? undefined)}
-                                    className={"form-control "} locale={params.lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                <DatePicker 
+                                    id={`person_input_dateOfBirth_${id}`} 
+                                    selected={!field.value ? null : moment(field.value).toDate()} 
+                                    onChange={(date: Date | null) => field.onChange(date?.toISOString())}
+                                    className={"form-control "} 
+                                    locale={params.lang} 
+                                    dateFormat="yyyy-MM-dd" 
+                                    placeholderText={t("format.date")} />
                             )}
                         />
                     </Form.Group>

@@ -17,7 +17,7 @@ import moment from "moment";
 import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
-import "@/app/lib/i18n/datepicker-locales"; 
+import "@/app/lib/i18n/datepicker-locales";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { localesConfig } from "@/i18n/locales-client";
 
@@ -92,8 +92,16 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                             <Controller
                                                 name={`course.startDate`}
                                                 render={({ field }) => (
-                                                    <DatePicker className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")} id={`course_input_startDate`} minDate={new Date()} selected={moment(field.value).toDate()} onChange={(date) => field.onChange(date?.toISOString())}
-                                                        locale={lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                    <DatePicker
+                                                        className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")}
+                                                        id={`course_input_startDate`}
+                                                        minDate={new Date()}
+                                                        selected={moment(field.value).toDate()}
+                                                        onChange={(date: Date | null) => field.onChange(date?.toISOString())}  // Explicitly type 'date'
+                                                        locale={lang}
+                                                        dateFormat="yyyy-MM-dd"
+                                                        placeholderText={t("format.date")}
+                                                    />
                                                 )}
                                             />
                                             <br />
@@ -107,9 +115,15 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                             <Controller
                                                 name={"course.endDate"}
                                                 render={({ field }) => (
-                                                    <DatePicker id={`course_input_endDate`} minDate={new Date()} onChange={(date) => field.onChange(date?.toISOString() ?? undefined)}
+                                                    <DatePicker 
+                                                        id={`course_input_endDate`} 
+                                                        minDate={new Date()} 
+                                                        onChange={(date: Date | null) => field.onChange(date?.toISOString())}
                                                         selected={!field.value ? null : moment(field.value).toDate()}
-                                                        className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} locale={lang} dateFormat="yyyy-MM-dd" placeholderText={t("format.date")} />
+                                                        className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} 
+                                                        locale={lang} 
+                                                        dateFormat="yyyy-MM-dd" 
+                                                        placeholderText={t("format.date")} />
                                                 )}
                                             />
                                             <br />

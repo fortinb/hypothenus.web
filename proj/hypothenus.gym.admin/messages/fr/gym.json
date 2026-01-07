@@ -1,12 +1,12 @@
 {
     "menu": {
         "gym": "{name}",
-        "sections": "Salle de sport",
+        "sections": "Studio",
         "info": "Info",
         "coachs": "Entraîneurs",
         "courses": "Cours",
-        "management": "Salles de sport",
-        "managementTooltip": "retour aux salles de sport"
+        "management": "Studios",
+        "managementTooltip": "retour aux studios"
     },
     "resume": {
         "contacts": "Contacts"
@@ -15,7 +15,7 @@
     "list": {
         "menu": {
             "title": "Salles de sport",
-            "add": "Ajouter une salle de sport",
+            "add": "Ajouter un studio",
             "inactive": "Inactives"
         },
         "details": {

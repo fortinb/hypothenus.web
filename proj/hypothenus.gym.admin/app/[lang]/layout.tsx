@@ -12,16 +12,17 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 export async function generateMetadata({ params }: Props) {
-  const locale = routing.locales.includes(params.locale as any)
-    ? params.locale
+  const { locale } = await params; 
+  const localeValue = routing.locales.includes(locale as any)
+    ? locale
     : routing.defaultLocale;
 
   const t = await getTranslations({
-    locale,
+    locale: localeValue,
     namespace: "translation"
   });
 
@@ -31,19 +32,34 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-
 export default async function RootLayout({
   children,
   params,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-  params: { lang: string };
-}>) {
-  if (!routing.locales.includes(params.lang as any)) notFound();
+  params: Promise<{ lang: string }>; 
+}) {
+  const { lang } = await params;  
+  
+  if (!routing.locales.includes(lang as any)) {
+     console.log('not found');  
+     notFound();
+  } 
 
   return (
 
-    <html lang={params.lang}>
+    <html lang={lang}> 
+     <head>
+        {/* Performance optimizations */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+
+        {/* Google Font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        />
+      </head>
       <body>
         <NextIntlClientProvider>
           <StoreProvider>

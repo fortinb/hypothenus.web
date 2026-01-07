@@ -43,7 +43,7 @@
             "alreadyExists": "Le code de la marque doit être unique, ce code est déjà existant.",
             "codeRequired": "Le code est requis.",
             "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
-            "nameRequired": "Le nom de la salle de sport est requis.",
+            "nameRequired": "Le nom du studio est requis.",
             "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
             "emailInvalid": "Le format du courriel est invalide.",
             "noSpaceAllowed": "Les espaces ne sont pas autorisés."
@@ -72,13 +72,13 @@
     },
     "gym": {
         "navigation": {
-            "new": "Nouvelle salle de sport"
+            "new": "Nouveau studio"
         },
         "validation": {
-            "alreadyExists": "Le code de la salle de sport doit être unique, ce code est déjà existant.",
+            "alreadyExists": "Le code du studio doit être unique, ce code est déjà existant.",
             "codeRequired": "Le code est requis.",
             "codeMaxLength": "La longueur maximum pour le code est de 20 catactères.",
-            "nameRequired": "Le nom de la salle de sport est requis.",
+            "nameRequired": "Le nom du studio est requis.",
             "nameMaxLength": "La longueur maximum pour le nom est de 20 catactères.",
             "emailInvalid": "Le format du courriel est invalide.",
             "noSpaceAllowed": "Les espaces ne sont pas autorisés."
@@ -92,14 +92,14 @@
         "contacts": "Contacts",
         "note": "Notes",
         "logoUri": "Logo",
-        "logoAlt": "Logo de la salle de sport",
+        "logoAlt": "Logo du studio",
         "image": {
            "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
            "attributes": " *.jpg, *.png - max 10MB - 200x200"
         },
         "deleteConfirmation": {
             "title": "Supprimer {name}",
-            "text": "Êtes vous certain de vouloir supprimer cette salle de sport ?",
+            "text": "Êtes vous certain de vouloir supprimer ce studio ?",
             "yes": "Supprimer",
             "no": "Annuler",
             "action": "Suppression en cours..."

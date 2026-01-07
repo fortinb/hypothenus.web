@@ -46,6 +46,10 @@ export const newGym = (): Gym => {
 export const parseGym = (data: any): Gym => {
   let gym: Gym = data;
 
+  if (!gym.phoneNumbers) {
+    gym.phoneNumbers = [];
+  }
+
   // Ensure at least one Mobile and one Business phone number
   const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
   const hasBusiness = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
@@ -53,7 +57,7 @@ export const parseGym = (data: any): Gym => {
   if (!hasBusiness) {
     gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
   }
-    
+
   if (!hasMobile) {
     gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
   }
@@ -68,7 +72,7 @@ export const GymSchema = z.object({
   gymId: z.string().trim().min(1, { message: "gym.validation.codeRequired" }).max(20, { message: "gym.validation.codeMaxLength" }).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
   name: z.string().min(1, { message: "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength" }),
   address: AddressSchema,
-  email: z.string().min(0).email("gym.validation.emailInvalid").optional().or(z.literal("")),
+  email: z.email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),
   phoneNumbers: z.array(PhoneNumberSchema).min(1),
   contacts: z.array(ContactSchema)

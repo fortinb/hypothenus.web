@@ -3,12 +3,18 @@
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig = {
- /* output: "export", */
   reactStrictMode: true,
-  sassOptions: { includePaths: ["./styles/scss"] },
+  sassOptions: { 
+    includePaths: ["./styles/scss", "node_modules"], 
+    quiet: true
+},
   images: {
-  /* unoptimized: true,*/
-    domains: ['lorempixel.com'],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "lorempixel.com",
+      },
+    ],
   },
 };
 

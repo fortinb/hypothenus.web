@@ -16,7 +16,7 @@ import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { z } from "zod";
+import { z } from 'zod';
 import { activateBrandAction, createBrandAction, deactivateBrandAction, deleteBrandAction, saveBrandAction } from "./actions";
 import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
@@ -47,7 +47,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
         }
     });
 
-    const formContext = useForm<Brand>({
+    const formContext = useForm<z.infer<typeof BrandSchema>>({
         defaultValues: mapEntityToForm(brand),
         resolver: zodResolver(BrandSchema),
     });
@@ -68,7 +68,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     }, [dispatch, brand, brandId]);
 
-    const onSubmit: SubmitHandler<Brand> = (formData: z.infer<typeof BrandSchema>) => {
+    const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);
 
         let brand: Brand = mapFormToEntity(formData, brandState.brand);
@@ -231,6 +231,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
         }
     }
 
+    // Update mapEntityToForm to return the schema-compatible object (exclude non-schema properties)
     function mapEntityToForm(brand: Brand): z.infer<typeof BrandSchema> {
         return {
             brandId: brand.brandId,
@@ -238,33 +239,23 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
             address: brand.address,
             email: brand.email,
             note: brand.note,
+            phoneNumbers: brand.phoneNumbers,  // Assuming sorted as needed
             contacts: brand.contacts,
-            phoneNumbers: [...brand.phoneNumbers].sort((a, b) => {
-                const orderA = phoneNumberOrder[a.type] ?? 999;
-                const orderB = phoneNumberOrder[b.type] ?? 999;
-                return orderA - orderB;
-            }),
         };
     }
 
+    // Update mapFormToEntity to map back to full Brand (add missing properties from original brand)
     function mapFormToEntity(formData: z.infer<typeof BrandSchema>, brand: Brand): Brand {
-        let updatedBrand: Brand = {
-            id: brand.id,
+        return {
+            ...brand,  // Preserve original properties like id, isActive, messages, etc.
             brandId: formData.brandId,
             name: formData.name,
             address: formData.address,
             email: formData.email,
-            logoUri: brand.logoUri,
             note: formData.note,
-            contacts: formData.contacts,
             phoneNumbers: formData.phoneNumbers,
-            isActive: brand.isActive,
-            messages: undefined,
-            createdBy: brand.createdBy,
-            modifiedBy: brand.modifiedBy
+            contacts: formData.contacts,
         };
-
-        return updatedBrand;
     }
 
     return (

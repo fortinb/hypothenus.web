@@ -28,6 +28,10 @@ export const newContact = (): Contact => {
 export const parseContact = (data: any): Contact => {
   let contact: Contact = data;
 
+  if (!contact.phoneNumbers) {
+    contact.phoneNumbers = [];
+  }
+  
   // Ensure at least one Mobile and one Home phone number
   const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
   const hasHome = contact.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Home);
@@ -48,10 +52,9 @@ export function formatContactName(contact: Contact): string {
 }
 
 export const ContactSchema = z.object({
-  id: z.any().nullable(),
-  firstname: z.string().min(1, {message: "person.validation.firstnameRequired"}),
-  lastname: z.string().min(1, {message: "person.validation.lastnameRequired"}),
-  description: z.string().min(1, {message: "person.validation.descriptionRequired"}),
-  email: z.string().min(0).email("validation.emailInvalid").optional().or(z.literal("")),
+  firstname: z.string().min(1, { message: "person.validation.firstnameRequired" }),
+  lastname: z.string().min(1, { message: "person.validation.lastnameRequired" }),
+  description: z.string().min(1, { message: "person.validation.descriptionRequired" }),
+  email: z.email("validation.emailInvalid").optional().or(z.literal("")),
   phoneNumbers: z.array(PhoneNumberSchema).min(0)
 });

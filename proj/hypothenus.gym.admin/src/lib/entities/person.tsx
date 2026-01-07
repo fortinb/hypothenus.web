@@ -8,7 +8,7 @@ import { z } from 'zod';
 export interface Person {
   firstname: string;
   lastname: string;
-  dateOfBirth?: any;
+  dateOfBirth: any;  // Make dateOfBirth required (was optional with ?)
   email?: string;
   address: Address;
   phoneNumbers: PhoneNumber[];
@@ -44,6 +44,10 @@ export const parsePerson = (data: any): Person => {
     person.dateOfBirth = moment(data.dateOfBirth).toDate().toISOString();
   }
 
+  if (!person.phoneNumbers) {
+    person.phoneNumbers = [];
+  }
+
   // Ensure at least one Mobile and one Home phone number
   const hasMobile = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
   const hasHome = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Home);
@@ -67,14 +71,13 @@ export function formatPersonName(person: Person): string {
 }
 
 export const PersonSchema = z.object({
-  id: z.any().nullable(),
   firstname: z.string().min(1, { message: "person.validation.firstnameRequired" }),
   lastname: z.string().min(1, { message: "person.validation.lastnameRequired" }),
   dateOfBirth: z.any().nullable(),
-  email: z.string().min(0).email("validation.emailInvalid").optional().or(z.literal("")),
+  email: z.email("validation.emailInvalid").optional().or(z.literal("")),
   address: AddressSchemaOptional,
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
   contacts: z.array(ContactSchema).min(0),
-  communicationLanguage: z.nativeEnum(LanguageEnum),
+  communicationLanguage: z.enum(LanguageEnum),
   note: z.string().min(0),
 });

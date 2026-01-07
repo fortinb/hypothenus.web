@@ -19,7 +19,7 @@
             "add": "Ajouter un cour",
             "inactive": "Inactives",
             "management": "{name}",
-            "managementTooltip": "Retour à la salle de sport"
+            "managementTooltip": "Retour au studio"
         },
         "details": {
             "inactive": "Inactive"

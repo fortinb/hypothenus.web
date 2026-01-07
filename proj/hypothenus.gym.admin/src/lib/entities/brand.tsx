@@ -43,6 +43,10 @@ export const newBrand = (): Brand => {
 export const parseBrand = (data: any): Brand => {
   let brand: Brand = data;
 
+  if (!brand.phoneNumbers) {
+    brand.phoneNumbers = [];
+  }
+
   // Ensure at least one Mobile and one Business phone number
   const hasMobile = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
   const hasBusiness = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
@@ -65,7 +69,7 @@ export const BrandSchema = z.object({
   brandId: z.string().trim().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }).regex(/^\S+$/, 'brand.validation.noSpaceAllowed'),
   name: z.string().min(1, { message: "brand.validation.nameRequired" }).max(100, { message: "brand.validation.nameMaxLength" }),
   address: AddressSchema,
-  email: z.string().min(0).email("brand.validation.emailInvalid").optional().or(z.literal("")),
+  email: z.email("brand.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),
   phoneNumbers: z.array(PhoneNumberSchema).min(0),
   contacts: z.array(ContactSchema).min(0)

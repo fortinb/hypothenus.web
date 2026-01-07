@@ -12,25 +12,27 @@ import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { formatPersonName } from "@/src/lib/entities/person";
 
 interface PageProps {
-  params: { lang: string, brandId: string, gymId: string, courseId: string };
+  params: Promise<{ lang: string; brandId: string; gymId: string; courseId: string }>; 
 }
 
 export default async function CoursePage({ params }: PageProps) {
+  const { lang, brandId, gymId, courseId } = await params;  
+
   let course: Course;
   let pageOfCoachs: Page<Coach>;
 
-  if (params.courseId === "new") {
+  if (courseId === "new") { 
     course = newCourse();
-    course.brandId = params.brandId;
-    course.gymId = params.gymId;
+    course.brandId = brandId;  
+    course.gymId = gymId;  
 
     // Load list of coachs
-    pageOfCoachs = await fetchCoachs(params.brandId, params.gymId, 0, 1000, false);
+    pageOfCoachs = await fetchCoachs(brandId, gymId, 0, 1000, false);  
   } else {
     // Load in parallel
     [course, pageOfCoachs] = await Promise.all([
-      getCourse(params.brandId, params.gymId, params.courseId),
-      fetchCoachs(params.brandId, params.gymId, 0, 1000, false)
+      getCourse(brandId, gymId, courseId),  
+      fetchCoachs(brandId, gymId, 0, 1000, false)  
     ]);
   }
 
@@ -54,22 +56,23 @@ export default async function CoursePage({ params }: PageProps) {
         crumb={{
           reset: false,
           id: "course.[courseId].page",
-          href: `/${params.lang}/admin/brands/${params.brandId}/gyms/${params.gymId}/courses/${params.courseId}`,
-          key: getCourseName(course, params.lang as LanguageEnum),
+          locale: `${lang}`,
+          href: `/admin/brands/${brandId}/gyms/${gymId}/courses/${courseId}`,  
+          key: "",
+          value: getCourseName(course, lang as LanguageEnum), 
           namespace: ""
         }}
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <CourseMenu lang={params.lang} brandId={params.brandId} gymId={params.gymId} courseId={params.courseId} />
+        <CourseMenu lang={lang} brandId={brandId} gymId={gymId} courseId={courseId} /> 
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <CourseForm lang={params.lang} brandId={params.brandId} gymId={params.gymId} courseId={params.courseId} course={course} coachs={coachs} initialAvailableCoachItems={availableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />
+        <CourseForm lang={lang} brandId={brandId} gymId={gymId} courseId={courseId} course={course} coachs={coachs} initialAvailableCoachItems={availableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />  
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <CourseResume lang={params.lang} />
+        <CourseResume lang={lang} />  // Use lang
       </div>
     </div>
-
   );
 }

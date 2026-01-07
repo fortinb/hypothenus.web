@@ -47,7 +47,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         }
     });
 
-    const formContext = useForm<Coach>({
+    const formContext = useForm<z.infer<typeof CoachSchema>>({
         defaultValues: mapEntityToForm(coach),
         resolver: zodResolver(CoachSchema),
     });
@@ -60,18 +60,18 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     // Watch the entire form
-   // const formData = formContext.watch();
+    // const formData = formContext.watch();
 
- /*   useEffect(() => {
-        // Log the data to the console every time there is an error
-        const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-        if (hasErrors) {
-            console.log("Current Form errors:", formContext.formState.errors);
-        }
-
-        // console.log("Current Form Data:", formData);
-    }, [formData]);
-    */
+    /*   useEffect(() => {
+           // Log the data to the console every time there is an error
+           const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
+           if (hasErrors) {
+               console.log("Current Form errors:", formContext.formState.errors);
+           }
+   
+           // console.log("Current Form Data:", formData);
+       }, [formData]);
+       */
 
     useEffect(() => {
         dispatch(updateCoachState(coach));
@@ -81,7 +81,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
         }
     }, [dispatch, coach, coachId]);
 
-    const onSubmit: SubmitHandler<Coach> = async (formData: z.infer<typeof CoachSchema>) => {
+    const onSubmit: SubmitHandler<z.infer<typeof CoachSchema>> = async (formData: z.infer<typeof CoachSchema>) => {
         setIsEditMode(false);
 
         let coach: Coach = mapFormToEntity(formData, coachState.coach);
@@ -231,7 +231,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     function onDelete(confirmation: boolean) {
         if (confirmation) {
-           deleteCoach(coachState.coach);
+            deleteCoach(coachState.coach);
         } else {
             setShowDeleteConfirmation(false);
         }
@@ -245,32 +245,25 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     function mapEntityToForm(coach: Coach): z.infer<typeof CoachSchema> {
         const person = { ...coach.person };
-        
+
         // Sort the phoneNumbers array by the predefined order (Business -> Mobile -> Home)
         person.phoneNumbers = [...coach.person.phoneNumbers].sort((a, b) => {
             const orderA = phoneNumberOrder[a.type];
             const orderB = phoneNumberOrder[b.type];
             return orderA - orderB;
         });
-        
+
         return {
             person: person
         };
     }
 
     function mapFormToEntity(formData: z.infer<typeof CoachSchema>, coach: Coach): Coach {
-        let updatedCoach: Coach = {
-            id: coach.id,
-            brandId: coach.brandId,
-            gymId: coach.gymId,
-            isActive: coach.isActive,
+        return {
+            ...coach,  // Preserve original properties like id, isActive, messages, etc.
             person: formData.person,
-            messages: undefined,
-            createdBy: coach.createdBy,
-            modifiedBy: coach.modifiedBy
         };
 
-        return updatedCoach;
     }
 
     return (

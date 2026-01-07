@@ -4,9 +4,11 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface Crumb {
   reset: boolean,
+  locale: string,
   href: string,
   id: string,
   key: string,
+  value?: string,
   namespace: string
 }
 
@@ -45,6 +47,10 @@ export const breadcrumbStateSlice = createSlice({
         state.breadcrumbs = [];
       }     
     },
+    updateBreadcrumbsLocale: (state, action: PayloadAction<string>) => {
+      state.breadcrumbs.forEach((crumb) => crumb.locale = action.payload);
+      sessionStorage.setItem("breadcrumbs", JSON.stringify(state.breadcrumbs));
+    },
     resetBreadcrumbs: (state, action: PayloadAction<Crumb>) => {
       state.breadcrumbs = [];
       state.breadcrumbs.push(action.payload);
@@ -54,6 +60,6 @@ export const breadcrumbStateSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { pushBreadcrumb, initBreadcrumbs, resetBreadcrumbs } = breadcrumbStateSlice.actions
+export const { pushBreadcrumb, initBreadcrumbs, resetBreadcrumbs, updateBreadcrumbsLocale } = breadcrumbStateSlice.actions
 
 export default breadcrumbStateSlice.reducer

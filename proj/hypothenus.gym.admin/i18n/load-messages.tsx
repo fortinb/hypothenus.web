@@ -18,12 +18,13 @@ export async function loadMessages(locale: string) {
     try {
         const messages = await Promise.all(
             namespaces.map(async (ns) => ({
-                [ns]: (await import(`@/messages/${locale}/${ns}.json`)).default
+                [ns]: (await import(`../messages/${locale}/${ns}.json`)).default
             }))
         );
 
         return Object.assign({}, ...messages);
-    } catch {
+    } catch (error:any){
+        console.log('load i18n messages error:', error); 
         notFound();
     }
 }
