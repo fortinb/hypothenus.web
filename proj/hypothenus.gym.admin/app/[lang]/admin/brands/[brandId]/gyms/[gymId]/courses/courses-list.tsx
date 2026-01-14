@@ -11,7 +11,7 @@ export default function CoursesList({ lang, brandId, gymId, pageOfCourses }: { l
     <div className="d-flex flex-row flex-wrap mt-2 mb-2">
 
       {pageOfCourses?.content.map((course: Course) => {
-        return <CourseListDetails key={course.id} lang={lang} brandId={brandId} gymId={gymId} courseId={course.id} course={course}></CourseListDetails>
+        return <CourseListDetails key={course.uuid} lang={lang} brandId={brandId} gymId={gymId} courseId={course.uuid} course={course}></CourseListDetails>
       })}
 
     </div>

@@ -5,7 +5,6 @@ import { Contact, ContactSchema, newContact, parseContact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
 
 export interface Brand extends BaseEntity {
-  id?: any;
   brandId: string;
   name: string;
   address: Address;
@@ -19,7 +18,6 @@ export interface Brand extends BaseEntity {
 
 export const newBrand = (): Brand => {
   let newBrand: Brand = {
-    id: null,
     brandId: "",
     name: "",
     address: newAddress(),

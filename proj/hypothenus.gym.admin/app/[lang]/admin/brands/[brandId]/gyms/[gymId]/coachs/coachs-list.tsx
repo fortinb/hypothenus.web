@@ -11,7 +11,7 @@ export default function CoachsList({ lang, brandId, gymId, pageOfCoachs }: { lan
     <div className="d-flex flex-row flex-wrap mt-2 mb-2">
 
       {pageOfCoachs?.content.map((coach: Coach) => {
-        return <CoachListDetails key={coach.id} lang={lang} brandId={brandId} gymId={gymId} coachId={coach.id} coach={coach}></CoachListDetails>
+        return <CoachListDetails key={coach.uuid} lang={lang} brandId={brandId} gymId={gymId} coachId={coach.uuid} coach={coach}></CoachListDetails>
       })}
 
     </div>

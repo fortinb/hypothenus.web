@@ -7,11 +7,11 @@ import { revalidatePath } from 'next/cache';
 
 export async function saveCoachAction(coachId: string, data: Coach, path: string): Promise<ActionResult<Coach>> {
   // 1. Validation (server-side)
-  if (!data.brandId || !data.gymId || !data.id)
+  if (!data.brandId || !data.gymId || !data.uuid)
     return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and Id are required' });  
-  if (!coachId || !data.id)
+  if (!coachId || !data.uuid)
     return failure({ type: ErrorType.Validation, message: 'CoachId and Id are required' });
-  if (data.id !== coachId) 
+  if (data.uuid !== coachId) 
     return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
 
   try {
@@ -47,7 +47,7 @@ export async function activateCoachAction(coachId: string, data: Coach, path: st
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (!data.gymId)
     return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.id !== coachId)
+  if (data.uuid !== coachId)
     return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
 
   try {
@@ -69,7 +69,7 @@ export async function deactivateCoachAction(coachId: string, data: Coach, path: 
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (!data.gymId)
     return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.id !== coachId)
+  if (data.uuid !== coachId)
     return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
 
   try {
@@ -90,7 +90,7 @@ export async function deleteCoachAction(coachId: string, data: Coach): Promise<A
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (!data.gymId)
     return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.id !== coachId)
+  if (data.uuid !== coachId)
     return failure({ type: ErrorType.Validation, message: 'Coach mismatch' });
   
   try {

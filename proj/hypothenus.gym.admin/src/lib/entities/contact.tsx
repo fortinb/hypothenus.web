@@ -12,7 +12,6 @@ export interface Contact {
 
 export const newContact = (): Contact => {
   let newContact: Contact = {
-    id: null,
     firstname: "",
     lastname: "",
     description: "",

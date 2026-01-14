@@ -7,7 +7,7 @@ import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './lo
 import { localesConfig } from "@/i18n/locales-client";
 
 export interface Course extends BaseEntity {
-  id?: any;
+  uuid?: any;
   brandId: string;
   gymId: string;
   code: string;
@@ -35,7 +35,7 @@ export const parseCourse = (data: any): Course => {
 
 export const newCourse = (): Course => {
   let newCourse: Course = {
-    id: null,
+    uuid: null,
     brandId: "",
     gymId: "",
     code: "",

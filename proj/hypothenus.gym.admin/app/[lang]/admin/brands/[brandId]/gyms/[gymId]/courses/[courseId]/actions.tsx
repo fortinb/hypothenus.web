@@ -7,11 +7,11 @@ import { revalidatePath } from 'next/cache';
 
 export async function saveCourseAction(courseId: string, data: Course, path: string): Promise<ActionResult<Course>> {
   // 1. Validation (server-side)
-  if (!data.brandId || !data.gymId || !data.id)
+  if (!data.brandId || !data.gymId || !data.uuid)
     return failure({ type: ErrorType.Validation, message: 'BrandId, GymId and Id are required' });  
-  if (!courseId || !data.id)
+  if (!courseId || !data.uuid)
     return failure({ type: ErrorType.Validation, message: 'CourseId and Id are required' });
-  if (data.id !== courseId) 
+  if (data.uuid !== courseId) 
     return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {
@@ -46,7 +46,7 @@ export async function activateCourseAction(courseId: string, data: Course,path: 
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (!data.gymId)
     return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.id !== courseId)
+  if (data.uuid !== courseId)
     return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {
@@ -67,7 +67,7 @@ export async function deactivateCourseAction(courseId: string, data: Course,path
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (!data.gymId)
     return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.id !== courseId)
+  if (data.uuid !== courseId)
     return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {
@@ -89,7 +89,7 @@ export async function deleteCourseAction(courseId: string, data: Course): Promis
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (!data.gymId)
     return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.id !== courseId)
+  if (data.uuid !== courseId)
     return failure({ type: ErrorType.Validation, message: 'Course mismatch' });
 
   try {

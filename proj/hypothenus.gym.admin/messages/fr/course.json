@@ -16,7 +16,7 @@
         "menu": {
             "gym": "{name}",
             "title": "Cours",
-            "add": "Ajouter un cour",
+            "add": "Ajouter un cours",
             "inactive": "Inactives",
             "management": "{name}",
             "managementTooltip": "Retour au studio"

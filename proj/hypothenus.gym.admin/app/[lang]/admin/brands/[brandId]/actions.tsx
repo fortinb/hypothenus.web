@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function saveBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!data.brandId || !data.id || !brandId)
+  if (!data.brandId || !brandId)
     return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
   if (data.brandId !== brandId)
     return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });

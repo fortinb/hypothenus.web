@@ -42,12 +42,12 @@ export default async function CoursePage({ params }: PageProps) {
     return {
       coach: coach,
       label: formatPersonName(coach.person),
-      value: coach.id,
+      value: coach.uuid,
     } as CoachSelectedItem;
   });
 
   const initialSelectedCoachItems = availableCoachItems
-    .filter((item) => course.coachs?.some((selected) => selected.id === item.coach.id))
+    .filter((item) => course.coachs?.some((selected) => selected.uuid === item.coach.uuid))
     .sort((a, b) => a.label.localeCompare(b.label));
 
   return (

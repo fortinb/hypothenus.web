@@ -207,7 +207,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (brandState.brand.id !== "") {
+        if (brandState.brand.brandId !== "") {
             if (isEditMode === true) {
                 onCancel();
             } else {
@@ -226,7 +226,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (brandState.brand.id !== "") {
+        if (brandState.brand.brandId !== "") {
             setShowDeleteConfirmation(true);
         }
     }
@@ -270,7 +270,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.brandId == "" ? true : brandState.brand.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.id == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
+                                    isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.brandId == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <BrandInfo brand={brandState.brand} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />

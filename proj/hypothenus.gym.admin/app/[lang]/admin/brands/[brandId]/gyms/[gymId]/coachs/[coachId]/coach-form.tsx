@@ -114,7 +114,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
                 dispatch(updateCoachState(entity));
 
                 showResultToast(true, t("action.saveSuccess"));
-                router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${entity.id}`);
+                router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${entity.uuid}`);
             },
             // Error
             (result) => {
@@ -126,7 +126,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     const saveCoach = (coach: Coach) => {
         saveEntity(
-            coach.id, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            coach.uuid, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.uuid}`,
             // Before save
             async (entity) => {
                 await beforeSave(entity);
@@ -148,7 +148,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     const beforeSave = async (coach: Coach) => {
         if (photoToUpload) {
-            const photoUri = await uploadPhoto(coach.gymId, coach.id, photoToUpload);
+            const photoUri = await uploadPhoto(coach.gymId, coach.uuid, photoToUpload);
             coach.person.photoUri = photoUri;
             setPhotoToUpload(undefined);
         }
@@ -156,7 +156,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     const activateCoach = (coach: Coach) => {
         activateEntity(
-            coach.id, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            coach.uuid, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.uuid}`,
             (entity) => {
                 dispatch(updateCoachState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -169,7 +169,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     const deactivateCoach = (coach: Coach) => {
         deactivateEntity(
-            coach.id, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            coach.uuid, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.uuid}`,
             (entity) => {
                 dispatch(updateCoachState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -182,7 +182,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
 
     const deleteCoach = (coach: Coach) => {
         deleteEntity(
-            coach.id, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.id}`,
+            coach.uuid, coach, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coach.uuid}`,
             () => {
                 dispatch(clearCoachState());
                 showResultToast(true, t("action.deleteSuccess"));
@@ -218,7 +218,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (coachState.coach.id !== "") {
+        if (coachState.coach.uuid !== "") {
 
             if (isEditMode === true) {
                 onCancel();
@@ -238,7 +238,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (coachState.coach.id !== "") {
+        if (coachState.coach.uuid !== "") {
             setShowDeleteConfirmation(true);
         }
     }
@@ -277,8 +277,8 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.id == "" ? true : coachState.coach.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.id == null ? true : false)} isActivationDisabled={(coachState.coach.id == null ? true : false)} isActivating={isActivating} />
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.uuid == "" ? true : coachState.coach.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.uuid == null ? true : false)} isActivationDisabled={(coachState.coach.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />

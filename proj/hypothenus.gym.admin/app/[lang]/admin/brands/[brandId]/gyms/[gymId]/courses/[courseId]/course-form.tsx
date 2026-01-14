@@ -144,7 +144,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                 } else {
                     setOriginalSelectedCoachItems(selectedCoachItems);
 
-                    router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${entity.id}`);
+                    router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${entity.uuid}`);
                 }
             },
             // Error
@@ -157,7 +157,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const saveCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
         saveEntity(
-            course.id, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
             // Before save
             (_entity) => {
             },
@@ -179,7 +179,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const activateCourse = (course: Course) => {
         activateEntity(
-            course.id, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
             (entity) => {
                 dispatch(updateCourseState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -192,7 +192,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const deactivateCourse = (course: Course) => {
         deactivateEntity(
-            course.id, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
             (entity) => {
                 dispatch(updateCourseState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -205,7 +205,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const deleteCourse = (course: Course) => {
         deleteEntity(
-            course.id, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.id}`,
+            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
             () => {
                 dispatch(clearCourseState());
                 showResultToast(true, t("action.deleteSuccess"));
@@ -243,7 +243,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (courseState.course.id !== "") {
+        if (courseState.course.uuid !== "") {
 
             if (isEditMode === true) {
                 onCancel();
@@ -263,7 +263,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (courseState.course.id !== "") {
+        if (courseState.course.uuid !== "") {
             setShowDeleteConfirmation(true);
         }
     }
@@ -271,12 +271,12 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     function mapEntityToForm(course: Course): z.infer<typeof CourseSchema> {
         return {
             code: course.code,
-            name: course.name.sort((a, b) => {
+            name: [...course.name].sort((a, b) => {
                 const orderA = localesConfigLanguageOrder[a.language] ?? 999;  // Default to 999 if not in order
                 const orderB = localesConfigLanguageOrder[b.language] ?? 999;
                 return orderA - orderB;
             }),
-            description: course.description.sort((a, b) => {
+            description: [...course.description].sort((a, b) => {
                 const orderA = localesConfigLanguageOrder[a.language] ?? 999;
                 const orderB = localesConfigLanguageOrder[b.language] ?? 999;
                 return orderA - orderB;
@@ -285,7 +285,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             endDate: course.endDate,
             coachs: course.coachs?.map((coach) => {
                 return {
-                    id: coach.id,
+                    uuid: coach.uuid,
                     brandId: coach.brandId,
                     gymId: coach.gymId
                 }
@@ -295,7 +295,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     function mapFormToEntity(formData: z.infer<typeof CourseFormSchema>, course: Course): Course {
         return {
-            ...course,  // Preserve original properties like id, isActive, messages, etc.
+            ...course,  // Preserve original properties like uuid, isActive, messages, etc.
             code: formData.course.code,
             name: formData.course.name,
             description: formData.course.description,
@@ -318,8 +318,8 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="course_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.id == "" ? true : courseState.course.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(courseState.course.id == null ? true : false)} isActivationDisabled={(courseState.course.id == null ? true : false)} isActivating={isActivating} />
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == "" ? true : courseState.course.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(courseState.course.uuid == null ? true : false)} isActivationDisabled={(courseState.course.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <CourseInfo lang={lang} course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />

@@ -13,14 +13,12 @@ export const phoneNumberOrder: Record<string, number> = {
 };
 
 export interface PhoneNumber {
-  id?: any,
   number: string;
   type: PhoneNumberTypeEnum;
 }
 
 export const newPhoneNumber = (type: PhoneNumberTypeEnum): PhoneNumber => {
   let newPhoneNumber: PhoneNumber = {
-    id: null,
     type: type,
     number: ""
   };

@@ -41,7 +41,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                         <Form.Group>
                             <Form.Label className="text-primary" htmlFor="course_info_input_code">{t("course.code")}</Form.Label>
                             <Form.Control type="input" id="course_info_input_code" placeholder={t("course.codePlaceholder")} {...register("course.code")}
-                                className={errors.course?.code ? "input-invalid" : ""} disabled={(course.id !== null ? true : false)} />
+                                className={errors.course?.code ? "input-invalid" : ""} disabled={(course.uuid !== null ? true : false)} />
                             {errors.course?.code && <Form.Text className="text-invalid">{t(errors.course?.code.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>

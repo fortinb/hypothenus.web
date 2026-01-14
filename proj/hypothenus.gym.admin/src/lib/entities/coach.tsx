@@ -3,7 +3,7 @@ import { newPerson, parsePerson, Person, PersonSchema } from './person';
 import { BaseEntity } from './baseEntity';
 
 export interface Coach extends BaseEntity {
-  id?: any;
+  uuid?: any;
   brandId: string;
   gymId: string;
   person: Person;
@@ -11,14 +11,14 @@ export interface Coach extends BaseEntity {
 }
 
 export interface CoachReference extends BaseEntity {
-  id?: any;
+  uuid?: any;
   brandId: string;
   gymId: string;
 }
 
 export const newCoach = (): Coach => {
   let newCoach: Coach = {
-    id: null,
+    uuid: null,
     brandId: "",
     gymId: "",
     person: newPerson(),
@@ -44,7 +44,7 @@ export const CoachSchema = z.object({
 });
 
 export const CoachReferenceSchema = z.object({
-  id: z.any().nullable(),
+  uuid: z.any().nullable(),
   brandId: z.string().min(1),
   gymId: z.string().min(1)
 });

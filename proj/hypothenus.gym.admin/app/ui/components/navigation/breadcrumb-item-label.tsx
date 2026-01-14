@@ -13,6 +13,10 @@ export function BreadcrumbItemLabel({ namespace, translationKey, value }: Props)
     return <>{value}</>;
   }
 
+   if (namespace == "" || translationKey == "") {
+    return <></>;
+  }
+
   const t = useTranslations(namespace);
   const label = t ? t(translationKey) : translationKey; // safe fallback
 
