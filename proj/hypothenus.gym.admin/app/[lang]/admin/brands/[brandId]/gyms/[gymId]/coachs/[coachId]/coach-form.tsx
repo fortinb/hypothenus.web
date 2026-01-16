@@ -218,7 +218,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (coachState.coach.uuid !== "") {
+        if (coachState.coach.uuid !== null) {
 
             if (isEditMode === true) {
                 onCancel();
@@ -238,7 +238,7 @@ export default function CoachForm({ lang, brandId, gymId, coachId, coach }: { la
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (coachState.coach.uuid !== "") {
+        if (coachState.coach.uuid !== null) {
             setShowDeleteConfirmation(true);
         }
     }

@@ -243,7 +243,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (courseState.course.uuid !== "") {
+        if (courseState.course.uuid !== null) {
 
             if (isEditMode === true) {
                 onCancel();
@@ -263,7 +263,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (courseState.course.uuid !== "") {
+        if (courseState.course.uuid !== null) {
             setShowDeleteConfirmation(true);
         }
     }

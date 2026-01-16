@@ -206,7 +206,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (brandState.brand.uuid !== "") {
+        if (brandState.brand.uuid !== null) {
             if (isEditMode === true) {
                 onCancel();
             } else {
@@ -225,7 +225,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (brandState.brand.uuid !== "") {
+        if (brandState.brand.uuid !== null) {
             setShowDeleteConfirmation(true);
         }
     }

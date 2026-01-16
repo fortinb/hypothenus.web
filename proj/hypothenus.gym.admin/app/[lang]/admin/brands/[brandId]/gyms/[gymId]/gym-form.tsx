@@ -206,7 +206,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (gymState.gym.gymId !== "") {
+        if (gymState.gym.uuid !== null) {
             if (isEditMode === true) {
                 onCancel();
             } else {
@@ -225,7 +225,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (gymState.gym.gymId !== "") {
+        if (gymState.gym.uuid !== null) {
             setShowDeleteConfirmation(true);
         }
     }
@@ -271,8 +271,8 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.gymId == "" ? true : gymState.gym.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.gymId == "" ? true : false)} isActivationDisabled={(gymState.gym.gymId == "" ? true : false)} isActivating={isActivating} />
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.uuid == null ? true : gymState.gym.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.uuid == null ? true : false)} isActivationDisabled={(gymState.gym.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <GymInfo gym={gymState.gym} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
