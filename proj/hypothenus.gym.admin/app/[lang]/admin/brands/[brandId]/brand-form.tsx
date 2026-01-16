@@ -22,7 +22,6 @@ import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/me
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
-import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
 
 export default function BrandForm({ lang, brandId, brand }: { lang: string; brandId: string; brand: Brand }) {
     const t = useTranslations("entity");
@@ -207,7 +206,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     function onEdit(e: MouseEvent<HTMLButtonElement>) {
-        if (brandState.brand.brandId !== "") {
+        if (brandState.brand.uuid !== "") {
             if (isEditMode === true) {
                 onCancel();
             } else {
@@ -226,7 +225,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     }
 
     function onDeleteConfirmation(e: MouseEvent<HTMLButtonElement>) {
-        if (brandState.brand.brandId !== "") {
+        if (brandState.brand.uuid !== "") {
             setShowDeleteConfirmation(true);
         }
     }
@@ -269,8 +268,8 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.brandId == "" ? true : brandState.brand.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.brandId == "" ? true : false)} isActivationDisabled={(brandState.brand.brandId == "" ? true : false)} isActivating={isActivating} />
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.uuid == null ? true : brandState.brand.isActive}
+                                    isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.uuid == null ? true : false)} isActivationDisabled={(brandState.brand.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <BrandInfo brand={brandState.brand} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />

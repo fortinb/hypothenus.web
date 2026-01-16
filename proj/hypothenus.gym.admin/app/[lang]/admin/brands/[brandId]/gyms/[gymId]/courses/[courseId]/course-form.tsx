@@ -318,7 +318,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="course_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == "" ? true : courseState.course.isActive}
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == null ? true : courseState.course.isActive}
                                     isEditDisable={isEditMode} isDeleteDisable={(courseState.course.uuid == null ? true : false)} isActivationDisabled={(courseState.course.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <CourseInfo lang={lang} course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
