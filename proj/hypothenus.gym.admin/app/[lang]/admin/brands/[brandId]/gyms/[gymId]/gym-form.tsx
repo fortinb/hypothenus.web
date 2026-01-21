@@ -23,12 +23,14 @@ import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { uploadGymLogo } from "@/app/lib/services/gyms-data-service-client";
 import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 
-export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; brandId: string; gymId: string, gym: Gym }) {
+export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     const t = useTranslations("entity");
     const router = useRouter();
 
     const gymState: GymState = useSelector((state: any) => state.gymState);
+    const brandState: BrandState = useSelector((state: any) => state.brandState);
     const dispatch = useAppDispatch();
 
     // Form State
@@ -62,33 +64,34 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     useEffect(() => {
         dispatch(updateGymState(gym));
 
-        if (gymId === "new") {
+        if (gym.uuid === null) {
             setIsEditMode(true);
         }
-    }, [dispatch, gym, gymId]);
+    }, [dispatch, gym]);
 
     const onSubmit: SubmitHandler<z.infer<typeof GymSchema>> = (formData: z.infer<typeof GymSchema>) => {
         setIsEditMode(false);
 
         let gym: Gym = mapFormToEntity(formData, gymState.gym);
 
-        if (gymId === "new") {
+        if (gym.uuid === null) {
             createGym(gym);
         } else {
             saveGym(gym);
         }
     }
 
-    const uploadLogo = async (gymId: string, logo: Blob) => {
+    const uploadLogo = async (brandUuid: string, gymUuid: string, logo: Blob) => {
         const formData = new FormData();
         formData.append('file', logo);
 
-        let response = await uploadGymLogo(brandId, gymId, formData);
-
+        let response = await uploadGymLogo(brandUuid, gymUuid, formData);
         return response;
     }
 
     const createGym = (gym: Gym) => {
+        gym.brandUuid = brandState.brand.uuid;
+
         createEntity(
             gym,
             // Before save
@@ -99,12 +102,13 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
                 if (duplicate) {
-                    formContext.setError("gymId", { type: "manual", message: t("gym.validation.alreadyExists") });
+                    formContext.setError("code", { type: "manual", message: t("gym.validation.alreadyExists") });
+                    showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
                     dispatch(updateGymState(entity));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${brandId}/gyms/${entity.gymId}`);
+                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/gyms/${entity.uuid}`);
                 }
             },
             // Error
@@ -117,7 +121,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const saveGym = (gym: Gym) => {
         saveEntity(
-            gymId, gym, `/${lang}/admin/brands/${brandId}/gyms/${gymId}`,
+            gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
             // Before save
             async (entity) => {
                 await beforeSave(entity);
@@ -138,7 +142,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const beforeSave = async (gym: Gym) => {
         if (logoToUpload) {
-            const logoUri = await uploadLogo(gym.gymId, logoToUpload);
+            const logoUri = await uploadLogo(gym.brandUuid, gym.uuid, logoToUpload);
             gym.logoUri = logoUri;
             setLogoToUpload(undefined);
         }
@@ -146,7 +150,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const activateGym = (gym: Gym) => {
         activateEntity(
-            gymId, gym, `/${lang}/admin/brands/${brandId}/gyms/${gymId}`,
+            gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
             (entity) => {
                 dispatch(updateGymState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -159,7 +163,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const deactivateGym = (gym: Gym) => {
         deactivateEntity(
-            gymId, gym, `/${lang}/admin/brands/${brandId}/gyms/${gymId}`,
+            gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
             (entity) => {
                 dispatch(updateGymState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -172,13 +176,13 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     const deleteGym = (gym: Gym) => {
         deleteEntity(
-            gymId, gym, `/${lang}/admin/brands/${brandId}/gyms/${gymId}`,
+            gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
             () => {
                 dispatch(clearGymState());
                 showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
-                    router.push(`/${lang}/admin/brands/${brandId}/gyms`);
+                    router.push(`/${lang}/admin/brands/${brandState.brand.uuid}/gyms`);
                 }, 1000);
             },
             (result) => {
@@ -192,8 +196,8 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
         setIsEditMode(false);
         formContext.reset(gymState.gym);
 
-        if (gymId == "new") {
-            router.push(`/${lang}/admin/brands/${brandId}/gyms`);
+        if (gymState.gym.uuid === null) {
+            router.push(`/${lang}/admin/brands/${brandState.brand.uuid}/gyms`);
         }
     }
 
@@ -232,7 +236,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
 
     function mapEntityToForm(gym: Gym): z.infer<typeof GymSchema> {
         return {
-            gymId: gym.gymId,
+            code: gym.code,
             name: gym.name,
             address: gym.address,
             email: gym.email,
@@ -249,7 +253,7 @@ export default function GymForm({ lang, brandId, gymId, gym }: { lang: string; b
     function mapFormToEntity(formData: z.infer<typeof GymSchema>, gym: Gym): Gym {
         return {
             ...gym,  // Preserve original properties like id, isActive, messages, etc.
-            gymId: formData.gymId,
+            code: formData.code,
             name: formData.name,
             address: formData.address,
             email: formData.email,

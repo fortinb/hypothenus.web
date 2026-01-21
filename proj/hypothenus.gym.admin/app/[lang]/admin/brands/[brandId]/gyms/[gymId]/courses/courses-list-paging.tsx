@@ -12,9 +12,11 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoursesList from "./courses-list";
 import { clearCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { fetchCourses } from "@/app/lib/services/courses-data-service-client";
+import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 
-export default function CoursesListPaging({ lang, brandId, gymId }: { lang: string; brandId: string; gymId: string }) {
+export default function CoursesListPaging({ lang }: { lang: string; }) {
   const coursesStatePaging: CoursesStatePaging = useSelector((state: any) => state.coursesStatePaging);
+  const gymState: GymState = useSelector((state: any) => state.gymState);
   const dispatch = useAppDispatch();
 
   const [pageOfCourses, setPageOfCourses] = useState<Page<Course>>();
@@ -25,7 +27,7 @@ export default function CoursesListPaging({ lang, brandId, gymId }: { lang: stri
     const fetchCoursesPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfCourses: Page<Course> = await fetchCourses(brandId, gymId, page, pageSize, includeInactive);
+      let pageOfCourses: Page<Course> = await fetchCourses(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
 
       setPageOfCourses(pageOfCourses);
       if (pageOfCourses?.content && pageOfCourses?.pageable) {
@@ -40,7 +42,7 @@ export default function CoursesListPaging({ lang, brandId, gymId }: { lang: stri
 
     fetchCoursesPage(coursesStatePaging.page, coursesStatePaging.pageSize, coursesStatePaging.includeInactive);
 
-  }, [dispatch, coursesStatePaging, brandId, gymId]);
+  }, [dispatch, coursesStatePaging, gymState]);
 
   const onFirstPage = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
@@ -74,10 +76,10 @@ export default function CoursesListPaging({ lang, brandId, gymId }: { lang: stri
             <Loader />
           </div>
         }
- 
+
         {!isLoading &&
           <div className="overflow-auto flex-fill w-100 h-100">
-            <CoursesList lang={lang} brandId={brandId} gymId={gymId} pageOfCourses={pageOfCourses} />
+            <CoursesList lang={lang} pageOfCourses={pageOfCourses} />
           </div>
         }
 

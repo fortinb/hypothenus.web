@@ -29,9 +29,9 @@ function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestCon
   return request;
 }
 
-export async function getCourse(brandId: string, gymId: string, courseId: string): Promise<Course> {
+export async function getCourse(brandUuid: string, gymUuid: string, courseUuid: string): Promise<Course> {
 
-  const getURI: String =  `/v1/brands/${brandId}/gyms/${gymId}/courses/${courseId}`;
+  const getURI: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/courses/${courseUuid}`;
 
   const request = initRequest({});
 
@@ -40,9 +40,9 @@ export async function getCourse(brandId: string, gymId: string, courseId: string
   return parseCourse(response.data);
 }
 
-export async function postActivateCourse(brandId: string, gymId: string, courseId: string): Promise<Course> {
+export async function postActivateCourse(brandUuid: string, gymUuid: string, courseUuid: string): Promise<Course> {
 
-  const postURI: String =  `/v1/brands/${brandId}/gyms/${gymId}/courses/${courseId}/activate`;
+  const postURI: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/courses/${courseUuid}/activate`;
 
   const request = initRequest({});
 
@@ -51,9 +51,9 @@ export async function postActivateCourse(brandId: string, gymId: string, courseI
   return parseCourse(response.data);
 }
 
-export async function postDeactivateCourse(brandId: string, gymId: string, courseId: string): Promise<Course> {
+export async function postDeactivateCourse(brandUuid: string, gymUuid: string, courseUuid: string): Promise<Course> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/courses/${courseId}/deactivate`; 
+  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/courses/${courseUuid}/deactivate`; 
 
   const request = initRequest({});
 
@@ -62,9 +62,9 @@ export async function postDeactivateCourse(brandId: string, gymId: string, cours
  return parseCourse(response.data);
 }
 
-export async function delCourse(brandId: string, gymId: string, courseId: string): Promise<void> {
+export async function delCourse(brandUuid: string, gymUuid: string, courseUuid: string): Promise<void> {
 
-  const delURI: String = `/v1/brands/${brandId}/gyms/${gymId}/courses/${courseId}`
+  const delURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/courses/${courseUuid}`
 
   const request = initRequest({});
 
@@ -73,9 +73,9 @@ export async function delCourse(brandId: string, gymId: string, courseId: string
   return response.data;
 }
 
-export async function postCourse(brandId: string, gymId: string, course: Course): Promise<Course> {
+export async function postCourse(course: Course): Promise<Course> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/courses`;
+  const postURI: String = `/v1/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses`;
 
   const request = initRequest({});
 
@@ -84,9 +84,9 @@ export async function postCourse(brandId: string, gymId: string, course: Course)
   return parseCourse(response.data);
 }
 
-export async function putCourse(brandId: string, gymId: string, courseId: string, course: Course): Promise<Course> {
+export async function putCourse(course: Course): Promise<Course> {
 
-  const putURI: String = `/v1/brands/${brandId}/gyms/${gymId}/courses/${courseId}`;
+  const putURI: String = `/v1/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`;
 
   const request = initRequest({});
 

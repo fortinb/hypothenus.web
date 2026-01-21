@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import { getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 
-export default function CourseListDetails({ lang, brandId, gymId, courseId, course }: { lang: string; brandId: string; gymId: string; courseId: string;   course: Course }) {
+export default function CourseListDetails({ lang, course }: { lang: string; course: Course }) {
   const t = useTranslations("course");
 
   return (
@@ -15,7 +15,7 @@ export default function CourseListDetails({ lang, brandId, gymId, courseId, cour
       <Card>
         <Card.Body className={"m-2" + (course.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${courseId}`}> {getCourseName(course, lang as LanguageEnum )}</Link>
+            <Link className="link-element" href={`/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`}> {getCourseName(course, lang as LanguageEnum )}</Link>
           </Card.Title>
           <Card.Text>
             {course.isActive == false &&

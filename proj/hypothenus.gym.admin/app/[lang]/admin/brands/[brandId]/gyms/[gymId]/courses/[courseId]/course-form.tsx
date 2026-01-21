@@ -26,6 +26,7 @@ import { activateCourseAction, createCourseAction, deactivateCourseAction, delet
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { localesConfigLanguageOrder } from "@/i18n/locales-client";
+import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 
 export interface CourseFormData {
     course: z.infer<typeof CourseSchema>;
@@ -37,11 +38,8 @@ export const CourseFormSchema = z.object({
     selectedCoachItems: z.any().array().min(0)
 });
 
-export default function CourseForm({ lang, brandId, gymId, courseId, course, initialAvailableCoachItems, initialSelectedCoachItems }: {
+export default function CourseForm({ lang, course, initialAvailableCoachItems, initialSelectedCoachItems }: {
     lang: string;
-    brandId: string;
-    gymId: string,
-    courseId: string,
     course: Course,
     coachs: Coach[],
     initialAvailableCoachItems: CoachSelectedItem[],
@@ -51,6 +49,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     const router = useRouter();
 
     const courseState: CourseState = useSelector((state: any) => state.courseState);
+    const gymState: GymState = useSelector((state: any) => state.gymState);
     const dispatch = useAppDispatch();
 
     // Form State
@@ -91,7 +90,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     useEffect(() => {
         dispatch(updateCourseState(course));
 
-        if (courseId === "new") {
+        if (course.uuid === null) {
             setIsEditMode(true);
         }
 
@@ -102,7 +101,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
             setIsCoachsItemInitialized(true);
         }
-    }, [dispatch, course, courseId, initialAvailableCoachItems, initialSelectedCoachItems, isCoachsItemsInitialized]);
+    }, [dispatch, course, initialAvailableCoachItems, initialSelectedCoachItems, isCoachsItemsInitialized]);
 
     // Watch the entire form
     //const formData = formContext.watch();
@@ -122,7 +121,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
         let course: Course = mapFormToEntity(formData, courseState.course);
 
-        if (courseId == "new") {
+        if (course.uuid === null) {
             createCourse(course, formData.selectedCoachItems);
         } else {
             saveCourse(course, formData.selectedCoachItems);
@@ -130,6 +129,9 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
     }
 
     const createCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
+        course.brandUuid = gymState.gym.brandUuid;
+        course.gymUuid = gymState.gym.uuid;
+
         createEntity(
             course,
             // Before save
@@ -140,11 +142,12 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("course.code", { type: "manual", message: t("course.validation.alreadyExists") });
+                    showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
                     setOriginalSelectedCoachItems(selectedCoachItems);
 
-                    router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${entity.uuid}`);
+                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/gyms/${entity.gymUuid}/courses/${entity.uuid}`);
                 }
             },
             // Error
@@ -157,7 +160,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const saveCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
         saveEntity(
-            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
             // Before save
             (_entity) => {
             },
@@ -179,7 +182,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const activateCourse = (course: Course) => {
         activateEntity(
-            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
             (entity) => {
                 dispatch(updateCourseState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -192,7 +195,7 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const deactivateCourse = (course: Course) => {
         deactivateEntity(
-            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
             (entity) => {
                 dispatch(updateCourseState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -205,13 +208,13 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
 
     const deleteCourse = (course: Course) => {
         deleteEntity(
-            course.uuid, course, `/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
             () => {
                 dispatch(clearCourseState());
                 showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
-                    router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses`);
+                    router.push(`/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses`);
                 }, 1000);
             },
             (result) => {
@@ -229,8 +232,8 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             selectedCoachItems: originalSelectedCoachItems
         },);
 
-        if (courseId == "new") {
-            router.push(`/${lang}/admin/brands/${brandId}/gyms/${gymId}/courses`);
+        if (courseState.course.uuid === null) {
+            router.push(`/${lang}/admin/brands/${courseState.course.brandUuid}/gyms/${courseState.course.gymUuid}/courses`);
         }
     }
 
@@ -286,8 +289,8 @@ export default function CourseForm({ lang, brandId, gymId, courseId, course, ini
             coachs: course.coachs?.map((coach) => {
                 return {
                     uuid: coach.uuid,
-                    brandId: coach.brandId,
-                    gymId: coach.gymId
+                    brandUuid: coach.brandUuid,
+                    gymUuid: coach.gymUuid
                 }
             })
         }

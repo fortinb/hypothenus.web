@@ -5,9 +5,9 @@ import { Contact, ContactSchema, newContact, parseContact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
 
 export interface Gym extends BaseEntity {
+  brandUuid?: any;
   uuid?: any;
-  brandId: string;
-  gymId: string;
+  code: string;
   name: string;
   address: Address;
   email?: string;
@@ -21,8 +21,8 @@ export interface Gym extends BaseEntity {
 export const newGym = (): Gym => {
   let newGym: Gym = {
     uuid: null,
-    brandId: "",
-    gymId: "",
+    brandUuid: null,
+    code: "",
     name: "",
     address: newAddress(),
     email: undefined,
@@ -69,7 +69,7 @@ export const parseGym = (data: any): Gym => {
 }
 
 export const GymSchema = z.object({
-  gymId: z.string().trim().min(1, { message: "gym.validation.codeRequired" }).max(20, { message: "gym.validation.codeMaxLength" }).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
+  code: z.string().trim().min(1, { message: "gym.validation.codeRequired" }).max(20, { message: "gym.validation.codeMaxLength" }).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
   name: z.string().min(1, { message: "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength" }),
   address: AddressSchema,
   email: z.email("gym.validation.emailInvalid").optional().or(z.literal("")),

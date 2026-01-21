@@ -11,7 +11,7 @@ export default function BrandsList({ lang, pageOfBrands }: { lang: string; pageO
     <div className="d-flex flex-row flex-wrap mt-2 mb-2">
 
       {pageOfBrands?.content.map((brand: Brand) => {
-        return <BrandListDetails key={brand.brandId} lang={lang} brandId={brand.brandId} brand={brand} ></BrandListDetails>
+        return <BrandListDetails key={brand.uuid} lang={lang} brand={brand} ></BrandListDetails>
       })}
 
     </div>

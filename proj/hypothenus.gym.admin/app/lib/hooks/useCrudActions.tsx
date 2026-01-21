@@ -37,11 +37,11 @@ export function useCrudActions<T>({
     });
   };
 
-  const saveEntity = (entityId: string, entity: T, entityPath?: string, beforeSave?: (entity: T) => void, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
+  const saveEntity = (entity: T, entityPath?: string, beforeSave?: (entity: T) => void, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
     startSave(async () => {
       beforeSave?.(entity);
 
-      const result = await actions.save(entityId, entity, entityPath);
+      const result = await actions.save(entity, entityPath);
 
       if (!result.ok) {
         onError?.(result);
@@ -52,9 +52,9 @@ export function useCrudActions<T>({
     });
   };
 
-  const activateEntity = (entityId: string, entity: T, entityPath?: string, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
+  const activateEntity = (entity: T, entityPath?: string, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
     startActivate(async () => {
-      const result = await actions.activate(entityId, entity, entityPath);
+      const result = await actions.activate(entity, entityPath);
 
       if (!result.ok) {
         onError?.(result);
@@ -65,9 +65,9 @@ export function useCrudActions<T>({
     });
   };
 
-  const deactivateEntity = (entityId: string, entity: T, entityPath?: string, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
+  const deactivateEntity = (entity: T, entityPath?: string, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
     startActivate(async () => {
-      const result = await actions.deactivate(entityId, entity, entityPath);
+      const result = await actions.deactivate(entity, entityPath);
 
       if (!result.ok) {
         onError?.(result);
@@ -78,9 +78,9 @@ export function useCrudActions<T>({
     });
   };
 
-  const deleteEntity = (entityId: string, entity: T, entityPath?: string, onSuccess?: () => void, onError?: (result: ActionResult<T>) => void) => {
+  const deleteEntity = (entity: T, entityPath?: string, onSuccess?: () => void, onError?: (result: ActionResult<T>) => void) => {
     startDelete(async () => {
-      const result = await actions.delete(entityId, entity, entityPath);
+      const result = await actions.delete(entity, entityPath);
 
       if (!result.ok) {
         onError?.(result);

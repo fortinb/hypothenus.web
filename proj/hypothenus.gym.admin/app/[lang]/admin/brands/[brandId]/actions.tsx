@@ -5,12 +5,10 @@ import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action
 import { Brand } from '@/src/lib/entities/brand';
 import { revalidatePath } from 'next/cache';
 
-export async function saveBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
+export async function saveBrandAction(data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!data.brandId || !brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
 
   try {
     // 2. Persist 
@@ -27,8 +25,8 @@ export async function saveBrandAction(brandId: string, data: Brand, path: string
 
 export async function createBrandAction(data: Brand): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
+  if (!data.code)
+    return failure({ type: ErrorType.Validation, message: 'Brand code is required' });
 
   try {
     // 2. Persist
@@ -40,18 +38,14 @@ export async function createBrandAction(data: Brand): Promise<ActionResult<Brand
   }
 }
 
-export async function activateBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
+export async function activateBrandAction(data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });  
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Brand = await postActivateBrand(brandId);
+    let result: Brand = await postActivateBrand(data.uuid);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -62,18 +56,14 @@ export async function activateBrandAction(brandId: string, data: Brand, path: st
   }
 }
 
-export async function deactivateBrandAction(brandId: string, data: Brand, path: string): Promise<ActionResult<Brand>> {
+export async function deactivateBrandAction(data: Brand, path: string): Promise<ActionResult<Brand>> {
   // 1. Validation (server-side)
-  if (!brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });    
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Brand = await postDeactivateBrand(brandId);
+    let result: Brand = await postDeactivateBrand(data.uuid);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -84,18 +74,14 @@ export async function deactivateBrandAction(brandId: string, data: Brand, path: 
   }
 }
 
-export async function deleteBrandAction(brandId: string, data: Brand): Promise<ActionResult<void>> {
+export async function deleteBrandAction(data: Brand): Promise<ActionResult<void>> {
   // 1. Validation (server-side)
-  if (!brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });  
-  if (data.brandId !== brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId mismatch' });  
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });  
   
   try {
     // 2. Persist (DB, API, etc.)
-    await delBrand(brandId);
+    await delBrand(data.uuid);
 
     return success(undefined);
   } catch (error: any) {

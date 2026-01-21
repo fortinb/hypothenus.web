@@ -23,10 +23,10 @@ export default async function Coachs({ params }: PageProps) {
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-        <CoachsMenu lang={lang} brandId={brandId} gymId={gymId} />
+        <CoachsMenu lang={lang} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <CoachsListPaging lang={lang} brandId={brandId} gymId={gymId} />
+        <CoachsListPaging lang={lang} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100">
 

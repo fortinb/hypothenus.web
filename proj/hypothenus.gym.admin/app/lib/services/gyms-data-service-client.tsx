@@ -2,13 +2,12 @@
 
 import { Gym } from "@/src//lib/entities/gym";
 import { Page } from "@/src//lib/entities/page";
-import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor-client";
 import { HeaderDefinition, initRequest } from "./service-request";
 
-export async function fetchGyms(brandId: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
+export async function fetchGyms(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
 
-  const listURI: String = `/v1/brands/${brandId}/gyms`;
+  const listURI: String = `/v1/brands/${brandUuid}/gyms`;
 
   const request = initRequest({
     page: page,
@@ -21,9 +20,9 @@ export async function fetchGyms(brandId: string, page: number, pageSize: number,
   return response.data;
 }
 
-export async function searchGyms(brandId: string, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Gym>> {
+export async function searchGyms(brandUuid: string, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Gym>> {
 
-  const searchURI: String = `/v1/brands/${brandId}/gyms/search`;
+  const searchURI: String = `/v1/brands/${brandUuid}/gyms/search`;
 
   const request = initRequest({
     page: page,
@@ -37,9 +36,9 @@ export async function searchGyms(brandId: string, page: number, pageSize: number
   return response.data;
 }
 
-export async function uploadGymLogo(brandId: string, gymId: string, multipartFormData: FormData): Promise<string> {
+export async function uploadGymLogo(brandUuid: string, gymUuid: string, multipartFormData: FormData): Promise<string> {
 
-  const metadata: String =  `/v1/brands/${brandId}/gyms/${gymId}/logo`;
+  const metadata: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/logo`;
   const postURI: String = `/v1/files/images/upload`;
   const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
   const request = initRequest({}, [header]);

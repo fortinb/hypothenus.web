@@ -6,7 +6,7 @@ import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } f
 
 export interface Brand extends BaseEntity {
   uuid?: any;
-  brandId: string;
+  code: string;
   name: string;
   address: Address;
   email?: string;
@@ -20,7 +20,7 @@ export interface Brand extends BaseEntity {
 export const newBrand = (): Brand => {
   let newBrand: Brand = {
     uuid: null,
-    brandId: "",
+    code: "",
     name: "",
     address: newAddress(),
     email: undefined,
@@ -66,7 +66,7 @@ export const parseBrand = (data: any): Brand => {
 }
 
 export const BrandSchema = z.object({
-  brandId: z.string().trim().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }).regex(/^\S+$/, 'brand.validation.noSpaceAllowed'),
+  code: z.string().trim().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }).regex(/^\S+$/, 'brand.validation.noSpaceAllowed'),
   name: z.string().min(1, { message: "brand.validation.nameRequired" }).max(100, { message: "brand.validation.nameMaxLength" }),
   address: AddressSchema,
   email: z.email("brand.validation.emailInvalid").optional().or(z.literal("")),

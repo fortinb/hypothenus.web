@@ -6,6 +6,7 @@ import CoachResume from "./coach-resume";
 import { Coach, newCoach } from "@/src/lib/entities/coach";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { formatPersonName } from "@/src/lib/entities/person";
+import { redirect } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string, gymId: string, coachId: string }>;
@@ -15,13 +16,15 @@ export default async function CoachPage({ params }: PageProps) {
   const { lang, brandId, gymId, coachId } = await params;
 
   let coach: Coach;
-
-  if (coachId === "new") {
-    coach = newCoach();
-    coach.brandId = brandId;
-    coach.gymId = gymId;
-  } else {
-    coach = await getCoach(brandId, gymId, coachId);
+  try {
+    if (coachId === "new") {
+      coach = newCoach();
+    } else {
+      coach = await getCoach(brandId, gymId, coachId);
+    }
+  } catch (error) {
+    console.error("Error fetching coach:", error);
+    return redirect(`/${lang}/error`);
   }
 
   return (
@@ -39,10 +42,10 @@ export default async function CoachPage({ params }: PageProps) {
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <CoachMenu lang={lang} brandId={brandId} gymId={gymId} coachId={coachId} />
+        <CoachMenu lang={lang} coach={coach} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <CoachForm lang={lang} brandId={brandId} gymId={gymId} coachId={coachId} coach={coach} />
+        <CoachForm lang={lang} coach={coach} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
         <CoachResume />

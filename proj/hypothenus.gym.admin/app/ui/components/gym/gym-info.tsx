@@ -49,10 +49,10 @@ export default function GymInfo({ gym, isEditMode, isCancelling, uploadHandler }
                     <Col xs={6} >
                         <Form.Group>
                             <Form.Label className="text-primary" htmlFor="gym_info_input_code">{t("gym.code")}</Form.Label>
-                            <Form.Control type="input" id="gym_info_input_code" placeholder={t("gym.codePlaceholder")} {...register("gymId")}
+                            <Form.Control type="input" id="gym_info_input_code" placeholder={t("gym.codePlaceholder")} {...register("code")}
                                 className={errors.gymId ? "input-invalid" : ""}
-                                disabled={(gym?.gymId ? true : false)} />
-                            {errors.gymId && <Form.Text className="text-invalid">{t(errors.gymId.message as string)}</Form.Text>}
+                                disabled={(gym?.code ? true : false)} />
+                            {errors.code && <Form.Text className="text-invalid">{t(errors.code.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>
                     <Col xs={6} >

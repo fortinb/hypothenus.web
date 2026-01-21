@@ -36,9 +36,9 @@ export async function searchBrands(page: number, pageSize: number, includeInacti
   return response.data;
 }
 
-export async function uploadBrandLogo(brandId: string, multipartFormData: FormData): Promise<string> {
+export async function uploadBrandLogo(brandUuid: string, multipartFormData: FormData): Promise<string> {
 
-  const metadata: String =  `/v1/brands/${brandId}/logo`;
+  const metadata: String =  `/v1/brands/${brandUuid}/logo`;
   const postURI: String = `/v1/files/images/upload`;
   const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
   const request = initRequest({}, [header]);

@@ -8,8 +8,8 @@ import { localesConfig } from "@/i18n/locales-client";
 
 export interface Course extends BaseEntity {
   uuid?: any;
-  brandId: string;
-  gymId: string;
+  brandUuid?: any;
+  gymUuid?: any;
   code: string;
   name: LocalizedString[];
   description: LocalizedString[];
@@ -36,8 +36,8 @@ export const parseCourse = (data: any): Course => {
 export const newCourse = (): Course => {
   let newCourse: Course = {
     uuid: null,
-    brandId: "",
-    gymId: "",
+    brandUuid: null,
+    gymUuid: null,
     code: "",
     name: [],
     description: [],

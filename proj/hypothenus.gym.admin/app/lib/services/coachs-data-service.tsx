@@ -30,9 +30,9 @@ function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestCon
   return request;
 }
 
-export async function fetchCoachs(brandId: string, gymId: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
+export async function fetchCoachs(brandUuid: string, gymUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
 
-  const listURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs`;
+  const listURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs`;
 
   const request = initRequest({
     page: page,
@@ -45,9 +45,9 @@ export async function fetchCoachs(brandId: string, gymId: string, page: number, 
   return response.data;
 }
 
-export async function getCoach(brandId: string, gymId: string, coachId: string): Promise<Coach> {
+export async function getCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Coach> {
 
-  const getURI: String =  `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`;
+  const getURI: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}`;
 
   const request = initRequest({});
 
@@ -56,20 +56,9 @@ export async function getCoach(brandId: string, gymId: string, coachId: string):
   return parseCoach(response.data);
 }
 
-export async function postActivateCoach(brandId: string, gymId: string, coachId: string): Promise<Coach> {
+export async function postActivateCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Coach> {
 
-  const postURI: String =  `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/activate`;
-
-  const request = initRequest({});
-
-  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
-
-  return parseCoach(response.data);
-}
-
-export async function postDeactivateCoach(brandId: string, gymId: string, coachId: string): Promise<Coach> {
-
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/deactivate`; 
+  const postURI: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/activate`;
 
   const request = initRequest({});
 
@@ -78,9 +67,20 @@ export async function postDeactivateCoach(brandId: string, gymId: string, coachI
   return parseCoach(response.data);
 }
 
-export async function delCoach(brandId: string, gymId: string, coachId: string): Promise<void> {
+export async function postDeactivateCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Coach> {
 
-  const delURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`
+  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/deactivate`; 
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return parseCoach(response.data);
+}
+
+export async function delCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<void> {
+
+  const delURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}`
 
   const request = initRequest({});
 
@@ -89,9 +89,9 @@ export async function delCoach(brandId: string, gymId: string, coachId: string):
   return response.data;
 }
 
-export async function postCoach(brandId: string, gymId: string, coach: Coach): Promise<Coach> {
+export async function postCoach(coach: Coach): Promise<Coach> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs`;
+  const postURI: String = `/v1/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs`;
 
   const request = initRequest({});
 
@@ -100,9 +100,9 @@ export async function postCoach(brandId: string, gymId: string, coach: Coach): P
   return parseCoach(response.data);
 }
 
-export async function putCoach(brandId: string, gymId: string, coachId: string, coach: Coach): Promise<Coach> {
+export async function putCoach(coach: Coach): Promise<Coach> {
 
-  const putURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`;
+  const putURI: String = `/v1/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`;
 
   const request = initRequest({});
 

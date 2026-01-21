@@ -6,7 +6,7 @@ import { formatAddress } from "@/src/lib/entities/address";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
 
-export default function GymListDetails({ lang, brandId, gymId, gym }: { lang: string; brandId: string; gymId: string; gym: Gym }) {
+export default function GymListDetails({ lang, gym }: { lang: string; gym: Gym }) {
   const t = useTranslations("gym");
   
   return (
@@ -14,12 +14,12 @@ export default function GymListDetails({ lang, brandId, gymId, gym }: { lang: st
       <Card>
         <Card.Body className={"m-2" + (gym.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${lang}/admin/brands/${brandId}/gyms/${gymId}`}> {gym.name}</Link>
+            <Link className="link-element" href={`/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`}> {gym.name}</Link>
           </Card.Title>
           <Card.Text>
             <span className="text-primary">{formatAddress(gym.address)}</span><br />
             <Link className="link-element" href={`mailto:${gym.email}`}>{gym.email}</Link><br />
-            <span className="text-primary">{gym.gymId}</span><br />
+            <span className="text-primary">{gym.code}</span><br />
 
             {gym.isActive == false &&
               <div>

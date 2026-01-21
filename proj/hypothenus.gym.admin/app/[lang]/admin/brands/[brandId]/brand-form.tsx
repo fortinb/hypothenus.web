@@ -23,7 +23,7 @@ import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
 
-export default function BrandForm({ lang, brandId, brand }: { lang: string; brandId: string; brand: Brand }) {
+export default function BrandForm({ lang, brand }: { lang: string; brand: Brand }) {
     const t = useTranslations("entity");
     const router = useRouter();
 
@@ -61,29 +61,42 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     useEffect(() => {
         dispatch(updateBrandState(brand));
 
-        if (brandId === "new") {
+        if (brand.uuid === null) {
             setIsEditMode(true);
         }
 
-    }, [dispatch, brand, brandId]);
+    }, [dispatch, brand]);
+
+        // Watch the entire form
+    const formData = formContext.watch();
+
+    useEffect(() => {
+         // Log the data to the console every time there is an error
+         const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
+         if (hasErrors) {
+             console.log("Current Form errors:", formContext.formState.errors);
+         }
+ 
+         // console.log("Current Form Data:", formData);
+     }, [formData]); 
 
     const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);
 
         let brand: Brand = mapFormToEntity(formData, brandState.brand);
 
-        if (brandId === "new") {
+        if (brand.uuid === null) {
             createBrand(brand);
         } else {
             saveBrand(brand);
         }
     }
 
-    const uploadLogo = async (gymId: string, logo: Blob) => {
+    const uploadLogo = async (brandUuid: string, logo: Blob) => {
         const formData = new FormData();
         formData.append('file', logo);
 
-        let response = await uploadBrandLogo(brandId, formData);
+        let response = await uploadBrandLogo(brandUuid, formData);
 
         return response;
     }
@@ -99,12 +112,13 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
                 if (duplicate) {
-                    formContext.setError("brandId", { type: "manual", message: t("brand.validation.alreadyExists") });
+                    formContext.setError("code", { type: "manual", message: t("brand.validation.alreadyExists") });
+                    showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
                     dispatch(updateBrandState(entity));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${entity.brandId}`);
+                    router.push(`/${lang}/admin/brands/${entity.uuid}`);
                 }
             },
             // Error
@@ -117,7 +131,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     const saveBrand = (brand: Brand) => {
         saveEntity(
-            brandId, brand, `/${lang}/admin/brands/${brand.brandId}`,
+            brand, `/${lang}/admin/brands/${brand.uuid}`,
             // Before save
             async (entity) => {
                 await beforeSave(entity);
@@ -138,7 +152,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     const beforeSave = async (brand: Brand) => {
         if (logoToUpload) {
-            const logoUri = await uploadLogo(brand.brandId, logoToUpload);
+            const logoUri = await uploadLogo(brand.uuid, logoToUpload);
             brand.logoUri = logoUri;
             setLogoToUpload(undefined);
         }
@@ -146,7 +160,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     const activateBrand = (brand: Brand) => {
         activateEntity(
-            brandId, brand, `/${lang}/admin/brands/${brand.brandId}`,
+            brand, `/${lang}/admin/brands/${brand.uuid}`,
             (entity) => {
                 dispatch(updateBrandState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -159,7 +173,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     const deactivateBrand = (brand: Brand) => {
         deactivateEntity(
-            brandId, brand, `/${lang}/admin/brands/${brand.brandId}`,
+            brand, `/${lang}/admin/brands/${brand.uuid}`,
             (entity) => {
                 dispatch(updateBrandState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -172,7 +186,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
 
     const deleteBrand = (brand: Brand) => {
         deleteEntity(
-            brandId, brand, `/${lang}/admin/brands/${brand.brandId}`,
+            brand, `/${lang}/admin/brands/${brand.uuid}`,
             () => {
                 dispatch(clearBrandState());
                 showResultToast(true, t("action.deleteSuccess"));
@@ -192,7 +206,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
         setIsCancelling(true);
         formContext.reset(brandState.brand);
 
-        if (brandId == "new") {
+        if (brandState.brand.uuid === null) {
             router.push(`/${lang}/admin/brands`);
         }
     }
@@ -233,7 +247,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     // Update mapEntityToForm to return the schema-compatible object (exclude non-schema properties)
     function mapEntityToForm(brand: Brand): z.infer<typeof BrandSchema> {
         return {
-            brandId: brand.brandId,
+            code: brand.code,
             name: brand.name,
             address: brand.address,
             email: brand.email,
@@ -247,7 +261,7 @@ export default function BrandForm({ lang, brandId, brand }: { lang: string; bran
     function mapFormToEntity(formData: z.infer<typeof BrandSchema>, brand: Brand): Brand {
         return {
             ...brand,  // Preserve original properties like id, isActive, messages, etc.
-            brandId: formData.brandId,
+            code: formData.code,
             name: formData.name,
             address: formData.address,
             email: formData.email,

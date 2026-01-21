@@ -10,9 +10,11 @@ import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { GymsStatePaging, includeInactive } from "@/app/lib/store/slices/gyms-state-paging-slice";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 
-export default function GymsMenu({ lang, brandId }: { lang: string; brandId: string }) {
+export default function GymsMenu({ lang }: { lang: string; }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
+  const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
   const t = useTranslations("gym");
 
@@ -38,7 +40,7 @@ export default function GymsMenu({ lang, brandId }: { lang: string; brandId: str
               <div className="btn-navigation m-2">
                 <div className="d-flex flex-column justify-content-center h-100">
                   <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${lang}/admin/brands/${brandId}/gyms/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                    <Link className="link-element" href={`/${lang}/admin/brands/${brandState.brand.uuid}/gyms/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("list.menu.add")}</span>

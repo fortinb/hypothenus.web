@@ -5,7 +5,7 @@ import Link from "next/link";
 import Card from "react-bootstrap/Card";
 import { formatAddress } from "@/src/lib/entities/address";
 
-export default function BrandListDetails({ lang, brandId, brand }: { lang: string; brandId: string; brand: any }) {
+export default function BrandListDetails({ lang, brand }: { lang: string; brand: any }) {
   const t = useTranslations("brand");
 
   return (
@@ -13,14 +13,14 @@ export default function BrandListDetails({ lang, brandId, brand }: { lang: strin
       <Card>
         <Card.Body className={"m-2"}>
           <Card.Title>
-            <Link className="link-element" href={`/${lang}/admin/brands/${brandId}`}>
+            <Link className="link-element" href={`/${lang}/admin/brands/${brand.uuid}`}>
               {brand.name}
             </Link>
           </Card.Title>
           <Card.Text>
             <span className="text-primary">{formatAddress(brand.address)}</span><br />
             <Link className="link-element" href={`mailto:${brand.email}`}>{brand.email}</Link><br />
-            <span className="text-primary">{brand.brandId}</span><br />
+            <span className="text-primary">{brand.code}</span><br />
 
             {brand.isActive == false &&
               <div>

@@ -6,9 +6,9 @@ import axiosInstance from "@/app/lib/http/axiosInterceptor-client";
 import { HeaderDefinition, initRequest } from "./service-request";
 
 
-export async function fetchCoachs(brandId: string, gymId: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
+export async function fetchCoachs(brandUuid: string, gymUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
 
-  const listURI: String = `/v1/brands/${brandId}/gyms/${gymId}/coachs`;
+  const listURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs`;
 
   const request = initRequest({
     page: page,
@@ -22,9 +22,9 @@ export async function fetchCoachs(brandId: string, gymId: string, page: number, 
 }
 
 
-export async function uploadCoachPhoto(brandId: string, gymId: string, coachId: string, multipartFormData: FormData): Promise<string> {
+export async function uploadCoachPhoto(brandUuid: string, gymUuid: string, coachUuid: string, multipartFormData: FormData): Promise<string> {
 
-  const metadata: String =  `/v1/brands/${brandId}/gyms/${gymId}/coachs/${coachId}/photo`;
+  const metadata: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/photo`;
   const postURI: String = `/v1/files/images/upload`;
   const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
   const request = initRequest({}, [header]);

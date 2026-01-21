@@ -5,16 +5,14 @@ import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action
 import { Gym } from '@/src/lib/entities/gym';
 import { revalidatePath } from 'next/cache';
 
-export async function saveGymAction(gymId: string, data: Gym, path: string): Promise<ActionResult<Gym>> {
+export async function saveGymAction(data: Gym, path: string): Promise<ActionResult<Gym>> {
   // 1. Validation (server-side)
-  if (!data.brandId || !gymId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId and GymId are required' });
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });
+  if (!data.brandUuid || !data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid and GymUuid are required' });
 
   try {
     // 2. Persist 
-    let result: Gym = await putGym(data.brandId, data);
+    let result: Gym = await putGym(data);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -27,14 +25,14 @@ export async function saveGymAction(gymId: string, data: Gym, path: string): Pro
 
 export async function createGymAction(data: Gym): Promise<ActionResult<Gym>> {
   // 1. Validation (server-side)
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.gymId)
-    return failure({ type: ErrorType.Validation, message: 'GymId is required' });
+  if (!data.brandUuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
+  if (!data.code)
+    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });
 
   try {
     // 2. Persist
-    let result: Gym = await postGym(data.brandId, data);
+    let result: Gym = await postGym(data);
 
     return success(result);
   } catch (error: any) {
@@ -42,18 +40,17 @@ export async function createGymAction(data: Gym): Promise<ActionResult<Gym>> {
   }
 }
 
-export async function activateGymAction(gymId: string, data: Gym, path: string): Promise<ActionResult<Gym>> {
+export async function activateGymAction(data: Gym, path: string): Promise<ActionResult<Gym>> {
   // 1. Validation (server-side)
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.gymId)
-    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });
+  if (!data.brandUuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
+
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Gym = await postActivateGym(data.brandId, gymId);
+    let result: Gym = await postActivateGym(data.brandUuid, data.uuid);
 
     // 3. Revalidate cached pages
     revalidatePath(path);
@@ -64,19 +61,17 @@ export async function activateGymAction(gymId: string, data: Gym, path: string):
   }
 }
 
-export async function deactivateGymAction(gymId: string, data: Gym, path: string): Promise<ActionResult<Gym>> {
+export async function deactivateGymAction(data: Gym, path: string): Promise<ActionResult<Gym>> {
   // 1. Validation (server-side)
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.gymId)
-    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });
+  if (!data.brandUuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
+
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Gym = await postDeactivateGym(data.brandId, gymId);
-
+    let result: Gym = await postDeactivateGym(data.brandUuid, data.uuid);
     // 3. Revalidate cached pages
     revalidatePath(path);
 
@@ -86,18 +81,17 @@ export async function deactivateGymAction(gymId: string, data: Gym, path: string
   }
 }
 
-export async function deleteGymAction(gymId: string, data: Gym): Promise<ActionResult<void>> {
+export async function deleteGymAction(data: Gym): Promise<ActionResult<void>> {
   // 1. Validation (server-side)
-  if (!data.brandId)
-    return failure({ type: ErrorType.Validation, message: 'BrandId is required' });
-  if (!data.gymId)
-    return failure({ type: ErrorType.Validation, message: 'GymId is required' });  
-  if (data.gymId !== gymId)
-    return failure({ type: ErrorType.Validation, message: 'Gym mismatch' });
+  if (!data.brandUuid)
+    return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
+  if (!data.uuid)
+    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
+
 
   try {
     // 2. Persist (DB, API, etc.)
-    await delGym(data.brandId, gymId);
+    await delGym(data.brandUuid, data.uuid);
 
     return success(undefined);
   } catch (error: any) {

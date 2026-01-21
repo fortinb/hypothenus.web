@@ -13,9 +13,9 @@ function initRequest(params: any): AxiosRequestConfig {
   return request;
 }
 
-export async function getBrand(brandId: string): Promise<Brand> {
+export async function getBrand(brandUuid: string): Promise<Brand> {
 
-  const getURI: String = `/v1/brands/${brandId}`;
+  const getURI: String = `/v1/brands/${brandUuid}`;
 
   const request = initRequest({});
 
@@ -37,7 +37,7 @@ export async function postBrand(brand: Brand): Promise<Brand> {
 
 export async function putBrand(brand: Brand): Promise<Brand> {
 
-  const putURI: String = `/v1/brands/${brand.brandId}`;
+  const putURI: String = `/v1/brands/${brand.uuid}`;
 
   const request = initRequest({});
 
@@ -46,21 +46,9 @@ export async function putBrand(brand: Brand): Promise<Brand> {
   return parseBrand(response.data);
 }
 
-export async function postActivateBrand(brandId: string): Promise<Brand> {
+export async function postActivateBrand(brandUuid: string): Promise<Brand> {
 
-  const postURI: String = `/v1/brands/${brandId}/activate`;
-
-  const request = initRequest({});
-
-  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
-  const data = response.data;
-
-  return parseBrand(response.data);
-}
-
-export async function postDeactivateBrand(brandId: string): Promise<Brand> {
-
-  const postURI: String = `/v1/brands/${brandId}/deactivate`;
+  const postURI: String = `/v1/brands/${brandUuid}/activate`;
 
   const request = initRequest({});
 
@@ -69,9 +57,20 @@ export async function postDeactivateBrand(brandId: string): Promise<Brand> {
   return parseBrand(response.data);
 }
 
-export async function delBrand(brandId: string): Promise<void> {
+export async function postDeactivateBrand(brandUuid: string): Promise<Brand> {
 
-  const delURI: String = `/v1/brands/${brandId}`;
+  const postURI: String = `/v1/brands/${brandUuid}/deactivate`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return parseBrand(response.data);
+}
+
+export async function delBrand(brandUuid: string): Promise<void> {
+
+  const delURI: String = `/v1/brands/${brandUuid}`;
 
   const request = initRequest({});
 

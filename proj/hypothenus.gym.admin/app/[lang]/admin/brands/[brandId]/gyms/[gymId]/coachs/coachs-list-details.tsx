@@ -7,7 +7,7 @@ import Link from "next/link";
 import Card from "react-bootstrap/Card";
 import Image from 'next/image';
 
-export default function CoachListDetails({ lang, brandId, gymId, coachId, coach }: { lang: string; brandId: string; gymId: string; coachId: string;  coach: Coach }) {
+export default function CoachListDetails({ lang, coach }: { lang: string; coach: Coach }) {
   const t = useTranslations("coach");
 
   return (
@@ -15,7 +15,7 @@ export default function CoachListDetails({ lang, brandId, gymId, coachId, coach 
       <Card>
         <Card.Body className={"m-2" + (coach.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`}> {formatPersonName(coach.person)}</Link>
+            <Link className="link-element" href={`/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`}> {formatPersonName(coach.person)}</Link>
           </Card.Title>
           <Card.Text>
             <Link className="link-element" href={`mailto:${coach.person.email}`}>{coach.person.email}</Link><br />

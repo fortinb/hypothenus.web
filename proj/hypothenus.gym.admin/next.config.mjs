@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: "http",
         hostname: "lorempixel.com",
       },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
     ],
   },
 };

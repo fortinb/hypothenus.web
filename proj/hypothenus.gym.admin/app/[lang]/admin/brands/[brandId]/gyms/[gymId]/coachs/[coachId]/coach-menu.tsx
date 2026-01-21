@@ -4,8 +4,9 @@ import { useTranslations } from "next-intl";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { Coach } from "@/src/lib/entities/coach";
 
-export default function CoachMenu({ lang, brandId, gymId, coachId }: { lang: string; brandId: string; gymId: string; coachId: string }) {
+export default function CoachMenu({ lang, coach }: { lang: string; coach: Coach }) {
   const gymState: GymState = useSelector((state: any) => state.gymState);
   const t = useTranslations("coach");
 
@@ -26,7 +27,7 @@ export default function CoachMenu({ lang, brandId, gymId, coachId }: { lang: str
         <div className="col btn-navigation m-2">
           <div className="d-flex flex-column justify-content-center h-100">
             <div className="d-flex flex-row justify-content-center">
-              <Link className={"link-element" + (coachId == "new" ? " link-element-disabled" : "")} href={`/${lang}/admin/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
+              <Link className={"link-element" + (coach.uuid === null ? " link-element-disabled" : "")} href={`/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
             </div>
             <div className="d-flex flex-row justify-content-center">
               <span className="text-primary mt-3">{t("menu.info")}</span>

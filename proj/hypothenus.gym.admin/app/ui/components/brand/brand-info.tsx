@@ -48,10 +48,10 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                     <Col xs={6} >
                         <Form.Group>
                             <Form.Label className="text-primary" htmlFor="brand_info_input_code">{t("brand.code")}</Form.Label>
-                            <Form.Control type="input" id="brand_info_input_code" placeholder={t("brand.codePlaceholder")} {...register("brandId")}
-                                className={errors.brandId ? "input-invalid" : ""}
-                                disabled={(brand?.brandId ? true : false)} />
-                            {errors.brandId && <Form.Text className="text-invalid">{t(errors.brandId.message as string)}</Form.Text>}
+                            <Form.Control type="input" id="brand_info_input_code" placeholder={t("brand.codePlaceholder")} {...register("code")}
+                                className={errors.code ? "input-invalid" : ""}
+                                disabled={(brand?.code ? true : false)} />
+                            {errors.code && <Form.Text className="text-invalid">{t(errors.code.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>
                     <Col xs={6} >

@@ -12,9 +12,11 @@ import { GymsStatePaging, firstPage, nextPage, previousPage, resetSearchCriteria
 import GymsList from "./gyms-list";
 import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { fetchGyms, searchGyms } from "@/app/lib/services/gyms-data-service-client";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 
-export default function GymsListPaging({ lang, brandId }: { lang: string; brandId: string }) {
+export default function GymsListPaging({ lang }: { lang: string; }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
+  const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
 
   const [pageOfGyms, setPageOfGyms] = useState<Page<Gym>>();
@@ -25,7 +27,7 @@ export default function GymsListPaging({ lang, brandId }: { lang: string; brandI
     const fetchGymsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfGyms: Page<Gym> = await fetchGyms(brandId, page, pageSize, includeInactive);
+      let pageOfGyms: Page<Gym> = await fetchGyms(brandState.brand.uuid, page, pageSize, includeInactive);
 
       setPageOfGyms(pageOfGyms);
       if (pageOfGyms?.content && pageOfGyms?.pageable) {
@@ -38,7 +40,7 @@ export default function GymsListPaging({ lang, brandId }: { lang: string; brandI
     const searchGymsPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
       setIsLoading(true);
 
-      let pageOfGyms: Page<Gym> = await searchGyms(brandId, page, pageSize, includeInactive, criteria);
+      let pageOfGyms: Page<Gym> = await searchGyms(brandState.brand.uuid, page, pageSize, includeInactive, criteria);
 
       setPageOfGyms(pageOfGyms);
 
@@ -57,7 +59,7 @@ export default function GymsListPaging({ lang, brandId }: { lang: string; brandI
       fetchGymsPage(gymsStatePaging.page, gymsStatePaging.pageSize, gymsStatePaging.includeInactive);
     }
 
-  }, [dispatch, gymsStatePaging, brandId]);
+  }, [dispatch, gymsStatePaging, brandState]);
 
   function onSearchInput(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -118,7 +120,7 @@ export default function GymsListPaging({ lang, brandId }: { lang: string; brandI
 
         {!isLoading &&
           <div className="overflow-auto flex-fill w-100 h-100">
-            <GymsList lang={lang} brandId={brandId} pageOfGyms={pageOfGyms} />
+            <GymsList lang={lang} pageOfGyms={pageOfGyms} />
           </div>
         }
 

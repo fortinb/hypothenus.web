@@ -10,31 +10,35 @@ import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { formatPersonName } from "@/src/lib/entities/person";
+import { redirect } from "next/navigation";
 
 interface PageProps {
-  params: Promise<{ lang: string; brandId: string; gymId: string; courseId: string }>; 
+  params: Promise<{ lang: string; brandId: string; gymId: string; courseId: string }>;
 }
 
 export default async function CoursePage({ params }: PageProps) {
-  const { lang, brandId, gymId, courseId } = await params;  
+  const { lang, brandId, gymId, courseId } = await params;
 
   let course: Course;
   let pageOfCoachs: Page<Coach>;
+  try {
+    if (courseId === "new") {
+      course = newCourse();
 
-  if (courseId === "new") { 
-    course = newCourse();
-    course.brandId = brandId;  
-    course.gymId = gymId;  
-
-    // Load list of coachs
-    pageOfCoachs = await fetchCoachs(brandId, gymId, 0, 1000, false);  
-  } else {
-    // Load in parallel
-    [course, pageOfCoachs] = await Promise.all([
-      getCourse(brandId, gymId, courseId),  
-      fetchCoachs(brandId, gymId, 0, 1000, false)  
-    ]);
+      // Load list of coachs
+      pageOfCoachs = await fetchCoachs(brandId, gymId, 0, 1000, false);
+    } else {
+      // Load in parallel
+      [course, pageOfCoachs] = await Promise.all([
+        getCourse(brandId, gymId, courseId),
+        fetchCoachs(brandId, gymId, 0, 1000, false)
+      ]);
+    }
+  } catch (error) {
+    console.error("Error fetching course:", error);
+    return redirect(`/${lang}/error`);
   }
+
 
   let coachs: Coach[] = pageOfCoachs.content;
 
@@ -57,21 +61,21 @@ export default async function CoursePage({ params }: PageProps) {
           reset: false,
           id: "course.[courseId].page",
           locale: `${lang}`,
-          href: `/admin/brands/${brandId}/gyms/${gymId}/courses/${courseId}`,  
+          href: `/admin/brands/${brandId}/gyms/${gymId}/courses/${courseId}`,
           key: "",
-          value: getCourseName(course, lang as LanguageEnum), 
+          value: getCourseName(course, lang as LanguageEnum),
           namespace: ""
         }}
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <CourseMenu lang={lang} brandId={brandId} gymId={gymId} courseId={courseId} /> 
+        <CourseMenu lang={lang} course={course} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <CourseForm lang={lang} brandId={brandId} gymId={gymId} courseId={courseId} course={course} coachs={coachs} initialAvailableCoachItems={availableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />  
+        <CourseForm lang={lang} course={course} coachs={coachs} initialAvailableCoachItems={availableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
-        <CourseResume lang={lang} />  // Use lang
+        <CourseResume lang={lang} />
       </div>
     </div>
   );

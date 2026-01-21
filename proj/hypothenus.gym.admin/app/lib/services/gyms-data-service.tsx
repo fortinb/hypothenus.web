@@ -13,9 +13,9 @@ function initRequest(params: any): AxiosRequestConfig {
   return request;
 }
 
-export async function getGym(brandId: string, gymId: string): Promise<Gym> {
+export async function getGym(brandUuid: string, gymUuid: string): Promise<Gym> {
 
-  const getURI: String = `/v1/brands/${brandId}/gyms/${gymId}`;
+  const getURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}`;
 
   const request = initRequest({});
 
@@ -24,9 +24,9 @@ export async function getGym(brandId: string, gymId: string): Promise<Gym> {
  return parseGym(response.data);
 }
 
-export async function postActivateGym(brandId: string, gymId: string): Promise<Gym> {
+export async function postActivateGym(brandUuid: string, gymUuid: string): Promise<Gym> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/activate`;
+  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/activate`;
 
   const request = initRequest({});
 
@@ -35,9 +35,9 @@ export async function postActivateGym(brandId: string, gymId: string): Promise<G
   return parseGym(response.data);
 }
 
-export async function postDeactivateGym(brandId: string, gymId: string): Promise<Gym> {
+export async function postDeactivateGym(brandUuid: string, gymUuid: string): Promise<Gym> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms/${gymId}/deactivate`;
+  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/deactivate`;
 
   const request = initRequest({});
 
@@ -46,9 +46,9 @@ export async function postDeactivateGym(brandId: string, gymId: string): Promise
  return parseGym(response.data);
 }
 
-export async function delGym(brandId: string, gymId: string): Promise<void> {
+export async function delGym(brandUuid: string, gymUuid: string): Promise<void> {
 
-  const delURI: String = `/v1/brands/${brandId}/gyms/${gymId}`;
+  const delURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}`;
 
   const request = initRequest({});
 
@@ -57,9 +57,9 @@ export async function delGym(brandId: string, gymId: string): Promise<void> {
   return response.data;
 }
 
-export async function postGym(brandId: string,gym: Gym): Promise<Gym> {
+export async function postGym(gym: Gym): Promise<Gym> {
 
-  const postURI: String = `/v1/brands/${brandId}/gyms`;
+  const postURI: String = `/v1/brands/${gym.brandUuid}/gyms`;
 
   const request = initRequest({});
 
@@ -68,9 +68,9 @@ export async function postGym(brandId: string,gym: Gym): Promise<Gym> {
   return parseGym(response.data);
 }
 
-export async function putGym(brandId: string, gym: Gym): Promise<Gym> {
+export async function putGym(gym: Gym): Promise<Gym> {
 
-  const putURI: String = `/v1/brands/${brandId}/gyms/${gym.gymId}`;
+  const putURI: String = `/v1/brands/${gym.brandUuid}/gyms/${gym.code}`;
 
   const request = initRequest({});
 

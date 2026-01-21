@@ -12,9 +12,11 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoachsList from "./coachs-list";
 import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { fetchCoachs } from "@/app/lib/services/coachs-data-service-client";
+import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 
-export default function CoachsListPaging({ lang, brandId, gymId }: { lang: string; brandId: string; gymId: string }) {
+export default function CoachsListPaging({ lang}: { lang: string; }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
+  const gymState: GymState = useSelector((state: any) => state.gymState);
   const dispatch = useAppDispatch();
 
   const [pageOfCoachs, setPageOfCoachs] = useState<Page<Coach>>();
@@ -25,7 +27,7 @@ export default function CoachsListPaging({ lang, brandId, gymId }: { lang: strin
     const fetchCoachsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfCoachs: Page<Coach> = await fetchCoachs(brandId, gymId, page, pageSize, includeInactive);
+      let pageOfCoachs: Page<Coach> = await fetchCoachs(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
 
       setPageOfCoachs(pageOfCoachs);
       if (pageOfCoachs?.content && pageOfCoachs?.pageable) {
@@ -40,7 +42,7 @@ export default function CoachsListPaging({ lang, brandId, gymId }: { lang: strin
 
     fetchCoachsPage(coachsStatePaging.page, coachsStatePaging.pageSize, coachsStatePaging.includeInactive);
 
-  }, [dispatch, coachsStatePaging, brandId, gymId]);
+  }, [dispatch, coachsStatePaging, gymState]);
 
   const onFirstPage = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
@@ -77,7 +79,7 @@ export default function CoachsListPaging({ lang, brandId, gymId }: { lang: strin
 
         {!isLoading &&
           <div className="overflow-auto flex-fill w-100 h-100">
-            <CoachsList lang={lang} brandId={brandId} gymId={gymId} pageOfCoachs={pageOfCoachs} />
+            <CoachsList lang={lang} pageOfCoachs={pageOfCoachs} />
           </div>
         }
 

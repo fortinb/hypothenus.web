@@ -14,12 +14,12 @@ import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { Controller, useFormContext } from "react-hook-form";
 import moment from "moment";
-import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
 import "@/app/lib/i18n/datepicker-locales";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { localesConfig } from "@/i18n/locales-client";
+import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
 
 export default function CourseInfo({ lang, course, availableCoachItems, formCoachsStateField, isEditMode, isCancelling }:
     {

@@ -23,10 +23,10 @@ export default async function GymsPage({ params }: PageProps) {
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-        <GymsMenu lang={lang} brandId={brandId} />
+        <GymsMenu lang={lang}  />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <GymsListPaging lang={lang} brandId={brandId} />
+        <GymsListPaging lang={lang} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100">
 
