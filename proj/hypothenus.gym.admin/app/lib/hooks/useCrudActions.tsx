@@ -29,6 +29,7 @@ export function useCrudActions<T>({
       const result = await actions.create(entity);
 
       if (!result.ok) {
+        console.log('createEntity error', result);
         onError?.(result);
         return;
       }
@@ -44,6 +45,7 @@ export function useCrudActions<T>({
       const result = await actions.save(entity, entityPath);
 
       if (!result.ok) {
+        console.log('saveEntity error', result);
         onError?.(result);
         return;
       }
@@ -57,6 +59,7 @@ export function useCrudActions<T>({
       const result = await actions.activate(entity, entityPath);
 
       if (!result.ok) {
+        console.log('activateEntity error', result);
         onError?.(result);
         return;
       }
@@ -70,6 +73,7 @@ export function useCrudActions<T>({
       const result = await actions.deactivate(entity, entityPath);
 
       if (!result.ok) {
+        console.log('deactivateEntity error', result);
         onError?.(result);
         return;
       }
@@ -83,6 +87,7 @@ export function useCrudActions<T>({
       const result = await actions.delete(entity, entityPath);
 
       if (!result.ok) {
+        console.log('deleteEntity error', result);
         onError?.(result);
         return;
       }

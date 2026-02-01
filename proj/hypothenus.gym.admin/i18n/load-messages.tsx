@@ -8,6 +8,7 @@ const namespaces = [
     "entity",
     "errors",
     "gym",
+    "member",
     "home",
     "layout",
     "navigation",

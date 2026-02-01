@@ -102,7 +102,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
                 if (duplicate) {
-                    formContext.setError("code", { type: "manual", message: t("gym.validation.alreadyExists") });
+                    formContext.setError("code", { type: "manual", message: "gym.validation.alreadyExists" });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {

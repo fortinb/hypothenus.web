@@ -1,6 +1,7 @@
 import { Gym, parseGym } from "@/src//lib/entities/gym";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
+import { Page } from "@/src/lib/entities/page";
 
 function initRequest(params: any): AxiosRequestConfig {
 
@@ -11,6 +12,21 @@ function initRequest(params: any): AxiosRequestConfig {
   }
 
   return request;
+}
+
+export async function fetchGyms(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
+
+  const listURI: String = `/v1/brands/${brandUuid}/gyms`;
+
+  const request = initRequest({
+    page: page,
+    pageSize: pageSize,
+    includeInactive: includeInactive
+  });
+
+  let response = await axiosInstance.get(listURI.valueOf(), request);
+
+  return response.data;
 }
 
 export async function getGym(brandUuid: string, gymUuid: string): Promise<Gym> {
@@ -70,7 +86,7 @@ export async function postGym(gym: Gym): Promise<Gym> {
 
 export async function putGym(gym: Gym): Promise<Gym> {
 
-  const putURI: String = `/v1/brands/${gym.brandUuid}/gyms/${gym.code}`;
+  const putURI: String = `/v1/brands/${gym.brandUuid}/gyms/${gym.uuid}`;
 
   const request = initRequest({});
 

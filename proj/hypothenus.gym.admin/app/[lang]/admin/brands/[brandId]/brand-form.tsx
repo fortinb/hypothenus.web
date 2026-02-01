@@ -112,7 +112,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
                 if (duplicate) {
-                    formContext.setError("code", { type: "manual", message: t("brand.validation.alreadyExists") });
+                    formContext.setError("code", { type: "manual", message: "brand.validation.alreadyExists" });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {

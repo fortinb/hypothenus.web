@@ -9,7 +9,7 @@ export interface Person {
   firstname: string;
   lastname: string;
   dateOfBirth: any;  // Make dateOfBirth required (was optional with ?)
-  email?: string;
+  email: string;
   address: Address;
   phoneNumbers: PhoneNumber[];
   contacts: Contact[];
@@ -24,7 +24,7 @@ export const newPerson = (): Person => {
     lastname: "",
     dateOfBirth: undefined,
     photoUri: undefined,
-    email: undefined,
+    email: "",
     address: newAddress(),
     phoneNumbers: [
       newPhoneNumber(PhoneNumberTypeEnum.Home),
@@ -74,7 +74,7 @@ export const PersonSchema = z.object({
   firstname: z.string().min(1, { message: "person.validation.firstnameRequired" }),
   lastname: z.string().min(1, { message: "person.validation.lastnameRequired" }),
   dateOfBirth: z.any().nullable(),
-  email: z.email("validation.emailInvalid").optional().or(z.literal("")),
+  email: z.email("validation.emailInvalid"),
   address: AddressSchemaOptional,
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
   contacts: z.array(ContactSchema).min(0),

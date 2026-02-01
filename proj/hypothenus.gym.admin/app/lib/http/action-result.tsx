@@ -51,6 +51,6 @@ export function normalizeApiError(error: unknown): ResultError {
     case 503:
       return { status: status, type: ErrorType.NotAvailable, message: 'http.status.503' };      
     default:
-      return { status: status, type: ErrorType.Server, message: 'http.status.500' };
+      return { status: status, type: ErrorType.Server, details: error.response?.data, message: 'http.status.500' };
   }
 }

@@ -7,6 +7,8 @@ import coachsStatePagingReducer from "./slices/coachs-state-paging-slice";
 import coachStateReducer from "./slices/coach-state-slice";
 import coursesStatePagingReducer from "./slices/courses-state-paging-slice";
 import courseStateReducer from "./slices/course-state-slice";
+import membersStatePagingReducer from "./slices/members-state-paging-slice";
+import memberStateReducer from "./slices/member-state-slice";
 import breadcrumbStateReducer from "./slices/breadcrumb-state-slice";
 
 export const store = configureStore({
@@ -19,6 +21,8 @@ export const store = configureStore({
     coachState: coachStateReducer,
     coursesStatePaging: coursesStatePagingReducer,
     courseState: courseStateReducer,
+    memberState: memberStateReducer,
+    membersStatePaging: membersStatePagingReducer,
     breadcrumbState: breadcrumbStateReducer
   }
 })

@@ -1,0 +1,28 @@
+{
+    "menu": {
+        "member": "{name}",
+        "brand": "{name}",
+        "sections": "Membre",
+        "info": "Info",
+        "management": "Membres",
+        "managementTooltip": "Retour à la liste des membres"
+       
+    },
+    "resume": {
+        "contacts": "Contacts d'urgence"
+    },
+    "breadcrumb": "Membres",
+    "list": {
+        "menu": {
+            "member": "{name}",
+            "title": "Membres",
+            "add": "Ajouter un membre",
+            "inactive": "Inactives",
+            "management": "{name}",
+            "managementTooltip": "Retour au membre"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

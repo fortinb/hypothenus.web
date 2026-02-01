@@ -59,9 +59,9 @@
         "logoUri": "Logo",
         "logoAlt": "Logo de la marque",
         "image": {
-           "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
-           "attributes": " *.jpg, *.png - max 10MB - 200x200"
-        },        
+            "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
+            "attributes": " *.jpg, *.png - max 10MB - 200x200"
+        },
         "deleteConfirmation": {
             "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer cette marque ?",
@@ -94,8 +94,8 @@
         "logoUri": "Logo",
         "logoAlt": "Logo du studio",
         "image": {
-           "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
-           "attributes": " *.jpg, *.png - max 10MB - 200x200"
+            "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
+            "attributes": " *.jpg, *.png - max 10MB - 200x200"
         },
         "deleteConfirmation": {
             "title": "Supprimer {name}",
@@ -109,7 +109,8 @@
         "validation": {
             "firstnameRequired": "Le prénom est requis.",
             "lastnameRequired": "Le nom est requis.",
-            "descriptionRequired": "La description est requise."
+            "descriptionRequired": "La description est requise.",
+            "emailRequired": "Le courriel est requis."
         },
         "firstname": "Prénom",
         "lastname": "Nom",
@@ -139,6 +140,31 @@
             "no": "Annuler",
             "action": "Suppression en cours..."
         }
+    },
+    "member": {
+        "navigation": {
+            "new": "Nouveau membre"
+        },
+        "validation": {
+            "alreadyExists": "Le membre doit être unique, ce courriel existe déjà.",
+            "memberTypeRequired": "Le type de membre est requis.",
+            "preferredGymRequired": "Le gym préféré est requis."
+        },
+        "deleteConfirmation": {
+            "title": "Supprimer {name}",
+            "text": "Êtes vous certain de vouloir supprimer ce membre ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        },
+        "types": {
+            "regular": "Régulier",
+            "premium": "Premium",
+            "employee": "Employé"
+        },
+        "password": "Mot de passe",
+        "memberType": "Type de membre",
+        "preferredGym": "Gym préféré"
     },
     "course": {
         "validation": {
