@@ -200,7 +200,7 @@
     },
     "phoneNumber": {
         "validation": {
-            "phoneNumberFormat": "+1 999-999-9999 x9999"
+            "phoneNumberFormat": "(999) 999-9999"
         },
         "home": "Home",
         "business": "Business",

@@ -10,12 +10,14 @@ import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-f
 import PhoneNumberInfo from "./phone-number-info";
 import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
+import FormLabelRequired from "../forms/form-label-required";
 
-export default function ContactInfo({ index, id, formStatefield, parent }:
+export default function ContactInfo({ index, id, formStatefield, required = false, parent }:
     {
         index: number,
         id: string,
         formStatefield: string,
+        required?: boolean,
         parent?: string
     }) {
     const t = useTranslations("entity");
@@ -31,7 +33,7 @@ export default function ContactInfo({ index, id, formStatefield, parent }:
             <Row className="gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`contact_input_firstname_${id}_${index}`}>{t("person.firstname")}</Form.Label>
+                        <FormLabelRequired className="text-primary" required={required} htmlFor={`contact_input_firstname_${id}_${index}`} label={t("person.firstname")}></FormLabelRequired>
                         <Form.Control type="input" id={`contact_input_firstname_${id}_${index}`}  {...register(`${formStatefield}.firstname`)}
                             className={getError(index)?.firstname ? "input-invalid" : ""} />
                         {getError(index)?.firstname && <Form.Text className="text-invalid">{t(getError(index)?.firstname?.message ?? "")}</Form.Text>}
@@ -39,7 +41,7 @@ export default function ContactInfo({ index, id, formStatefield, parent }:
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`contact_input_lastname_${id}_${index}`}>{t("person.lastname")}</Form.Label>
+                        <FormLabelRequired className="text-primary" required={required} htmlFor={`contact_input_lastname_${id}_${index}`} label={t("person.lastname")}></FormLabelRequired>
                         <Form.Control type="input" id={`contact_input_lastname_${id}_${index}`}  {...register(`${formStatefield}.lastname`)}
                             className={getError(index)?.lastname ? "input-invalid" : ""} />
                         {getError(index)?.lastname && <Form.Text className="text-invalid">{t(getError(index)?.lastname?.message ?? "")}</Form.Text>}
@@ -49,7 +51,7 @@ export default function ContactInfo({ index, id, formStatefield, parent }:
             <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`contact_input_description_${id}_${index}`}>{t("person.description")}</Form.Label>
+                        <FormLabelRequired className="text-primary" required={required} htmlFor={`contact_input_description_${id}_${index}`} label={t("person.description")}></FormLabelRequired>
                         <Form.Control type="input" id={`contact_input_description_${id}_${index}`}  {...register(`${formStatefield}.description`)}
                             className={getError(index)?.description ? "input-invalid" : ""} />
                         {getError(index)?.description && <Form.Text className="text-invalid">{t(getError(index)?.description?.message ?? "")}</Form.Text>}

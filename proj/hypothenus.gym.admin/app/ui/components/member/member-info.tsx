@@ -9,13 +9,14 @@ import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { MemberTypeEnum } from "@/src/lib/entities/member";
+import FormLabelRequired from "../forms/form-label-required";
 
-export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, gyms }:
+export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, availableGymItems }:
     {
         isEditMode: boolean,
         isCancelling: boolean,
         uploadHandler: (file: Blob) => void,
-        gyms: GymListItem[]
+        availableGymItems: GymListItem[]
     }) {
     const t = useTranslations("entity");
     const { register, formState: { errors } } = useFormContext();
@@ -26,7 +27,7 @@ export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, gy
                 <Row className="mt-2 gx-2">
                     <Col xs={6} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor={`member-type-dropdown`}>{t("member.memberType")}</Form.Label>
+                            <FormLabelRequired className="text-primary" htmlFor={`member-type-dropdown`} label={t("member.memberType")}></FormLabelRequired>
                             <Form.Select id="member-type-dropdown" defaultValue={MemberTypeEnum.Regular} {...register(`memberType`)}>
                                 <option key={MemberTypeEnum.Regular} value={MemberTypeEnum.Regular}>{t("member.types.regular")}</option>
                                 <option key={MemberTypeEnum.Premium} value={MemberTypeEnum.Premium}>{t("member.types.premium")}</option>
@@ -37,9 +38,9 @@ export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, gy
                     </Col>
                     <Col xs={6} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor="member-preferred-gym-dropdown">{t("member.preferredGym")}</Form.Label>
-                            <Form.Select id="member-preferred-gym-dropdown" defaultValue={gyms.length > 0 ? gyms[0].value : ""} {...register(`preferredGymUuid`)}>
-                                {gyms.map((gym) => (
+                            <FormLabelRequired className="text-primary" htmlFor="member-preferred-gym-dropdown" label={t("member.preferredGym")}></FormLabelRequired>
+                            <Form.Select id="member-preferred-gym-dropdown" defaultValue={availableGymItems.length > 0 ? availableGymItems[0].value : ""} {...register(`preferredGymUuid`)}>
+                                {availableGymItems.map((gym) => (
                                     <option key={gym.value} value={gym.value}>{gym.label}</option>
                                 ))}
                             </Form.Select>

@@ -20,6 +20,7 @@ import "@/app/lib/i18n/datepicker-locales";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { localesConfig } from "@/i18n/locales-client";
 import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
+import FormLabelRequired from "../forms/form-label-required";
 
 export default function CourseInfo({ lang, course, availableCoachItems, formCoachsStateField, isEditMode, isCancelling }:
     {
@@ -39,7 +40,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                 <Row className="m-2 gx-2">
                     <Col xs={4} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor="course_info_input_code">{t("course.code")}</Form.Label>
+                            <FormLabelRequired className="text-primary" htmlFor="course_info_input_code" required={true} label={t("course.code")}></FormLabelRequired>
                             <Form.Control type="input" id="course_info_input_code" placeholder={t("course.codePlaceholder")} {...register("course.code")}
                                 className={errors.course?.code ? "input-invalid" : ""} disabled={(course.uuid !== null ? true : false)} />
                             {errors.course?.code && <Form.Text className="text-invalid">{t(errors.course?.code.message as string)}</Form.Text>}
@@ -63,13 +64,13 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                                     <Row className="m-2 gx-2">
                                                         <Col xs={4} >
                                                             <Form.Group>
-                                                                <Form.Label className="text-primary" htmlFor={`course_info_input_name_${index}`}>{t("course.name")}</Form.Label>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_name_${index}`} label={t("course.name")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`course.name.${index}`} parent="course.name"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
                                                         <Col xs={8} >
                                                             <Form.Group>
-                                                                <Form.Label className="text-primary" htmlFor={`course_info_input_description_${index}`}>{t("course.description")}</Form.Label>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_description_${index}`} label={t("course.description")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`course.description.${index}`} parent="course.description"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
@@ -87,7 +88,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                 <Row className="m-2 p-2">
                                     <Col xs={6} className="p-1" >
                                         <Form.Group>
-                                            <Form.Label className="text-primary" htmlFor={`course_input_startDate`}>{t("course.startDate")}</Form.Label>
+                                            <FormLabelRequired className="text-primary" required={true} htmlFor={`course_input_startDate`} label={t("course.startDate")}></FormLabelRequired>
                                             <br />
                                             <Controller
                                                 name={`course.startDate`}

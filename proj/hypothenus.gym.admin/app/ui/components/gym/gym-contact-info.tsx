@@ -81,7 +81,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                                                 </OverlayTrigger>
                                             </div>
                                         </Card.Title>
-                                        <ContactInfo key={contact.id} index={index} id={`gym_contact_${index}`} formStatefield={`contacts.${index}`} />
+                                        <ContactInfo key={contact.id} index={index} required={true} id={`gym_contact_${index}`} formStatefield={`contacts.${index}`} />
                                     </Card.Body>
                                 </Card>
                             </Accordion.Body>

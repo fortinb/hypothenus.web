@@ -18,6 +18,7 @@ import Image from 'next/image';
 import { useParams } from "next/navigation";
 import moment from "moment";
 import "@/app/lib/i18n/datepicker-locales"; 
+import FormLabelRequired from "../forms/form-label-required";
 
 export default function PersonInfo({ id, formStatefield, isEditMode, isCancelling, uploadHandler }:
     {
@@ -57,7 +58,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
             <Row className="gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`person_input_firstname_${id}`}>{t("person.firstname")}</Form.Label>
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_firstname_${id}`} label={t("person.firstname")}></FormLabelRequired>
                         <Form.Control type="input" id={`person_input_firstname_${id}`}  {...register(`${formStatefield}.firstname`)}
                             className={getError()?.firstname ? "input-invalid" : ""} />
                         {getError()?.firstname && <Form.Text className="text-invalid">{t(getError()?.firstname?.message ?? "")}</Form.Text>}
@@ -65,7 +66,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`person_input_lastname_${id}`}>{t("person.lastname")}</Form.Label>
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_lastname_${id}`} label={t("person.lastname")}></FormLabelRequired>
                         <Form.Control type="input" id={`person_input_lastname_${id}`}  {...register(`${formStatefield}.lastname`)}
                             className={getError()?.lastname ? "input-invalid" : ""} />
                         {getError()?.lastname && <Form.Text className="text-invalid">{t(getError()?.lastname?.message ?? "")}</Form.Text>}
@@ -142,7 +143,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
             <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor={`person_input_email_${id}`}>{t("person.email")}</Form.Label>
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_email_${id}`} label={t("person.email")}></FormLabelRequired>
                         <Form.Control type="input" id="person_info_input_email" placeholder="example@email.ca" {...register(`${formStatefield}.email`)}
                             className={getError()?.email ? "input-invalid" : ""} />
                         {getError()?.email && <Form.Text className="text-invalid">{t(getError()?.email?.message ?? "")}</Form.Text>}
@@ -150,7 +151,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <Form.Label className="text-primary" htmlFor="person-communication-language-dropdown">{t("person.communicationLanguage")}</Form.Label>
+                        <FormLabelRequired className="text-primary" htmlFor="person-communication-language-dropdown" label={t("person.communicationLanguage")}></FormLabelRequired>
                         <Form.Select id="person-communication-language-dropdown" {...register(`${formStatefield}.communicationLanguage`)}>
                             <option value="en">{t("language.en")}</option>
                             <option value="fr">{t("language.fr")}</option>

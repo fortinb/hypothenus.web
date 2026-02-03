@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import Dropzone, { DropEvent, FileRejection } from 'react-dropzone'
 import Image from "next/image";
 import { Controller } from "react-hook-form";
+import FormLabelRequired from "../forms/form-label-required";
 
 export default function GymInfo({ gym, isEditMode, isCancelling, uploadHandler }:
     {
@@ -48,7 +49,7 @@ export default function GymInfo({ gym, isEditMode, isCancelling, uploadHandler }
                 <Row className="m-2 gx-2">
                     <Col xs={6} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor="gym_info_input_code">{t("gym.code")}</Form.Label>
+                            <FormLabelRequired className="text-primary" htmlFor="gym_info_input_code" label={t("gym.code")}></FormLabelRequired>
                             <Form.Control type="input" id="gym_info_input_code" placeholder={t("gym.codePlaceholder")} {...register("code")}
                                 className={errors.gymId ? "input-invalid" : ""}
                                 disabled={(gym?.code ? true : false)} />
@@ -104,7 +105,7 @@ export default function GymInfo({ gym, isEditMode, isCancelling, uploadHandler }
                 <Row className="m-2 gx-2">
                     <Col xs={6} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor="gym_info_input_name">{t("gym.name")}</Form.Label>
+                            <FormLabelRequired className="text-primary" htmlFor="gym_info_input_name" label={t("gym.name")}></FormLabelRequired>
                             <Form.Control autoFocus={isEditMode} type="input" id="gym_info_input_name" placeholder=""  {...register("name")}
                                 className={errors.name ? "input-invalid" : ""} />
                             {errors.name && <Form.Text className="text-invalid">{t(errors.name.message as string)}</Form.Text>}

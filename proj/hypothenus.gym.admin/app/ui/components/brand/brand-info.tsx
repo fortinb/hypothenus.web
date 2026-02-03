@@ -14,6 +14,7 @@ import Dropzone, { DropEvent, FileRejection } from 'react-dropzone'
 import Image from "next/image";
 import { Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
+import FormLabelRequired from "../forms/form-label-required";
 
 export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandler }:
     {
@@ -47,7 +48,7 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                 <Row className="m-2 gx-2">
                     <Col xs={6} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor="brand_info_input_code">{t("brand.code")}</Form.Label>
+                            <FormLabelRequired className="text-primary" htmlFor="brand_info_input_code" required={true} label={t("brand.code")}></FormLabelRequired>
                             <Form.Control type="input" id="brand_info_input_code" placeholder={t("brand.codePlaceholder")} {...register("code")}
                                 className={errors.code ? "input-invalid" : ""}
                                 disabled={(brand?.code ? true : false)} />
@@ -103,7 +104,7 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                 <Row className="m-2 gx-2">
                     <Col xs={6} >
                         <Form.Group>
-                            <Form.Label className="text-primary" htmlFor="brand_info_input_name">{t("brand.name")}</Form.Label>
+                            <FormLabelRequired className="text-primary" htmlFor="brand_info_input_name" required={true} label={t("brand.name")}></FormLabelRequired>
                             <Form.Control autoFocus={isEditMode} type="input" id="brand_info_input_name" placeholder=""  {...register("name")}
                                 className={errors.name ? "input-invalid" : ""} />
                             {errors.name && <Form.Text className="text-invalid">{t(errors.name.message as string)}</Form.Text>}

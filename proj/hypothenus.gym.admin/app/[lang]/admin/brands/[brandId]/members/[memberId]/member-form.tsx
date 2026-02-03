@@ -12,7 +12,7 @@ import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import MemberInfo from "@/app/ui/components/member/member-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
-import { Member, MemberSchema, MemberTypeEnum } from "@/src/lib/entities/member";
+import { Member, MemberSchema } from "@/src/lib/entities/member";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,8 +40,7 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [photoToUpload, setPhotoToUpload] = useState<Blob>();
-    const [availableGymItems, setAvailableGymItems] = useState<GymListItem[]>([]);
-    const [isGymItemsInitialized, setIsGymItemsInitialized] = useState<boolean>(false);
+    const [availableGymItems] = useState<GymListItem[]>(gyms);
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<Member>({
         actions: {
@@ -85,12 +84,7 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
         if (member.uuid === null) {
             setIsEditMode(true);
         }
-        if (!isGymItemsInitialized) {
-            setAvailableGymItems(gyms);
-            setIsGymItemsInitialized(true);
-        }
-
-    }, [dispatch, member, gyms]);
+    }, [dispatch, member]);
 
     const onSubmit: SubmitHandler<z.infer<typeof MemberSchema>> = async (formData: z.infer<typeof MemberSchema>) => {
         setIsEditMode(false);
@@ -302,7 +296,7 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={memberState.member.uuid == null ? true : memberState.member.isActive}
                                     isEditDisable={isEditMode} isDeleteDisable={(memberState.member.uuid == null ? true : false)} isActivationDisabled={(memberState.member.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
-                                <MemberInfo isEditMode={isEditMode}  gyms={availableGymItems} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
+                                <MemberInfo isEditMode={isEditMode} availableGymItems={availableGymItems} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="member_info_form" />
                             </Form>

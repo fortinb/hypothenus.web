@@ -79,5 +79,5 @@ export const PersonSchema = z.object({
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
   contacts: z.array(ContactSchema).min(0),
   communicationLanguage: z.enum(LanguageEnum),
-  note: z.string().min(0),
+  note: z.string().min(0)
 });
