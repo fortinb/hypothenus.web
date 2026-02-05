@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { newPerson, parsePerson, Person, PersonSchema } from './person';
+import { newPerson, parsePerson, Person, PersonRegistrationSchema, PersonSchema } from './person';
 import { BaseEntity } from './baseEntity';
 
 export enum MemberTypeEnum {
@@ -44,8 +44,18 @@ export const parseMember = (data: any): Member => {
 }
 
 export const MemberSchema = z.object({
-  password: z.any().nullable(),
   person: PersonSchema,
   memberType: z.enum(MemberTypeEnum),
   preferredGymUuid: z.string().min(1, { message: "member.validation.preferredGymRequired" }),
+});
+
+export const MemberRegistrationSchema = z.object({
+  password: z.string().min(1, { message: "member.validation.passwordRequired" }),
+  passwordConfirmation: z.string().min(1, { message: "member.validation.passwordConfirmationRequired" }),
+  person: PersonRegistrationSchema,
+  memberType: z.enum(MemberTypeEnum),
+  preferredGymUuid: z.string().min(1, { message: "member.validation.preferredGymRequired" }),
+}).refine((registration) => registration.password === registration.passwordConfirmation, {
+  message: "member.validation.passwordConfirmationMismatch",
+  path: ["passwordConfirmation"], // path of error
 });

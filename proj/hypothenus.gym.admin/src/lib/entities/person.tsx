@@ -81,3 +81,12 @@ export const PersonSchema = z.object({
   communicationLanguage: z.enum(LanguageEnum),
   note: z.string().min(0)
 });
+
+export const PersonRegistrationSchema = z.object({
+  firstname: z.string().min(1, { message: "person.validation.firstnameRequired" }),
+  lastname: z.string().min(1, { message: "person.validation.lastnameRequired" }),
+  dateOfBirth: z.any().nonoptional({ message: "person.validation.dateOfBirthRequired" }),
+  email: z.email("validation.emailInvalid"),
+  phoneNumbers: z.array(PhoneNumberSchema).min(2),
+  communicationLanguage: z.enum(LanguageEnum),
+});

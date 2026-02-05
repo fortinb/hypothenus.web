@@ -3,6 +3,9 @@
         "brands": {
             "title": "Marques"
         },
+        "signin": {
+            "title": "Se connecter"
+        },
         "language": {
             "title": "Langues",
             "en": "English",
@@ -10,10 +13,9 @@
         }
     },
     "error": {
-        "boundary" : {
-            "title" : "Désolé, un problème est survenu !",
-            "action" : "Réessayez"
+        "boundary": {
+            "title": "Désolé, un problème est survenu !",
+            "action": "Réessayez"
         }
     }
-
 }

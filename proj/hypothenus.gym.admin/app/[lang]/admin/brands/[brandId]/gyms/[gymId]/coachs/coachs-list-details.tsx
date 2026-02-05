@@ -31,11 +31,10 @@ export default function CoachListDetails({ lang, coach }: { lang: string; coach:
             src={coach.person?.photoUri ? (URL.canParse(coach.person.photoUri) ? coach.person.photoUri : "/images/person.png") : "/images/person.png"}
             width={100}
             height={100}
-            alt="Coach photo"
-        />
+            alt={`${t("photo.alt")}`}
+          />
         </Card.Body>
       </Card>
-      
     </div>
   );
 }

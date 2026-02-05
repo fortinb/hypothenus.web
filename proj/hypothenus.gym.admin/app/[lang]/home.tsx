@@ -10,14 +10,12 @@ export default function Home() {
 
   return (
 
-      <div className="d-flex flex-row w-100 h-100">
-        <div className="flex-column flex-fill justify-content-between w-50 h-100">
-          <Container fluid="true">
+      <div className="d-flex flex-row w-100 h-100 home">
+        <div className="d-flex flex-column align-items-center w-50 h-100">
             <h1 className="text-tertiary">{t("header.hypothenus")}</h1>
             <h2 className="text-primary">{t("header.title")}</h2>
-          </Container>
         </div>
-        <div className="flex-column flex-fill justify-content-between w-50 h-100">
+        <div className="d-flex flex-column w-50 h-100">
           <Container fluid="true" className="h-100 w-100">
             <Carousel>
               <Carousel.Item>

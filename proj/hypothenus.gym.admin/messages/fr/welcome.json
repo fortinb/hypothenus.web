@@ -1,0 +1,17 @@
+{
+    "buttons": {
+        "signin": "Se connecter",
+        "signup": "Inscrivez-vous maintenant !"
+    },
+    "header": {
+        "welcomeMessage": "Bienvenue à Hypothenus Gym !"
+    },
+    "breadcrumb": {
+        "registration": "Inscription",
+        "signin": "Connexion"
+    },
+    "text": {
+        "signinMessage": "Connectez-vous pour commencer l'entraînement !",
+        "signupMessage": "Vous n'avez pas de compte ?"
+    }
+}

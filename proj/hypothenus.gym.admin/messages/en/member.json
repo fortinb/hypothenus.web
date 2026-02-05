@@ -10,6 +10,9 @@
     "resume": {
         "contacts": "Emergency contacts"
     },
+    "photo": {
+        "alt": "Photo"
+    },
     "breadcrumb": "Members",
     "list": {
         "menu": {

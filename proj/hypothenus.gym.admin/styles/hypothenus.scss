@@ -212,6 +212,10 @@ footer {
     color: transparent;
 }
 
+.home {
+    background-color: $body-bg;
+}
+
 .bg-gradient-loading-text {
     /* Applying the linear gradient */
     background: linear-gradient(to right, $primary, $secondary);

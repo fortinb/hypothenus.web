@@ -5,10 +5,12 @@
         "info": "Info",
         "management": "Entraîneurs",
         "managementTooltip": "Retour à la liste des entraîneurs"
-       
     },
     "resume": {
         "contacts": "Contacts d'urgence"
+    },
+    "photo": {
+        "alt": "Photo de l'entraîneur"
     },
     "breadcrumb": "Entraîneurs",
     "list": {

@@ -3,6 +3,9 @@
         "brands": {
             "title": "Brands"
         },
+        "signin": {
+            "title": "Sign In"
+        },
         "language": {
             "title": "Languages",
             "en": "English",

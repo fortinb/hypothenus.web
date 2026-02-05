@@ -118,6 +118,7 @@
         "photoAlt": "Person photo",
         "description": "Description",
         "email": "Email address",
+        "emailPlaceholder": "email@example.com",
         "address": "Address",
         "phones": "Phones",
         "contacts": "Emergency contacts",
@@ -144,10 +145,16 @@
         "navigation": {
             "new": "New member"
         },
+        "header": {
+            "registration": "Member Registration"
+        },
         "validation": {
             "alreadyExists": "Member must be unique, email already exists.",
             "memberTypeRequired": "Member type is required.",
-            "preferredGymRequired": "Preferred gym is required."
+            "preferredGymRequired": "Preferred gym is required.",
+            "passwordRequired": "Password is required.",
+            "passwordConfirmationRequired": "Password confirmation is required.",
+            "passwordConfirmationMismatch": "Password confirmation does not match."
         },
         "deleteConfirmation": {
             "title": "Delete {name}",
@@ -162,6 +169,7 @@
             "employee": "Employee"
         },
         "password": "Password",
+        "passwordConfirmation": "Password confirmation",
         "memberType": "Member type",
         "preferredGym": "Preferred gym"
     },
@@ -200,7 +208,8 @@
     },
     "phoneNumber": {
         "validation": {
-            "phoneNumberFormat": "(999) 999-9999"
+            "phoneNumberFormat": "(999) 999-9999",
+            "phoneNumberRequired": "Phone number is required."
         },
         "home": "Home",
         "business": "Business",

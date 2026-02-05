@@ -9,6 +9,9 @@
     "resume": {
         "contacts": "Emergency contacts"
     },
+    "photo": {
+        "alt": "Coach photo"
+    },
     "breadcrumb": "Coachs",
     "list": {
         "menu": {

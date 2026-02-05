@@ -2,7 +2,7 @@ import { Breadcrumb } from '@/app/ui/components/navigation/breadcrumb';
 import Home from './home';
 
 interface PageProps {
-  params: Promise<{ lang: string }>;// params is now a Promise
+  params: Promise<{ lang: string }>; // params is now a Promise
 }
 
 export default async function HomePage({ params }: PageProps) {

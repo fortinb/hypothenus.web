@@ -12,7 +12,8 @@ const namespaces = [
     "home",
     "layout",
     "navigation",
-    "translation"
+    "translation",
+    "welcome"
 ] as const;
 
 export async function loadMessages(locale: string) {

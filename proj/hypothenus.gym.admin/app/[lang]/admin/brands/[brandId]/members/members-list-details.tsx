@@ -7,10 +7,11 @@ import Card from "react-bootstrap/Card";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { formatDate } from "@/app/lib/utils/dateUtils";
 import { PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
+import Image from 'next/image';
 
 export default function MemberListDetails({ lang, member }: { lang: string; member: Member }) {
   const t = useTranslations("member");
-  
+
   return (
     <div className="col-6 p-2">
       <Card>
@@ -28,8 +29,14 @@ export default function MemberListDetails({ lang, member }: { lang: string; memb
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
               </div>
             }
-            
+
           </Card.Text>
+          <Image
+            src={member.person?.photoUri ? (URL.canParse(member.person.photoUri) ? member.person.photoUri : "/images/person.png") : "/images/person.png"}
+            width={100}
+            height={100}
+            alt="Member photo"
+          />
         </Card.Body>
       </Card>
     </div>

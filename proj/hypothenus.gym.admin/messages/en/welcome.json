@@ -1,0 +1,17 @@
+{
+    "buttons": {
+        "signin": "Signin",
+        "signup": "Sign up now!"
+    },
+    "header": {
+        "welcomeMessage": "Welcome to Hypothenus Gym !"
+    },
+    "breadcrumb": {
+        "registration": "Registration",
+        "signin": "Signin"
+    },
+    "text": {
+        "signinMessage": "Signin to start training !",
+        "signupMessage": "You don't have an account? "
+    }
+}
