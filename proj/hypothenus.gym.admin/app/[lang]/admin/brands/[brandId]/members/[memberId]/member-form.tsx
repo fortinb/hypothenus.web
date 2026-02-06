@@ -267,7 +267,6 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
 
         return {
             person: person,
-            password: undefined,
             memberType: member.memberType,
             preferredGymUuid: member.preferredGymUuid
         };

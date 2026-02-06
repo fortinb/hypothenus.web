@@ -24,6 +24,18 @@ export async function getBrand(brandUuid: string): Promise<Brand> {
   return parseBrand(response.data);
 }
 
+
+export async function getBrandByCode(brandCode: string): Promise<Brand> {
+
+  const getURI: String = `/v1/brands/code/${brandCode}`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.get(getURI.valueOf(), request);
+
+  return parseBrand(response.data);
+}
+
 export async function postBrand(brand: Brand): Promise<Brand> {
 
   const postURI: String = "/v1/brands";

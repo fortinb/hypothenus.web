@@ -4,21 +4,20 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Button } from "react-bootstrap";
 
-interface LoginButtonProps {
+interface SigninButtonProps {
   lang: string;
-  brandId: string;
 }
 
-export default function LoginButton({ lang, brandId }: LoginButtonProps) {
+export default function SigninButton({ lang }: SigninButtonProps) {
   const router = useRouter();
   const t = useTranslations("welcome" );
 
-  const handleLogin = () => {
-    router.push(`/${lang}/public/${brandId}/login`);
+  const handleSignin = () => {
+    router.push(`/${lang}/public/signin`);
   };
 
   return (
-    <Button className="btn btn-icon btn-sm" onClick={handleLogin}>
+    <Button className="btn btn-icon btn-sm" onClick={handleSignin}>
       <i className="icon bi bi-person h5 pe-2"></i>{t("buttons.signin")}
     </Button>
   );

@@ -30,7 +30,7 @@ export const newPerson = (): Person => {
       newPhoneNumber(PhoneNumberTypeEnum.Home),
       newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
     contacts: [],
-    communicationLanguage: LanguageEnum.en,
+    communicationLanguage: LanguageEnum.fr,
     note: ""
   };
 

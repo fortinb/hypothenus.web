@@ -109,6 +109,7 @@
             "firstnameRequired": "First name is required.",
             "lastnameRequired": "Last name is required.",
             "descriptionRequired": "Description is required.",
+            "dateOfBirthRequired": "Date of birth is required.",
             "emailRequired": "Email is required."
         },
         "firstname": "First name",

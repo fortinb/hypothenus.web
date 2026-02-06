@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { newPerson, parsePerson, Person, PersonSchema } from './person';
 import { BaseEntity } from './baseEntity';
+import { LanguageEnum } from './language';
 
 export interface Coach extends BaseEntity {
   uuid?: any;

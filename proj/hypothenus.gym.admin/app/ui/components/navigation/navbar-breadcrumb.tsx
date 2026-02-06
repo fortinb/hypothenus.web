@@ -23,32 +23,34 @@ export default function NavbarBreadcrumb() {
 
   useEffect(() => {
     // Update breadcrumbs whenever locale changes
-      dispatch(updateBreadcrumbsLocale(locale));
+    dispatch(updateBreadcrumbsLocale(locale));
   }, [dispatch, locale]);
 
   return (
     <div className="d-flex flex-row justify-content-center text-secondary fw-bold pe-3">
-      <Breadcrumb>
-        {breadcrumbState.breadcrumbs?.map((item, index) => {
-          return index === breadcrumbState?.breadcrumbs?.length - 1 ? (
-            <Breadcrumb.Item key={item.id} active>
-              <BreadcrumbItemLabel
-                namespace={item.namespace}
-                translationKey={item.key}
-                value={item.value}
-              />
-            </Breadcrumb.Item>
-          ) : (
-            <Breadcrumb.Item key={item.id} href={`/${item.locale}${item.href}`} linkAs={Link}>
-              <BreadcrumbItemLabel   
-                namespace={item.namespace}
-                translationKey={item.key}
-                value={item.value}
-              />
-            </Breadcrumb.Item>
-          )
-        })}
-      </Breadcrumb>
+      {breadcrumbState.breadcrumbs?.length > 1 &&
+        <Breadcrumb>
+          {breadcrumbState.breadcrumbs?.map((item, index) => {
+            return index === breadcrumbState?.breadcrumbs?.length - 1 ? (
+              <Breadcrumb.Item key={item.id} active>
+                <BreadcrumbItemLabel
+                  namespace={item.namespace}
+                  translationKey={item.key}
+                  value={item.value}
+                />
+              </Breadcrumb.Item>
+            ) : (
+              <Breadcrumb.Item key={item.id} href={`/${item.locale}${item.href}`} linkAs={Link}>
+                <BreadcrumbItemLabel
+                  namespace={item.namespace}
+                  translationKey={item.key}
+                  value={item.value}
+                />
+              </Breadcrumb.Item>
+            )
+          })}
+        </Breadcrumb>
+      }
     </div>
   );
 }

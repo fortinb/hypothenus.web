@@ -6,6 +6,7 @@ import { fetchGyms } from "@/app/lib/services/gyms-data-service";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import RegistrationForm from "./registration-form";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
+import { LanguageEnum } from "@/src/lib/entities/language";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
@@ -19,6 +20,7 @@ export default async function MemberPage({ params }: PageProps) {
   try {
     member = newMember();
     member.brandUuid = brandId;
+    member.person.communicationLanguage = lang as LanguageEnum;
 
     // Load list of gyms
     pageOfGyms = await fetchGyms(brandId, 0, 1000, false);

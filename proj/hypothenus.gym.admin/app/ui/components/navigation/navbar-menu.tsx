@@ -25,8 +25,8 @@ export default function NavbarMenu() {
   }
 
   const onSignin = (e: MouseEvent<HTMLButtonElement>) => {
-    // redirect to login page
-    router.push(`/${params.lang}/public/${params.brandId}/login`);
+    // redirect to signin page
+    router.push(`/${params.lang}/public/signin`);
   }
 
   return (

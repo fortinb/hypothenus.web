@@ -15,14 +15,15 @@ import FormLabelRequired from "../forms/form-label-required";
 import RegistrationPhoneInfo from "./registration-phone-info";
 import { localesConfig } from "@/i18n/locales-client";
 
-export default function RegistrationInfo({ id, formStatefield }:
+export default function RegistrationPersonInfo({ id, formStatefield, lang }:
     {
         id: string,
-        formStatefield: string
+        formStatefield: string,
+        lang: string
     }) {
 
     const t = useTranslations("entity");
-    const params = useParams<{ lang: string }>();
+    
     const { register, formState: { errors } } = useFormContext();
 
     function getError(): Merge<FieldError, FieldErrorsImpl<Person>> {
@@ -63,19 +64,21 @@ export default function RegistrationInfo({ id, formStatefield }:
                                     selected={!field.value ? null : moment(field.value).toDate()}
                                     onChange={(date: Date | null) => field.onChange(date?.toISOString())}
                                     className={"form-control "}
-                                    locale={params.lang}
+                                    locale={lang}
                                     dateFormat="yyyy-MM-dd"
                                     placeholderText={t("format.date")} />
                             )}
                         />
-                    </Form.Group>
+                         <br />
+                        {getError()?.dateOfBirth && <Form.Text className="text-invalid">{t(getError()?.dateOfBirth?.message as string ?? "")}</Form.Text>}
+                       </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
                         <FormLabelRequired className="text-primary" htmlFor={`person-communication-language-dropdown_${id}`} label={t("person.communicationLanguage")}></FormLabelRequired>
                         <Form.Select id={`person-communication-language-dropdown_${id}`} {...register(`${formStatefield}.communicationLanguage`)}>
                              {localesConfig.locales.map((lang: string, index: number) => {
-                                return <option key={index} value={`${lang}`} selected={params.lang === `${lang}`}>{t(`language.${lang}`)}</option>
+                                return <option key={index} value={`${lang}`} >{t(`language.${lang}`)}</option>
                              })}     
                         </Form.Select>
                     </Form.Group>

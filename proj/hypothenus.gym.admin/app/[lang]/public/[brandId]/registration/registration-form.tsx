@@ -107,7 +107,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
                 } else {
                     dispatch(updateMemberState(entity));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/members/${entity.uuid}`);
+                    router.push(`/${lang}/public/signin`);
                 }
             },
             // Error
@@ -123,7 +123,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
 
         formContext.reset(memberState.member);
      
-        router.push(`/${lang}/public/${memberState.member.brandUuid}/login`);
+        router.push(`/${lang}/public/signin`);
     }
 
     function mapEntityToForm(member: Member): z.infer<typeof MemberRegistrationSchema> {
@@ -169,7 +169,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
                                     <h1 className="text-tertiary">{t("member.header.registration")}</h1>
                                 </div>
                                 <hr className="mt-1" />
-                                <MemberRegistration availableGymItems={availableGymItems} />
+                                <MemberRegistration lang={lang} availableGymItems={availableGymItems} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="member_info_form" />
                             </Form>

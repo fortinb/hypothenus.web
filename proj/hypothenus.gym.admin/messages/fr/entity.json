@@ -110,6 +110,7 @@
             "firstnameRequired": "Le prénom est requis.",
             "lastnameRequired": "Le nom est requis.",
             "descriptionRequired": "La description est requise.",
+            "dateOfBirthRequired": "La date de naissance est requise.",
             "emailRequired": "Le courriel est requis."
         },
         "firstname": "Prénom",
