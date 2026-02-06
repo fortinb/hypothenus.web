@@ -1,5 +1,14 @@
 {
     "navbar": {
+        "admin": {
+            "title": "Admin"
+        },
+        "member": {
+            "reservations": "Reservations",
+            "subscriptions": "Subscriptions",
+            "payments": "Payments",
+            "profile": "Profile"
+        },
         "brands": {
             "title": "Brands"
         },
@@ -13,10 +22,9 @@
         }
     },
     "error": {
-        "boundary" : {
-            "title" : "Sorry, something went wrong !",
-            "action" : "Try again"
+        "boundary": {
+            "title": "Sorry, something went wrong !",
+            "action": "Try again"
         }
     }
-
 }

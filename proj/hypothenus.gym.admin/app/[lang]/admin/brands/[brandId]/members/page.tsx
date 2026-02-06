@@ -17,7 +17,7 @@ export default async function MembersPage({ params }: PageProps) {
           id: "members.page",
           locale: `${lang}`,
           href: `/admin/brands/${brandId}/members`,
-          key: "breadcrumb",
+          key: "breadcrumb.members",
           namespace: "member"
         }}
       />

@@ -1,5 +1,14 @@
 {
     "navbar": {
+        "admin": {
+            "title": "Administration"
+        },
+        "member": {
+            "reservations": "Réservations",
+            "subscriptions": "Abonnements",
+            "payments": "Paiements",
+            "profile": "Profil"
+        },
         "brands": {
             "title": "Marques"
         },

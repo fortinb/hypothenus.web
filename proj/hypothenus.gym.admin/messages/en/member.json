@@ -13,7 +13,13 @@
     "photo": {
         "alt": "Photo"
     },
-    "breadcrumb": "Members",
+    "breadcrumb": {
+        "members": "Members",
+        "reservations": "Reservations",
+        "subscriptions": "Subscriptions",
+        "payments": "Payments",
+        "profile": "Profile"
+    },
     "list": {
         "menu": {
             "member": "{name}",

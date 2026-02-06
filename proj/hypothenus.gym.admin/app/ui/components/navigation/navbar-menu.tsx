@@ -13,12 +13,15 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Button } from "react-bootstrap";
 import Tooltip from "react-bootstrap/Tooltip";
 import { MouseEvent } from "react";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { useSelector } from "react-redux";
 
 export default function NavbarMenu() {
-  const params = useParams<{ lang: string, brandId: string }>();
+  const params = useParams<{ lang: string }>();
   const t = useTranslations("layout");
   const router = useRouter();
   const pathname = usePathname();
+  const brandState: BrandState = useSelector((state: any) => state.brandState);
 
   function changeLanguage(language: string) {
     router.push(`/${language}${pathname.substring(3)}`);
@@ -47,12 +50,35 @@ export default function NavbarMenu() {
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                  <Nav.Link as={Link} href={`/${params.lang}/admin/brands`}>{t("navbar.brands.title")}</Nav.Link>
+                  <Nav.Link as={Link} href={`/${params.lang}/members/${brandState.brand.uuid}/reservations`}>{t("navbar.member.reservations")}</Nav.Link>
+                </div>
+                <div className="d-flex align-items-center">
+                  <Nav.Link as={Link} href={`/${params.lang}/members/${brandState.brand.uuid}/subscriptions`}>{t("navbar.member.subscriptions")}</Nav.Link>
+                </div>
+                <div className="d-flex align-items-center">
+                  <Nav.Link as={Link} href={`/${params.lang}/members/${brandState.brand.uuid}/payments`}>{t("navbar.member.payments")}</Nav.Link>
+                </div>
+                <div className="d-flex align-items-center">
+                  <Nav.Link as={Link} href={`/${params.lang}/members/${brandState.brand.uuid}/profile`}>{t("navbar.member.profile")}</Nav.Link>
                 </div>
               </Nav>
             </div>
             <div className="d-flex flex-column align-items-center w-50">
               <div className="d-flex flex-row justify-content-end w-100">
+                <div className="me-2">
+                  <Dropdown>
+                    <Dropdown.Toggle id="navbar-languages-dropdown">
+                      {t("navbar.admin.title")}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => router.push(`/${params.lang}/admin/brands`)}>
+                        {t("navbar.brands.title")}
+                      </Dropdown.Item>
+
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
                 <div className="me-2">
                   <OverlayTrigger placement="bottom" overlay={<Tooltip style={{ position: "fixed" }} id="navbar_action_signin">{t("navbar.signin.title")}</Tooltip>}>
                     <Button className="btn btn-icon btn-sm" onClick={onSignin}><i className="icon bi bi-person h5"></i></Button>
