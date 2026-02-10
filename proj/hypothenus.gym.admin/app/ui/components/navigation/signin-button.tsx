@@ -3,17 +3,14 @@
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Button } from "react-bootstrap";
+import { signIn } from "next-auth/react";
 
-interface SigninButtonProps {
-  lang: string;
-}
-
-export default function SigninButton({ lang }: SigninButtonProps) {
+export default function SigninButton() {
   const router = useRouter();
   const t = useTranslations("welcome" );
 
   const handleSignin = () => {
-    router.push(`/${lang}/public/signin`);
+     signIn("entra"); 
   };
 
   return (

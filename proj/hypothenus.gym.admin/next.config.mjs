@@ -5,8 +5,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig = {
   reactStrictMode: true,
   sassOptions: { 
-    includePaths: ["./styles/scss", "node_modules"], 
-    quiet: true
+    includePaths: ["styles", "node_modules"], 
+    quiet: true,
+    quietDeps: true
 },
   images: {
     remotePatterns: [
