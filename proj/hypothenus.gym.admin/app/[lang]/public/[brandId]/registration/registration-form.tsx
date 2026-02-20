@@ -150,6 +150,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
             ...member,  // Preserve original properties like id, isActive, messages, etc.
             person: { ...member.person, ...formData.person },
             memberType: formData.memberType,
+            password: formData.password,
             preferredGymUuid: formData.preferredGymUuid
         };
     }

@@ -8,8 +8,9 @@ import { Brand } from '@/src/lib/entities/brand';
 import { updateBrandState } from '../lib/store/slices/brand-state-slice';
 import { useAppDispatch } from '../lib/hooks/useStore';
 import { useEffect } from 'react';
+import Signin from './public/signin/signin';
 
-export default function Home({ brand }: { brand: Brand }) {
+export default function Home({ lang, brand }: { lang: string; brand: Brand }) {
   const t = useTranslations("home");
   const dispatch = useAppDispatch();
 
@@ -20,8 +21,10 @@ export default function Home({ brand }: { brand: Brand }) {
   return (
     <div className="d-flex flex-row w-100 h-100 home">
       <div className="d-flex flex-column align-items-center w-50 h-100">
-        <h1 className="text-tertiary">{t("header.hypothenus")}</h1>
-        <h2 className="text-primary">{t("header.title")}</h2>
+        
+        <div className="d-flex flex-row w-100 h-100">
+          <Signin lang={lang} />
+        </div>
       </div>
       <div className="d-flex flex-column w-50 h-100">
         <Container fluid="true" className="h-100 w-100">

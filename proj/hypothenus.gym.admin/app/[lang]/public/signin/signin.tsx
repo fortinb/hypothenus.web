@@ -6,10 +6,11 @@ import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import SigninButton from "@/app/ui/components/navigation/signin-button";
+import { useSession } from "next-auth/react";
 
 export default function Signin({ lang }: { lang: string }) {
     const t = useTranslations("welcome");
-      
+    const { data: session } = useSession();
     const brandState: BrandState = useSelector((state: any) => state.brandState);
 
     return (
@@ -21,11 +22,13 @@ export default function Signin({ lang }: { lang: string }) {
                 </div>
             </Container>
             <br />
-            <SigninButton />
-            <span className="mt-4">{t("text.signupMessage")}</span>
-            <Link className="link-element" href={`/${lang}/public/${brandState.brand.uuid}/registration`}>
-                {t("buttons.signup")}
-            </Link>
+            <SigninButton lang={lang} />
+            {!session && <>
+                <span className="mt-4">{t("text.signupMessage")}</span>
+                <Link className="link-element" href={`/${lang}/public/${brandState.brand.uuid}/registration`}>
+                    {t("buttons.signup")}
+                </Link>
+            </>}
         </div>
     );
 }

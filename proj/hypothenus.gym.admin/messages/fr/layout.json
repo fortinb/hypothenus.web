@@ -15,6 +15,9 @@
         "signin": {
             "title": "Se connecter"
         },
+        "signout": {
+            "title": "Se déconnecter"
+        },
         "language": {
             "title": "Langues",
             "en": "English",

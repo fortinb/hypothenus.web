@@ -1,7 +1,8 @@
 {
     "buttons": {
         "signin": "Signin",
-        "signup": "Sign up now!"
+        "signup": "Sign up now!",
+        "signout": "Signout"
     },
     "header": {
         "welcomeMessage": "Welcome to Hypothenus Gym !"

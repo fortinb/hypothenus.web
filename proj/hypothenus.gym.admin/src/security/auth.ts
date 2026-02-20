@@ -52,6 +52,7 @@ const authConfig = NextAuth({
                     ? decoded.exp * 1000
                     : Date.now() + 60 * 60 * 1000;
             }
+
             console.log("JWT callback token:", token);
             return token;
         },
@@ -59,6 +60,12 @@ const authConfig = NextAuth({
         async session({ session, token }) {
             session.accessToken = token.accessToken as string;
             session.user.roles = token.roles as string[];
+
+            // Extract the user's name from the given_name claim in the access token
+            const decoded = jwtDecode<{ name?: string, email?: string }>(token.accessToken as string);
+            session.user.name = decoded.name || "";
+            session.user.email = decoded.email || "";
+
             console.log("Session callback session:", session);
             return session;
         },

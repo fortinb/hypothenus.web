@@ -8,7 +8,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     config.headers["x-tracking-number"] = "1234";
     config.headers["x-credentials"] = "Bruno Fortin";
-    config.headers["x-authorization"] = "{ \"roles\" : [\"Admin\"] }";
+    config.headers["x-authorization"] = "{ \"roles\" : [\"admin\"] }";
 
     return config;
   },

@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
 export enum PhoneNumberTypeEnum {
-  Business = "Business",
-  Home = "Home",
-  Mobile = "Mobile"
+  Business = "business",
+  Home = "home",
+  Mobile = "mobile"
 }
 
 export const phoneNumberOrder: Record<string, number> = {
-  "Home": 1,
-  "Business": 2,
-  "Mobile": 3
+  "home": 1,
+  "business": 2,
+  "mobile": 3
 };
 
 export interface PhoneNumber {

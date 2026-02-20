@@ -31,7 +31,7 @@ export default async function HomePage({ params }: PageProps) {
           namespace: "home"
         }}
       />
-      <Home brand={brand} />
+      <Home lang={lang} brand={brand} />
     </main>
   );
 

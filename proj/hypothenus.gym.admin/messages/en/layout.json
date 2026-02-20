@@ -15,6 +15,9 @@
         "signin": {
             "title": "Sign In"
         },
+        "signout": {
+            "title": "Sign Out"
+        },
         "language": {
             "title": "Languages",
             "en": "English",

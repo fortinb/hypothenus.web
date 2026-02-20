@@ -10,13 +10,14 @@ import { getTranslations } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { SessionProvider } from "next-auth/react";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
 export async function generateMetadata({ params }: Props) {
-  const { locale } = await params; 
+  const { locale } = await params;
   const localeValue = routing.locales.includes(locale as any)
     ? locale
     : routing.defaultLocale;
@@ -37,19 +38,19 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: string }>; 
+  params: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;  
-  
+  const { lang } = await params;
+
   if (!routing.locales.includes(lang as any)) {
-     console.log('not found');  
-     notFound();
-  } 
+    console.log('not found');
+    notFound();
+  }
 
   return (
 
-    <html lang={lang}> 
-     <head>
+    <html lang={lang}>
+      <head>
         {/* Performance optimizations */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -63,17 +64,19 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider>
           <StoreProvider>
-            <div className="container-fluid overflow-hidden w-100 h-100 p-0">
-              <div className="d-flex flex-row w-100 h-100 p-0">
-                <div className="d-flex flex-column justify-content-between w-100 h-100">
-                  <Header />
-                  <Container fluid={true} className="overflow-hidden h-100">
-                    {children}
-                  </Container>
-                  <Footer />
+            <SessionProvider>
+              <div className="container-fluid overflow-hidden w-100 h-100 p-0">
+                <div className="d-flex flex-row w-100 h-100 p-0">
+                  <div className="d-flex flex-column justify-content-between w-100 h-100">
+                    <Header lang={lang} />
+                    <Container fluid={true} className="overflow-hidden h-100">
+                      {children}
+                    </Container>
+                    <Footer />
+                  </div>
                 </div>
               </div>
-            </div>
+            </SessionProvider>
           </StoreProvider>
         </NextIntlClientProvider>
       </body>
