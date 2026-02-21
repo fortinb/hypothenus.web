@@ -2,16 +2,17 @@
 
 import axios from 'axios'
 import { normalizeApiError } from './action-result';
-
+import {auth} from "@/src/security/auth";
 const axiosInstance = axios.create();
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
-  (config) => {
-    config.headers["x-tracking-number"] = "1234";
+  async (config) => {
+    const session = await auth();
+    config.headers["x-tracking-number"] = crypto.randomUUID();
     config.headers["x-credentials"] = "Bruno Fortin";
     config.headers["x-authorization"] = "{ \"roles\" : [\"admin\"] }";
-
+    config.headers["Authorization"] = "Bearer " + session?.accessToken;
     return config;
   },
   (error) => {
@@ -40,4 +41,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;; 
+export default axiosInstance;
