@@ -1,15 +1,14 @@
 "use client";
-import { redirect } from "next/navigation";
 import Image from 'next/image';
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
-import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import SigninButton from "./signin-button";
 import LanguageButton from "./language-button";
 import MemberMenu from "./member-menu";
 import { useTranslations } from "next-intl";
+import AdminButton from "./admin-button";
 import { Authorize } from "../security/authorize";
 
 export default function NavbarMenu({ lang }: { lang: string }) {
@@ -34,25 +33,18 @@ export default function NavbarMenu({ lang }: { lang: string }) {
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                  <MemberMenu lang={lang} />
+                  <Authorize roles="member">
+                    <MemberMenu lang={lang} />
+                  </Authorize>
                 </div>
               </Nav>
             </div>
             <div className="d-flex flex-column align-items-center w-50">
               <div className="d-flex flex-row justify-content-end w-100">
                 <div className="me-2">
-                  <Authorize roles="admin">
-                    <Dropdown>
-                      <Dropdown.Toggle id="navbar-admin-dropdown">
-                        {t("navbar.admin.title")}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => redirect(`/${lang}/admin/brands`)}>
-                          {t("navbar.brands.title")}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Authorize>
+                 <Authorize roles={["admin", "manager"]}>
+                   <AdminButton lang={lang} />
+                 </Authorize>
                 </div>
                 <div className="me-2">
                   <SigninButton lang={lang} />

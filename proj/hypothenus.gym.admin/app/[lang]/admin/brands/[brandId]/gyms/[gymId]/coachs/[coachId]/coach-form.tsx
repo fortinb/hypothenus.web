@@ -24,6 +24,7 @@ import { activateCoachAction, createCoachAction, deactivateCoachAction, deleteCo
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function CoachForm({ lang, coach }: { lang: string; coach: Coach }) {
     const t = useTranslations("entity");
@@ -280,9 +281,11 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.uuid == null ? true : coachState.coach.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.uuid == null ? true : false)} isActivationDisabled={(coachState.coach.uuid == null ? true : false)} isActivating={isActivating} />
-                                <hr className="mt-1" />
+                                <Authorize roles="manager">
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.uuid == null ? true : coachState.coach.isActive}
+                                        isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.uuid == null ? true : false)} isActivationDisabled={(coachState.coach.uuid == null ? true : false)} isActivating={isActivating} />
+                                    <hr className="mt-1" />
+                                </Authorize>
                                 <CoachInfo isEditMode={isEditMode} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="coach_info_form" />

@@ -25,7 +25,7 @@ export default function Signin({ lang }: { lang: string }) {
             <SigninButton lang={lang} />
             {!session && <>
                 <span className="mt-4">{t("text.signupMessage")}</span>
-                <Link className="link-element" href={`/${lang}/public/${brandState.brand.uuid}/registration`}>
+                <Link className="link-element" href={`/${lang}/public/${brandState?.brand?.uuid}/registration`}>
                     {t("buttons.signup")}
                 </Link>
             </>}

@@ -11,6 +11,7 @@ import { LanguageEnum } from "@/src/lib/entities/language";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { redirect } from "next/navigation";
+import { auth } from "@/src/security/auth";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string; gymId: string; courseId: string }>;
@@ -18,6 +19,11 @@ interface PageProps {
 
 export default async function CoursePage({ params }: PageProps) {
   const { lang, brandId, gymId, courseId } = await params;
+
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
 
   let course: Course;
   let pageOfCoachs: Page<Coach>;

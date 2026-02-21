@@ -5,6 +5,8 @@ import BrandResume from "./brand-resume";
 import { getBrand } from "@/app/lib/services/brands-data-service";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { redirect } from "next/navigation";
+import { auth } from "@/src/security/auth";
+import { hasAuthorization } from "@/app/lib/security/roles";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
@@ -12,6 +14,16 @@ interface PageProps {
 
 export default async function BrandPage({ params }: PageProps) {
   const { lang, brandId } = await params;
+
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
+
+  if (!hasAuthorization(session.user.roles, ["admin"])) {
+    redirect("/error");
+  }
+
   let brand: Brand;
 
   try {

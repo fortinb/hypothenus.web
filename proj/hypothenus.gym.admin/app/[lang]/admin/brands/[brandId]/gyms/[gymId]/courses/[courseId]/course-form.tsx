@@ -27,6 +27,7 @@ import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { localesConfigLanguageOrder } from "@/i18n/locales-client";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { Authorize } from "@/app/ui/components/security/authorize";
 
 export interface CourseFormData {
     course: z.infer<typeof CourseSchema>;
@@ -321,9 +322,11 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="course_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == null ? true : courseState.course.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(courseState.course.uuid == null ? true : false)} isActivationDisabled={(courseState.course.uuid == null ? true : false)} isActivating={isActivating} />
-                                <hr className="mt-1" />
+                                <Authorize roles="manager">
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == null ? true : courseState.course.isActive}
+                                        isEditDisable={isEditMode} isDeleteDisable={(courseState.course.uuid == null ? true : false)} isActivationDisabled={(courseState.course.uuid == null ? true : false)} isActivating={isActivating} />
+                                    <hr className="mt-1" />
+                                </Authorize>
                                 <CourseInfo lang={lang} course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />

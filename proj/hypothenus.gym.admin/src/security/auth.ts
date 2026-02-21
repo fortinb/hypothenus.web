@@ -8,7 +8,7 @@ type AzureAccessToken = {
     exp?: number;
 };
 
-const authConfig = NextAuth({
+export const { auth,  handlers: { GET, POST }, signIn, signOut } = NextAuth({
     providers: [
         AzureAD({
             id: "entra",
@@ -71,5 +71,3 @@ const authConfig = NextAuth({
         },
     },
 });
-
-export default authConfig;

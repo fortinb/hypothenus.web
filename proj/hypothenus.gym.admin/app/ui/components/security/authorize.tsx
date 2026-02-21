@@ -1,6 +1,6 @@
 "use client";
 
-import { hasRole } from "@/app/lib/security/roles";
+import { hasAuthorization } from "@/app/lib/security/roles";
 import { useSession } from "next-auth/react";
 
 type Props = {
@@ -14,7 +14,7 @@ export function Authorize({ roles, children }: Props) {
   if (status === "loading") return null;
   if (!session) return null;
 
-  if (!hasRole(session.user.roles, roles)) return null;
+  if (!hasAuthorization(session.user.roles, roles)) return null;
 
   return <>{children}</>;
 }

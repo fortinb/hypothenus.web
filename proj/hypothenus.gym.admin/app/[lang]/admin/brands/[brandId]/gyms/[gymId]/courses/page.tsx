@@ -1,7 +1,9 @@
 
+import { auth } from "@/src/security/auth";
 import CoursesListPaging from "./courses-list-paging";
 import CoursesMenu from "./courses-menu";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
+import { redirect } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string, gymId: string }>;
@@ -10,6 +12,11 @@ interface PageProps {
 export default async function CoursesPage({ params }: PageProps) {
   const { lang, brandId, gymId } = await params;
 
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
+  
   return (
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb

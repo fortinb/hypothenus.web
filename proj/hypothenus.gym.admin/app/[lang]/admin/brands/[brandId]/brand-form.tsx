@@ -22,6 +22,7 @@ import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/me
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
+import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function BrandForm({ lang, brand }: { lang: string; brand: Brand }) {
     const t = useTranslations("entity");
@@ -67,18 +68,18 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
 
     }, [dispatch, brand]);
 
-        // Watch the entire form
+    // Watch the entire form
     const formData = formContext.watch();
 
     useEffect(() => {
-         // Log the data to the console every time there is an error
-         const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-         if (hasErrors) {
-             console.log("Current Form errors:", formContext.formState.errors);
-         }
- 
-         // console.log("Current Form Data:", formData);
-     }, [formData]); 
+        // Log the data to the console every time there is an error
+        const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
+        if (hasErrors) {
+            console.log("Current Form errors:", formContext.formState.errors);
+        }
+
+        // console.log("Current Form Data:", formData);
+    }, [formData]);
 
     const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);
@@ -282,9 +283,11 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.uuid == null ? true : brandState.brand.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.uuid == null ? true : false)} isActivationDisabled={(brandState.brand.uuid == null ? true : false)} isActivating={isActivating} />
-                                <hr className="mt-1" />
+                                <Authorize roles="admin">
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.uuid == null ? true : brandState.brand.isActive}
+                                        isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.uuid == null ? true : false)} isActivationDisabled={(brandState.brand.uuid == null ? true : false)} isActivating={isActivating} />
+                                    <hr className="mt-1" />
+                                </Authorize>
                                 <BrandInfo brand={brandState.brand} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="brand_info_form" />

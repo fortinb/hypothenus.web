@@ -7,6 +7,7 @@ import { Coach, newCoach } from "@/src/lib/entities/coach";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { redirect } from "next/navigation";
+import { auth } from "@/src/security/auth";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string, gymId: string, coachId: string }>;
@@ -14,6 +15,11 @@ interface PageProps {
 
 export default async function CoachPage({ params }: PageProps) {
   const { lang, brandId, gymId, coachId } = await params;
+
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
 
   let coach: Coach;
   try {

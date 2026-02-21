@@ -11,6 +11,7 @@ import { Gym } from "@/src/lib/entities/gym";
 import { Page } from "@/src/lib/entities/page";
 import { fetchGyms } from "@/app/lib/services/gyms-data-service";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
+import { auth } from "@/src/security/auth";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string, memberId: string }>;
@@ -18,6 +19,11 @@ interface PageProps {
 
 export default async function MemberPage({ params }: PageProps) {
   const { lang, brandId, memberId } = await params;
+  
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
 
   let member: Member;
   let pageOfGyms: Page<Gym>;

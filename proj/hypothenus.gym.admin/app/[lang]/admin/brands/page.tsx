@@ -1,6 +1,10 @@
 import BrandsMenu from "./brands-menu";
 import BrandsListPaging from "./brands-list-paging";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
+import {auth} from "@/src/security/auth";
+import { redirect } from "next/navigation";
+import { hasAuthorization } from "@/app/lib/security/roles";
+
 
 interface PageProps {
   params: Promise<{ lang: string }>; // params is now a Promise
@@ -8,7 +12,16 @@ interface PageProps {
 
 export default async function BrandsPage({ params }: PageProps) {
   const { lang } = await params;
+  const session = await auth();
 
+  if (!session) {
+    redirect("/");
+  }
+
+  if (!hasAuthorization(session.user.roles, "admin")) {
+    redirect("/error");
+  }
+  
   return (
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb

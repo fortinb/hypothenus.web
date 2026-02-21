@@ -24,6 +24,7 @@ import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { uploadGymLogo } from "@/app/lib/services/gyms-data-service-client";
 import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     const t = useTranslations("entity");
@@ -182,7 +183,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
                 showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
-                    router.push(`/${lang}/admin/brands/${brandState.brand.uuid}/gyms`);
+                    router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/gyms`);
                 }, 1000);
             },
             (result) => {
@@ -197,7 +198,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
         formContext.reset(gymState.gym);
 
         if (gymState.gym.uuid === null) {
-            router.push(`/${lang}/admin/brands/${brandState.brand.uuid}/gyms`);
+            router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/gyms`);
         }
     }
 
@@ -275,9 +276,11 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.uuid == null ? true : gymState.gym.isActive}
-                                    isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.uuid == null ? true : false)} isActivationDisabled={(gymState.gym.uuid == null ? true : false)} isActivating={isActivating} />
-                                <hr className="mt-1" />
+                                <Authorize roles="manager">
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.uuid == null ? true : gymState.gym.isActive}
+                                        isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.uuid == null ? true : false)} isActivationDisabled={(gymState.gym.uuid == null ? true : false)} isActivating={isActivating} />
+                                    <hr className="mt-1" />
+                                </Authorize>
                                 <GymInfo gym={gymState.gym} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />

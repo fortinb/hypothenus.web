@@ -1,4 +1,4 @@
-export function hasRole(
+export function hasAuthorization(
   userRoles: string[] | undefined,
   required: string | string[]
 ) {

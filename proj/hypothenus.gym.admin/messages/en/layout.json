@@ -12,6 +12,9 @@
         "brands": {
             "title": "Brands"
         },
+        "gyms": {
+            "title": "Gyms"
+        },
         "signin": {
             "title": "Sign In"
         },

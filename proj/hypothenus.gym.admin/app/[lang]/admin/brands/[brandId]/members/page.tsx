@@ -1,6 +1,8 @@
 import { Breadcrumb } from '@/app/ui/components/navigation/breadcrumb';
 import MembersListPaging from "./members-list-paging";
 import MembersMenu from "./members-menu";
+import { auth } from '@/src/security/auth';
+import { redirect } from 'next/navigation';
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>; 
@@ -8,7 +10,12 @@ interface PageProps {
 
 export default async function MembersPage({ params }: PageProps) {
   const { lang, brandId } = await params;
-
+  
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
+  
   return (
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb

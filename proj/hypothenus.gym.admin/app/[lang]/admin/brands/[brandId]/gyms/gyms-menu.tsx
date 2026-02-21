@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { GymsStatePaging, includeInactive } from "@/app/lib/store/slices/gyms-state-paging-slice";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function GymsMenu({ lang }: { lang: string; }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
@@ -35,29 +36,31 @@ export default function GymsMenu({ lang }: { lang: string; }) {
       </div>
       <div className="d-flex flex-column h-100">
         <Container fluid={true}>
-          <Row className="gx-2">
-            <Col xs={6} >
-              <div className="btn-navigation m-2">
-                <div className="d-flex flex-column justify-content-center h-100">
-                  <div className="d-flex flex-row justify-content-center">
-                    <Link className="link-element" href={`/${lang}/admin/brands/${brandState.brand.uuid}/gyms/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
-                  </div>
-                  <div className="d-flex flex-row justify-content-center">
-                    <span className="text-primary mt-3">{t("list.menu.add")}</span>
+          <Authorize roles="manager">
+            <Row className="gx-2">
+              <Col xs={6} >
+                <div className="btn-navigation m-2">
+                  <div className="d-flex flex-column justify-content-center h-100">
+                    <div className="d-flex flex-row justify-content-center">
+                      <Link className="link-element" href={`/${lang}/admin/brands/${brandState?.brand?.uuid}/gyms/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                    </div>
+                    <div className="d-flex flex-row justify-content-center">
+                      <span className="text-primary mt-3">{t("list.menu.add")}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Col>
-            <Col xs={6} >
-              <div className="d-flex flex-row align-items-center justify-content-center flex-fill h-100">
-                <div className="form-check form-switch pe-2">
-                  <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
-                    id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsStatePaging.includeInactive} />
-                  <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">{t("list.menu.inactive")}</label>
+              </Col>
+              <Col xs={6} >
+                <div className="d-flex flex-row align-items-center justify-content-center flex-fill h-100">
+                  <div className="form-check form-switch pe-2">
+                    <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch" name="includeDeactivate"
+                      id="flexSwitchCheckChecked" onChange={onIncludeDeactivated} checked={gymsStatePaging.includeInactive} />
+                    <label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">{t("list.menu.inactive")}</label>
+                  </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          </Authorize>
         </Container>
       </div>
     </div>

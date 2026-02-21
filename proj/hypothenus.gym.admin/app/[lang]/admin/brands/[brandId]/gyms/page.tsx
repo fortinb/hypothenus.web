@@ -1,13 +1,20 @@
 import { Breadcrumb } from '@/app/ui/components/navigation/breadcrumb';
 import GymsListPaging from "./gyms-list-paging";
 import GymsMenu from "./gyms-menu";
+import { auth } from '@/src/security/auth';
+import { redirect } from 'next/navigation';
 
 interface PageProps {
-  params: Promise<{ lang: string; brandId: string }>; 
+  params: Promise<{ lang: string; brandId: string }>;
 }
 
 export default async function GymsPage({ params }: PageProps) {
   const { lang, brandId } = await params;
+
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">
@@ -23,7 +30,7 @@ export default async function GymsPage({ params }: PageProps) {
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-        <GymsMenu lang={lang}  />
+        <GymsMenu lang={lang} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
         <GymsListPaging lang={lang} />

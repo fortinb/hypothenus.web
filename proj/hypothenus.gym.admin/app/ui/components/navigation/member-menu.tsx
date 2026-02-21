@@ -17,16 +17,16 @@ export default function MemberMenu({ lang }: { lang: string }) {
     <Authorize roles="member">
       <div className="d-flex flex-row align-items-center">
         <div className="d-flex align-items-center">
-          <Nav.Link as={Link} href={`/${lang}/members/${brandState.brand.uuid}/reservations`}>{t("navbar.member.reservations")}</Nav.Link>
+          <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/reservations`}>{t("navbar.member.reservations")}</Nav.Link>
         </div>
         <div className="d-flex align-items-center">
-          <Nav.Link as={Link} href={`/${lang}/members/${brandState.brand.uuid}/subscriptions`}>{t("navbar.member.subscriptions")}</Nav.Link>
+          <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/subscriptions`}>{t("navbar.member.subscriptions")}</Nav.Link>
         </div>
         <div className="d-flex align-items-center">
-          <Nav.Link as={Link} href={`/${lang}/members/${brandState.brand.uuid}/payments`}>{t("navbar.member.payments")}</Nav.Link>
+          <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/payments`}>{t("navbar.member.payments")}</Nav.Link>
         </div>
         <div className="d-flex align-items-center">
-          <Nav.Link as={Link} href={`/${lang}/members/${brandState.brand.uuid}/profile`}>{t("navbar.member.profile")}</Nav.Link>
+          <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/profile`}>{t("navbar.member.profile")}</Nav.Link>
         </div>
       </div>
     </Authorize>

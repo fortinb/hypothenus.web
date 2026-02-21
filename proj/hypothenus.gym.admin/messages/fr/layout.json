@@ -12,6 +12,9 @@
         "brands": {
             "title": "Marques"
         },
+        "gyms": {
+            "title": "Salles de sport"
+        },
         "signin": {
             "title": "Se connecter"
         },
