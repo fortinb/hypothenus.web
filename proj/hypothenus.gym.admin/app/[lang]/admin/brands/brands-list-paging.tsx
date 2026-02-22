@@ -21,8 +21,6 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
-
   useEffect(() => {
     const fetchBrandsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);

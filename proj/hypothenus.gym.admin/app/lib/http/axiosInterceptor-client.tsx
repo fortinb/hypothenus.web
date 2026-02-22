@@ -1,18 +1,20 @@
-"use client"
+"use client";
 
-import axios from 'axios'
-import { normalizeApiError } from './action-result';
-import {auth} from "@/src/security/auth";
+import axios from "axios";
+import { normalizeApiError } from "./action-result";
+import { getSession } from "next-auth/react";
+
 const axiosInstance = axios.create();
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const session = await auth();
     config.headers["x-tracking-number"] = crypto.randomUUID();
-    config.headers["x-credentials"] = "Bruno Fortin";
-    config.headers["x-authorization"] = "{ \"roles\" : [\"admin\"] }";
-    config.headers["Authorization"] = "Bearer " + session?.accessToken;
+    const session = await getSession(); 
+    if (session?.accessToken) {
+      config.headers["Authorization"] = "Bearer " + session.accessToken;
+    }
+
     return config;
   },
   (error) => {
