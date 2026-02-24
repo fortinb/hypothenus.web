@@ -7,7 +7,7 @@ import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
 import { hasAuthorization } from "@/app/lib/security/roles";
-
+import { signOut } from "@/src/security/auth"
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
 }
@@ -17,11 +17,11 @@ export default async function BrandPage({ params }: PageProps) {
 
   const session = await auth();
   if (!session) {
-    redirect("/");
+    redirect('/');
   }
 
   if (!hasAuthorization(session.user.roles, ["admin"])) {
-    redirect("/error");
+     signOut({ redirectTo: '/', redirect: true });
   }
 
   let brand: Brand;
@@ -34,7 +34,7 @@ export default async function BrandPage({ params }: PageProps) {
     }
   } catch (error) {
     console.error("Error fetching brand:", error);
-    return redirect(`/${lang}/error`);
+    throw error;
   }
 
   return (

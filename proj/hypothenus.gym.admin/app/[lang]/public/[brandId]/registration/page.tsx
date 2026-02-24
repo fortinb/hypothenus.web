@@ -7,6 +7,8 @@ import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import RegistrationForm from "./registration-form";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { LanguageEnum } from "@/src/lib/entities/language";
+import { failure } from "@/app/lib/http/handle-result";
+import { any } from "zod";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
@@ -24,9 +26,8 @@ export default async function MemberPage({ params }: PageProps) {
 
     // Load list of gyms
     pageOfGyms = await fetchGyms(brandId, 0, 1000, false);
-  } catch (error) {
-    console.error("Error fetching member:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
   let gyms: Gym[] = pageOfGyms.content;
@@ -48,7 +49,7 @@ export default async function MemberPage({ params }: PageProps) {
           reset: false,
           id: "registration.page",
           locale: `${lang}`,
-          href: `/public/${brandId}/registration`,
+          href: `/${lang}/public/${brandId}/registration`,
           key: "breadcrumb.registration",
           namespace: "welcome"
         }}

@@ -3,7 +3,6 @@
 import FormActionBar from "@/app/ui/components/actions/form-action-bar";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
-import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import GymInfo from "@/app/ui/components/gym/gym-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
@@ -266,7 +265,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
 
     return (
 
-        <ErrorBoundary>
+        <>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
                 <div className="ps-2 pe-2">
                     <hr className="mt-0 mb-0" />
@@ -297,6 +296,6 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
                     </div>
                 </div>
             </div>
-        </ErrorBoundary>
+        </>
     );
 }

@@ -4,7 +4,6 @@ import { Brand } from "@/src/lib/entities/brand";
 import { Page } from "@/src/lib/entities/page";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import Loader from "@/app/ui/components/navigation/loader";
 import PagingNavigation from "@/app/ui/components/navigation/paging-navigation";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -100,7 +99,7 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
   }
 
   return (
-    <ErrorBoundary>
+    <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
           <PagingNavigation page={brandsStatePaging.page + 1} totalPages={totalPages}
@@ -124,6 +123,6 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
         }
 
       </div>
-    </ErrorBoundary>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 "use server"
 
 import { delGym, postActivateGym, postGym, postDeactivateGym, putGym } from '@/app/lib/services/gyms-data-service';
-import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action-result';
+import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/handle-result';
 import { Gym } from '@/src/lib/entities/gym';
 import { revalidatePath } from 'next/cache';
 

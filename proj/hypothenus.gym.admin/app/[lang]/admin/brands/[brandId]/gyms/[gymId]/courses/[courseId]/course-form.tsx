@@ -4,7 +4,6 @@ import FormActionBar from "@/app/ui/components/actions/form-action-bar";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import CourseInfo from "@/app/ui/components/course/course-info";
-import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -312,7 +311,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
     }
 
     return (
-        <ErrorBoundary>
+        <>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
                 <div className="ps-2 pe-2">
                     <hr className="mt-0 mb-0" />
@@ -343,7 +342,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
                     </div>
                 </div>
             </div>
-        </ErrorBoundary>
+        </>
     );
 }
 

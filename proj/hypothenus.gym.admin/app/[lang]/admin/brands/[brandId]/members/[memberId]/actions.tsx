@@ -1,7 +1,7 @@
 "use server"
 
 import { delMember, postActivateMember, postMember, postDeactivateMember, putMember } from '@/app/lib/services/members-data-service';
-import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/action-result';
+import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/handle-result';
 import { Member } from '@/src/lib/entities/member';
 import { revalidatePath } from 'next/cache';
 

@@ -3,11 +3,10 @@
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
-import { ActionResult } from "@/app/lib/http/action-result";
+import { ActionResult } from "@/app/lib/http/handle-result";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { MemberState, updateMemberState } from "@/app/lib/store/slices/member-state-slice";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
-import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import MemberRegistration from "@/app/ui/components/member/member-registration";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Member, MemberRegistrationSchema, MemberSchema } from "@/src/lib/entities/member";
@@ -156,7 +155,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
     }
 
     return (
-        <ErrorBoundary>
+        <>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
                 <div className="ps-2 pe-2">
                     <hr className="mt-0 mb-0" />
@@ -180,6 +179,6 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
                     </div>
                 </div>
             </div>
-        </ErrorBoundary>
+        </>
     );
 }

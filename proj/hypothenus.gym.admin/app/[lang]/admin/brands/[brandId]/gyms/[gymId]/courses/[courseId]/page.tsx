@@ -12,6 +12,7 @@ import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
+import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string; gymId: string; courseId: string }>;
@@ -40,9 +41,8 @@ export default async function CoursePage({ params }: PageProps) {
         fetchCoachs(brandId, gymId, 0, 1000, false)
       ]);
     }
-  } catch (error) {
-    console.error("Error fetching course:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
 

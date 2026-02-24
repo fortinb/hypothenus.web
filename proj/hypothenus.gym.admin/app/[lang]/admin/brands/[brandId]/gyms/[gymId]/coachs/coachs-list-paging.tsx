@@ -1,6 +1,5 @@
 "use client"
 
-import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 import Loader from "@/app/ui/components/navigation/loader";
 import PagingNavigation from "@/app/ui/components/navigation/paging-navigation";
 import { CoachsStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/coachs-state-paging-slice";
@@ -60,7 +59,7 @@ export default function CoachsListPaging({ lang}: { lang: string; }) {
   }
 
   return (
-    <ErrorBoundary>
+    <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
           <PagingNavigation page={coachsStatePaging.page + 1} totalPages={totalPages}
@@ -84,6 +83,6 @@ export default function CoachsListPaging({ lang}: { lang: string; }) {
         }
 
       </div>
-    </ErrorBoundary>
+    </>
   );
 }

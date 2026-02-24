@@ -18,11 +18,7 @@ export default async function BrandsPage({ params }: PageProps) {
     redirect("/");
   }
 
-  if (!hasAuthorization(session.user.roles, "admin")) {
-    redirect("/error");
-  }
-  
-  return (
+   return (
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{

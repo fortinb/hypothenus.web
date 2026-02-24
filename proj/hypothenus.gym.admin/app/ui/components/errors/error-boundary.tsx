@@ -1,21 +1,25 @@
+
+"use client"
+
 import Image from 'next/image';
-import React from "react";
+import React from 'react';
 import Container from "react-bootstrap/Container";
 import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useState } from "react";
 
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
   const t = useTranslations("layout");
 
-  const promiseRejectionHandler = React.useCallback((event: any) => {
+  const promiseRejectionHandler = useCallback((event: any) => {
     setError(event.reason);
   }, []);
 
-  const resetError = React.useCallback(() => {
+  const resetError = useCallback(() => {
     setError("");
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("unhandledrejection", promiseRejectionHandler);
 
     return () => {

@@ -5,6 +5,7 @@ import { Page } from "@/src/lib/entities/page";
 import { fetchGyms } from "@/app/lib/services/gyms-data-service";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
+import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
@@ -13,12 +14,11 @@ interface PageProps {
 export default async function ReservationsPage({ params }: PageProps) {
   const { lang, brandId } = await params;
 
-let pageOfGyms: Page<Gym>;
+  let pageOfGyms: Page<Gym>;
   try {
     pageOfGyms = await fetchGyms(brandId, 0, 1000, false);
-  } catch (error) {
-    console.error("Error fetching member:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
   let gyms: Gym[] = pageOfGyms.content;
@@ -48,7 +48,7 @@ let pageOfGyms: Page<Gym>;
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        
+
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
       </div>

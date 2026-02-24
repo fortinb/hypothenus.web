@@ -1,6 +1,6 @@
-import axios from 'axios'
-import { normalizeApiError } from './action-result';
-import {auth} from "@/src/security/auth";
+import axios from 'axios';
+import { normalizeApiError } from './handle-result';
+import { auth } from "@/src/security/auth";
 
 const axiosInstance = axios.create();
 
@@ -25,18 +25,15 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Modify the response data here (e.g., parse, transform)
     return response;
   },
   (error) => {
     try {
-      console.log(error);
-
       const normalizedError = normalizeApiError(error);
+      
       return Promise.reject(normalizedError);
     } catch (e) {
-      console.log(e);
-      return Promise.reject(error);
+       return Promise.reject(error);
     }
   }
 );

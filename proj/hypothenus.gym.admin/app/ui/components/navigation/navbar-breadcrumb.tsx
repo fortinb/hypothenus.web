@@ -19,7 +19,7 @@ export default function NavbarBreadcrumb() {
       dispatch(initBreadcrumbs());
     }
 
-  }, [dispatch, breadcrumbState]);
+  }, [dispatch, breadcrumbState.breadcrumbs.length]);
 
   useEffect(() => {
     // Update breadcrumbs whenever locale changes

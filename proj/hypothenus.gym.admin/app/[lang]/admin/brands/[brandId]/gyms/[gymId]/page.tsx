@@ -7,6 +7,7 @@ import { newGym } from "@/src/lib/entities/gym";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
+import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string; gymId: string }>;
@@ -28,9 +29,8 @@ export default async function GymPage({ params }: PageProps) {
     } else {
       gym = await getGym(brandId, gymId);
     }
-  } catch (error) {
-    console.error("Error fetching gym:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
   return (

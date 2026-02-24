@@ -12,6 +12,7 @@ import { Page } from "@/src/lib/entities/page";
 import { fetchGyms } from "@/app/lib/services/gyms-data-service";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import { auth } from "@/src/security/auth";
+import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string, memberId: string }>;
@@ -19,7 +20,7 @@ interface PageProps {
 
 export default async function MemberPage({ params }: PageProps) {
   const { lang, brandId, memberId } = await params;
-  
+
   const session = await auth();
   if (!session) {
     redirect("/");
@@ -39,9 +40,8 @@ export default async function MemberPage({ params }: PageProps) {
         fetchGyms(brandId, 0, 1000, false)
       ]);
     }
-  } catch (error) {
-    console.error("Error fetching member:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
   let gyms: Gym[] = pageOfGyms.content;

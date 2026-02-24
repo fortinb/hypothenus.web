@@ -1,9 +1,8 @@
 "use client";
 
 import axios from "axios";
-import { normalizeApiError } from "./action-result";
-import { getSession } from "next-auth/react";
-
+import { normalizeApiError } from "./handle-result";
+import { getSession, signOut } from "next-auth/react";
 const axiosInstance = axios.create();
 
 // Request interceptor
@@ -26,15 +25,18 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Modify the response data here (e.g., parse, transform)
     return response;
   },
-  (error) => {
+  async (error) => {
     try {
       console.log(error);
 
       // Handle response errors here
       const normalizedError = normalizeApiError(error);
+      if (normalizedError?.status === 401) {
+        await signOut();
+      }
+      
       return Promise.reject(normalizedError);
     } catch (e) {
       console.log(e);

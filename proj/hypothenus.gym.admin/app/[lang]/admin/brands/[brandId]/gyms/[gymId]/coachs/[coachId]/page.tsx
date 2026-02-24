@@ -8,6 +8,7 @@ import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
+import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string, gymId: string, coachId: string }>;
@@ -28,9 +29,8 @@ export default async function CoachPage({ params }: PageProps) {
     } else {
       coach = await getCoach(brandId, gymId, coachId);
     }
-  } catch (error) {
-    console.error("Error fetching coach:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
   return (

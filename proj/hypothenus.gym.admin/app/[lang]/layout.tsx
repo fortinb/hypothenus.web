@@ -11,6 +11,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SessionProvider } from "next-auth/react";
+import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -68,11 +69,13 @@ export default async function RootLayout({
               <div className="container-fluid overflow-hidden w-100 h-100 p-0">
                 <div className="d-flex flex-row w-100 h-100 p-0">
                   <div className="d-flex flex-column justify-content-between w-100 h-100">
-                    <Header lang={lang} />
-                    <Container fluid={true} className="overflow-hidden h-100">
-                      {children}
-                    </Container>
-                    <Footer />
+                    <ErrorBoundary>
+                      <Header lang={lang} />
+                      <Container fluid={true} className="overflow-hidden h-100">
+                        {children}
+                      </Container>
+                      <Footer />
+                    </ErrorBoundary>
                   </div>
                 </div>
               </div>

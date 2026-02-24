@@ -1,8 +1,8 @@
 import { Breadcrumb } from '@/app/ui/components/navigation/breadcrumb';
 import Home from './home';
 import { getBrandByCode } from '../lib/services/brands-data-service';
-import { redirect } from 'next/navigation';
 import { Brand } from '@/src/lib/entities/brand';
+import { failure } from '../lib/http/handle-result';
 
 interface PageProps {
   params: Promise<{ lang: string }>; // params is now a Promise
@@ -14,9 +14,8 @@ export default async function HomePage({ params }: PageProps) {
 
   try {
     brand = await getBrandByCode(process.env.NEXT_PUBLIC_BRAND_CODE as string);
-  } catch (error) {
-    console.error("Error fetching brand:", error);
-    return redirect(`/${lang}/error`);
+  } catch (error: any) {
+    return failure(error);
   }
 
   return (
@@ -34,5 +33,4 @@ export default async function HomePage({ params }: PageProps) {
       <Home lang={lang} brand={brand} />
     </main>
   );
-
 }
