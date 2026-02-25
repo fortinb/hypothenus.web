@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { normalizeApiError } from './handle-result';
 import { auth } from "@/src/security/auth";
+import { normalizeApiError } from './result';
 
 const axiosInstance = axios.create();
 

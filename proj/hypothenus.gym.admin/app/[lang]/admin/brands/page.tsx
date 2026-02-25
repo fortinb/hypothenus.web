@@ -1,9 +1,8 @@
 import BrandsMenu from "./brands-menu";
 import BrandsListPaging from "./brands-list-paging";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
-import {auth} from "@/src/security/auth";
+import { auth } from "@/src/security/auth";
 import { redirect } from "next/navigation";
-import { hasAuthorization } from "@/app/lib/security/roles";
 
 
 interface PageProps {

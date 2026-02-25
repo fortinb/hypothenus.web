@@ -18,7 +18,8 @@ export default async function ReservationsPage({ params }: PageProps) {
   try {
     pageOfGyms = await fetchGyms(brandId, 0, 1000, false);
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   let gyms: Gym[] = pageOfGyms.content;

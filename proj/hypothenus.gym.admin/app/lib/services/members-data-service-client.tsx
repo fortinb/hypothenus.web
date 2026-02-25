@@ -4,8 +4,10 @@ import { Member } from "@/src//lib/entities/member";
 import { Page } from "@/src//lib/entities/page";
 import axiosInstance from "@/app/lib/http/axiosInterceptor-client";
 import { HeaderDefinition, initRequest } from "./service-request";
+import { ActionResult, } from "@/app/lib/http/result";
+import { failure, success } from "@/app/lib/http/handle-result-client";
 
-export async function fetchMembers(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Member>> {
+export async function fetchMembers(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<ActionResult<Page<Member>>> {
 
   const listURI: String = `/v1/brands/${brandUuid}/members`;
 
@@ -15,12 +17,15 @@ export async function fetchMembers(brandUuid: string, page: number, pageSize: nu
     includeInactive: includeInactive
   });
 
-  let response = await axiosInstance.get(listURI.valueOf(), request);
-
-  return response.data;
+  try {
+    let response = await axiosInstance.get(listURI.valueOf(), request);
+    return success(response.data);
+  } catch (error: any) {
+    return failure(error);
+  }
 }
 
-export async function searchMembers(brandUuid: string, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<Page<Member>> {
+export async function searchMembers(brandUuid: string, page: number, pageSize: number, includeInactive: boolean, criteria: String): Promise<ActionResult<Page<Member>>> {
 
   const searchURI: String = `/v1/brands/${brandUuid}/members/search`;
 
@@ -31,21 +36,27 @@ export async function searchMembers(brandUuid: string, page: number, pageSize: n
     includeInactive: includeInactive
   });
 
-  let response = await axiosInstance.get(searchURI.valueOf(), request);
-
-  return response.data;
+  try {
+    let response = await axiosInstance.get(searchURI.valueOf(), request);
+    return success(response.data);
+  } catch (error: any) {
+    return failure(error);
+  }
 }
 
-export async function uploadMemberPhoto(brandUuid: string, memberUuid: string, multipartFormData: FormData): Promise<string> {
+export async function uploadMemberPhoto(brandUuid: string, memberUuid: string, multipartFormData: FormData): Promise<ActionResult<string>> {
 
-  const metadata: String =  `/v1/brands/${brandUuid}/members/${memberUuid}/photo`;
+  const metadata: String = `/v1/brands/${brandUuid}/members/${memberUuid}/photo`;
   const postURI: String = `/v1/files/images/upload`;
-  const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
+  const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data" };
   const request = initRequest({}, [header]);
 
   multipartFormData.append("metadata", metadata.valueOf());
 
-  let response = await axiosInstance.post(postURI.valueOf(), multipartFormData, request);
-
-  return response.data;
+    try {
+    let response = await axiosInstance.post(postURI.valueOf(), multipartFormData, request);
+    return success(response.data);
+  } catch (error: any) {
+    return failure(error);
+  }
 }

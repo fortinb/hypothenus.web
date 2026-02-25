@@ -27,7 +27,8 @@ export default async function MemberPage({ params }: PageProps) {
     // Load list of gyms
     pageOfGyms = await fetchGyms(brandId, 0, 1000, false);
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   let gyms: Gym[] = pageOfGyms.content;

@@ -3,6 +3,8 @@ import gymsStatePagingReducer from "./slices/gyms-state-paging-slice";
 import gymStateReducer from "./slices/gym-state-slice";
 import brandsStatePagingReducer from "./slices/brands-state-paging-slice";
 import brandStateReducer from "./slices/brand-state-slice";
+import usersStatePagingReducer from "./slices/users-state-paging-slice";
+import userStateReducer from "./slices/user-state-slice";
 import coachsStatePagingReducer from "./slices/coachs-state-paging-slice";
 import coachStateReducer from "./slices/coach-state-slice";
 import coursesStatePagingReducer from "./slices/courses-state-paging-slice";
@@ -17,6 +19,8 @@ export const store = configureStore({
     gymState: gymStateReducer,
     brandsStatePaging: brandsStatePagingReducer,
     brandState: brandStateReducer,
+    usersStatePaging: usersStatePagingReducer,
+    userState: userStateReducer,
     coachsStatePaging: coachsStatePagingReducer,
     coachState: coachStateReducer,
     coursesStatePaging: coursesStatePagingReducer,

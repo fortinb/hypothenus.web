@@ -110,7 +110,8 @@
             "lastnameRequired": "Last name is required.",
             "descriptionRequired": "Description is required.",
             "dateOfBirthRequired": "Date of birth is required.",
-            "emailRequired": "Email is required."
+            "emailRequired": "Email is required.",
+            "emailInvalid": "Email format is invalid."
         },
         "firstname": "First name",
         "lastname": "Last name",
@@ -128,6 +129,36 @@
         "image": {
             "dropzone": "Drag 'n' drop picture file here, or click to select",
             "attributes": " *.jpg, *.png - max 2MB - 200x200"
+        }
+    },
+    "user": {
+        "validation": {
+            "firstnameRequired": "First name is required.",
+            "lastnameRequired": "Last name is required.",
+            "emailRequired": "Email is required.",
+            "rolesRequired": "At least one role is required.",
+            "emailInvalid": "Email format is invalid."
+        },
+        "firstname": "First name",
+        "lastname": "Last name",
+        "email": "Email address",
+        "emailPlaceholder": "email@example.com",
+        "roles": {
+            "title": "Roles",
+            "available": "Available roles",
+            "selected": "Selected roles",
+            "addAll": "Select All",
+            "admin": "Administrator",
+            "manager": "Manager",
+            "coach": "Coach",
+            "member": "Member"
+        },
+        "deleteConfirmation": {
+            "title": "Delete {email}",
+            "text": "Are you sure you want to delete this user ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
         }
     },
     "coach": {

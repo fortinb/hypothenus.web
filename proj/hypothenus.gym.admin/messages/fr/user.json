@@ -1,0 +1,20 @@
+{
+    "menu": {
+        "user": "{email}",
+        "sections": "Utilisateur",
+        "info": "Info",
+        "management": "Utilisateurs",
+        "managementTooltip": "Retour à la gestion des utilisateurs"
+    },
+    "breadcrumb": "Utilisateurs",
+    "list": {
+        "menu": {
+            "title": "Utilisateurs",
+            "add": "Ajouter un nouvel utilisateur",
+            "inactive": "Inactif"
+        },
+        "details": {
+            "inactive": "Inactif"
+        }
+    }
+}

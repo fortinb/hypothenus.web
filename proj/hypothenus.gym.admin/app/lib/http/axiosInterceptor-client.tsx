@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { normalizeApiError } from "./handle-result";
+import { normalizeApiError } from "./result";
 import { getSession, signOut } from "next-auth/react";
 const axiosInstance = axios.create();
 

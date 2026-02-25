@@ -1,0 +1,20 @@
+{
+    "menu": {
+        "user": "{email}",
+        "sections": "User",
+        "info": "Info",
+        "management": "Users",
+        "managementTooltip": "Back to users management"
+    },
+    "breadcrumb": "Users",
+    "list": {
+        "menu": {
+            "title": "Users",
+            "add": "Add new user",
+            "inactive": "Inactive"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

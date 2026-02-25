@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { ActionResult } from "@/app/lib/http/handle-result";
+import { ActionResult } from "@/app/lib/http/result";
 
 interface CrudActions<T> {
   create: (...args: any[]) => Promise<ActionResult<T>>;

@@ -42,7 +42,8 @@ export default async function CoursePage({ params }: PageProps) {
       ]);
     }
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
 

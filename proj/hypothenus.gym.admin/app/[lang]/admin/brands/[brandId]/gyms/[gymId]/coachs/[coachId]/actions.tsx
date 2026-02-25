@@ -1,7 +1,8 @@
 "use server"
 
 import { delCoach, postActivateCoach, postCoach, postDeactivateCoach, putCoach } from '@/app/lib/services/coachs-data-service';
-import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/handle-result';
+import { failure, success } from '@/app/lib/http/handle-result';
+import { ActionResult, ErrorType } from '@/app/lib/http/result';
 import { Coach } from '@/src/lib/entities/coach';
 import { revalidatePath } from 'next/cache';
 

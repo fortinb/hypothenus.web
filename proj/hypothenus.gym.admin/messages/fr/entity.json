@@ -111,7 +111,8 @@
             "lastnameRequired": "Le nom est requis.",
             "descriptionRequired": "La description est requise.",
             "dateOfBirthRequired": "La date de naissance est requise.",
-            "emailRequired": "Le courriel est requis."
+            "emailRequired": "Le courriel est requis.",
+            "emailInvalid": "Le format du courriel est invalide."
         },
         "firstname": "Prénom",
         "lastname": "Nom",
@@ -129,6 +130,36 @@
         "image": {
             "dropzone": "Glisser-déposez l'image ici, ou cliquez pour sélectionner",
             "attributes": " *.jpg, *.png - max 2MB - 200x200"
+        }
+    },
+    "user": {
+        "validation": {
+            "firstnameRequired": "Le prénom est requis.",
+            "lastnameRequired": "Le nom est requis.",
+            "emailRequired": "Le courriel est requis.",
+            "rolesRequired": "Au moins un rôle est requis.",
+            "emailInvalid": "Le format du courriel est invalide."
+        },
+        "firstname": "Prénom",
+        "lastname": "Nom",
+        "email": "Courriel",
+        "emailPlaceholder": "courriel@exemple.com",
+        "roles": {
+            "title": "Rôles",
+            "available": "Rôles disponibles",
+            "selected": "Rôles sélectionnés",
+            "addAll": "Tout sélectionner",
+            "admin": "Administrateur",
+            "manager": "Gestionnaire",
+            "coach": "Entraîneur",
+            "member": "Membre"
+        },
+        "deleteConfirmation": {
+            "title": "Supprimer {email}",
+            "text": "Êtes vous certain de vouloir supprimer cet utilisateur ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
         }
     },
     "coach": {

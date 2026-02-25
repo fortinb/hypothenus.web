@@ -143,7 +143,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                             name={`${formCoachsStateField}`}
                                             render={({ field }) => (
                                                 <div>
-                                                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_cource_info_coach_add_all_tooltip">{t("course.coach.addAll")}</Tooltip>}>
+                                                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_course_info_coach_add_all_tooltip">{t("course.coach.addAll")}</Tooltip>}>
                                                         <Button className="btn btn-icon btn-sm mb-2" disabled={!isEditMode} onClick={() => field.onChange(availableCoachItems)}><i className="icon icon-light bi bi-chevron-double-right h7"></i></Button>
                                                     </OverlayTrigger>
                                                     <Select

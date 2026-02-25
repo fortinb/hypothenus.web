@@ -1,7 +1,8 @@
 "use server"
 
 import { delBrand, postActivateBrand, postBrand, postDeactivateBrand, putBrand } from '@/app/lib/services/brands-data-service';
-import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/handle-result';
+import { failure, success } from '@/app/lib/http/handle-result';
+import { ActionResult, ErrorType } from '@/app/lib/http/result';
 import { Brand } from '@/src/lib/entities/brand';
 import { revalidatePath } from 'next/cache';
 

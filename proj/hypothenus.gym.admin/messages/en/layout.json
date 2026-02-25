@@ -12,6 +12,9 @@
         "brands": {
             "title": "Brands"
         },
+        "users": {
+            "title": "Users"
+        },
         "gyms": {
             "title": "Gyms"
         },

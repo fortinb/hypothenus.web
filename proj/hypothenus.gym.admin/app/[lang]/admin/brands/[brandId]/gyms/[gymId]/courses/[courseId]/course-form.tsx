@@ -53,7 +53,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
     const dispatch = useAppDispatch();
 
     // Form State
-    const [isCoachsItemsInitialized, setIsCoachsItemInitialized] = useState<boolean>(false);
+    const [isCoachItemsInitialized, setIsCoachItemsInitialized] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -95,13 +95,13 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         }
 
         // Initialize Coachs Items
-        if (!isCoachsItemsInitialized) {
+        if (!isCoachItemsInitialized) {
             setOriginalSelectedCoachItems(initialSelectedCoachItems);
             setAvailableCoachItems(initialAvailableCoachItems);
 
-            setIsCoachsItemInitialized(true);
+            setIsCoachItemsInitialized(true);
         }
-    }, [dispatch, course, initialAvailableCoachItems, initialSelectedCoachItems, isCoachsItemsInitialized]);
+    }, [dispatch, course, initialAvailableCoachItems, initialSelectedCoachItems, isCoachItemsInitialized]);
 
     // Watch the entire form
     //const formData = formContext.watch();

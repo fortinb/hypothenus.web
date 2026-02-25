@@ -67,20 +67,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
 
     }, [dispatch, brand]);
 
-    // Watch the entire form
-    const formData = formContext.watch();
-
-    useEffect(() => {
-        // Log the data to the console every time there is an error
-        const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-        if (hasErrors) {
-            console.log("Current Form errors:", formContext.formState.errors);
-        }
-
-        // console.log("Current Form Data:", formData);
-    }, [formData]);
-
-    const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
+     const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);
 
         let brand: Brand = mapFormToEntity(formData, brandState.brand);

@@ -12,6 +12,8 @@ import CoachsList from "./coachs-list";
 import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { fetchCoachs } from "@/app/lib/services/coachs-data-service-client";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { ActionResult } from "@/app/lib/http/result";
+import router from "next/router";
 
 export default function CoachsListPaging({ lang}: { lang: string; }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
@@ -26,11 +28,14 @@ export default function CoachsListPaging({ lang}: { lang: string; }) {
     const fetchCoachsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfCoachs: Page<Coach> = await fetchCoachs(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
-
-      setPageOfCoachs(pageOfCoachs);
-      if (pageOfCoachs?.content && pageOfCoachs?.pageable) {
-        setTotalPages(pageOfCoachs.totalPages);
+      let pageOfCoachs: ActionResult<Page<Coach>> = await fetchCoachs(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
+      if (pageOfCoachs.ok) {
+        setPageOfCoachs(pageOfCoachs.data);
+        if (pageOfCoachs.data.content && pageOfCoachs?.data?.pageable) {
+          setTotalPages(pageOfCoachs.data.totalPages);
+        }
+      } else {
+        router.push(`/${lang}/error`);
       }
 
       setIsLoading(false);

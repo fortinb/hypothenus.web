@@ -6,8 +6,8 @@ import { getBrand } from "@/app/lib/services/brands-data-service";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
-import { hasAuthorization } from "@/app/lib/security/roles";
-import { signOut } from "@/src/security/auth"
+import { failure } from "@/app/lib/http/handle-result";
+
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
 }
@@ -20,10 +20,6 @@ export default async function BrandPage({ params }: PageProps) {
     redirect('/');
   }
 
-  if (!hasAuthorization(session.user.roles, ["admin"])) {
-     signOut({ redirectTo: '/', redirect: true });
-  }
-
   let brand: Brand;
 
   try {
@@ -32,9 +28,9 @@ export default async function BrandPage({ params }: PageProps) {
     } else {
       brand = await getBrand(brandId);
     }
-  } catch (error) {
-    console.error("Error fetching brand:", error);
-    throw error;
+  } catch (error: any) {
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   return (

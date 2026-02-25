@@ -41,7 +41,8 @@ export default async function MemberPage({ params }: PageProps) {
       ]);
     }
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   let gyms: Gym[] = pageOfGyms.content;

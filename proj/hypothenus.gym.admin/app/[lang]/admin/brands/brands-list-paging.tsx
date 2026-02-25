@@ -11,6 +11,8 @@ import { BrandsStatePaging, firstPage, nextPage, previousPage, resetSearchCriter
 import BrandsList from "./brands-list";
 import { clearBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { fetchBrands, searchBrands } from "@/app/lib/services/brands-data-service-client";
+import { ActionResult } from "@/app/lib/http/result";
+import router from "next/router";
 
 export default function BrandsListPaging({ lang }: { lang: string }) {
   const brandsStatePaging: BrandsStatePaging = useSelector((state: any) => state.brandsStatePaging);
@@ -24,11 +26,14 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
     const fetchBrandsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      const pageOfBrands: Page<Brand> = await fetchBrands(page, pageSize, includeInactive);
-
-      setPageOfBrands(pageOfBrands);
-      if (pageOfBrands?.content && pageOfBrands?.pageable) {
-        setTotalPages(pageOfBrands.totalPages);
+      const pageOfBrands: ActionResult<Page<Brand>> = await fetchBrands(page, pageSize, includeInactive);
+      if (pageOfBrands.ok) {
+        setPageOfBrands(pageOfBrands.data);
+        if (pageOfBrands.data.content && pageOfBrands?.data?.pageable) {
+          setTotalPages(pageOfBrands.data.totalPages);
+        }
+      } else {
+        router.push(`/${lang}/error`);
       }
 
       setIsLoading(false);
@@ -37,12 +42,14 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
     const searchBrandsPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
       setIsLoading(true);
 
-      const pageOfBrands: Page<Brand> = await searchBrands(page, pageSize, includeInactive, criteria);
-
-      setPageOfBrands(pageOfBrands);
-
-      if (pageOfBrands?.content && pageOfBrands?.pageable) {
-        setTotalPages(0); // Force 0 since we don"t know the total count of the search
+      const pageOfBrands: ActionResult<Page<Brand>> = await searchBrands(page, pageSize, includeInactive, criteria);
+      if (pageOfBrands.ok) {
+        setPageOfBrands(pageOfBrands.data);
+        if (pageOfBrands.data.content && pageOfBrands?.data?.pageable) {
+          setTotalPages(0); // Force 0 since we don"t know the total count of the search
+        }
+      } else {
+        router.push(`/${lang}/error`);
       }
 
       setIsLoading(false);

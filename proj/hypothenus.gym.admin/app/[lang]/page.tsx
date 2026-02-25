@@ -3,6 +3,8 @@ import Home from './home';
 import { getBrandByCode } from '../lib/services/brands-data-service';
 import { Brand } from '@/src/lib/entities/brand';
 import { failure } from '../lib/http/handle-result';
+import { redirect } from 'next/navigation';
+
 
 interface PageProps {
   params: Promise<{ lang: string }>; // params is now a Promise
@@ -15,7 +17,8 @@ export default async function HomePage({ params }: PageProps) {
   try {
     brand = await getBrandByCode(process.env.NEXT_PUBLIC_BRAND_CODE as string);
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   return (

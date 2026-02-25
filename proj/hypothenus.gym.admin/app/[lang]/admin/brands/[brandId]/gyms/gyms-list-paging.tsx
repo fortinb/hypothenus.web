@@ -12,6 +12,8 @@ import GymsList from "./gyms-list";
 import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { fetchGyms, searchGyms } from "@/app/lib/services/gyms-data-service-client";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { ActionResult } from "@/app/lib/http/result";
+import router from "next/router";
 
 export default function GymsListPaging({ lang }: { lang: string; }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
@@ -26,11 +28,14 @@ export default function GymsListPaging({ lang }: { lang: string; }) {
     const fetchGymsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfGyms: Page<Gym> = await fetchGyms(brandState.brand.uuid, page, pageSize, includeInactive);
-
-      setPageOfGyms(pageOfGyms);
-      if (pageOfGyms?.content && pageOfGyms?.pageable) {
-        setTotalPages(pageOfGyms.totalPages);
+      let pageOfGyms: ActionResult<Page<Gym>> = await fetchGyms(brandState.brand.uuid, page, pageSize, includeInactive);
+      if (pageOfGyms.ok) {
+        setPageOfGyms(pageOfGyms.data);
+        if (pageOfGyms.data.content && pageOfGyms?.data?.pageable) {
+          setTotalPages(pageOfGyms.data.totalPages);
+        }
+      } else {
+        router.push(`/${lang}/error`);
       }
 
       setIsLoading(false);
@@ -39,16 +44,20 @@ export default function GymsListPaging({ lang }: { lang: string; }) {
     const searchGymsPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
       setIsLoading(true);
 
-      let pageOfGyms: Page<Gym> = await searchGyms(brandState.brand.uuid, page, pageSize, includeInactive, criteria);
+      let pageOfGyms: ActionResult<Page<Gym>> = await searchGyms(brandState.brand.uuid, page, pageSize, includeInactive, criteria);
 
-      setPageOfGyms(pageOfGyms);
-
-      if (pageOfGyms?.content && pageOfGyms?.pageable) {
-        setTotalPages(0); // Force 0 since we don"t know the total count of the search
+      if (pageOfGyms.ok) {
+        setPageOfGyms(pageOfGyms.data);
+        if (pageOfGyms.data.content && pageOfGyms?.data?.pageable) {
+          setTotalPages(0); // Force 0 since we don"t know the total count of the search
+        }
+      } else {
+        router.push(`/${lang}/error`);
       }
 
       setIsLoading(false);
     }
+
     // Reset gym state
     dispatch(clearGymState());
 

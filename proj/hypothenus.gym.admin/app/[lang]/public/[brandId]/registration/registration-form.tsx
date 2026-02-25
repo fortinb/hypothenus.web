@@ -3,7 +3,7 @@
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
-import { ActionResult } from "@/app/lib/http/handle-result";
+import { ActionResult } from "@/app/lib/http/result";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { MemberState, updateMemberState } from "@/app/lib/store/slices/member-state-slice";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";

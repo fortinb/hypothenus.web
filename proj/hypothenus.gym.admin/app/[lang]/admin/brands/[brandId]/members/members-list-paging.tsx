@@ -12,7 +12,8 @@ import MembersList from "./members-list";
 import { clearMemberState } from "@/app/lib/store/slices/member-state-slice";
 import { fetchMembers, searchMembers } from "@/app/lib/services/members-data-service-client";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
-
+import { ActionResult } from "@/app/lib/http/result";
+import router from "next/router";
 export default function MembersListPaging({ lang }: { lang: string; }) {
   const membersStatePaging: MembersStatePaging = useSelector((state: any) => state.membersStatePaging);
   const brandState: BrandState = useSelector((state: any) => state.brandState);
@@ -22,82 +23,88 @@ export default function MembersListPaging({ lang }: { lang: string; }) {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-   useEffect(() => {
-      const fetchMembersPage = async (page: number, pageSize: number, includeInactive: boolean) => {
-        setIsLoading(true);
-  
-        let pageOfMembers: Page<Member> = await fetchMembers(brandState.brand.uuid, page, pageSize, includeInactive);
-  
-        setPageOfMembers(pageOfMembers);
-        if (pageOfMembers?.content && pageOfMembers?.pageable) {
-          setTotalPages(pageOfMembers.totalPages);
+  useEffect(() => {
+    const fetchMembersPage = async (page: number, pageSize: number, includeInactive: boolean) => {
+      setIsLoading(true);
+
+      let pageOfMembers: ActionResult<Page<Member>> = await fetchMembers(brandState.brand.uuid, page, pageSize, includeInactive);
+      if (pageOfMembers.ok) {
+        setPageOfMembers(pageOfMembers.data);
+        if (pageOfMembers.data.content && pageOfMembers?.data?.pageable) {
+          setTotalPages(pageOfMembers.data.totalPages);
         }
-  
-        setIsLoading(false);
+      } else {
+        router.push(`/${lang}/error`);
       }
-  
-      const searchMembersPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
-        setIsLoading(true);
-  
-        let pageOfMembers: Page<Member> = await searchMembers(brandState.brand.uuid, page, pageSize, includeInactive, criteria);
-  
-        setPageOfMembers(pageOfMembers);
-  
-        if (pageOfMembers?.content && pageOfMembers?.pageable) {
+      
+      setIsLoading(false);
+    }
+
+    const searchMembersPage = async (page: number, pageSize: number, includeInactive: boolean, criteria: String) => {
+      setIsLoading(true);
+
+      let pageOfMembers: ActionResult<Page<Member>> = await searchMembers(brandState.brand.uuid, page, pageSize, includeInactive, criteria);
+
+      if (pageOfMembers.ok) {
+        setPageOfMembers(pageOfMembers.data);
+        if (pageOfMembers.data.content && pageOfMembers?.data?.pageable) {
           setTotalPages(0); // Force 0 since we don"t know the total count of the search
         }
-  
-        setIsLoading(false);
-      }
-      // Reset member state
-      dispatch(clearMemberState());
-  
-      if (membersStatePaging.searchActive) {
-        searchMembersPage(membersStatePaging.page, membersStatePaging.pageSize, membersStatePaging.includeInactive, membersStatePaging.searchCriteria);
       } else {
-        fetchMembersPage(membersStatePaging.page, membersStatePaging.pageSize, membersStatePaging.includeInactive);
+        router.push(`/${lang}/error`);
       }
-  
-    }, [dispatch, membersStatePaging, brandState]);
-  
-    function onSearchInput(e: ChangeEvent<HTMLInputElement>) {
-      e.preventDefault();
-  
-      if (e?.currentTarget?.value == "") {
+
+      setIsLoading(false);
+    }
+    // Reset member state
+    dispatch(clearMemberState());
+
+    if (membersStatePaging.searchActive) {
+      searchMembersPage(membersStatePaging.page, membersStatePaging.pageSize, membersStatePaging.includeInactive, membersStatePaging.searchCriteria);
+    } else {
+      fetchMembersPage(membersStatePaging.page, membersStatePaging.pageSize, membersStatePaging.includeInactive);
+    }
+
+  }, [dispatch, membersStatePaging, brandState]);
+
+  function onSearchInput(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+
+    if (e?.currentTarget?.value == "") {
+      dispatch(resetSearchCriteria());
+    }
+  }
+
+  function onSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (e.currentTarget) {
+      const formData = new FormData(e.currentTarget);
+
+      const searchCriteria = formData.get("searchCriteria")?.valueOf()?.toString() ?? "";
+      if (searchCriteria?.length >= 2) {
+        dispatch(setSearchCriteria(searchCriteria));
+      }
+      if (searchCriteria == "") {
         dispatch(resetSearchCriteria());
       }
     }
-  
-    function onSearch(e: FormEvent<HTMLFormElement>) {
-      e.preventDefault();
-  
-      if (e.currentTarget) {
-        const formData = new FormData(e.currentTarget);
-  
-        const searchCriteria = formData.get("searchCriteria")?.valueOf()?.toString() ?? "";
-        if (searchCriteria?.length >= 2) {
-          dispatch(setSearchCriteria(searchCriteria));
-        }
-        if (searchCriteria == "") {
-          dispatch(resetSearchCriteria());
-        }
-      }
-    }
-  
-    const onFirstPage = (e: MouseEvent<HTMLButtonElement>): void => {
-      e.preventDefault();
-      dispatch(firstPage());
-    }
-  
-    const onPreviousPage = (e: MouseEvent<HTMLButtonElement>): void => {
-      e.preventDefault();
-      dispatch(previousPage());
-    }
-  
-    const onNextPage = (e: MouseEvent<HTMLButtonElement>): void => {
-      e.preventDefault();
-      dispatch(nextPage());
-    }
+  }
+
+  const onFirstPage = (e: MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    dispatch(firstPage());
+  }
+
+  const onPreviousPage = (e: MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    dispatch(previousPage());
+  }
+
+  const onNextPage = (e: MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    dispatch(nextPage());
+  }
 
   return (
     <>

@@ -12,6 +12,9 @@
         "brands": {
             "title": "Marques"
         },
+        "users": {
+            "title": "Utilisateurs"
+        },
         "gyms": {
             "title": "Salles de sport"
         },

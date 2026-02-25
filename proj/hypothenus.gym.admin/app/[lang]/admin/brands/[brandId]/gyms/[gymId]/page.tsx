@@ -30,7 +30,8 @@ export default async function GymPage({ params }: PageProps) {
       gym = await getGym(brandId, gymId);
     }
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   return (

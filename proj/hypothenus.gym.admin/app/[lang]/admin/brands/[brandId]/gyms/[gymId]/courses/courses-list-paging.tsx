@@ -12,6 +12,8 @@ import CoursesList from "./courses-list";
 import { clearCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { fetchCourses } from "@/app/lib/services/courses-data-service-client";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { ActionResult } from "@/app/lib/http/result";
+import router from "next/router";
 
 export default function CoursesListPaging({ lang }: { lang: string; }) {
   const coursesStatePaging: CoursesStatePaging = useSelector((state: any) => state.coursesStatePaging);
@@ -26,11 +28,14 @@ export default function CoursesListPaging({ lang }: { lang: string; }) {
     const fetchCoursesPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfCourses: Page<Course> = await fetchCourses(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
-
-      setPageOfCourses(pageOfCourses);
-      if (pageOfCourses?.content && pageOfCourses?.pageable) {
-        setTotalPages(pageOfCourses.totalPages);
+      let pageOfCourses: ActionResult<Page<Course>> = await fetchCourses(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
+      if (pageOfCourses.ok) {
+        setPageOfCourses(pageOfCourses.data);
+        if (pageOfCourses.data.content && pageOfCourses?.data?.pageable) {
+          setTotalPages(pageOfCourses.data.totalPages);
+        }
+      } else {
+        router.push(`/${lang}/error`);
       }
 
       setIsLoading(false);

@@ -30,7 +30,8 @@ export default async function CoachPage({ params }: PageProps) {
       coach = await getCoach(brandId, gymId, coachId);
     }
   } catch (error: any) {
-    return failure(error);
+    failure(error);
+    redirect(`/${lang}/error`);
   }
 
   return (

@@ -1,7 +1,8 @@
 "use server"
 
 import { delCourse, postActivateCourse, postCourse, postDeactivateCourse, putCourse } from '@/app/lib/services/courses-data-service';
-import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/handle-result';
+import { failure, success } from '@/app/lib/http/handle-result';
+import { ActionResult, ErrorType } from '@/app/lib/http/result';
 import { Course } from '@/src/lib/entities/course';
 import { revalidatePath } from 'next/cache';
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 const namespaces = [
     "action",
     "brand",
+    "user",
     "coach",
     "course",
     "entity",

@@ -1,7 +1,8 @@
 "use server"
 
 import { postMember } from '@/app/lib/services/members-data-service';
-import { ActionResult, ErrorType, failure, success } from '@/app/lib/http/handle-result';
+import { failure, success } from '@/app/lib/http/handle-result';
+import { ActionResult, ErrorType } from '@/app/lib/http/result';
 import { Member } from '@/src/lib/entities/member';
 
 export async function createMemberAction(data: Member): Promise<ActionResult<Member>> {
