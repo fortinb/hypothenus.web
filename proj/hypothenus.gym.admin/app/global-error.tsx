@@ -1,5 +1,8 @@
 "use client";
 
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
-router.push('/error');
+export default function GlobalError() {
+  const router = useRouter();   
+  router.push("/error");    
+}

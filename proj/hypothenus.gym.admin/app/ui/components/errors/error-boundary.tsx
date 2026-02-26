@@ -12,7 +12,12 @@ const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("layout");
 
   const promiseRejectionHandler = useCallback((event: any) => {
+    if (event?.reason?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw event.reason
+    }
+    
     setError(event.reason);
+    console.log("Error: ", event.reason);
   }, []);
 
   const resetError = useCallback(() => {
@@ -43,7 +48,7 @@ const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
           <div className="w-50">
             <h3>{t("error.boundary.title")}</h3>
             <button className="btn btn-primary" type="button" onClick={resetError}>
-            {t("error.boundary.action")}
+              {t("error.boundary.action")}
             </button>
           </div>
         </div>

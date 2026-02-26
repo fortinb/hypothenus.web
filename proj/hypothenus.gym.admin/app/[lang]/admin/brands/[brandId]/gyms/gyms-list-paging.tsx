@@ -13,13 +13,14 @@ import { clearGymState } from "@/app/lib/store/slices/gym-state-slice";
 import { fetchGyms, searchGyms } from "@/app/lib/services/gyms-data-service-client";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function GymsListPaging({ lang }: { lang: string; }) {
   const gymsStatePaging: GymsStatePaging = useSelector((state: any) => state.gymsStatePaging);
   const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
+  
   const [pageOfGyms, setPageOfGyms] = useState<Page<Gym>>();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);

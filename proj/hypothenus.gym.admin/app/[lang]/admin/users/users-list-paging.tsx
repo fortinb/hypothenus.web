@@ -12,12 +12,13 @@ import { clearUserState } from "@/app/lib/store/slices/user-state-slice";
 import { fetchUsers, searchUsers } from "@/app/lib/services/users-data-service-client";
 import { ActionResult } from "@/app/lib/http/result";
 import UsersList from "./users-list";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function UsersListPaging({ lang }: { lang: string }) {
     const usersStatePaging: UsersStatePaging = useSelector((state: any) => state.usersStatePaging);
     const dispatch = useAppDispatch();
-
+    const router = useRouter();
+    
     const [pageOfUsers, setPageOfUsers] = useState<Page<User>>();
     const [totalPages, setTotalPages] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SessionProvider } from "next-auth/react";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
+import Providers from "./providers";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -47,7 +48,7 @@ export default async function RootLayout({
     console.log('not found');
     notFound();
   }
-
+ 
   return (
 
     <html lang={lang}>
@@ -64,8 +65,7 @@ export default async function RootLayout({
       </head>
       <body>
         <NextIntlClientProvider>
-          <StoreProvider>
-            <SessionProvider>
+          <Providers>
               <div className="container-fluid overflow-hidden w-100 h-100 p-0">
                 <div className="d-flex flex-row w-100 h-100 p-0">
                   <div className="d-flex flex-column justify-content-between w-100 h-100">
@@ -79,8 +79,7 @@ export default async function RootLayout({
                   </div>
                 </div>
               </div>
-            </SessionProvider>
-          </StoreProvider>
+           </Providers>
         </NextIntlClientProvider>
       </body>
     </html >

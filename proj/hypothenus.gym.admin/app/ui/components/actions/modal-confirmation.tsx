@@ -1,6 +1,5 @@
 "use client"
 
-import { useTranslations } from "next-intl";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 

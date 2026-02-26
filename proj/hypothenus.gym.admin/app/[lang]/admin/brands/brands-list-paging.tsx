@@ -12,12 +12,13 @@ import BrandsList from "./brands-list";
 import { clearBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { fetchBrands, searchBrands } from "@/app/lib/services/brands-data-service-client";
 import { ActionResult } from "@/app/lib/http/result";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function BrandsListPaging({ lang }: { lang: string }) {
   const brandsStatePaging: BrandsStatePaging = useSelector((state: any) => state.brandsStatePaging);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
+  
   const [pageOfBrands, setPageOfBrands] = useState<Page<Brand>>();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);

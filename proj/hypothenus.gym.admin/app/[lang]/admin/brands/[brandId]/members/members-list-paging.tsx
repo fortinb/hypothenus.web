@@ -13,12 +13,13 @@ import { clearMemberState } from "@/app/lib/store/slices/member-state-slice";
 import { fetchMembers, searchMembers } from "@/app/lib/services/members-data-service-client";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
-import router from "next/router";
+import { useRouter } from "next/navigation";
+
 export default function MembersListPaging({ lang }: { lang: string; }) {
   const membersStatePaging: MembersStatePaging = useSelector((state: any) => state.membersStatePaging);
   const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const [pageOfMembers, setPageOfMembers] = useState<Page<Member>>();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);

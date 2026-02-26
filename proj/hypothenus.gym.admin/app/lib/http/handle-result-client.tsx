@@ -15,7 +15,7 @@ export async function failure<T>(error: ResultError): Promise<ActionResult<T>> {
     case ErrorType.Unauthorized:
       console.log ("Unauthorized or forbidden access", error);
       // Redirect to the sign-out route which will perform cookie cleanup
-        await signOut({ redirectTo: '/error', redirect: true });
+        return await signOut({ redirectTo: '/', redirect: true });
    default:
       return { ok: false, error };
   }

@@ -13,13 +13,14 @@ import { clearCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { fetchCourses } from "@/app/lib/services/courses-data-service-client";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function CoursesListPaging({ lang }: { lang: string; }) {
   const coursesStatePaging: CoursesStatePaging = useSelector((state: any) => state.coursesStatePaging);
   const gymState: GymState = useSelector((state: any) => state.gymState);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
+  
   const [pageOfCourses, setPageOfCourses] = useState<Page<Course>>();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);

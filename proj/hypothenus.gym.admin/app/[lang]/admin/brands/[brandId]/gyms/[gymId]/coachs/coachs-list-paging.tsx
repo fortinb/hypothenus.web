@@ -13,13 +13,14 @@ import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { fetchCoachs } from "@/app/lib/services/coachs-data-service-client";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function CoachsListPaging({ lang}: { lang: string; }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
   const gymState: GymState = useSelector((state: any) => state.gymState);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
+  
   const [pageOfCoachs, setPageOfCoachs] = useState<Page<Coach>>();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);

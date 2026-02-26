@@ -14,5 +14,12 @@
     "text": {
         "signinMessage": "Signin to start training !",
         "signupMessage": "You don't have an account? "
+    },
+    "signoutConfirmation": {
+        "title": "Signout",
+        "text": "Are you sure you want to signout ?",
+        "yes": "Yes, sign me out",
+        "no": "No, keep me signed in",
+        "action": "Signing out..."
     }
 }

@@ -14,5 +14,12 @@
     "text": {
         "signinMessage": "Connectez-vous pour commencer l'entraînement !",
         "signupMessage": "Vous n'avez pas de compte ?"
+    },
+    "signoutConfirmation": {
+        "title": "Déconnexion",
+        "text": "Êtes-vous sûr de vouloir vous déconnecter ?",
+        "yes": "Oui, déconnectez-moi",
+        "no": "Non, gardez-moi connecté",
+        "action": "Déconnexion en cours..."
     }
 }

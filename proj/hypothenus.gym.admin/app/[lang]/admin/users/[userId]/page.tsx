@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
 import { RoleSelectedItem } from "@/src/lib/entities/ui/role-selected-item";
 import { getTranslations } from "next-intl/server";
+import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
     params: Promise<{ lang: string; userId: string }>;
@@ -32,9 +33,9 @@ export default async function UserPage({ params }: PageProps) {
         } else {
             user = await getUser(userId);
         }
-    } catch (error) {
-        console.error("Error fetching user:", error);
-        throw error;
+    } catch (error: any) {
+        failure(error);
+        redirect(`/${lang}/error`);
     }
 
     const availableRoleItems: RoleSelectedItem[] = (Object.values(RoleEnum) as RoleEnum[]).map((role: RoleEnum) => ({

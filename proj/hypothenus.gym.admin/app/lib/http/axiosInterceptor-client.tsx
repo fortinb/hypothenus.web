@@ -3,6 +3,7 @@
 import axios from "axios";
 import { normalizeApiError } from "./result";
 import { getSession, signOut } from "next-auth/react";
+import { logout } from "@/src/security/actions";
 const axiosInstance = axios.create();
 
 // Request interceptor
@@ -34,7 +35,7 @@ axiosInstance.interceptors.response.use(
       // Handle response errors here
       const normalizedError = normalizeApiError(error);
       if (normalizedError?.status === 401) {
-        await signOut();
+        await logout();
       }
       
       return Promise.reject(normalizedError);
