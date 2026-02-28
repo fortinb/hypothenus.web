@@ -24,6 +24,8 @@ import { uploadGymLogo } from "@/app/lib/services/gyms-data-service-client";
 import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Authorize } from "@/app/ui/components/security/authorize";
+import { debugLog, isDebug } from "@/app/lib/utils/debug";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 
 export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     const t = useTranslations("entity");
@@ -80,7 +82,10 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
             saveGym(gym);
         }
     }
-
+    
+    // Watch the entire form and log errors when present (debug only)
+    useFormDebug(formContext);
+    
     const uploadLogo = async (brandUuid: string, gymUuid: string, logo: Blob) => {
         const formData = new FormData();
         formData.append('file', logo);

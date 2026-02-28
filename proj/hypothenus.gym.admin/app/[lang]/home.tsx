@@ -4,24 +4,14 @@ import Image from 'next/image';
 import Carousel from 'react-bootstrap/Carousel';
 import Container from "react-bootstrap/Container";
 import { useTranslations } from "next-intl";
-import { Brand } from '@/src/lib/entities/brand';
-import { updateBrandState } from '../lib/store/slices/brand-state-slice';
-import { useAppDispatch } from '../lib/hooks/useStore';
-import { useEffect } from 'react';
 import Signin from './public/signin/signin';
 
-export default function Home({ lang, brand }: { lang: string; brand: Brand }) {
+export default function Home({ lang }: { lang: string;}) {
   const t = useTranslations("home");
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(updateBrandState(brand));
-  }, [dispatch, brand]);
 
   return (
     <div className="d-flex flex-row w-100 h-100 home">
       <div className="d-flex flex-column align-items-center w-50 h-100">
-        
         <div className="d-flex flex-row w-100 h-100">
           <Signin lang={lang} />
         </div>
@@ -34,7 +24,7 @@ export default function Home({ lang, brand }: { lang: string; brand: Brand }) {
                 src="/images/home_gym_1.png"
                 width={1024}
                 height={768}
-                alt={brand.name}
+                alt=""
               />
               <Carousel.Caption>
                 <h3>{t("captions.image1.title")}</h3>
@@ -46,7 +36,7 @@ export default function Home({ lang, brand }: { lang: string; brand: Brand }) {
                 src="/images/home_gym_2.png"
                 width={1024}
                 height={768}
-                alt={brand.name}
+                alt=""
               />
               <Carousel.Caption>
                 <h3>{t("captions.image2.title")}</h3>

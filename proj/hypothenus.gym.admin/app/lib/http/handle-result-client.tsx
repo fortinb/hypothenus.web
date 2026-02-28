@@ -2,6 +2,7 @@
 
 import { signOut } from "@/src/security/auth";
 import { ActionResult, ErrorType, ResultError } from "./result";
+import { debugLog } from "@/app/lib/utils/debug";
 
 
 export function success<T>(data: T): ActionResult<T> {
@@ -13,7 +14,7 @@ export async function failure<T>(error: ResultError): Promise<ActionResult<T>> {
   switch (error.type) {
     case ErrorType.Forbidden:
     case ErrorType.Unauthorized:
-      console.log ("Unauthorized or forbidden access", error);
+      debugLog ("Unauthorized or forbidden access", error);
       // Redirect to the sign-out route which will perform cookie cleanup
         return await signOut({ redirectTo: '/', redirect: true });
    default:

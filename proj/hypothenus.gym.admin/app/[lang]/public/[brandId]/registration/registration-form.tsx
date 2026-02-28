@@ -21,6 +21,8 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
+import { debugLog, isDebug } from "@/app/lib/utils/debug";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { createMemberAction } from "./actions";
 
 export default function RegistrationForm({ lang, member, gyms }: { lang: string; member: Member; gyms: GymListItem[] }) {
@@ -61,19 +63,8 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
     // Toast Result State
     const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
 
-    // Watch the entire form
-    // const formData = formContext.watch();
-
-    /*   useEffect(() => {
-           // Log the data to the console every time there is an error
-           const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-           if (hasErrors) {
-               console.log("Current Form errors:", formContext.formState.errors);
-           }
-   
-           // console.log("Current Form Data:", formData);
-       }, [formData]);
-       */
+    // Watch the entire form and log errors when present (debug only)
+    useFormDebug(formContext);
 
     useEffect(() => {
         dispatch(updateMemberState(member));

@@ -2,8 +2,9 @@
 
 import axios from "axios";
 import { normalizeApiError } from "./result";
-import { getSession, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { logout } from "@/src/security/actions";
+import { debugLog } from "@/app/lib/utils/debug";
 const axiosInstance = axios.create();
 
 // Request interceptor
@@ -28,9 +29,9 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error) => {
+    async (error) => {
     try {
-      console.log(error);
+      debugLog(error);
 
       // Handle response errors here
       const normalizedError = normalizeApiError(error);
@@ -40,7 +41,7 @@ axiosInstance.interceptors.response.use(
       
       return Promise.reject(normalizedError);
     } catch (e) {
-      console.log(e);
+      debugLog(e);
       return Promise.reject(error);
     }
   }

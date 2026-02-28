@@ -53,7 +53,6 @@ export const { auth,  handlers: { GET, POST }, signIn, signOut } = NextAuth({
                     : Date.now() + 60 * 60 * 1000;
             }
 
-            console.log("JWT callback token:", token);
             return token;
         },
 
@@ -66,8 +65,7 @@ export const { auth,  handlers: { GET, POST }, signIn, signOut } = NextAuth({
             session.user.name = decoded.name || "";
             session.user.email = decoded.email || "";
 
-            console.log("Session callback session:", session);
-            return session;
+             return session;
         },
     },
 });

@@ -1,9 +1,20 @@
 
+"use client";
+
+import { Brand } from "@/src/lib/entities/brand";
 import NavbarBreadcrumb from "../navigation/navbar-breadcrumb";
 import NavbarMenu from "../navigation/navbar-menu";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/app/lib/hooks/useStore";
+import { updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 
+export default function Header({ lang, brand }: { lang: string; brand: Brand }) {
+  const dispatch = useAppDispatch();
 
-export default async function Header({ lang }: { lang: string }) {
+  useEffect(() => {
+    dispatch(updateBrandState(brand));
+  }, [dispatch, brand]);
+
   return (
     <div>
       <header className="navbar shadow sticky-top p-0">

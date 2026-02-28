@@ -13,7 +13,8 @@
     },
     "text": {
         "signinMessage": "Connectez-vous pour commencer l'entraînement !",
-        "signupMessage": "Vous n'avez pas de compte ?"
+        "signupMessage": "Vous n'avez pas de compte ?",
+        "welcomeMessage": "Bienvenue {name} !"
     },
     "signoutConfirmation": {
         "title": "Déconnexion",

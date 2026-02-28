@@ -22,6 +22,8 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
+import { debugLog, isDebug } from "@/app/lib/utils/debug";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { activateMemberAction, createMemberAction, deactivateMemberAction, deleteMemberAction, saveMemberAction } from "./actions";
 import { DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
@@ -63,19 +65,8 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
         setPhotoToUpload(file);
     }
 
-    // Watch the entire form
-    // const formData = formContext.watch();
-
-    /*   useEffect(() => {
-           // Log the data to the console every time there is an error
-           const hasErrors = Object.keys(formContext?.formState?.errors).length > 0
-           if (hasErrors) {
-               console.log("Current Form errors:", formContext.formState.errors);
-           }
-   
-           // console.log("Current Form Data:", formData);
-       }, [formData]);
-       */
+    // Watch the entire form and log errors when present (debug only)
+    useFormDebug(formContext);
 
     useEffect(() => {
         dispatch(updateMemberState(member));

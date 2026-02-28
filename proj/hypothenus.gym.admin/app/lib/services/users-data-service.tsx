@@ -59,7 +59,7 @@ export async function delUser(userUuid: string): Promise<void> {
 
 export async function postUser(user: User): Promise<User> {
 
-  const postURI: String = `/v1/users/register`;
+  const postURI: String = `/v1/users`;
 
   const request = initRequest({});
 

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { debugLog } from "@/app/lib/utils/debug";
 
 const namespaces = [
     "action",
@@ -27,7 +28,7 @@ export async function loadMessages(locale: string) {
 
         return Object.assign({}, ...messages);
     } catch (error:any){
-        console.log('load i18n messages error:', error); 
+        debugLog('load i18n messages error:', error);
         notFound();
     }
 }

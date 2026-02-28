@@ -43,7 +43,6 @@ export const UserSchema = z.object({
   firstname: z.string().min(1, { message: "user.validation.firstnameRequired" }),
   lastname: z.string().min(1, { message: "user.validation.lastnameRequired" }),
   email: z.email("user.validation.emailInvalid"),
-  roles: z.enum(RoleEnum).array().min(1, { message: "user.validation.rolesRequired" }),
 });
 
 

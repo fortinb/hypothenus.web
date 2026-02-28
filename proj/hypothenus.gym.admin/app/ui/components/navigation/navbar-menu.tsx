@@ -4,7 +4,7 @@ import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import SigninButton from "./signin-button";
+import SigninButton from "../security/signin-button";
 import LanguageButton from "./language-button";
 import MemberMenu from "./member-menu";
 import { useTranslations } from "next-intl";

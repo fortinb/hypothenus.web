@@ -6,6 +6,7 @@ import React from 'react';
 import Container from "react-bootstrap/Container";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
+import { debugLog } from "@/app/lib/utils/debug";
 
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState("");
@@ -17,11 +18,12 @@ const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
     }
     
     setError(event.reason);
-    console.log("Error: ", event.reason);
+    debugLog("Error: ", event.reason);
   }, []);
 
   const resetError = useCallback(() => {
     setError("");
+    window.location.href = "/";
   }, []);
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import { Brand } from '@/src/lib/entities/brand';
 import { failure } from '../lib/http/handle-result';
 import { redirect } from 'next/navigation';
 
-
 interface PageProps {
   params: Promise<{ lang: string }>; // params is now a Promise
 }
@@ -33,7 +32,7 @@ export default async function HomePage({ params }: PageProps) {
           namespace: "home"
         }}
       />
-      <Home lang={lang} brand={brand} />
+      <Home lang={lang} />
     </main>
   );
 }

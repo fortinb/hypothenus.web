@@ -1,14 +1,19 @@
 "use client"
 
+import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
+import { useAppDispatch } from "@/app/lib/hooks/useStore";
+import { useToastResult } from "@/app/lib/hooks/useToastResult";
+import { UserState, clearUserState, updateUserState } from "@/app/lib/store/slices/user-state-slice";
 import FormActionBar from "@/app/ui/components/actions/form-action-bar";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
-import { useTranslations } from "next-intl";
-import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { UserState, clearUserState, updateUserState } from "@/app/lib/store/slices/user-state-slice";
-import { User, UserSchema, RoleEnum } from "@/src/lib/entities/user";
+import { Authorize } from "@/app/ui/components/security/authorize";
+import UserInfo from "@/app/ui/components/user/user-info";
+import { RoleSelectedItem } from "@/src/lib/entities/ui/role-selected-item";
+import { RoleEnum, User, UserSchema } from "@/src/lib/entities/user";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
@@ -16,11 +21,8 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-
 import { useSelector } from "react-redux";
 import { z } from 'zod';
 import { activateUserAction, createUserAction, deactivateUserAction, deleteUserAction, saveUserAction } from "./actions";
-import { useToastResult } from "@/app/lib/hooks/useToastResult";
-import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
-import { Authorize } from "@/app/ui/components/security/authorize";
-import UserInfo from "@/app/ui/components/user/user-info";
-import { RoleSelectedItem } from "@/src/lib/entities/ui/role-selected-item";
+import { DOMAIN_EXCEPTION_USER_ALREADY_EXIST, DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED } from "@/src/lib/entities/messages";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 
 export interface UserFormData {
     user: z.infer<typeof UserSchema>;
@@ -29,7 +31,7 @@ export interface UserFormData {
 
 export const UserFormSchema = z.object({
     user: UserSchema,
-    selectedRoleItems: z.any().array().min(1)
+    selectedRoleItems: z.any().array().min(1, { message: "user.validation.rolesRequired" })
 });
 
 export default function UserForm({ lang, user, initialAvailableRoleItems, initialSelectedRoleItems }:
@@ -76,6 +78,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
         name: "selectedRoleItems"
     });
 
+    // Watch the entire form
     const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
 
     useEffect(() => {
@@ -94,6 +97,9 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
         }
     }, [dispatch, user, initialAvailableRoleItems, initialSelectedRoleItems, isRoleItemsInitialized]);
 
+    // Watch the entire form and log errors when present (debug only)
+    useFormDebug(formContext);
+    
     const onSubmit: SubmitHandler<UserFormData> = (formData: z.infer<typeof UserFormSchema>) => {
         setIsEditMode(false);
 
@@ -113,6 +119,21 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                 // before save (none)
             },
             (entity) => {
+                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_USER_ALREADY_EXIST)
+                if (duplicate) {
+                    formContext.setError("user.email", { type: "manual", message: "user.validation.alreadyExists" });
+                    showResultToast(false, t("action.saveError"), undefined);
+                    setIsEditMode(true);
+                    return;
+                }
+                const authorityLevel = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED)
+                if (authorityLevel) {
+                    formContext.setError("selectedRoleItems", { type: "manual", message: "user.validation.roleAssignmentNotAllowed" });
+                    showResultToast(false, t("action.saveError"), undefined);
+                    setIsEditMode(true);
+                    return;
+                }
+
                 dispatch(updateUserState(entity));
                 showResultToast(true, t("action.saveSuccess"));
                 router.push(`/${lang}/admin/users/${entity.uuid}`);
@@ -131,6 +152,14 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                 // before save (none)
             },
             (entity) => {
+                const authorityLevel = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED)
+                if (authorityLevel) {
+                    formContext.setError("selectedRoleItems", { type: "manual", message: "user.validation.roleAssignmentNotAllowed" });
+                    showResultToast(false, t("action.saveError"), undefined);
+                    setIsEditMode(true);
+                    return;
+                }
+
                 dispatch(updateUserState(entity));
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
@@ -240,7 +269,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
             roles: user.roles
         };
     }
-    
+
     function mapFormToEntity(formData: z.infer<typeof UserFormSchema>, user: User): User {
         return {
             ...user,
@@ -268,7 +297,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                                         isEditDisable={isEditMode} isDeleteDisable={(userState.user.uuid == null ? true : false)} isActivationDisabled={(userState.user.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>
-                                <UserInfo formRolesStateField="selectedRoleItems" availableRoleItems={availableRoleItems} isEditMode={isEditMode} isCancelling={isCancelling} />
+                                <UserInfo availableRoleItems={availableRoleItems} isEditMode={isEditMode} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="user_info_form" />
                             </Form>

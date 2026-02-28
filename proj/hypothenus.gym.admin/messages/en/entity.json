@@ -133,6 +133,8 @@
     },
     "user": {
         "validation": {
+            "alreadyExists": "User must be unique, email already exists.",
+            "roleAssignmentNotAllowed": "You don't have permission to assign this role.",
             "firstnameRequired": "First name is required.",
             "lastnameRequired": "Last name is required.",
             "emailRequired": "Email is required.",

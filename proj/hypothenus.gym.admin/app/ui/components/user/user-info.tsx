@@ -14,12 +14,11 @@ import Button from "react-bootstrap/Button";
 import { RoleSelectedItem } from "@/src/lib/entities/ui/role-selected-item";
 import { UserFormData } from "@/app/[lang]/admin/users/[userId]/user-form";
 
-export default function UserInfo({ availableRoleItems: availableRoleItems, formRolesStateField, isEditMode, isCancelling }:
+export default function UserInfo({ availableRoleItems: availableRoleItems, isEditMode, isCancelling }:
     {
         availableRoleItems: RoleSelectedItem[],
         isEditMode: boolean,
-        isCancelling: boolean,
-        formRolesStateField: string
+        isCancelling: boolean
     }) {
     const { register, formState: { errors } } = useFormContext<UserFormData>();
     const t = useTranslations("entity");
@@ -61,7 +60,7 @@ export default function UserInfo({ availableRoleItems: availableRoleItems, formR
                     <Col xs={12} className="p-1" >
                         <FormLabelRequired className="text-primary" htmlFor={`user_input_roles`} label={t("user.roles.title")}></FormLabelRequired>
                         <Controller
-                            name={`${formRolesStateField}`}
+                            name="selectedRoleItems"
                             render={({ field }) => (
                                 <div>
                                     <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_user_info_role_add_all_tooltip">{t("user.roles.addAll")}</Tooltip>}>
@@ -85,6 +84,7 @@ export default function UserInfo({ availableRoleItems: availableRoleItems, formR
                                 </div>
                             )}
                         />
+                         {errors.selectedRoleItems && <Form.Text className="text-invalid">{t(errors.selectedRoleItems.message as string)}</Form.Text>}
                     </Col>
                 </Row>
             </Container>

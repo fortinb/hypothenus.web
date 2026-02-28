@@ -50,7 +50,7 @@ export default async function MemberPage({ params }: PageProps) {
           reset: false,
           id: "registration.page",
           locale: `${lang}`,
-          href: `/${lang}/public/${brandId}/registration`,
+          href: `/public/${brandId}/registration`,
           key: "breadcrumb.registration",
           namespace: "welcome"
         }}

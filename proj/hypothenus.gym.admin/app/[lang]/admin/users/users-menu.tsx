@@ -1,7 +1,6 @@
 "use client"
 
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { ChangeEvent } from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -10,7 +9,6 @@ import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { UsersStatePaging, includeInactive } from "@/app/lib/store/slices/users-state-paging-slice";
-import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function UsersMenu({ lang }: { lang: string }) {
     const usersStatePaging: UsersStatePaging = useSelector((state: any) => state.usersStatePaging);
@@ -36,18 +34,6 @@ export default function UsersMenu({ lang }: { lang: string }) {
                 <Container fluid={true}>
                     <Row className="gx-2">
                         <Col xs={6} >
-                            <Authorize roles="admin">
-                                <div className="btn-navigation m-2">
-                                    <div className="d-flex flex-column justify-content-center h-100">
-                                        <div className="d-flex flex-row justify-content-center">
-                                            <Link className="link-element" href={`/${lang}/admin/users/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
-                                        </div>
-                                        <div className="d-flex flex-row justify-content-center">
-                                            <span className="text-primary mt-3">{t("list.menu.add")}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Authorize>
                         </Col>
                         <Col xs={6} >
                             <div className="d-flex flex-row align-items-center justify-content-center flex-fill h-100">

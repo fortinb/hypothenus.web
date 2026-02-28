@@ -22,6 +22,8 @@ import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
 import { Authorize } from "@/app/ui/components/security/authorize";
+import { debugLog, isDebug } from "@/app/lib/utils/debug";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 
 export default function BrandForm({ lang, brand }: { lang: string; brand: Brand }) {
     const t = useTranslations("entity");
@@ -67,7 +69,10 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
 
     }, [dispatch, brand]);
 
-     const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
+    // Watch the entire form and log errors when present (debug only)
+    useFormDebug(formContext);
+
+    const onSubmit: SubmitHandler<z.infer<typeof BrandSchema>> = (formData: z.infer<typeof BrandSchema>) => {
         setIsEditMode(false);
 
         let brand: Brand = mapFormToEntity(formData, brandState.brand);

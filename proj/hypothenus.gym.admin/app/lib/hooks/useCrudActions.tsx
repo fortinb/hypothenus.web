@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { ActionResult } from "@/app/lib/http/result";
+import { debugLog } from "@/app/lib/utils/debug";
 
 interface CrudActions<T> {
   create: (...args: any[]) => Promise<ActionResult<T>>;
@@ -29,7 +30,7 @@ export function useCrudActions<T>({
       const result = await actions.create(entity);
 
       if (!result.ok) {
-        console.log('createEntity error', result);
+        debugLog('createEntity error', result);
         onError?.(result);
         return;
       }
@@ -45,7 +46,7 @@ export function useCrudActions<T>({
       const result = await actions.save(entity, entityPath);
 
       if (!result.ok) {
-        console.log('saveEntity error', result);
+        debugLog('saveEntity error', result);
         onError?.(result);
         return;
       }
@@ -59,7 +60,7 @@ export function useCrudActions<T>({
       const result = await actions.activate(entity, entityPath);
 
       if (!result.ok) {
-        console.log('activateEntity error', result);
+        debugLog('activateEntity error', result);
         onError?.(result);
         return;
       }
@@ -73,7 +74,7 @@ export function useCrudActions<T>({
       const result = await actions.deactivate(entity, entityPath);
 
       if (!result.ok) {
-        console.log('deactivateEntity error', result);
+        debugLog('deactivateEntity error', result);
         onError?.(result);
         return;
       }
@@ -87,7 +88,7 @@ export function useCrudActions<T>({
       const result = await actions.delete(entity, entityPath);
 
       if (!result.ok) {
-        console.log('deleteEntity error', result);
+        debugLog('deleteEntity error', result);
         onError?.(result);
         return;
       }

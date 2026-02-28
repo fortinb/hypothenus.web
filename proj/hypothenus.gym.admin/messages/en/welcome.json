@@ -13,7 +13,8 @@
     },
     "text": {
         "signinMessage": "Signin to start training !",
-        "signupMessage": "You don't have an account? "
+        "signupMessage": "You don't have an account? ",
+         "welcomeMessage": "Welcome {name} !"
     },
     "signoutConfirmation": {
         "title": "Signout",

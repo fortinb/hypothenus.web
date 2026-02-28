@@ -7,7 +7,7 @@
     "build": "next build",
     "build:css": "sass --quiet styles/hypothenus.scss dist/styles.css",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "clean": "rimraf .next"
   },
   "dependencies": {

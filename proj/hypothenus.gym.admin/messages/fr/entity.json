@@ -134,6 +134,8 @@
     },
     "user": {
         "validation": {
+            "alreadyExists": "L'utilisateur doit être unique, ce courriel existe déjà.",
+            "roleAssignmentNotAllowed": "Vous n'avez pas la permission d'assigner ce rôle.",
             "firstnameRequired": "Le prénom est requis.",
             "lastnameRequired": "Le nom est requis.",
             "emailRequired": "Le courriel est requis.",

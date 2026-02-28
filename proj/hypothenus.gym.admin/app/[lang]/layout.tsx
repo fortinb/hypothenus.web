@@ -4,15 +4,17 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Footer from "@/app/ui/components/layout/footer";
 import Header from "@/app/ui/components/layout/header";
-import StoreProvider from '../lib/store/store-provider';
 import "@/styles/hypothenus.scss";
 import { getTranslations } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { SessionProvider } from "next-auth/react";
 import ErrorBoundary from "@/app/ui/components/errors/error-boundary";
+import { debugLog } from "@/app/lib/utils/debug";
 import Providers from "./providers";
+import { Brand } from "@/src/lib/entities/brand";
+import { getBrandByCode } from "../lib/services/brands-data-service";
+import { failure } from "../lib/http/handle-result";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -45,10 +47,19 @@ export default async function RootLayout({
   const { lang } = await params;
 
   if (!routing.locales.includes(lang as any)) {
-    console.log('not found');
+    debugLog('not found');
     notFound();
   }
- 
+
+  let brand: Brand;
+
+  try {
+    brand = await getBrandByCode(process.env.NEXT_PUBLIC_BRAND_CODE as string);
+  } catch (error: any) {
+    failure(error);
+    redirect(`/${lang}/error`);
+  }
+
   return (
 
     <html lang={lang}>
@@ -66,20 +77,20 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider>
           <Providers>
-              <div className="container-fluid overflow-hidden w-100 h-100 p-0">
-                <div className="d-flex flex-row w-100 h-100 p-0">
-                  <div className="d-flex flex-column justify-content-between w-100 h-100">
-                    <ErrorBoundary>
-                      <Header lang={lang} />
-                      <Container fluid={true} className="overflow-hidden h-100">
-                        {children}
-                      </Container>
-                      <Footer />
-                    </ErrorBoundary>
-                  </div>
+            <div className="container-fluid overflow-hidden w-100 h-100 p-0">
+              <div className="d-flex flex-row w-100 h-100 p-0">
+                <div className="d-flex flex-column justify-content-between w-100 h-100">
+                  <ErrorBoundary>
+                    <Header lang={lang} brand={brand} />
+                    <Container fluid={true} className="overflow-hidden h-100">
+                      {children}
+                    </Container>
+                    <Footer />
+                  </ErrorBoundary>
                 </div>
               </div>
-           </Providers>
+            </div>
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html >
