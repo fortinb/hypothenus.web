@@ -24,7 +24,7 @@ export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, av
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="member_info_form" disabled={!isEditMode} >
             <Container >
-                <Row className="mt-2 gx-2">
+                <Row className="mt-2 gx-2 m-2">
                     <Col xs={6} >
                         <Form.Group>
                             <FormLabelRequired className="text-primary" htmlFor={`member-type-dropdown`} label={t("member.memberType")}></FormLabelRequired>
