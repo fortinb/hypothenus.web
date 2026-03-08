@@ -27,7 +27,7 @@ export default function LocalizedStringInfo({ index, id, language, formStatefiel
     return (
         <Form.Group>
             <Form.Control type="hidden" id={`localized_string_input_language_${id}_${index}`} value={language} {...register(`${formStatefield}.language`)} />
-            <Form.Control as="textarea" type="input" rows={nbRows} id={`localized_string_input_text_${id}_${index}`}  {...register(`${formStatefield}.text`)}
+            <Form.Control as="textarea" type="input" rows={nbRows} id={id}  {...register(`${formStatefield}.text`)}
                 className={getError(index)?.text ? "input-invalid" : ""} />
             {getError(index)?.text && <Form.Text className="text-invalid">{t(getError(index)?.text?.message ?? "")}</Form.Text>}
         </Form.Group>

@@ -70,7 +70,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                     {formContacts.fields?.map((contact: Record<string, any>, index: number) => {
 
                         return <Accordion.Item key={index} eventKey={index.toString()} className="pt-2">
-                            <Accordion.Header className={"accordion-header-light" + (getError(index) ? " accordeon-header-invalid" : "")}>{formatContactName(contact as Contact)}</Accordion.Header>
+                            <Accordion.Header data-testid={`gym-contact-accordion-${index}`} className={"accordion-header-light" + (getError(index) ? " accordeon-header-invalid" : "")}>{formatContactName(contact as Contact)}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Card>
                                     <Card.Body className="">

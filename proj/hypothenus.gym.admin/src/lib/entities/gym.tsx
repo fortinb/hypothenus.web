@@ -35,7 +35,7 @@ export const newGym = (): Gym => {
     phoneNumbers: [
       newPhoneNumber(PhoneNumberTypeEnum.Business),
       newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
-    messages: undefined,
+    messages: [],
     createdBy: undefined,
     modifiedBy: undefined
   };
@@ -70,7 +70,7 @@ export const parseGym = (data: any): Gym => {
 
 export const GymSchema = z.object({
   code: z.string().trim().min(1, { message: "gym.validation.codeRequired" }).max(20, { message: "gym.validation.codeMaxLength" }).regex(/^\S+$/, "gym.validation.noSpaceAllowed"),
-  name: z.string().min(1, { message: "gym.validation.nameRequired" }).max(100, { message: "gym.validation.ameMaxLength" }),
+  name: z.string().min(1, { message: "gym.validation.nameRequired" }).max(100, { message: "gym.validation.nameMaxLength" }),
   address: AddressSchema,
   email: z.email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),

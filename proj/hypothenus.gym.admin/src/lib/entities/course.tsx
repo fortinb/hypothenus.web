@@ -14,7 +14,7 @@ export interface Course extends BaseEntity {
   name: LocalizedString[];
   description: LocalizedString[];
   coachs: Coach[];
-  startDate: string;
+  startDate?: any;
   endDate?: any; 
   isActive: boolean;
 }
@@ -30,7 +30,6 @@ export const parseCourse = (data: any): Course => {
   }
 
   return course;
-
 }
 
 export const newCourse = (): Course => {
@@ -42,10 +41,10 @@ export const newCourse = (): Course => {
     name: [],
     description: [],
     coachs: [],
-    startDate: moment().toDate().toISOString(),
+    startDate: moment().format("YYYY-MM-DD"),
     endDate: undefined,
     isActive: true,
-    messages: undefined,
+    messages:  [],
     createdBy: undefined,
     modifiedBy: undefined,
   };
@@ -70,13 +69,15 @@ export function getCourseName(course: Course, language?: LanguageEnum): string {
 
 export const CourseSchema = z.object({
   code: z.string().min(1, { message: "course.validation.codeRequired" }),
-  name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(1),
-  description: z.array(LocalizedStringSchema(false, "")).min(1),
-  startDate: z.string().min(1, { message: "course.validation.startDateRequired" }),
-  endDate: z.any().nullable(),
+  name: z.array(LocalizedStringSchema(true, "course.validation.nameRequired")).min(2),
+  description: z.array(LocalizedStringSchema(true, "course.validation.descriptionRequired")).min(2),
+  startDate: z.string().nullable().refine((date) => !!date, { message: "course.validation.startDateRequired" }),
+  endDate: z.string().nullable().optional(),
   coachs: z.array(CoachReferenceSchema).min(0).nullable().optional(),
-}).refine((course) => !course.endDate || (moment(course.endDate).format("YYYMMDD") >= moment(course.startDate).format("YYYMMDD")), {
+}).refine((course) => !course.endDate || !course.startDate || (moment(course.endDate).format("YYYYMMDD") >= moment(course.startDate).format("YYYYMMDD")), {
   message: "course.validation.endDateGreaterThanStartDate",
   path: ["endDate"], // path of error
-});
-
+}).refine((course) => !course.endDate || !course.startDate || (moment(course.endDate).format("YYYYMMDD") > moment().format("YYYYMMDD")), {
+  message: "course.validation.endDateGreaterThanToday",
+  path: ["endDate"], // path of error;
+})

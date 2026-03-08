@@ -79,7 +79,7 @@ export default async function CoursePage({ params }: PageProps) {
         <CourseMenu lang={lang} course={course} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
-        <CourseForm lang={lang} course={course} coachs={coachs} initialAvailableCoachItems={availableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />
+        <CourseForm lang={lang} course={course} initialAvailableCoachItems={availableCoachItems} initialSelectedCoachItems={initialSelectedCoachItems} />
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
         <CourseResume lang={lang} />

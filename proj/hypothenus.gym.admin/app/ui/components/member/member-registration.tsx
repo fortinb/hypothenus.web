@@ -46,9 +46,9 @@ export default function MemberRegistration({ availableGymItems, lang }:
                 <Row className="m-2 gx-2">
                     <Col xs={6} className="gx-2">
                         <Form.Group>
-                            <FormLabelRequired className="text-primary" htmlFor={`input_password_1`} label={t("member.password")}></FormLabelRequired>
+                            <FormLabelRequired className="text-primary" htmlFor={`input_password`} label={t("member.password")}></FormLabelRequired>
                             <div className="d-flex flex-row align-items-center">
-                                <Form.Control type={showPassword ? "text" : "password"} id={`person_info_input_password_1`}  {...register(`password`)}
+                                <Form.Control type={showPassword ? "text" : "password"} id={`input_password`}  {...register(`password`)}
                                     className={errors?.password ? "input-invalid" : ""} />
                                 <i className={`ms-2 me-2 fs-5 bi ${showPassword ? "bi-eye-slash" : "bi-eye"} password-toggle-icon`}
                                     onClick={() => setShowPassword(!showPassword)}
@@ -61,7 +61,7 @@ export default function MemberRegistration({ availableGymItems, lang }:
                         <Form.Group>
                             <FormLabelRequired className="text-primary" htmlFor={`input_password_confirmation`} label={t("member.passwordConfirmation")}></FormLabelRequired>
                             <div className="d-flex flex-row align-items-center">
-                                <Form.Control type={showPasswordConfirmation ? "text" : "password"} id={`person_info_input_password_confirmation`} {...register(`passwordConfirmation`)}
+                                <Form.Control type={showPasswordConfirmation ? "text" : "password"} id={`input_password_confirmation`} {...register(`passwordConfirmation`)}
                                     className={errors?.passwordConfirmation ? "input-invalid" : ""} />
                                 <i className={`ms-2 me-2 fs-5 bi ${showPasswordConfirmation ? "bi-eye-slash" : "bi-eye"} password-toggle-icon`}
                                     onClick={() => setShowPasswordConfirmation((prev) => !prev)}

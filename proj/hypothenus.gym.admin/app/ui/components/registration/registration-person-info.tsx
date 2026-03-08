@@ -35,16 +35,16 @@ export default function RegistrationPersonInfo({ id, formStatefield, lang }:
             <Row className="gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <FormLabelRequired className="text-primary" htmlFor={`person_input_firstname_${id}`} label={t("person.firstname")}></FormLabelRequired>
-                        <Form.Control type="input" id={`person_input_firstname_${id}`}  {...register(`${formStatefield}.firstname`)}
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_firstname`} label={t("person.firstname")}></FormLabelRequired>
+                        <Form.Control type="input" id={`person_input_firstname`}  {...register(`${formStatefield}.firstname`)}
                             className={getError()?.firstname ? "input-invalid" : ""} />
                         {getError()?.firstname && <Form.Text className="text-invalid">{t(getError()?.firstname?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <FormLabelRequired className="text-primary" htmlFor={`person_input_lastname_${id}`} label={t("person.lastname")}></FormLabelRequired>
-                        <Form.Control type="input" id={`person_input_lastname_${id}`}  {...register(`${formStatefield}.lastname`)}
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_lastname`} label={t("person.lastname")}></FormLabelRequired>
+                        <Form.Control type="input" id={`person_input_lastname`}  {...register(`${formStatefield}.lastname`)}
                             className={getError()?.lastname ? "input-invalid" : ""} />
                         {getError()?.lastname && <Form.Text className="text-invalid">{t(getError()?.lastname?.message ?? "")}</Form.Text>}
                     </Form.Group>
@@ -54,13 +54,13 @@ export default function RegistrationPersonInfo({ id, formStatefield, lang }:
             <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <FormLabelRequired className="text-primary" htmlFor={`person_input_dateOfBirth_${id}`} label={t("person.dateOfBirth")}></FormLabelRequired>
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_dateOfBirth`} label={t("person.dateOfBirth")}></FormLabelRequired>
                         <br />
                         <Controller
                             name={`${formStatefield}.dateOfBirth`}
                             render={({ field }) => (
                                 <DatePicker
-                                    id={`person_input_dateOfBirth_${id}`}
+                                    id={`person_input_dateOfBirth`}
                                     selected={!field.value ? null : moment(field.value).toDate()}
                                     onChange={(date: Date | null) => field.onChange(date?.toISOString())}
                                     className={"form-control "}
@@ -75,8 +75,8 @@ export default function RegistrationPersonInfo({ id, formStatefield, lang }:
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <FormLabelRequired className="text-primary" htmlFor={`person-communication-language-dropdown_${id}`} label={t("person.communicationLanguage")}></FormLabelRequired>
-                        <Form.Select id={`person-communication-language-dropdown_${id}`} {...register(`${formStatefield}.communicationLanguage`)}>
+                        <FormLabelRequired className="text-primary" htmlFor={`person-communication-language-dropdown`} label={t("person.communicationLanguage")}></FormLabelRequired>
+                        <Form.Select id={`person-communication-language-dropdown`} {...register(`${formStatefield}.communicationLanguage`)}>
                              {localesConfig.locales.map((lang: string, index: number) => {
                                 return <option key={index} value={`${lang}`} >{t(`language.${lang}`)}</option>
                              })}     
@@ -87,8 +87,8 @@ export default function RegistrationPersonInfo({ id, formStatefield, lang }:
             <Row className="mt-2 gx-2">
                 <Col xs={6} >
                     <Form.Group>
-                        <FormLabelRequired className="text-primary" htmlFor={`person_input_email_${id}`} label={t("person.email")}></FormLabelRequired>
-                        <Form.Control type="input" id={`person_info_input_email_${id}`} placeholder={t("person.emailPlaceholder")} {...register(`${formStatefield}.email`)}
+                        <FormLabelRequired className="text-primary" htmlFor={`person_input_email`} label={t("person.email")}></FormLabelRequired>
+                        <Form.Control type="input" id={`person_input_email`} placeholder={t("person.emailPlaceholder")} {...register(`${formStatefield}.email`)}
                             className={getError()?.email ? "input-invalid" : ""} />
                         {getError()?.email && <Form.Text className="text-invalid">{t(getError()?.email?.message ?? "")}</Form.Text>}
                     </Form.Group>

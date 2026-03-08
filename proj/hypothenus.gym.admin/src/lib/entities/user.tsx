@@ -26,7 +26,7 @@ export const newUser = (): User => {
     email: "",
     roles: [],
     isActive: true,
-    messages: undefined,
+    messages: [],
     createdBy: undefined,
     modifiedBy: undefined
   };

@@ -32,7 +32,7 @@ export const newBrand = (): Brand => {
       newPhoneNumber(PhoneNumberTypeEnum.Business),
       newPhoneNumber(PhoneNumberTypeEnum.Mobile)
     ],
-    messages: undefined,
+    messages: [],
     createdBy: undefined,
     modifiedBy: undefined
   };

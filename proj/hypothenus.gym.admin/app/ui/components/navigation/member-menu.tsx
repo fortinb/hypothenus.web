@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { Authorize } from "../security/authorize";
 
 export default function MemberMenu({ lang }: { lang: string }) {
-  const router = useRouter();
   const t = useTranslations("layout");
   const brandState: BrandState = useSelector((state: any) => state.brandState);
 

@@ -28,7 +28,7 @@ export const newMember = (): Member => {
     memberType: MemberTypeEnum.Regular,
     preferredGymUuid: "",
     isActive: true,
-    messages: undefined,
+    messages: [],
     createdBy: undefined,
     modifiedBy: undefined
   };

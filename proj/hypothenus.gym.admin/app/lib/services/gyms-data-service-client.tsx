@@ -4,7 +4,7 @@ import { Gym } from "@/src//lib/entities/gym";
 import { Page } from "@/src//lib/entities/page";
 import axiosInstance from "@/app/lib/http/axiosInterceptor-client";
 import { HeaderDefinition, initRequest } from "./service-request";
-import { ActionResult, } from "@/app/lib/http/result";
+import { ActionResult } from "@/app/lib/http/result";
 import { failure, success } from "@/app/lib/http/handle-result-client";
 
 export async function fetchGyms(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<ActionResult<Page<Gym>>> {

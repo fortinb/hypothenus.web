@@ -21,7 +21,6 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { debugLog, isDebug } from "@/app/lib/utils/debug";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { createMemberAction } from "./actions";
 
@@ -111,7 +110,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
     function onCancel() {
         setIsEditMode(false);
 
-        formContext.reset(memberState.member);
+        formContext.reset(mapEntityToForm(memberState.member));
      
         router.push(`/${lang}/public/signin`);
     }

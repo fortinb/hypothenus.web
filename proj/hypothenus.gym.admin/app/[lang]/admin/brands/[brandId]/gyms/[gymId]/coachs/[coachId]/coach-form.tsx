@@ -18,7 +18,6 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { debugLog, isDebug } from "@/app/lib/utils/debug";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { uploadCoachPhoto } from "@/app/lib/services/coachs-data-service-client";
 import { activateCoachAction, createCoachAction, deactivateCoachAction, deleteCoachAction, saveCoachAction } from "./actions";
@@ -197,7 +196,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
         setIsEditMode(false);
         setPhotoToUpload(undefined);
 
-        formContext.reset(coachState.coach);
+        formContext.reset(mapEntityToForm(coachState.coach));
 
         if (coachState.coach.uuid === null) {
             router.push(`/${lang}/admin/brands/${coachState.coach.brandUuid}/gyms/${coachState.coach.gymUuid}/coachs`);

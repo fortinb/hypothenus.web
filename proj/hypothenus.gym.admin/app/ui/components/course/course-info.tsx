@@ -50,7 +50,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                 <Row className="m-2 gx-2">
                     <Accordion >
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className={errors.course?.name || errors.course?.description ? "accordeon-header-invalid" : ""}>{t("course.description")}</Accordion.Header>
+                            <Accordion.Header className={errors.course?.name || errors.course?.description ? "accordeon-header-invalid" : ""}>{t("course.descriptions")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -97,8 +97,8 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                                         className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")}
                                                         id={`course_input_startDate`}
                                                         minDate={new Date()}
-                                                        selected={moment(field.value).toDate()}
-                                                        onChange={(date: Date | null) => field.onChange(date?.toISOString())}  // Explicitly type 'date'
+                                                        onChange={(date: Date | null) => field.onChange(date ? date.toISOString() : null)}
+                                                        selected={!field.value ? null : moment(field.value).toDate()}
                                                         locale={lang}
                                                         dateFormat="yyyy-MM-dd"
                                                         placeholderText={t("format.date")}
@@ -119,7 +119,7 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                                     <DatePicker 
                                                         id={`course_input_endDate`} 
                                                         minDate={new Date()} 
-                                                        onChange={(date: Date | null) => field.onChange(date?.toISOString())}
+                                                        onChange={(date: Date | null) => field.onChange(date ? date.toISOString() : null)}
                                                         selected={!field.value ? null : moment(field.value).toDate()}
                                                         className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} 
                                                         locale={lang} 

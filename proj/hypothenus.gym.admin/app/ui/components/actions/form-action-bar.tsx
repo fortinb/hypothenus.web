@@ -26,18 +26,18 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isEditDi
             <div className="d-flex flex-row justify-content-start">
                 <div className="p-1">
                     <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_edit_tooltip">{t("form.bar.edit")}</Tooltip>}>
-                        <Button className="btn btn-icon btn-sm" disabled={isEditDisable} onClick={onEdit}><i className="icon bi bi-pencil h5"></i></Button>
+                        <Button aria-label={t("form.bar.edit")} className="btn btn-icon btn-sm" disabled={isEditDisable} onClick={onEdit}><i className="icon bi bi-pencil h5"></i></Button>
                     </OverlayTrigger>
                 </div>
             </div>
             <div className="d-flex flex-row justify-content-end">
                 <div className="pe-4">
                     <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_action_delete_tooltip">{t("form.bar.delete")}</Tooltip>}>
-                        <Button className="btn btn-icon btn-sm" disabled={isDeleteDisable} onClick={onDelete}><i className="icon bi bi-trash h5"></i></Button>
+                        <Button aria-label={t("form.bar.delete")} className="btn btn-icon btn-sm" disabled={isDeleteDisable} onClick={onDelete}><i className="icon bi bi-trash h5"></i></Button>
                     </OverlayTrigger>
                 </div>
                 <div className="form-check form-switch pe-2">
-                    <Form.Control className="form-check-input form-check-input-lg" type="checkbox" role="switch"
+                    <Form.Control aria-label={t("form.bar.activate")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
                         id="flexSwitchCheckChecked" onChange={onActivation} disabled={isActivationDisabled || isActivating} checked={isActivationChecked} />
 
                     <Form.Label className="text-primary ps-2" htmlFor="flexSwitchCheckChecked">

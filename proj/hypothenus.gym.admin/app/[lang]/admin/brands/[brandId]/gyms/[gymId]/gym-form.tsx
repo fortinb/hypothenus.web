@@ -1,16 +1,23 @@
 "use client"
 
+import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
+import { useAppDispatch } from "@/app/lib/hooks/useStore";
+import { useToastResult } from "@/app/lib/hooks/useToastResult";
+import { uploadGymLogo } from "@/app/lib/services/gyms-data-service-client";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { clearGymState, GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
 import FormActionBar from "@/app/ui/components/actions/form-action-bar";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import GymInfo from "@/app/ui/components/gym/gym-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
-import { useTranslations } from "next-intl";
-import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { clearGymState, GymState, updateGymState } from "@/app/lib/store/slices/gym-state-slice";
+import { Authorize } from "@/app/ui/components/security/authorize";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
+import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
@@ -18,14 +25,6 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
 import { activateGymAction, createGymAction, deactivateGymAction, deleteGymAction, saveGymAction } from "./actions";
-import { useToastResult } from "@/app/lib/hooks/useToastResult";
-import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
-import { uploadGymLogo } from "@/app/lib/services/gyms-data-service-client";
-import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
-import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
-import { Authorize } from "@/app/ui/components/security/authorize";
-import { debugLog, isDebug } from "@/app/lib/utils/debug";
-import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 
 export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     const t = useTranslations("entity");
@@ -96,7 +95,6 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
 
     const createGym = (gym: Gym) => {
         gym.brandUuid = brandState.brand.uuid;
-
         createEntity(
             gym,
             // Before save
@@ -199,7 +197,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     function onCancel() {
         setIsCancelling(true);
         setIsEditMode(false);
-        formContext.reset(gymState.gym);
+        formContext.reset(mapEntityToForm(gymState.gym));
 
         if (gymState.gym.uuid === null) {
             router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/gyms`);

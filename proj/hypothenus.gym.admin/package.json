@@ -8,7 +8,9 @@
     "build:css": "sass --quiet styles/hypothenus.scss dist/styles.css",
     "start": "next start",
     "lint": "eslint .",
-    "clean": "rimraf .next"
+    "clean": "rimraf .next",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -50,6 +52,13 @@
     "rimraf": "^6.1.2",
     "sass": "^1.97.2",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.3",
+    "ts-jest": "^29.1.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/user-event": "^14.4.3"
   }
 }

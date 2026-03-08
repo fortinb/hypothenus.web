@@ -9,10 +9,10 @@ export default function FormActionButtons({ isSaving, isEditMode, formId, onCanc
     return (
         <div className="d-flex flex-row justify-content-between" >
             <div className="p-2">
-                <Button className="btn btn-secondary ms-2" disabled={!isEditMode} onClick={onCancel}><i className="icon icon-light bi bi-x-lg me-2"></i>{t("form.buttons.cancel")}</Button>
+                <Button aria-label={t("form.buttons.cancel")} className="btn btn-secondary ms-2" disabled={!isEditMode} onClick={onCancel}><i className="icon icon-light bi bi-x-lg me-2"></i>{t("form.buttons.cancel")}</Button>
             </div>
             <fieldset className="p-2" disabled={!isEditMode} form={formId}>
-                <Button className="btn btn-primary pt-2 pb-2 me-3" form={formId} type="submit">
+                <Button aria-label={t("form.buttons.save")} className="btn btn-primary pt-2 pb-2 me-3" form={formId} type="submit">
                     
                     {isSaving &&
                         <div className="spinner-border spinner-border-sm me-2"></div>

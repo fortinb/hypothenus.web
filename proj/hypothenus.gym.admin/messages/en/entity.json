@@ -212,6 +212,7 @@
             "alreadyExists": "Course code must be unique, code already exists.",
             "codeRequired": "Code is required.",
             "nameRequired": "Course name is required.",
+            "descriptionRequired": "Course description is required.",
             "startDateRequired": "Start date is required, starting today or greater.",
             "endDateGreaterThanToday": "End date must be greater than today.",
             "endDateGreaterThanStartDate": "End date must be greater than start date."
@@ -227,7 +228,8 @@
         "code": "Code",
         "codePlaceholder": "Course unique code",
         "name": "Course name",
-        "description": "Course description",
+        "descriptions": "Course descriptions",
+        "description": "Description",
         "datesSection": "Activation period",
         "startDate": "Start date",
         "endDate": "End date",

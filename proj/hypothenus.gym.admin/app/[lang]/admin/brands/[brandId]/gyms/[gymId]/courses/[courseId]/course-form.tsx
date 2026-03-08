@@ -29,6 +29,7 @@ import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { localesConfigLanguageOrder } from "@/i18n/locales-client";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import { Authorize } from "@/app/ui/components/security/authorize";
+import moment from "moment";
 
 export interface CourseFormData {
     course: z.infer<typeof CourseSchema>;
@@ -43,7 +44,6 @@ export const CourseFormSchema = z.object({
 export default function CourseForm({ lang, course, initialAvailableCoachItems, initialSelectedCoachItems }: {
     lang: string;
     course: Course,
-    coachs: Coach[],
     initialAvailableCoachItems: CoachSelectedItem[],
     initialSelectedCoachItems: CoachSelectedItem[]
 }) {
@@ -220,7 +220,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         setIsEditMode(false);
 
         formContext.reset({
-            course: courseState.course,
+            course: mapEntityToForm(courseState.course),
             selectedCoachItems: originalSelectedCoachItems
         },);
 
@@ -276,8 +276,8 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
                 const orderB = localesConfigLanguageOrder[b.language] ?? 999;
                 return orderA - orderB;
             }),
-            startDate: course.startDate,
-            endDate: course.endDate,
+            startDate: course.startDate ? moment(course.startDate).format("YYYY-MM-DD") : null,
+            endDate: course.endDate ? moment(course.endDate).format("YYYY-MM-DD") : null,
             coachs: course.coachs?.map((coach) => {
                 return {
                     uuid: coach.uuid,
@@ -294,8 +294,8 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
             code: formData.course.code,
             name: formData.course.name,
             description: formData.course.description,
-            startDate: formData.course.startDate,
-            endDate: formData.course.endDate,
+            startDate: moment(formData.course.startDate).format("YYYY-MM-DD"),
+            endDate: formData.course.endDate ? moment(formData.course.endDate).format("YYYY-MM-DD") : null,
             coachs: formData.selectedCoachItems.map((item) => {
                 return item.coach as Coach;
             }),

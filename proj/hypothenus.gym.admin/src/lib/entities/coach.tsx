@@ -24,7 +24,7 @@ export const newCoach = (): Coach => {
     gymUuid: null,
     person: newPerson(),
     isActive: true,
-    messages: undefined,
+    messages:  [],
     createdBy: undefined,
     modifiedBy: undefined
   };

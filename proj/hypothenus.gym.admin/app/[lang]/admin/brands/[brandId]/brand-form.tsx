@@ -1,15 +1,21 @@
 "use client"
 
+import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
+import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
+import { useAppDispatch } from "@/app/lib/hooks/useStore";
+import { useToastResult } from "@/app/lib/hooks/useToastResult";
+import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
+import { BrandState, clearBrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
 import FormActionBar from "@/app/ui/components/actions/form-action-bar";
 import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import BrandInfo from "@/app/ui/components/brand/brand-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
-import { useTranslations } from "next-intl";
-import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { BrandState, clearBrandState, updateBrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { Authorize } from "@/app/ui/components/security/authorize";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
+import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
@@ -17,13 +23,6 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from 'zod';
 import { activateBrandAction, createBrandAction, deactivateBrandAction, deleteBrandAction, saveBrandAction } from "./actions";
-import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
-import { useToastResult } from "@/app/lib/hooks/useToastResult";
-import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
-import { uploadBrandLogo } from "@/app/lib/services/brands-data-service-client";
-import { Authorize } from "@/app/ui/components/security/authorize";
-import { debugLog, isDebug } from "@/app/lib/utils/debug";
-import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 
 export default function BrandForm({ lang, brand }: { lang: string; brand: Brand }) {
     const t = useTranslations("entity");
@@ -196,7 +195,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
     function onCancel() {
         setIsEditMode(false);
         setIsCancelling(true);
-        formContext.reset(brandState.brand);
+        formContext.reset(mapEntityToForm(brandState.brand));
 
         if (brandState.brand.uuid === null) {
             router.push(`/${lang}/admin/brands`);
@@ -294,7 +293,6 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
                         </FormProvider>
                     </div>
                 </div>
-
             </div>
         </>
     );

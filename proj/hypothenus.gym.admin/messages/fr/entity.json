@@ -213,6 +213,7 @@
             "alreadyExists": "Le code du cours doit être unique, ce code est déjà existant.",
             "codeRequired": "Le code est requis.",
             "nameRequired": "Le nom du cours est requis.",
+            "descriptionRequired": "La description du cours est requise.",
             "startDateRequired": "La date de début est requise et doit être plus grande ou égale à la date du jour.",
             "endDateGreaterThanToday": "La date de fin doit être plus grande que la date du jour.",
             "endDateGreaterThanStartDate": "La date de fin doit être plus grande que la date de début."
@@ -228,7 +229,8 @@
         "code": "Code",
         "codePlaceholder": "Identification unique",
         "name": "Nom du cours",
-        "description": "Description du cours",
+        "descriptions": "Descriptions du cours",
+        "description": "Description",
         "datesSection": "Période d'activation",
         "startDate": "Date de début",
         "endDate": "Date de fin",

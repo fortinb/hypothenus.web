@@ -98,7 +98,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                     <Form.Group >
                         <Form.Label className="text-primary" htmlFor={`person_input_photoUri_${id}`}>{t("person.photoUri")}</Form.Label>
                         {isEditMode &&
-                            <Dropzone disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={onDrop}>
+                            <Dropzone  disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={onDrop}>
                                 {({ getRootProps, getInputProps }) => (
                                     <section>
                                         <div className="dropzone"  {...getRootProps()}>
@@ -144,15 +144,15 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                 <Col xs={6} >
                     <Form.Group>
                         <FormLabelRequired className="text-primary" htmlFor={`person_input_email_${id}`} label={t("person.email")}></FormLabelRequired>
-                        <Form.Control type="input" id="person_info_input_email" placeholder="example@email.ca" {...register(`${formStatefield}.email`)}
+                        <Form.Control type="input" id={`person_input_email_${id}`} placeholder="example@email.ca" {...register(`${formStatefield}.email`)}
                             className={getError()?.email ? "input-invalid" : ""} />
                         {getError()?.email && <Form.Text className="text-invalid">{t(getError()?.email?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={6} >
                     <Form.Group>
-                        <FormLabelRequired className="text-primary" htmlFor="person-communication-language-dropdown" label={t("person.communicationLanguage")}></FormLabelRequired>
-                        <Form.Select id="person-communication-language-dropdown" {...register(`${formStatefield}.communicationLanguage`)}>
+                        <FormLabelRequired className="text-primary" htmlFor={`person_communication_language_dropdown_${id}`} label={t("person.communicationLanguage")}></FormLabelRequired>
+                        <Form.Select id={`person_communication_language_dropdown_${id}`} {...register(`${formStatefield}.communicationLanguage`)}>
                             <option value="en">{t("language.en")}</option>
                             <option value="fr">{t("language.fr")}</option>
                         </Form.Select>

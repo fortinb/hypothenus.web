@@ -8,7 +8,6 @@ import RegistrationForm from "./registration-form";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { failure } from "@/app/lib/http/handle-result";
-import { any } from "zod";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
