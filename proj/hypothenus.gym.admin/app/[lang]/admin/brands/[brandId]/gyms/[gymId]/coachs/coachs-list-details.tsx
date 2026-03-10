@@ -21,11 +21,10 @@ export default function CoachListDetails({ lang, coach }: { lang: string; coach:
             <Link className="link-element" href={`mailto:${coach.person.email}`}>{coach.person.email}</Link><br />
 
             {coach.isActive == false &&
-              <div>
+              <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
-              </div>
+              </>
             }
-
           </Card.Text>
           <Image
             src={coach.person?.photoUri ? (URL.canParse(coach.person.photoUri) ? coach.person.photoUri : "/images/person.png") : "/images/person.png"}

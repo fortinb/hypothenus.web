@@ -19,14 +19,13 @@ export default function CourseListDetails({ lang, course }: { lang: string; cour
           </Card.Title>
           <Card.Text>
             {course.isActive == false &&
-              <div>
+              <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
-              </div>
+              </>
             }
           </Card.Text>
         </Card.Body>
       </Card>
-      
     </div>
   );
 }

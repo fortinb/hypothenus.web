@@ -25,11 +25,10 @@ export default function MemberListDetails({ lang, member }: { lang: string; memb
             <span className="text-primary">{member.person.phoneNumbers.find(item => item.type === PhoneNumberTypeEnum.Mobile)?.number}</span><br />
             <span className="text-primary">{member.person.address.zipCode}</span><br />
             {member.isActive == false &&
-              <div>
+              <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
-              </div>
+              </>
             }
-
           </Card.Text>
           <Image
             src={member.person?.photoUri ? (URL.canParse(member.person.photoUri) ? member.person.photoUri : "/images/person.png") : "/images/person.png"}

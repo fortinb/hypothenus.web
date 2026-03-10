@@ -23,11 +23,11 @@ export default function BrandListDetails({ lang, brand }: { lang: string; brand:
             <span className="text-primary">{brand.code}</span><br />
 
             {brand.isActive == false &&
-              <div>
-                <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
-              </div>
+              <>
+                <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span>
+                <br />
+              </>
             }
-
           </Card.Text>
         </Card.Body>
       </Card>

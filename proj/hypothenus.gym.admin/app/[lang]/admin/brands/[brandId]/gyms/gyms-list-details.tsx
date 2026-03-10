@@ -8,7 +8,7 @@ import Card from "react-bootstrap/Card";
 
 export default function GymListDetails({ lang, gym }: { lang: string; gym: Gym }) {
   const t = useTranslations("gym");
-  
+
   return (
     <div className="col-6 p-2">
       <Card>
@@ -22,11 +22,10 @@ export default function GymListDetails({ lang, gym }: { lang: string; gym: Gym }
             <span className="text-primary">{gym.code}</span><br />
 
             {gym.isActive == false &&
-              <div>
+              <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
-              </div>
+              </>
             }
-            
           </Card.Text>
         </Card.Body>
       </Card>
