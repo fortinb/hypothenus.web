@@ -19,7 +19,6 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
-
 import { activateCourseAction, createCourseAction, deactivateCourseAction, deleteCourseAction, saveCourseAction } from "./actions";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
@@ -27,10 +26,6 @@ import { localesConfigLanguageOrder } from "@/i18n/locales-client";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Authorize } from "@/app/ui/components/security/authorize";
 import moment from "moment";
-
-export interface CourseFormData {
-    course: z.infer<typeof CourseSchema>;
-}
 
 export default function CourseForm({ lang, course }: {
     lang: string;

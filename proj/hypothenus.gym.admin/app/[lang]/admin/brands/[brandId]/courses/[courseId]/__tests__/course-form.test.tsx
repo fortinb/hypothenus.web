@@ -56,10 +56,6 @@ jest.mock('@/app/lib/hooks/useToastResult', () => ({
     }),
 }));
 
-jest.mock('@/app/lib/services/courses-data-service-client', () => ({
-    uploadCourseLogo: jest.fn().mockResolvedValue('http://example.com/logo.png'),
-}));
-
 jest.mock('@/app/ui/components/security/authorize', () => ({
     Authorize: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
@@ -163,7 +159,7 @@ describe('CourseForm Integration Test', () => {
         const saveButton = screen.getByRole('button', { name: /form.buttons.save/i });
         expect(saveButton).toBeEnabled();
         await user.click(saveButton);
-
+        
         logFormValidationErrors();
 
         // Assert

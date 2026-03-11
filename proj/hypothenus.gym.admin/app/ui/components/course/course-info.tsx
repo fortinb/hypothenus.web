@@ -14,7 +14,6 @@ import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
 import "@/app/lib/i18n/datepicker-locales";
 import { localesConfig } from "@/i18n/locales-client";
-import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/courses/[courseId]/course-form";
 import FormLabelRequired from "../forms/form-label-required";
 
 export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
@@ -24,7 +23,7 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
         isEditMode: boolean,
         isCancelling: boolean
     }) {
-    const { register, formState: { errors } } = useFormContext<CourseFormData>();
+    const { register, formState: { errors } } = useFormContext();
     const t = useTranslations("entity");
 
     return (
@@ -34,16 +33,16 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                     <Col xs={4} >
                         <Form.Group>
                             <FormLabelRequired className="text-primary" htmlFor="course_info_input_code" required={true} label={t("course.code")}></FormLabelRequired>
-                            <Form.Control type="input" id="course_info_input_code" placeholder={t("course.codePlaceholder")} {...register("course.code")}
-                                className={errors.course?.code ? "input-invalid" : ""} disabled={(course.uuid !== null ? true : false)} />
-                            {errors.course?.code && <Form.Text className="text-invalid">{t(errors.course?.code.message as string)}</Form.Text>}
+                            <Form.Control type="input" id="course_info_input_code" placeholder={t("course.codePlaceholder")} {...register("code")}
+                                className={errors.code ? "input-invalid" : ""} disabled={(course.uuid !== null ? true : false)} />
+                            {errors.code && <Form.Text className="text-invalid">{t(errors.code.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>
                 </Row>
                 <Row className="m-2 gx-2">
                     <Accordion >
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className={errors.course?.name || errors.course?.description ? "accordeon-header-invalid" : ""}>{t("course.descriptions")}</Accordion.Header>
+                            <Accordion.Header className={errors.name || errors.description ? "accordeon-header-invalid" : ""}>{t("course.descriptions")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -58,13 +57,13 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                                         <Col xs={4} >
                                                             <Form.Group>
                                                                 <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_name_${index}`} label={t("course.name")}></FormLabelRequired>
-                                                                <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`course.name.${index}`} parent="course.name"></LocalizedStringInfo>
+                                                                <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`name.${index}`} parent="name"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
                                                         <Col xs={8} >
                                                             <Form.Group>
                                                                 <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_description_${index}`} label={t("course.description")}></FormLabelRequired>
-                                                                <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`course.description.${index}`} parent="course.description"></LocalizedStringInfo>
+                                                                <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`description.${index}`} parent="description"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
                                                     </Row>
@@ -76,7 +75,7 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className={(errors.course?.startDate || errors.course?.endDate ? "accordeon-header-invalid" : "")}>{t("course.datesSection")}</Accordion.Header>
+                            <Accordion.Header className={(errors.startDate || errors.endDate ? "accordeon-header-invalid" : "")}>{t("course.datesSection")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={6} className="p-1" >
@@ -84,10 +83,10 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                             <FormLabelRequired className="text-primary" required={true} htmlFor={`course_input_startDate`} label={t("course.startDate")}></FormLabelRequired>
                                             <br />
                                             <Controller
-                                                name={`course.startDate`}
+                                                name={`startDate`}
                                                 render={({ field }) => (
                                                     <DatePicker
-                                                        className={"form-control " + (errors.course?.startDate ? " input-invalid " : "")}
+                                                        className={"form-control " + (errors.startDate ? " input-invalid " : "")}
                                                         id={`course_input_startDate`}
                                                         minDate={new Date()}
                                                         onChange={(date: Date | null) => field.onChange(date ? date.toISOString() : null)}
@@ -99,7 +98,7 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                                 )}
                                             />
                                             <br />
-                                            {errors.course?.startDate && <Form.Text className="text-invalid">{t(errors.course?.startDate.message as string)}</Form.Text>}
+                                            {errors.startDate && <Form.Text className="text-invalid">{t(errors.startDate.message as string)}</Form.Text>}
                                         </Form.Group>
                                     </Col>
                                     <Col xs={6} className="p-1" >
@@ -107,21 +106,21 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                             <Form.Label className="text-primary" htmlFor={`course_input_endDate`}>{t("course.endDate")}</Form.Label>
                                             <br />
                                             <Controller
-                                                name={"course.endDate"}
+                                                name={"endDate"}
                                                 render={({ field }) => (
                                                     <DatePicker 
                                                         id={`course_input_endDate`} 
                                                         minDate={new Date()} 
                                                         onChange={(date: Date | null) => field.onChange(date ? date.toISOString() : null)}
                                                         selected={!field.value ? null : moment(field.value).toDate()}
-                                                        className={"form-control " + (errors.course?.endDate ? " input-invalid " : "")} 
+                                                        className={"form-control " + (errors.endDate ? " input-invalid " : "")} 
                                                         locale={lang} 
                                                         dateFormat="yyyy-MM-dd" 
                                                         placeholderText={t("format.date")} />
                                                 )}
                                             />
                                             <br />
-                                            {errors.course?.endDate && <Form.Text className="text-invalid">{t(errors.course?.endDate.message as string)}</Form.Text>}
+                                            {errors.endDate && <Form.Text className="text-invalid">{t(errors.endDate.message as string)}</Form.Text>}
                                         </Form.Group>
                                     </Col>
                                 </Row>
