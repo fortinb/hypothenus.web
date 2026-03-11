@@ -10,16 +10,9 @@ import { success } from '@/app/lib/http/handle-result';
 import { logFormValidationErrors } from '@/app/lib/test-utils/form-test-helpers';
 import { LanguageEnum } from '@/src/lib/entities/language';
 import moment from 'moment';
-import { newCoach } from '@/src/lib/entities/coach';
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST, MessageSeverityEnum } from '@/src/lib/entities/messages';
 
 // Test data constants for course
-export const TEST_AVAILABLE_COACHS = [
-    { coach: { ...newCoach(), uuid: "coach1-uuid", brandUuid: "test-brand", gymUuid: "test-gym" }, label: "coachLabel1", value: 'coach1' },
-    { coach: { ...newCoach(), uuid: "coach2-uuid", brandUuid: "test-brand", gymUuid: "test-gym" }, label: "coachLabel2", value: 'coach2' },
-    { coach: { ...newCoach(), uuid: "coach3-uuid", brandUuid: "test-brand", gymUuid: "test-gym" }, label: "coachLabel3", value: 'coach3' }
-];
-
 export const TEST_COURSE = {
     code: 'coursecode123',
     name: [
@@ -32,10 +25,6 @@ export const TEST_COURSE = {
     ],
     startDate: moment().format("YYYY-MM-DD"),
     endDate: moment().add(1, 'year').format("YYYY-MM-DD"),
-    coachs: [
-        { coach: { ...newCoach(), uuid: "coach1-uuid", brandUuid: "test-brand", gymUuid: "test-gym" }, label: "coachLabel1", value: 'coach1' },
-        { coach: { ...newCoach(), uuid: "coach2-uuid", brandUuid: "test-brand", gymUuid: "test-gym" }, label: "coachLabel2", value: 'coach2' }
-    ]
 };
 
 // Mock dependencies
@@ -45,7 +34,7 @@ jest.mock('next-intl', () => ({
 
 jest.mock('next/navigation', () => ({
     useRouter: jest.fn(),
-    useParams: () => ({ lang: 'en', brandId: 'test-brand', gymId: 'test-gym', courseId: 'test-course' }),
+    useParams: () => ({ lang: 'en', brandId: 'test-brand', courseId: 'test-course' }),
 }));
 
 jest.mock('../actions', () => ({
@@ -104,7 +93,6 @@ describe('CourseForm Integration Test', () => {
         mockCourseWithData.description = TEST_COURSE.description;
         mockCourseWithData.startDate = TEST_COURSE.startDate;
         mockCourseWithData.endDate = TEST_COURSE.endDate;
-        mockCourseWithData.coachs = TEST_COURSE.coachs.map(item => item.coach);
         return mockCourseWithData;
     };
 
@@ -164,9 +152,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourse}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourse} />
             </Provider>
         );
 
@@ -205,10 +191,6 @@ describe('CourseForm Integration Test', () => {
         expect(submittedData.description[0].language).toBe(TEST_COURSE.description[0].language);
         expect(submittedData.description[1].text).toBe(TEST_COURSE.description[1].text);
         expect(submittedData.description[1].language).toBe(TEST_COURSE.description[1].language);
-
-        for (let i = 0; i < TEST_COURSE.coachs.length; i++) {   
-            expect(submittedData.coachs[i].uuid).toBe(TEST_COURSE.coachs[i].coach.uuid);
-        }
     }, 15000);
 
     it('new duplicate course', async () => {
@@ -231,9 +213,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourse}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourse} />
             </Provider>
         );
 
@@ -267,9 +247,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourseForUpdate}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourseForUpdate} />
             </Provider>
         );
 
@@ -321,9 +299,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourseForCancel}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourseForCancel} />
             </Provider>
         );
 
@@ -369,9 +345,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourseForDelete}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourseForDelete} />
             </Provider>
         );
 
@@ -411,9 +385,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourseForActivate}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourseForActivate} />
             </Provider>
         );
 
@@ -444,9 +416,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourseForDeactivate}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourseForDeactivate} />
             </Provider>
         );
 
@@ -473,9 +443,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourse}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourse} />
             </Provider>
         );
 
@@ -511,9 +479,7 @@ describe('CourseForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <CourseForm lang="en" course={mockCourse}
-                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS.map(item => item)}
-                    initialSelectedCoachItems={TEST_COURSE.coachs.map(item => item)} />
+                <CourseForm lang="en" course={mockCourse} />
             </Provider>
         );
 

@@ -3,31 +3,24 @@
 import { Course } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import Accordion from "react-bootstrap/Accordion";
-import Button from "react-bootstrap/Button";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import DatePicker from "react-datepicker";
-import Select from "react-select";
 import { Controller, useFormContext } from "react-hook-form";
 import moment from "moment";
 import LocalizedStringInfo from "../localized/localized-string-info";
 import { useTranslations } from "next-intl";
 import "@/app/lib/i18n/datepicker-locales";
-import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { localesConfig } from "@/i18n/locales-client";
-import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/courses/[courseId]/course-form";
+import { CourseFormData } from "@/app/[lang]/admin/brands/[brandId]/courses/[courseId]/course-form";
 import FormLabelRequired from "../forms/form-label-required";
 
-export default function CourseInfo({ lang, course, availableCoachItems, formCoachsStateField, isEditMode, isCancelling }:
+export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
     {
         lang: string,
         course: Course,
-        availableCoachItems: CoachSelectedItem[],
-        formCoachsStateField: string,
         isEditMode: boolean,
         isCancelling: boolean
     }) {
@@ -130,40 +123,6 @@ export default function CourseInfo({ lang, course, availableCoachItems, formCoac
                                             <br />
                                             {errors.course?.endDate && <Form.Text className="text-invalid">{t(errors.course?.endDate.message as string)}</Form.Text>}
                                         </Form.Group>
-                                    </Col>
-                                </Row>
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="2" className="pt-2">
-                            <Accordion.Header>{t("course.coachsSection")}</Accordion.Header>
-                            <Accordion.Body className="p-0">
-                                <Row className="m-2 p-2">
-                                    <Col xs={12} className="p-1" >
-                                        <Controller
-                                            name={`${formCoachsStateField}`}
-                                            render={({ field }) => (
-                                                <div>
-                                                    <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="form_course_info_coach_add_all_tooltip">{t("course.coach.addAll")}</Tooltip>}>
-                                                        <Button className="btn btn-icon btn-sm mb-2" disabled={!isEditMode} onClick={() => field.onChange(availableCoachItems)}><i className="icon icon-light bi bi-chevron-double-right h7"></i></Button>
-                                                    </OverlayTrigger>
-                                                    <Select
-                                                        {...field}
-                                                        isMulti={true}
-                                                        options={availableCoachItems}
-                                                        onChange={(selected) => field.onChange(selected)}
-                                                        value={field.value}
-                                                        hideSelectedOptions={true}
-                                                        closeMenuOnSelect={false}
-                                                        isDisabled={!isEditMode}
-                                                        placeholder={t("course.coach.selected")}
-                                                        noOptionsMessage={() => t("course.coach.selected")}
-                                                        classNames={{
-                                                            multiValueRemove: () => "select-multi-remove"
-                                                        }}
-                                                    />
-                                                </div>
-                                            )}
-                                        />
                                     </Col>
                                 </Row>
                             </Accordion.Body>

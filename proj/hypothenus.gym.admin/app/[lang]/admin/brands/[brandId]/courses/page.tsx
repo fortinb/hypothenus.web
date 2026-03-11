@@ -6,11 +6,11 @@ import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { redirect } from "next/navigation";
 
 interface PageProps {
-  params: Promise<{ lang: string; brandId: string, gymId: string }>;
+  params: Promise<{ lang: string; brandId: string }>;
 }
 
 export default async function CoursesPage({ params }: PageProps) {
-  const { lang, brandId, gymId } = await params;
+  const { lang, brandId } = await params;
 
   const session = await auth();
   if (!session) {
@@ -24,7 +24,7 @@ export default async function CoursesPage({ params }: PageProps) {
           reset: false,
           id: "courses.page",
           locale: `${lang}`,
-          href: `/admin/brands/${brandId}/gyms/${gymId}/courses`,
+          href: `/admin/brands/${brandId}/courses`,
           key: "breadcrumb",
           namespace: "course"
         }}

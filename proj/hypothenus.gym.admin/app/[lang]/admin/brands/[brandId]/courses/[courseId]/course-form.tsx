@@ -8,7 +8,6 @@ import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { clearCourseState, CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
-import { Coach } from "@/src/lib/entities/coach";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/language";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
@@ -16,51 +15,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-import { debugLog, isDebug } from "@/app/lib/utils/debug";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 
-import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 import { activateCourseAction, createCourseAction, deactivateCourseAction, deleteCourseAction, saveCourseAction } from "./actions";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
 import { localesConfigLanguageOrder } from "@/i18n/locales-client";
-import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Authorize } from "@/app/ui/components/security/authorize";
 import moment from "moment";
 
 export interface CourseFormData {
     course: z.infer<typeof CourseSchema>;
-    selectedCoachItems: CoachSelectedItem[];
 }
 
-export const CourseFormSchema = z.object({
-    course: CourseSchema,
-    selectedCoachItems: z.any().array().min(0)
-});
-
-export default function CourseForm({ lang, course, initialAvailableCoachItems, initialSelectedCoachItems }: {
+export default function CourseForm({ lang, course }: {
     lang: string;
     course: Course,
-    initialAvailableCoachItems: CoachSelectedItem[],
-    initialSelectedCoachItems: CoachSelectedItem[]
 }) {
     const t = useTranslations("entity");
     const router = useRouter();
 
     const courseState: CourseState = useSelector((state: any) => state.courseState);
-    const gymState: GymState = useSelector((state: any) => state.gymState);
+    const brandState: BrandState = useSelector((state: any) => state.brandState);
     const dispatch = useAppDispatch();
 
     // Form State
-    const [isCoachItemsInitialized, setIsCoachItemsInitialized] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-    const [availableCoachItems, setAvailableCoachItems] = useState<CoachSelectedItem[]>([]);
-    const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<CoachSelectedItem[]>([]);
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<Course>({
         actions: {
@@ -72,18 +58,9 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         }
     });
 
-    const formContext = useForm<CourseFormData>({
-        defaultValues: {
-            course: mapEntityToForm(course),
-            selectedCoachItems: initialSelectedCoachItems
-        },
-        mode: "all",
-        resolver: zodResolver(CourseFormSchema)
-    });
-
-    const { fields } = useFieldArray({
-        control: formContext.control,
-        name: "selectedCoachItems"
+    const formContext = useForm<z.infer<typeof CourseSchema>>({
+        defaultValues: mapEntityToForm(course),
+        resolver: zodResolver(CourseSchema),
     });
 
     // Toast Result State
@@ -95,34 +72,25 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         if (course.uuid === null) {
             setIsEditMode(true);
         }
-
-        // Initialize Coachs Items
-        if (!isCoachItemsInitialized) {
-            setOriginalSelectedCoachItems(initialSelectedCoachItems);
-            setAvailableCoachItems(initialAvailableCoachItems);
-
-            setIsCoachItemsInitialized(true);
-        }
-    }, [dispatch, course, initialAvailableCoachItems, initialSelectedCoachItems, isCoachItemsInitialized]);
+    }, [dispatch, course]);
 
     // Watch the entire form and log errors when present (debug only)
     useFormDebug(formContext);
 
-    const onSubmit: SubmitHandler<CourseFormData> = (formData: z.infer<typeof CourseFormSchema>) => {
+    const onSubmit: SubmitHandler<z.infer<typeof CourseSchema>> = (formData: z.infer<typeof CourseSchema>) => {
         setIsEditMode(false);
 
         let course: Course = mapFormToEntity(formData, courseState.course);
 
         if (course.uuid === null) {
-            createCourse(course, formData.selectedCoachItems);
+            createCourse(course);
         } else {
-            saveCourse(course, formData.selectedCoachItems);
+            saveCourse(course);
         }
     }
 
-    const createCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
-        course.brandUuid = gymState.gym.brandUuid;
-        course.gymUuid = gymState.gym.uuid;
+    const createCourse = (course: Course) => {
+        course.brandUuid = brandState.brand.uuid;
 
         createEntity(
             course,
@@ -133,13 +101,11 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
                 if (duplicate) {
-                    formContext.setError("course.code", { type: "manual", message: t("course.validation.alreadyExists") });
+                    formContext.setError("code", { type: "manual", message: t("course.validation.alreadyExists") });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
-                    setOriginalSelectedCoachItems(selectedCoachItems);
-
-                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/gyms/${entity.gymUuid}/courses/${entity.uuid}`);
+                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/courses/${entity.uuid}`);
                 }
             },
             // Error
@@ -150,16 +116,15 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         );
     }
 
-    const saveCourse = (course: Course, selectedCoachItems: CoachSelectedItem[]) => {
+    const saveCourse = (course: Course) => {
         saveEntity(
-            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
             // Before save
             (_entity) => {
             },
             // Success
             async (entity) => {
                 dispatch(updateCourseState(entity));
-                setOriginalSelectedCoachItems(selectedCoachItems);
 
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
@@ -174,7 +139,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
 
     const activateCourse = (course: Course) => {
         activateEntity(
-            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
             (entity) => {
                 dispatch(updateCourseState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -187,7 +152,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
 
     const deactivateCourse = (course: Course) => {
         deactivateEntity(
-            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
             (entity) => {
                 dispatch(updateCourseState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -200,13 +165,13 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
 
     const deleteCourse = (course: Course) => {
         deleteEntity(
-            course, `/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`,
+            course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
             () => {
                 dispatch(clearCourseState());
                 showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
-                    router.push(`/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses`);
+                    router.push(`/${lang}/admin/brands/${course.brandUuid}/courses`);
                 }, 1000);
             },
             (result) => {
@@ -219,13 +184,10 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         setIsCancelling(true);
         setIsEditMode(false);
 
-        formContext.reset({
-            course: mapEntityToForm(courseState.course),
-            selectedCoachItems: originalSelectedCoachItems
-        },);
+        formContext.reset(mapEntityToForm(courseState.course));
 
         if (courseState.course.uuid === null) {
-            router.push(`/${lang}/admin/brands/${courseState.course.brandUuid}/gyms/${courseState.course.gymUuid}/courses`);
+            router.push(`/${lang}/admin/brands/${courseState.course.brandUuid}/courses`);
         }
     }
 
@@ -267,7 +229,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
         return {
             code: course.code,
             name: [...course.name].sort((a, b) => {
-                const orderA = localesConfigLanguageOrder[a.language] ?? 999;  // Default to 999 if not in order
+                const orderA = localesConfigLanguageOrder[a.language] ?? 999;
                 const orderB = localesConfigLanguageOrder[b.language] ?? 999;
                 return orderA - orderB;
             }),
@@ -278,27 +240,17 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
             }),
             startDate: course.startDate ? moment(course.startDate).format("YYYY-MM-DD") : null,
             endDate: course.endDate ? moment(course.endDate).format("YYYY-MM-DD") : null,
-            coachs: course.coachs?.map((coach) => {
-                return {
-                    uuid: coach.uuid,
-                    brandUuid: coach.brandUuid,
-                    gymUuid: coach.gymUuid
-                }
-            })
         }
     }
 
-    function mapFormToEntity(formData: z.infer<typeof CourseFormSchema>, course: Course): Course {
+    function mapFormToEntity(formData: z.infer<typeof CourseSchema>, course: Course): Course {
         return {
-            ...course,  // Preserve original properties like uuid, isActive, messages, etc.
-            code: formData.course.code,
-            name: formData.course.name,
-            description: formData.course.description,
-            startDate: moment(formData.course.startDate).format("YYYY-MM-DD"),
-            endDate: formData.course.endDate ? moment(formData.course.endDate).format("YYYY-MM-DD") : null,
-            coachs: formData.selectedCoachItems.map((item) => {
-                return item.coach as Coach;
-            }),
+            ...course,
+            code: formData.code,
+            name: formData.name,
+            description: formData.description,
+            startDate: moment(formData.startDate).format("YYYY-MM-DD"),
+            endDate: formData.endDate ? moment(formData.endDate).format("YYYY-MM-DD") : null,
         };
     }
 
@@ -318,7 +270,7 @@ export default function CourseForm({ lang, course, initialAvailableCoachItems, i
                                         isEditDisable={isEditMode} isDeleteDisable={(courseState.course.uuid == null ? true : false)} isActivationDisabled={(courseState.course.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>
-                                <CourseInfo lang={lang} course={courseState.course} formCoachsStateField="selectedCoachItems" availableCoachItems={availableCoachItems} isEditMode={isEditMode} isCancelling={isCancelling} />
+                                <CourseInfo lang={lang} course={courseState.course} isEditMode={isEditMode} isCancelling={isCancelling} />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="course_info_form" />
                             </Form>

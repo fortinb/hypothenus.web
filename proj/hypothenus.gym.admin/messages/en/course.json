@@ -13,7 +13,7 @@
     "breadcrumb": "Courses",
     "list": {
         "menu": {
-            "gym": "{name}",
+            "brand": "{name}",
             "title": "Courses",
             "add": "Add new course",
             "inactive": "Inactive",

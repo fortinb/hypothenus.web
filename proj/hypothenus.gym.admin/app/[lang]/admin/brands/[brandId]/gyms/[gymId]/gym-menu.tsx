@@ -48,18 +48,7 @@ export default function GymMenu({ lang, gym }: { lang: string; gym: Gym }) {
             </Col>
           </Row>
           <Row className="gx-2">
-            <Col xs={6} >
-              <div className="btn-navigation m-2">
-                <div className="d-flex flex-column justify-content-center h-100">
-                  <div className="d-flex flex-row justify-content-center">
-                  <Link className={"link-element" + (gym.uuid === null ? " link-element-disabled" : "")} href={`/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}/courses`}><i className="icon icon-secondary bi-bicycle h1 m-0"></i></Link>
-                  </div>
-                  <div className="d-flex flex-row justify-content-center">
-                    <span className="text-primary mt-3">{t("menu.courses")}</span>
-                  </div>
-                </div>
-              </div>
-            </Col>
+          
           </Row>
         </Container>
       </div>

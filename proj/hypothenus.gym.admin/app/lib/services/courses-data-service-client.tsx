@@ -7,9 +7,9 @@ import { initRequest } from "./service-request";
 import { ActionResult,} from "@/app/lib/http/result";
 import { failure, success } from "@/app/lib/http/handle-result-client";
 
-export async function fetchCourses(brandUuid: string, gymUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<ActionResult<Page<Course>>> {
+export async function fetchCourses(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<ActionResult<Page<Course>>> {
 
-  const listURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/courses`;
+  const listURI: String = `/v1/brands/${brandUuid}/courses`;
 
   const request = initRequest({
     page: page,

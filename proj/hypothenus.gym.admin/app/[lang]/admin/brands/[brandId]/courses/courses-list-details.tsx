@@ -15,7 +15,7 @@ export default function CourseListDetails({ lang, course }: { lang: string; cour
       <Card>
         <Card.Body className={"m-2" + (course.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
-            <Link className="link-element" href={`/${lang}/admin/brands/${course.brandUuid}/gyms/${course.gymUuid}/courses/${course.uuid}`}> {getCourseName(course, lang as LanguageEnum )}</Link>
+            <Link className="link-element" href={`/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`}> {getCourseName(course, lang as LanguageEnum )}</Link>
           </Card.Title>
           <Card.Text>
             {course.isActive == false &&

@@ -11,13 +11,13 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoursesList from "./courses-list";
 import { clearCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { fetchCourses } from "@/app/lib/services/courses-data-service-client";
-import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
 import { useRouter } from "next/navigation";
 
 export default function CoursesListPaging({ lang }: { lang: string; }) {
   const coursesStatePaging: CoursesStatePaging = useSelector((state: any) => state.coursesStatePaging);
-  const gymState: GymState = useSelector((state: any) => state.gymState);
+  const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
   const router = useRouter();
   
@@ -29,7 +29,7 @@ export default function CoursesListPaging({ lang }: { lang: string; }) {
     const fetchCoursesPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfCourses: ActionResult<Page<Course>> = await fetchCourses(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
+      let pageOfCourses: ActionResult<Page<Course>> = await fetchCourses(brandState.brand.uuid, page, pageSize, includeInactive);
       if (pageOfCourses.ok) {
         setPageOfCourses(pageOfCourses.data);
         if (pageOfCourses.data.content && pageOfCourses?.data?.pageable) {
@@ -47,7 +47,7 @@ export default function CoursesListPaging({ lang }: { lang: string; }) {
 
     fetchCoursesPage(coursesStatePaging.page, coursesStatePaging.pageSize, coursesStatePaging.includeInactive);
 
-  }, [dispatch, coursesStatePaging, gymState]);
+  }, [dispatch, coursesStatePaging, brandState]);
 
   const onFirstPage = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();

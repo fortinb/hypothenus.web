@@ -10,8 +10,6 @@ export async function saveCourseAction(data: Course, path: string): Promise<Acti
   // 1. Validation (server-side)
    if (!data.brandUuid)
     return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
-  if (!data.gymUuid)
-    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
   if (!data.uuid)
     return failure({ type: ErrorType.Validation, message: 'CourseUuid is required' });  
 
@@ -31,8 +29,6 @@ export async function createCourseAction(data: Course): Promise<ActionResult<Cou
   // 1. Validation (server-side)
    if (!data.brandUuid)
     return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
-  if (!data.gymUuid)
-    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });   
 
   try {
     // 2. Persist
@@ -47,14 +43,12 @@ export async function activateCourseAction(data: Course,path: string): Promise<A
   // 1. Validation (server-side)
    if (!data.brandUuid)
     return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
-  if (!data.gymUuid)
-    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
   if (!data.uuid)
     return failure({ type: ErrorType.Validation, message: 'CourseUuid is required' });  
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Course = await postActivateCourse(data.brandUuid, data.gymUuid, data.uuid);
+    let result: Course = await postActivateCourse(data.brandUuid, data.uuid);
     // 3. Revalidate cached pages
     revalidatePath(path);
 
@@ -68,14 +62,12 @@ export async function deactivateCourseAction(data: Course,path: string): Promise
   // 1. Validation (server-side)
    if (!data.brandUuid)
     return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
-  if (!data.gymUuid)
-    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
   if (!data.uuid)
     return failure({ type: ErrorType.Validation, message: 'CourseUuid is required' });  
 
   try {
     // 2. Persist (DB, API, etc.)
-    let result: Course = await postDeactivateCourse(data.brandUuid, data.gymUuid, data.uuid);
+    let result: Course = await postDeactivateCourse(data.brandUuid, data.uuid);
     // 3. Revalidate cached pages
     revalidatePath(path);
 
@@ -89,14 +81,12 @@ export async function deleteCourseAction(data: Course): Promise<ActionResult<voi
   // 1. Validation (server-side)
    if (!data.brandUuid)
     return failure({ type: ErrorType.Validation, message: 'BrandUuid is required' });
-  if (!data.gymUuid)
-    return failure({ type: ErrorType.Validation, message: 'GymUuid is required' });  
   if (!data.uuid)
     return failure({ type: ErrorType.Validation, message: 'CourseUuid is required' });  
   
   try {
     // 2. Persist (DB, API, etc.)
-    await delCourse(data.brandUuid, data.gymUuid, data.uuid);
+    await delCourse(data.brandUuid, data.uuid);
     return success(undefined);
   } catch (error: any) {
     return failure(error);

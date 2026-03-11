@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { z } from 'zod';
 import { BaseEntity } from './baseEntity';
-import { Coach, CoachReferenceSchema } from './coach';
 import { LanguageEnum } from './language';
 import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
 import { localesConfig } from "@/i18n/locales-client";
@@ -9,11 +8,9 @@ import { localesConfig } from "@/i18n/locales-client";
 export interface Course extends BaseEntity {
   uuid?: any;
   brandUuid?: any;
-  gymUuid?: any;
   code: string;
   name: LocalizedString[];
   description: LocalizedString[];
-  coachs: Coach[];
   startDate?: any;
   endDate?: any; 
   isActive: boolean;
@@ -36,11 +33,9 @@ export const newCourse = (): Course => {
   let newCourse: Course = {
     uuid: null,
     brandUuid: null,
-    gymUuid: null,
     code: "",
     name: [],
     description: [],
-    coachs: [],
     startDate: moment().format("YYYY-MM-DD"),
     endDate: undefined,
     isActive: true,
@@ -73,7 +68,6 @@ export const CourseSchema = z.object({
   description: z.array(LocalizedStringSchema(true, "course.validation.descriptionRequired")).min(2),
   startDate: z.string().nullable().refine((date) => !!date, { message: "course.validation.startDateRequired" }),
   endDate: z.string().nullable().optional(),
-  coachs: z.array(CoachReferenceSchema).min(0).nullable().optional(),
 }).refine((course) => !course.endDate || !course.startDate || (moment(course.endDate).format("YYYYMMDD") >= moment(course.startDate).format("YYYYMMDD")), {
   message: "course.validation.endDateGreaterThanStartDate",
   path: ["endDate"], // path of error
