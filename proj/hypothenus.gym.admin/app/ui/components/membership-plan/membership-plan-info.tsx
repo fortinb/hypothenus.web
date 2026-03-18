@@ -138,7 +138,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             <div className="d-flex flex-row  justify-content-start m-2 gx-2">
                                 <div className="form-check form-switch pe-2">
                                     <Form.Control aria-label={t("membershipPlan.guestPrivilege")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
-                                        id="membershipPlan-guestPrivilege-checkbox" checked={getValues("membershipPlan.guestPrivilege")} {...register("membershipPlan.guestPrivilege")} />
+                                        id="membershipPlan-guestPrivilege-checkbox" {...register("membershipPlan.guestPrivilege")} />
                                 </div>
                                 <div>
                                     <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-guestPrivilege-checkbox">
@@ -152,7 +152,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             <div className="d-flex flex-row  justify-content-start m-2 gx-2">
                                 <div className="form-check form-switch pe-2">
                                     <Form.Control aria-label={t("membershipPlan.isPromotional")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
-                                        id="membershipPlan-isPromotional-checkbox" checked={getValues("membershipPlan.isPromotional")} {...register("membershipPlan.isPromotional")} />
+                                        id="membershipPlan-isPromotional-checkbox" {...register("membershipPlan.isPromotional")} />
                                 </div>
                                 <div>
                                     <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-isPromotional-checkbox">
@@ -166,7 +166,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             <div className="d-flex flex-row  justify-content-start m-2 gx-2">
                                 <div className="form-check form-switch pe-2">
                                     <Form.Control aria-label={t("membershipPlan.isGiftCard")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
-                                        id="membershipPlan-isGiftCard-checkbox" checked={getValues("membershipPlan.isGiftCard")} {...register("membershipPlan.isGiftCard")} />
+                                        id="membershipPlan-isGiftCard-checkbox" {...register("membershipPlan.isGiftCard")} />
                                 </div>
                                 <div>
                                     <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-isGiftCard-checkbox">

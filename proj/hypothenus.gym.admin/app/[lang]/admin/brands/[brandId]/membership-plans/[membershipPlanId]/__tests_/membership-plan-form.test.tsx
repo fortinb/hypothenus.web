@@ -108,13 +108,6 @@ describe('MembershipPlanForm Integration Test', () => {
         isGiftCard: true
     };
 
-    // MembershipPlan-specific invalid test data constants
-    const INVALID_MEMBERSHIP_PLAN = {
-        durationInMonths: 13,
-        numberOfClasses: "shgfhd",
-        cost: "-100"
-    };
-
     beforeEach(() => {
         (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
         (createMembershipPlanAction as jest.Mock).mockImplementation(async (data: MembershipPlan) => success(data));
@@ -134,23 +127,92 @@ describe('MembershipPlanForm Integration Test', () => {
         const mockMembershipPlanWithData: MembershipPlan = newMembershipPlan();
         mockMembershipPlanWithData.uuid = uuid;
 
+        mockMembershipPlanWithData.name[0].text = TEST_MEMBERSHIP_PLAN.name[0].text;
+        mockMembershipPlanWithData.name[1].text = TEST_MEMBERSHIP_PLAN.name[1].text;
+        mockMembershipPlanWithData.description[0].text = TEST_MEMBERSHIP_PLAN.description[0].text;
+        mockMembershipPlanWithData.description[1].text = TEST_MEMBERSHIP_PLAN.description[1].text;
+        mockMembershipPlanWithData.title[0].text = TEST_MEMBERSHIP_PLAN.title[0].text;
+        mockMembershipPlanWithData.title[1].text = TEST_MEMBERSHIP_PLAN.title[1].text;
+        mockMembershipPlanWithData.numberOfClasses = TEST_MEMBERSHIP_PLAN.numberOfClasses;
+        mockMembershipPlanWithData.period = TEST_MEMBERSHIP_PLAN.period;
+        mockMembershipPlanWithData.billingFrequency = TEST_MEMBERSHIP_PLAN.billingFrequency;
+        mockMembershipPlanWithData.cost = TEST_MEMBERSHIP_PLAN.cost;
+        mockMembershipPlanWithData.durationInMonths = TEST_MEMBERSHIP_PLAN.durationInMonths;
+        mockMembershipPlanWithData.guestPrivilege = TEST_MEMBERSHIP_PLAN.guestPrivilege;
+        mockMembershipPlanWithData.isPromotional = TEST_MEMBERSHIP_PLAN.isPromotional;
+        mockMembershipPlanWithData.isGiftCard = TEST_MEMBERSHIP_PLAN.isGiftCard;
+
         return mockMembershipPlanWithData;
     };
 
     const fillBaseMembershipPlanFields = async (user: ReturnType<typeof userEvent.setup>) => {
-        await user.type(screen.getByLabelText(/membershipPlan.code/i), TEST_MEMBERSHIP_PLAN.code);
+        const nameInputs = await screen.findAllByLabelText(/membershipPlan\.name/i);
+        const descInputs = await screen.findAllByLabelText(/membershipPlan\.description/i);
 
+        await user.type(nameInputs[0], TEST_MEMBERSHIP_PLAN.name[0].text);
+        await user.type(nameInputs[1], TEST_MEMBERSHIP_PLAN.name[1].text);
+        await user.type(descInputs[0], TEST_MEMBERSHIP_PLAN.description[0].text);
+        await user.type(descInputs[1], TEST_MEMBERSHIP_PLAN.description[1].text);
+
+        await user.selectOptions(screen.getByLabelText(/membershipPlan.period/i), TEST_MEMBERSHIP_PLAN.period);
+        await user.selectOptions(screen.getByLabelText(/membershipPlan.billingFrequency/i), TEST_MEMBERSHIP_PLAN.billingFrequency);
+ 
+        await user.type(screen.getByLabelText(/membershipPlan.numberOfClasses/i), TEST_MEMBERSHIP_PLAN.numberOfClasses.toString());
+        await user.type(screen.getByLabelText(/membershipPlan.cost.amount/i), TEST_MEMBERSHIP_PLAN.cost.amount.toString());
+        await user.type(screen.getByLabelText(/membershipPlan.durationInMonths/i), TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
+
+        await user.click(screen.getByLabelText(/membershipPlan.guestPrivilege/i));
+        await user.click(screen.getByLabelText(/membershipPlan.isPromotional/i));
+        await user.click(screen.getByLabelText(/membershipPlan.isGiftCard/i));
+
+        const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
+        await user.click(titlesAccordionButton);
+
+        const titleInputs = await screen.findAllByLabelText(/membershipPlan\.title/i);
+        await user.type(titleInputs[0], TEST_MEMBERSHIP_PLAN.title[0].text);
+        await user.type(titleInputs[1], TEST_MEMBERSHIP_PLAN.title[1].text);
     };
 
     // Helper method to update membershipPlan fields with _update_ suffix
     const updateMembershipPlanFields = async (user: ReturnType<typeof userEvent.setup>) => {
-        const nameInput = screen.getByLabelText(/membershipPlan.name/i);
+        const nameInputs = await screen.findAllByLabelText(/membershipPlan\.name/i);
+        const descInputs = await screen.findAllByLabelText(/membershipPlan\.description/i);
+        await user.clear(nameInputs[0]);
+        await user.type(nameInputs[0], `${TEST_MEMBERSHIP_PLAN.name[0].text}_update_`);
+        await user.clear(nameInputs[1]);
+        await user.type(nameInputs[1], `${TEST_MEMBERSHIP_PLAN.name[1].text}_update_`);
+        await user.clear(descInputs[0]);
+        await user.type(descInputs[0], `${TEST_MEMBERSHIP_PLAN.description[0].text}_update_`);
+        await user.clear(descInputs[1]);
+        await user.type(descInputs[1], `${TEST_MEMBERSHIP_PLAN.description[1].text}_update_`);
 
+        await user.selectOptions(screen.getByLabelText(/membershipPlan.period/i), MembershipPlanPeriodEnum.monthly);
+        await user.selectOptions(screen.getByLabelText(/membershipPlan.billingFrequency/i), BillingFrequencyEnum.monthly);
+ 
+        const numberOfClasses = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
+        const costAmount = await screen.findByLabelText(/membershipPlan.cost.amount/i);
+        const durationInMonths = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
 
-        await user.clear(nameInput);
-        await user.type(nameInput, TEST_MEMBERSHIP_PLAN.name + '_update_');
+        await user.clear(numberOfClasses);
+        await user.type(numberOfClasses, `99`);
+        await user.clear(costAmount);
+        await user.type(costAmount, `999.99`);
+        await user.clear(durationInMonths);
+        await user.type(durationInMonths, `3`);
 
-    };
+        await user.click(screen.getByLabelText(/membershipPlan.guestPrivilege/i));
+        await user.click(screen.getByLabelText(/membershipPlan.isPromotional/i));
+        await user.click(screen.getByLabelText(/membershipPlan.isGiftCard/i));
+
+        const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
+        await user.click(titlesAccordionButton);
+
+        const titleInputs = await screen.findAllByLabelText(/membershipPlan\.title/i);
+        await user.clear(titleInputs[0]);
+        await user.type(titleInputs[0], `${TEST_MEMBERSHIP_PLAN.title[0].text}_update_`);
+        await user.clear(titleInputs[1]);
+        await user.type(titleInputs[1], `${TEST_MEMBERSHIP_PLAN.title[1].text}_update_`);
+     };
 
     it('new membershipPlan', async () => {
         const user = userEvent.setup();
@@ -170,7 +232,6 @@ describe('MembershipPlanForm Integration Test', () => {
         // Act - fill the form
         await fillBaseMembershipPlanFields(user);
 
-
         // Find and click the save button
         const saveButton = screen.getByRole('button', { name: /form.buttons.save/i });
         expect(saveButton).toBeEnabled();
@@ -185,12 +246,22 @@ describe('MembershipPlanForm Integration Test', () => {
         const submittedData = (createMembershipPlanAction as jest.Mock).mock.calls[0][0];
 
         // Validate the form inputs were correctly mapped
-        expect(submittedData.code).toBe(TEST_MEMBERSHIP_PLAN.code);
-
-
+        expect(submittedData.name[0].text).toBe(TEST_MEMBERSHIP_PLAN.name[0].text);
+        expect(submittedData.name[1].text).toBe(TEST_MEMBERSHIP_PLAN.name[1].text);
+        expect(submittedData.description[0].text).toBe(TEST_MEMBERSHIP_PLAN.description[0].text);
+        expect(submittedData.description[1].text).toBe(TEST_MEMBERSHIP_PLAN.description[1].text);
+        expect(submittedData.period).toBe(TEST_MEMBERSHIP_PLAN.period);
+        expect(submittedData.billingFrequency).toBe(TEST_MEMBERSHIP_PLAN.billingFrequency);
+        expect(submittedData.numberOfClasses).toBe(TEST_MEMBERSHIP_PLAN.numberOfClasses);
+        expect(submittedData.cost.amount).toBe(TEST_MEMBERSHIP_PLAN.cost.amount);
+        expect(submittedData.durationInMonths).toBe(TEST_MEMBERSHIP_PLAN.durationInMonths);
+        expect(submittedData.guestPrivilege).toBe(TEST_MEMBERSHIP_PLAN.guestPrivilege);
+        expect(submittedData.isPromotional).toBe(TEST_MEMBERSHIP_PLAN.isPromotional);
+        expect(submittedData.isGiftCard).toBe(TEST_MEMBERSHIP_PLAN.isGiftCard);
+        expect(submittedData.title[0].text).toBe(TEST_MEMBERSHIP_PLAN.title[0].text);
+        expect(submittedData.title[1].text).toBe(TEST_MEMBERSHIP_PLAN.title[1].text);
+        
     }, 15000);
-
-
 
     it('update membershipPlan', async () => {
         const user = userEvent.setup();
@@ -215,7 +286,7 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.click(editButton);
 
         // Wait for form to be in edit mode
-        expect(await screen.findByLabelText(/membershipPlan.name/i)).not.toBeDisabled();
+        expect(await screen.findByLabelText(/membershipPlan.period/i)).not.toBeDisabled();
 
         // Update all fields using helper functions
         await updateMembershipPlanFields(user);
@@ -234,11 +305,20 @@ describe('MembershipPlanForm Integration Test', () => {
         const submittedData = (saveMembershipPlanAction as jest.Mock).mock.calls[0][0];
 
         // Validate the form inputs were correctly updated with _update_ suffix
-        expect(submittedData.code).toBe(TEST_MEMBERSHIP_PLAN.code);
-        expect(submittedData.name).toBe(TEST_MEMBERSHIP_PLAN.name + '_update_');
-        expect(submittedData.email).toBe('update_' + TEST_MEMBERSHIP_PLAN.email);
-        expect(submittedData.note).toBe(TEST_MEMBERSHIP_PLAN.note + '_update_');
-
+        expect(submittedData.name[0].text).toBe(TEST_MEMBERSHIP_PLAN.name[0].text + '_update_');
+        expect(submittedData.name[1].text).toBe(TEST_MEMBERSHIP_PLAN.name[1].text + '_update_');
+        expect(submittedData.description[0].text).toBe(TEST_MEMBERSHIP_PLAN.description[0].text + '_update_');
+        expect(submittedData.description[1].text).toBe(TEST_MEMBERSHIP_PLAN.description[1].text + '_update_');
+        expect(submittedData.period).toBe(MembershipPlanPeriodEnum.monthly);
+        expect(submittedData.billingFrequency).toBe(BillingFrequencyEnum.monthly);
+        expect(submittedData.numberOfClasses).toBe(99);
+        expect(submittedData.cost.amount).toBe(999.99);
+        expect(submittedData.durationInMonths).toBe(3);
+        expect(submittedData.guestPrivilege).toBe(false);
+        expect(submittedData.isPromotional).toBe(false);
+        expect(submittedData.isGiftCard).toBe(false);
+        expect(submittedData.title[0].text).toBe(TEST_MEMBERSHIP_PLAN.title[0].text + '_update_');
+        expect(submittedData.title[1].text).toBe(TEST_MEMBERSHIP_PLAN.title[1].text + '_update_');
 
     }, 15000);
 
@@ -265,7 +345,7 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.click(editButton);
 
         // Wait for form to be in edit mode
-        expect(await screen.findByLabelText(/membershipPlan.name/i)).not.toBeDisabled();
+        expect(await screen.findByLabelText(/membershipPlan.period/i)).not.toBeDisabled();
 
         // Update all fields using helper functions
         await updateMembershipPlanFields(user);
@@ -275,16 +355,40 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.click(cancelButton);
 
         // Wait for form to be back in read-only mode
-        expect(await screen.findByLabelText(/membershipPlan.name/i)).toBeDisabled();
+        expect(await screen.findByLabelText(/membershipPlan.period/i)).toBeDisabled();
 
         // Verify all fields have been reset to original values
-        const codeInputAfterCancel = screen.getByLabelText(/membershipPlan.code/i);
-        const nameInputAfterCancel = screen.getByLabelText(/membershipPlan.name/i);
-        const emailInputAfterCancel = screen.getByLabelText(/membershipPlan.email/i);
-        const noteInputAfterCancel = screen.getByLabelText(/membershipPlan.note/i);
+        const nameInputsAfterCancel = await screen.findAllByLabelText(/membershipPlan\.name/i);
+        const descInputsAfterCancel = await screen.findAllByLabelText(/membershipPlan\.description/i);
+        const periodAfterCancel = await screen.findByLabelText(/membershipPlan.period/i);
+        const billingFrequencyAfterCancel = await screen.findByLabelText(/membershipPlan.billingFrequency/i);
+        const numberOfClassesAfterCancel = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
+        const costAmountAfterCancel = await screen.findByLabelText(/membershipPlan.cost.amount/i);
+        const durationInMonthsAfterCancel = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
+        const guestPrivilegeAfterCancel = await screen.findByLabelText(/membershipPlan.guestPrivilege/i);
+        const isPromotionalAfterCancel = await screen.findByLabelText(/membershipPlan.isPromotional/i);
+        const isGiftCardAfterCancel = await screen.findByLabelText(/membershipPlan.isGiftCard/i);
 
-        expect(codeInputAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.code);
-     
+        expect(nameInputsAfterCancel[0]).toHaveValue(TEST_MEMBERSHIP_PLAN.name[0].text);
+        expect(nameInputsAfterCancel[1]).toHaveValue(TEST_MEMBERSHIP_PLAN.name[1].text);
+        expect(descInputsAfterCancel[0]).toHaveValue(TEST_MEMBERSHIP_PLAN.description[0].text);
+        expect(descInputsAfterCancel[1]).toHaveValue(TEST_MEMBERSHIP_PLAN.description[1].text);
+        expect(periodAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.period);
+        expect(billingFrequencyAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.billingFrequency);
+        expect(numberOfClassesAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.numberOfClasses.toString());
+        expect(costAmountAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.cost.amount.toString());
+        expect(durationInMonthsAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
+        expect(guestPrivilegeAfterCancel).toBeChecked();
+        expect(isPromotionalAfterCancel).toBeChecked();
+        expect(isGiftCardAfterCancel).toBeChecked();
+
+        const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
+        await user.click(titlesAccordionButton);
+
+        const titleInputs = await screen.findAllByLabelText(/membershipPlan\.title/i);
+        expect(titleInputs[0]).toHaveValue(TEST_MEMBERSHIP_PLAN.title[0].text);
+        expect(titleInputs[1]).toHaveValue(TEST_MEMBERSHIP_PLAN.title[1].text);
+
         // Verify that neither action was called (no save occurred)
         expect(createMembershipPlanAction).not.toHaveBeenCalled();
         expect(saveMembershipPlanAction).not.toHaveBeenCalled();
@@ -335,8 +439,6 @@ describe('MembershipPlanForm Integration Test', () => {
         // Verify the membershipPlan data was passed to the delete action
         const deletedMembershipPlan = (deleteMembershipPlanAction as jest.Mock).mock.calls[0][0];
         expect(deletedMembershipPlan.uuid).toBe(mockMembershipPlanForDelete.uuid);
-        expect(deletedMembershipPlan.code).toBe(TEST_MEMBERSHIP_PLAN.code);
-        expect(deletedMembershipPlan.name).toBe(TEST_MEMBERSHIP_PLAN.name);
     }, 15000);
 
     it('activate membershipPlan', async () => {
@@ -429,21 +531,52 @@ describe('MembershipPlanForm Integration Test', () => {
         );
 
         // Fill form with INVALID data
-        const codeInput = screen.getByLabelText(/membershipPlan.code/i);
-        const nameInput = screen.getByLabelText(/membershipPlan.name/i);
-        const emailInput = screen.getByLabelText(/membershipPlan.email/i);
-
-        //  await user.type(codeInput, INVALID_MEMBERSHIP_PLAN.codeWithSpaces); // Invalid - no spaces allowed
-        await user.type(nameInput, TEST_MEMBERSHIP_PLAN.name);
-        await user.type(emailInput, INVALID_MEMBERSHIP_PLAN.invalidEmail); // Invalid email format
+        const periodInput = await screen.findByLabelText(/membershipPlan.period/i);
+        const durationInMonthsInput = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
+        const numberOfClassesInput = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
+        const costAmountInput = await screen.findByLabelText(/membershipPlan.cost.amount/i);
+        
+        // Invalid 
+        await user.type(numberOfClassesInput, "text-instead-of-number");
+        await user.type(durationInMonthsInput, "text-instead-of-number");
+        await user.type(costAmountInput, "text-instead-of-number");
 
         const saveButton = screen.getByRole('button', { name: /form.buttons.save/i });
         await user.click(saveButton);
 
         // Verify validation error messages appear in the DOM
-        expect(await screen.findByText(/membershipPlan.validation.noSpaceAllowed/i)).toBeInTheDocument();
-        expect(await screen.findByText(/membershipPlan.validation.emailInvalid/i)).toBeInTheDocument();
+        expect(await screen.findAllByText(/validation.numericValue/i)).toHaveLength(3);
+        await user.clear(numberOfClassesInput);
+        await user.clear(durationInMonthsInput);
+        await user.clear(costAmountInput);
+        await user.type(numberOfClassesInput, "1");
+        await user.type(durationInMonthsInput, "0");
+        await user.type(costAmountInput, "1");
 
+        await user.selectOptions(periodInput, MembershipPlanPeriodEnum.trial);
+        await user.clear(numberOfClassesInput);
+        await user.type(numberOfClassesInput, "2");
+        await user.click(saveButton);
+        expect(await screen.findByText(/membershipPlan.validation.onlyOneTrial/i)).toBeInTheDocument();
+
+        await user.selectOptions(periodInput, MembershipPlanPeriodEnum.classes);
+        await user.clear(durationInMonthsInput);
+        await user.type(durationInMonthsInput, "-1");
+        await user.click(saveButton);
+        expect(await screen.findByText(/membershipPlan.validation.durationInMonthsInterval/i)).toBeInTheDocument();
+        await user.clear(durationInMonthsInput);
+        await user.type(durationInMonthsInput, "13");
+        await user.click(saveButton);
+        expect(await screen.findByText(/membershipPlan.validation.durationInMonthsInterval/i)).toBeInTheDocument();
+       
+        await user.selectOptions(periodInput, MembershipPlanPeriodEnum.classes);
+        await user.clear(durationInMonthsInput);
+        await user.type(durationInMonthsInput, "2.3");
+        await user.clear(numberOfClassesInput);
+        await user.type(numberOfClassesInput, "10.3");
+        await user.click(saveButton);
+        expect(await screen.findAllByText(/validation.integerValue/i)).toHaveLength(2);
+   
         await waitFor(() => { expect(createMembershipPlanAction).not.toHaveBeenCalled(); });
     }, 15000);
 
@@ -462,43 +595,19 @@ describe('MembershipPlanForm Integration Test', () => {
             </Provider>
         );
 
+        const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
+        await user.click(titlesAccordionButton);
+ 
         // Try to submit without filling required fields
         const saveButton = screen.getByRole('button', { name: /form.buttons.save/i });
         await user.click(saveButton);
 
         // Verify required field validation errors appear
-        expect(await screen.findByText(/membershipPlan.validation.codeRequired/i)).toBeInTheDocument();
-        expect(await screen.findByText(/membershipPlan.validation.nameRequired/i)).toBeInTheDocument();
+        expect(await screen.findAllByText(/membershipPlan.validation.nameRequired/i)).toHaveLength(2);
+        expect(await screen.findAllByText(/membershipPlan.validation.descriptionRequired/i)).toHaveLength(2);
+        expect(await screen.findByText(/membershipPlan.validation.numberOfClassesRequired/i)).toBeInTheDocument();
+        expect(await screen.findAllByText(/membershipPlan.validation.titleRequired/i)).toHaveLength(2);
 
         await waitFor(() => { expect(createMembershipPlanAction).not.toHaveBeenCalled(); });
     }, 15000);
-
-    it('validates code max length with Zod schema', async () => {
-        const user = userEvent.setup();
-
-        render(
-            <Provider store={store}>
-                <MembershipPlanForm lang="en"
-                    membershipPlan={mockMembershipPlan}
-                    initialAvailableGymItems={TEST_AVAILABLE_GYMS}
-                    initialAvailableCourseItems={TEST_AVAILABLE_COURSES}
-                    initialSelectedCourseItems={TEST_SELECTED_COURSES}
-                    initialSelectedGymItems={TEST_SELECTED_GYMS}
-                />
-            </Provider>
-        );
-
-        // Fill code with more than 20 characters
-        const codeInput = screen.getByLabelText(/membershipPlan.code/i);
-
-        await user.type(codeInput, INVALID_MEMBERSHIP_PLAN.codeTooLong); // 24 characters - exceeds max 20
-
-        const saveButton = screen.getByRole('button', { name: /form.buttons.save/i });
-        await user.click(saveButton);
-
-        // Verify max length validation error appears
-        expect(await screen.findByText(/membershipPlan.validation.codeMaxLength/i)).toBeInTheDocument();
-
-        await waitFor(() => { expect(createMembershipPlanAction).not.toHaveBeenCalled(); });
-    }, 15000)
 });
