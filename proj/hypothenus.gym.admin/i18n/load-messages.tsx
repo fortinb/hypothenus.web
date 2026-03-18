@@ -11,6 +11,7 @@ const namespaces = [
     "errors",
     "gym",
     "member",
+    "membership-plan",
     "home",
     "layout",
     "navigation",

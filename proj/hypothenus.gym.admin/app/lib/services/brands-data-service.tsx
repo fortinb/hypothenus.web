@@ -1,4 +1,4 @@
-import { Brand, parseBrand } from "@/src/lib/entities/brand";
+import { Brand, parseBrand, serializeBrand } from "@/src/lib/entities/brand";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 
@@ -42,7 +42,7 @@ export async function postBrand(brand: Brand): Promise<Brand> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.post(postURI.valueOf(), brand, request);
+  let response = await axiosInstance.post(postURI.valueOf(), serializeBrand(brand), request);
 
   return parseBrand(response.data);
 }
@@ -53,7 +53,7 @@ export async function putBrand(brand: Brand): Promise<Brand> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.put(putURI.valueOf(), brand, request);
+  let response = await axiosInstance.put(putURI.valueOf(), serializeBrand(brand), request);
 
   return parseBrand(response.data);
 }

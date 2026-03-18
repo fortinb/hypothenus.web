@@ -1,10 +1,5 @@
 import { z } from 'zod';
-
-export enum PhoneNumberTypeEnum {
-  Business = "business",
-  Home = "home",
-  Mobile = "mobile"
-}
+import { PhoneNumberTypeEnum } from './enum/phone-number-type-enum';
 
 export const phoneNumberOrder: Record<string, number> = {
   "home": 1,

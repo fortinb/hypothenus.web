@@ -15,7 +15,7 @@ import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Authorize } from "@/app/ui/components/security/authorize";
 import { Gym, GymSchema } from "@/src/lib/entities/gym";
 import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
-import { phoneNumberOrder } from "@/src/lib/entities/phoneNumber";
+import { phoneNumberOrder } from "@/src/lib/entities/phone-number";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

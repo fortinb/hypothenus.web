@@ -1,4 +1,4 @@
-import { Coach, parseCoach } from "@/src//lib/entities/coach";
+import { Coach, parseCoach, serializeCoach } from "@/src//lib/entities/coach";
 import { Page } from "@/src//lib/entities/page";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
@@ -95,7 +95,7 @@ export async function postCoach(coach: Coach): Promise<Coach> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.post(postURI.valueOf(), coach, request);
+  let response = await axiosInstance.post(postURI.valueOf(), serializeCoach(coach), request);
  
   return parseCoach(response.data);
 }
@@ -106,7 +106,7 @@ export async function putCoach(coach: Coach): Promise<Coach> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.put(putURI.valueOf(), coach, request);
+  let response = await axiosInstance.put(putURI.valueOf(), serializeCoach(coach), request);
 
 
   return parseCoach(response.data);

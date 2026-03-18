@@ -5,28 +5,29 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/lib/store/store';
 import { createUserAction, saveUserAction, deleteUserAction, activateUserAction, deactivateUserAction } from '../actions';
 import { useRouter } from 'next/navigation';
-import { RoleEnum, User, newUser } from '@/src/lib/entities/user';
+import { User, newUser } from '@/src/lib/entities/user';
 import { success } from '@/app/lib/http/handle-result';
 import {
     logFormValidationErrors, INVALID_EMAIL
 } from '@/app/lib/test-utils/form-test-helpers';
+import { RoleEnum } from '@/src/lib/entities/enum/role-enum';
 
 export const TEST_USER = {
     firstname: 'user_firstname',
     lastname: 'user_lastname',
     email: 'user@example.com',
     roles: [
-        { role: RoleEnum.Admin, label: "admin", value: 'admin' },
-        { role: RoleEnum.Manager, label: "manager", value: 'manager' }
+        { role: RoleEnum.admin, label: "admin", value: 'admin' },
+        { role: RoleEnum.manager, label: "manager", value: 'manager' }
     ]
 };
 
 // Test data constants for course
 export const TEST_AVAILABLE_ROLES = [
-    { role: RoleEnum.Admin, label: "admin", value: 'admin' },
-    { role: RoleEnum.Manager, label: "manager", value: 'manager' },
-    { role: RoleEnum.Coach, label: "coach", value: 'coach' },
-    { role: RoleEnum.Member, label: "member", value: 'member' }
+    { role: RoleEnum.admin, label: "admin", value: 'admin' },
+    { role: RoleEnum.manager, label: "manager", value: 'manager' },
+    { role: RoleEnum.coach, label: "coach", value: 'coach' },
+    { role: RoleEnum.member, label: "member", value: 'member' }
 ];
 
 // Mock dependencies

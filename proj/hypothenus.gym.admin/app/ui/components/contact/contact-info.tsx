@@ -1,7 +1,7 @@
 "use client"
 
 import { Contact } from "@/src/lib/entities/contact";
-import { PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -68,10 +68,10 @@ export default function ContactInfo({ index, id, formStatefield, required = fals
             </Row>
             <Row className="mt-2 gx-2">
                 <Col xs={4} >
-                    <PhoneNumberInfo index={0} id={`contact_phone_${id}_0`} defaultType={PhoneNumberTypeEnum.Home} formStatefield={`${formStatefield}.phoneNumbers.0`} parent={formStatefield} />
+                    <PhoneNumberInfo index={0} id={`contact_phone_${id}_0`} defaultType={PhoneNumberTypeEnum.home} formStatefield={`${formStatefield}.phoneNumbers.0`} parent={formStatefield} />
                 </Col>
                 <Col xs={4} >
-                    <PhoneNumberInfo index={1} id={`contact_phone_${id}_1`} defaultType={PhoneNumberTypeEnum.Mobile} formStatefield={`${formStatefield}.phoneNumbers.1`} parent={formStatefield} />
+                    <PhoneNumberInfo index={1} id={`contact_phone_${id}_1`} defaultType={PhoneNumberTypeEnum.mobile} formStatefield={`${formStatefield}.phoneNumbers.1`} parent={formStatefield} />
                 </Col>
             </Row>
         </Container>

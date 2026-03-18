@@ -1,8 +1,9 @@
 import moment from "moment";
 import { Address, AddressSchema, AddressSchemaOptional, newAddress } from "./address";
 import { Contact, ContactSchema, parseContact } from "./contact";
-import { LanguageEnum } from "./language";
-import { newPhoneNumber, PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum } from "./phoneNumber"
+import { LanguageEnum } from "./enum/language-enum";
+import { newPhoneNumber, PhoneNumber, PhoneNumberSchema } from "./phone-number";
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum"; 
 import { z } from 'zod';
 
 export interface Person {
@@ -27,8 +28,8 @@ export const newPerson = (): Person => {
     email: "",
     address: newAddress(),
     phoneNumbers: [
-      newPhoneNumber(PhoneNumberTypeEnum.Home),
-      newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
+      newPhoneNumber(PhoneNumberTypeEnum.home),
+      newPhoneNumber(PhoneNumberTypeEnum.mobile)],
     contacts: [],
     communicationLanguage: LanguageEnum.fr,
     note: ""
@@ -49,21 +50,25 @@ export const parsePerson = (data: any): Person => {
   }
 
   // Ensure at least one Mobile and one Home phone number
-  const hasMobile = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
-  const hasHome = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Home);
+  const hasMobile = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
+  const hasHome = person.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.home);
 
   if (!hasHome) {
-    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Home));
+    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.home));
   }
 
   if (!hasMobile) {
-    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+    person.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.mobile));
   }
 
   // Parse each contact in the person's contacts array
   person.contacts = person.contacts?.map(contact => parseContact(contact));
 
   return person;
+}
+
+export const serializePerson = (person: Person): any => {
+  return { ...person };
 }
 
 export function formatPersonName(person: Person): string {

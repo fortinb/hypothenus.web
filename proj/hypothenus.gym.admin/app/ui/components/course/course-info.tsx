@@ -1,7 +1,7 @@
 "use client"
 
 import { Course } from "@/src/lib/entities/course";
-import { LanguageEnum } from "@/src/lib/entities/language";
+import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";

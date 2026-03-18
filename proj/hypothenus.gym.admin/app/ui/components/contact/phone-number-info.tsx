@@ -2,11 +2,12 @@
 
 import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
-import { PhoneNumber, PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 import Form from "react-bootstrap/Form";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { IMaskInput } from "react-imask";
+import { PhoneNumber } from "@/src/lib/entities/phone-number";
 
 export default function PhoneNumberInfo({ index, id, defaultType, formStatefield, parent }:
     {
@@ -29,15 +30,15 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
             <Form.Control type="hidden" id={`phone_input_type_${id}_${index}`} value={defaultType} {...register(`${formStatefield}.type`)} />
             <Form.Label className="text-primary" htmlFor={`phone_input_number_${id}_${index}`} >
 
-                {defaultType == PhoneNumberTypeEnum.Home &&
+                {defaultType == PhoneNumberTypeEnum.home &&
                     <span>{t("phoneNumber.home")}</span>
                 }
 
-                {defaultType == PhoneNumberTypeEnum.Business &&
+                {defaultType == PhoneNumberTypeEnum.business &&
                     <span>{t("phoneNumber.business")}</span>
                 }
 
-                {defaultType == PhoneNumberTypeEnum.Mobile &&
+                {defaultType == PhoneNumberTypeEnum.mobile &&
                     <span>{t("phoneNumber.mobile")}</span>
                 }
 

@@ -4,7 +4,7 @@ import CourseMenu from "./course-menu";
 import CourseResume from "./course-resume";
 import { getCourse } from "@/app/lib/services/courses-data-service";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
-import { LanguageEnum } from "@/src/lib/entities/language";
+import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
 import { failure } from "@/app/lib/http/handle-result";

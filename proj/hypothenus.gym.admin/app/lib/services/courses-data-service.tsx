@@ -1,6 +1,7 @@
-import { Course, parseCourse } from "@/src//lib/entities/course";
+import { Course, parseCourse, serializeCourse } from "@/src//lib/entities/course";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
+import { Page } from "@/src/lib/entities/page";
 
 
 interface HeaderDefinition {
@@ -27,6 +28,20 @@ function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestCon
   }
  
   return request;
+}
+
+export async function fetchCourses(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Course>> {
+
+  const listURI: String = `/v1/brands/${brandUuid}/courses`;
+
+  const request = initRequest({
+    page: page,
+    pageSize: pageSize,
+    includeInactive: includeInactive
+  });
+
+    let response = await axiosInstance.get(listURI.valueOf(), request);
+    return response.data;
 }
 
 export async function getCourse(brandUuid: string, courseUuid: string): Promise<Course> {
@@ -79,7 +94,7 @@ export async function postCourse(course: Course): Promise<Course> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.post(postURI.valueOf(), course, request);
+  let response = await axiosInstance.post(postURI.valueOf(), serializeCourse(course), request);
 
   return parseCourse(response.data);
 }
@@ -90,7 +105,7 @@ export async function putCourse(course: Course): Promise<Course> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.put(putURI.valueOf(), course, request);
+  let response = await axiosInstance.put(putURI.valueOf(), serializeCourse(course), request);
 
   return parseCourse(response.data);
 }

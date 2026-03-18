@@ -8,8 +8,8 @@ import PersonInfo from "../person/person-info";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { MemberTypeEnum } from "@/src/lib/entities/member";
 import FormLabelRequired from "../forms/form-label-required";
+import { MemberTypeEnum } from "@/src/lib/entities/enum/member-type-enum";
 
 export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, availableGymItems }:
     {
@@ -28,10 +28,10 @@ export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, av
                     <Col xs={6} >
                         <Form.Group>
                             <FormLabelRequired className="text-primary" htmlFor={`member-type-dropdown`} label={t("member.memberType")}></FormLabelRequired>
-                            <Form.Select id="member-type-dropdown" defaultValue={MemberTypeEnum.Regular} {...register(`memberType`)}>
-                                <option key={MemberTypeEnum.Regular} value={MemberTypeEnum.Regular}>{t("member.types.regular")}</option>
-                                <option key={MemberTypeEnum.Premium} value={MemberTypeEnum.Premium}>{t("member.types.premium")}</option>
-                                <option key={MemberTypeEnum.Employee} value={MemberTypeEnum.Employee}>{t("member.types.employee")}</option>
+                            <Form.Select id="member-type-dropdown" defaultValue={MemberTypeEnum.regular} {...register(`memberType`)}>
+                                <option key={MemberTypeEnum.regular} value={MemberTypeEnum.regular}>{t("member.types.regular")}</option>
+                                <option key={MemberTypeEnum.premium} value={MemberTypeEnum.premium}>{t("member.types.premium")}</option>
+                                <option key={MemberTypeEnum.employee} value={MemberTypeEnum.employee}>{t("member.types.employee")}</option>
                             </Form.Select>
                              {errors?.memberType && <Form.Text className="text-invalid">{t(errors.memberType.message as string)}</Form.Text>}
                          </Form.Group>

@@ -1,12 +1,7 @@
 import { z } from 'zod';
 import { newPerson, parsePerson, Person, PersonRegistrationSchema, PersonSchema } from './person';
-import { BaseEntity } from './baseEntity';
-
-export enum MemberTypeEnum {
-  Regular = "regular",
-  Premium = "premium",
-  Employee = "employee"
-}
+import { BaseEntity } from './base-entity';
+import { MemberTypeEnum } from './enum/member-type-enum';
 
 export interface Member extends BaseEntity {
   uuid?: any;
@@ -18,14 +13,13 @@ export interface Member extends BaseEntity {
   isActive: boolean;
 }
 
-
 export const newMember = (): Member => {
   let newMember: Member = {
     uuid: null,
     brandUuid: null,
     password: null,
     person: newPerson(),
-    memberType: MemberTypeEnum.Regular,
+    memberType: MemberTypeEnum.regular,
     preferredGymUuid: "",
     isActive: true,
     messages: [],
@@ -41,6 +35,10 @@ export const parseMember = (data: any): Member => {
   member.person = parsePerson(data.person);
 
   return member;
+}
+
+export const serializeMember = (member: Member): any => {
+  return { ...member };
 }
 
 export const MemberSchema = z.object({

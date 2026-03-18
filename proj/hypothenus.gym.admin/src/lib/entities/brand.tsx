@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { Address, AddressSchema, newAddress } from "./address";
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from "./base-entity";
 import { Contact, ContactSchema, newContact, parseContact } from "./contact";
-import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
+import { PhoneNumber, PhoneNumberSchema, newPhoneNumber } from "./phone-number";
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 
 export interface Brand extends BaseEntity {
   uuid?: any;
@@ -29,8 +30,8 @@ export const newBrand = (): Brand => {
     note: "",
     contacts: [newContact()],
     phoneNumbers: [
-      newPhoneNumber(PhoneNumberTypeEnum.Business),
-      newPhoneNumber(PhoneNumberTypeEnum.Mobile)
+      newPhoneNumber(PhoneNumberTypeEnum.business),
+      newPhoneNumber(PhoneNumberTypeEnum.mobile)
     ],
     messages: [],
     createdBy: undefined,
@@ -48,21 +49,25 @@ export const parseBrand = (data: any): Brand => {
   }
 
   // Ensure at least one Mobile and one Business phone number
-  const hasMobile = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
-  const hasBusiness = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+  const hasMobile = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
+  const hasBusiness = brand.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.business);
 
   if (!hasBusiness) {
-    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.business));
   }
 
   if (!hasMobile) {
-    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+    brand.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.mobile));
   }
 
   // Parse each contact in the contacts array
   brand.contacts = brand.contacts?.map(contact => parseContact(contact));
 
   return brand;
+}
+
+export const serializeBrand = (brand: Brand): any => {
+  return { ...brand };
 }
 
 export const BrandSchema = z.object({

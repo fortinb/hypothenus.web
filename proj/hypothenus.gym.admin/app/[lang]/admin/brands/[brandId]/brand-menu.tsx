@@ -12,7 +12,7 @@ export default function BrandMenu({ lang, brand }: { lang: string, brand: Brand 
 
   return (
 
-    <div className="d-flex flex-column justify-content-start w-100 h-50 page-menu">
+    <div className="d-flex flex-column justify-content-start w-100 h-75 page-menu">
       <div className="d-flex flex-row justify-content-center">
         <h2 className="text-secondary pt-4 ps-2">{t("menu.brand", { name: brand.name })}</h2>
       </div>
@@ -68,6 +68,20 @@ export default function BrandMenu({ lang, brand }: { lang: string, brand: Brand 
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <span className="text-primary mt-3">{t("menu.courses")}</span>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Row className="gx-2">
+            <Col xs={6} >
+              <div className="btn-navigation m-2">
+                <div className="d-flex flex-column justify-content-center h-100">
+                  <div className="d-flex flex-row justify-content-center">
+                    <Link className={"link-element" + (brand.uuid === null ? " link-element-disabled" : "")} href={`/${lang}/admin/brands/${brand.uuid}/membership-plans`}><i className="icon icon-secondary bi-person-gear h1 m-0"></i></Link>
+                  </div>
+                  <div className="d-flex flex-row justify-content-center">
+                    <span className="text-primary mt-3">{t("menu.membershipPlans")}</span>
                   </div>
                 </div>
               </div>

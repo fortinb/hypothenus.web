@@ -1,4 +1,4 @@
-import { Gym, parseGym } from "@/src//lib/entities/gym";
+import { Gym, parseGym, serializeGym } from "@/src//lib/entities/gym";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Page } from "@/src/lib/entities/page";
@@ -79,7 +79,7 @@ export async function postGym(gym: Gym): Promise<Gym> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.post(postURI.valueOf(), gym, request);
+  let response = await axiosInstance.post(postURI.valueOf(), serializeGym(gym), request);
 
   return parseGym(response.data);
 }
@@ -90,7 +90,7 @@ export async function putGym(gym: Gym): Promise<Gym> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.put(putURI.valueOf(), gym, request);
+  let response = await axiosInstance.put(putURI.valueOf(), serializeGym(gym), request);
 
  return parseGym(response.data);
 }

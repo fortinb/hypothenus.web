@@ -11,7 +11,7 @@ import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Authorize } from "@/app/ui/components/security/authorize";
 import UserInfo from "@/app/ui/components/user/user-info";
 import { RoleSelectedItem } from "@/src/lib/entities/ui/role-selected-item";
-import { RoleEnum, User, UserSchema } from "@/src/lib/entities/user";
+import { User, UserSchema } from "@/src/lib/entities/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,7 @@ import { z } from 'zod';
 import { activateUserAction, createUserAction, deactivateUserAction, deleteUserAction, saveUserAction } from "./actions";
 import { DOMAIN_EXCEPTION_USER_ALREADY_EXIST, DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED } from "@/src/lib/entities/messages";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
+import { RoleEnum } from "@/src/lib/entities/enum/role-enum";
 
 export interface UserFormData {
     user: z.infer<typeof UserSchema>;
@@ -126,6 +127,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                     setIsEditMode(true);
                     return;
                 }
+                
                 const authorityLevel = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED)
                 if (authorityLevel) {
                     formContext.setError("selectedRoleItems", { type: "manual", message: "user.validation.roleAssignmentNotAllowed" });

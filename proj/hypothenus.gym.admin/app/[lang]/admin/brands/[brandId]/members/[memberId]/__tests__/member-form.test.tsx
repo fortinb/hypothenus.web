@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/lib/store/store';
 import { createMemberAction, saveMemberAction, deleteMemberAction, activateMemberAction, deactivateMemberAction } from '../actions';
 import { useRouter } from 'next/navigation';
-import { Member, MemberTypeEnum, newMember } from '@/src/lib/entities/member';
+import { Member, newMember } from '@/src/lib/entities/member';
 import { success } from '@/app/lib/http/handle-result';
 import {
     TEST_ADDRESS,
@@ -22,20 +22,21 @@ import {
     updateEmergencyContactFields,
     INVALID_EMAIL
 } from '@/app/lib/test-utils/form-test-helpers';
-import { LanguageEnum } from '@/src/lib/entities/language';
+import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
 import { newContact } from '@/src/lib/entities/contact';
 import moment from 'moment';
 import { newGym } from '@/src/lib/entities/gym';
+import { MemberTypeEnum } from '@/src/lib/entities/enum/member-type-enum';
 
 // Test data constants for member
 export const TEST_AVAILABLE_GYMS = [
-    { gym: { ...newGym(), uuid: "gym1-uuid", brandUuid: "test-brand", gymUuid: "gym1-uuid" }, label: "gymLabel1", value: 'gym1-uuid' },
-    { gym: { ...newGym(), uuid: "gym2-uuid", brandUuid: "test-brand", gymUuid: "gym2-uuid" }, label: "gymLabel2", value: 'gym2-uuid' },
-    { gym: { ...newGym(), uuid: "gym3-uuid", brandUuid: "test-brand", gymUuid: "gym3-uuid" }, label: "gymLabel3", value: 'gym3-uuid' }
+    { gym: { ...newGym(), uuid: "gym1-uuid", brandUuid: "test-brand"}, label: "gymLabel1", value: 'gym1-uuid' },
+    { gym: { ...newGym(), uuid: "gym2-uuid", brandUuid: "test-brand" }, label: "gymLabel2", value: 'gym2-uuid' },
+    { gym: { ...newGym(), uuid: "gym3-uuid", brandUuid: "test-brand" }, label: "gymLabel3", value: 'gym3-uuid' }
 ];
 
 export const TEST_MEMBER = {
-    memberType: MemberTypeEnum.Regular,
+    memberType: MemberTypeEnum.regular,
     preferredGymUuid: "gym2-uuid"
 };
 
@@ -130,7 +131,7 @@ describe('MemberForm Integration Test', () => {
     };
 
     const updateMemberFields = async (user: ReturnType<typeof userEvent.setup>) => {
-         await user.selectOptions(screen.getByLabelText(/member.memberType/i), MemberTypeEnum.Premium);
+         await user.selectOptions(screen.getByLabelText(/member.memberType/i), MemberTypeEnum.premium);
          await user.selectOptions(screen.getByLabelText(/member.preferredGym/i), TEST_AVAILABLE_GYMS[1].value);
      };
 
@@ -143,7 +144,7 @@ describe('MemberForm Integration Test', () => {
         await user.type(screen.getByLabelText(/person.note/i), TEST_PERSON.note);
         await user.type(screen.getByLabelText(/person.dateOfBirth/i), TEST_PERSON.dateOfBirth);
         await user.selectOptions(screen.getByLabelText(/person.communicationLanguage/i), TEST_PERSON.communicationLanguage);
-        await user.selectOptions(screen.getByLabelText(/member.memberType/i), MemberTypeEnum.Regular);
+        await user.selectOptions(screen.getByLabelText(/member.memberType/i), MemberTypeEnum.regular);
 
     };
 
@@ -209,7 +210,7 @@ describe('MemberForm Integration Test', () => {
         expect(submittedData.person.note).toBe(TEST_PERSON.note);
         expect(submittedData.person.dateOfBirth).toBe(TEST_PERSON.dateOfBirth);
         expect(submittedData.person.communicationLanguage).toBe(TEST_PERSON.communicationLanguage);
-        expect(submittedData.memberType).toBe(MemberTypeEnum.Regular);
+        expect(submittedData.memberType).toBe(MemberTypeEnum.regular);
 
         // Ensure address structure is preserved
         expect(submittedData.person.address).toBeDefined();
@@ -273,7 +274,7 @@ describe('MemberForm Integration Test', () => {
         // The mock action returns whatever it received (which is mapFormToEntity's output)
         const submittedData = (saveMemberAction as jest.Mock).mock.calls[0][0];
 
-        expect(submittedData.memberType).toBe(MemberTypeEnum.Premium);
+        expect(submittedData.memberType).toBe(MemberTypeEnum.premium);
         expect(submittedData.preferredGymUuid).toBe(TEST_AVAILABLE_GYMS[1].value);
         // Validate the form inputs were correctly updated with _update_ suffix
         expect(submittedData.person.firstname).toBe(TEST_PERSON.firstname + '_update_');

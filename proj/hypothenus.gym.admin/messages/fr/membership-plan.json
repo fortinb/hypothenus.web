@@ -1,0 +1,29 @@
+{
+    "menu": {
+        "membershipPlan": "{name}",
+        "brand": "{name}",
+        "sections": "Plan d'abonnement",
+        "info": "Info",
+        "management": "Plans d'abonnement",
+        "managementTooltip": "Retour aux plans d'abonnement"
+    },
+    "breadcrumb": {
+        "membershipPlans": "Plans d'abonnement"
+    },
+    "resume": {
+        "title": "Résumé"
+    },
+    "list": {
+        "menu": {
+            "membershipPlan": "{name}",
+            "title": "Plans d'abonnement",
+            "add": "Ajouter un nouveau plan d'abonnement",
+            "inactive": "Inactif",
+            "management": "{name}",
+            "managementTooltip": "Retour au plan d'abonnement"
+        },
+        "details": {
+            "inactive": "Inactif"
+        }
+    }
+}

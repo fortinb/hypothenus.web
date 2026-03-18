@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { useToastResult } from './useToastResult';
+import { useToastResult } from '../useToastResult';
 
 // small test component to exercise the hook behaviour without extra deps
 function HookTester() {

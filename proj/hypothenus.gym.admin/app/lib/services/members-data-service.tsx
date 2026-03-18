@@ -1,4 +1,4 @@
-import { Member, parseMember } from "@/src//lib/entities/member";
+import { Member, parseMember, serializeMember } from "@/src//lib/entities/member";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 
@@ -63,7 +63,7 @@ export async function postMember(member: Member): Promise<Member> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.post(postURI.valueOf(), member, request);
+  let response = await axiosInstance.post(postURI.valueOf(), serializeMember(member), request);
 
   return parseMember(response.data);
 }
@@ -74,7 +74,7 @@ export async function putMember(member: Member): Promise<Member> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.put(putURI.valueOf(), member, request);
+  let response = await axiosInstance.put(putURI.valueOf(), serializeMember(member), request);
 
  return parseMember(response.data);
 }

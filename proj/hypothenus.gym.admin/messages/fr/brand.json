@@ -6,6 +6,7 @@
         "gyms": "Salles de sport",
         "courses": "Cours",
         "members": "Membres",
+        "membershipPlans": "Plans d'abonnement",
         "management": "Marques",
         "managementTooltip": "retour aux marques"
     },

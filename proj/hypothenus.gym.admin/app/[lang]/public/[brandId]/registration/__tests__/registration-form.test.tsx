@@ -6,8 +6,8 @@ import { store } from '@/app/lib/store/store';
 import { createMemberAction } from '../actions';
 import { useRouter } from 'next/navigation';
 import { Member, newMember } from '@/src/lib/entities/member';
-import { LanguageEnum } from '@/src/lib/entities/language';
-import { PhoneNumberTypeEnum } from '@/src/lib/entities/phoneNumber';
+import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 import { newGym } from '@/src/lib/entities/gym';
 import { success } from '@/app/lib/http/handle-result';
 
@@ -131,7 +131,7 @@ describe('RegistrationForm Integration Test', () => {
         // Ensure that unmodified aspects of mockMember.person.phoneNumbers remain.
         expect(submittedData.person.phoneNumbers).toBeInstanceOf(Array);
         // Our input updated the first displayed phone input (likely mobile)
-        expect(submittedData.person.phoneNumbers.find((p: any) => p.type === PhoneNumberTypeEnum.Mobile && p.number === '(514) 555-1234')).toBeDefined();
+        expect(submittedData.person.phoneNumbers.find((p: any) => p.type === PhoneNumberTypeEnum.mobile && p.number === '(514) 555-1234')).toBeDefined();
 
         // 2. Ensure form fields still retain their values after save completes
         expect(firstnameInput).toHaveValue('John');

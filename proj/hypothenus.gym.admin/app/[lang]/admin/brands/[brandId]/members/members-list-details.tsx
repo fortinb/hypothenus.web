@@ -6,8 +6,8 @@ import Link from "next/link";
 import Card from "react-bootstrap/Card";
 import { formatPersonName } from "@/src/lib/entities/person";
 import { formatDate } from "@/app/lib/utils/dateUtils";
-import { PhoneNumberTypeEnum } from "@/src/lib/entities/phoneNumber";
 import Image from 'next/image';
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 
 export default function MemberListDetails({ lang, member }: { lang: string; member: Member }) {
   const t = useTranslations("member");
@@ -22,7 +22,7 @@ export default function MemberListDetails({ lang, member }: { lang: string; memb
           <Card.Text>
             <Link className="link-element" href={`mailto:${member.person.email}`}>{member.person.email}</Link><br />
             <span className="text-primary">{formatDate(member.person.dateOfBirth)}</span><br />
-            <span className="text-primary">{member.person.phoneNumbers.find(item => item.type === PhoneNumberTypeEnum.Mobile)?.number}</span><br />
+            <span className="text-primary">{member.person.phoneNumbers.find(item => item.type === PhoneNumberTypeEnum.mobile)?.number}</span><br />
             <span className="text-primary">{member.person.address.zipCode}</span><br />
             {member.isActive == false &&
               <>

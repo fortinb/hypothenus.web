@@ -1,0 +1,29 @@
+{
+    "menu": {
+        "membershipPlan": "{name}",
+        "brand": "{name}",
+        "sections": "Membership Plan",
+        "info": "Info",
+        "management": "Membership Plans",
+        "managementTooltip": "Back to membership plans"
+    },
+    "breadcrumb": {
+        "membershipPlans": "Membership Plans"
+    },
+    "resume": {
+        "title": "Resume"
+    },
+    "list": {
+        "menu": {
+            "membershipPlan": "{name}",
+            "title": "Membership Plans",
+            "add": "Add new membership plan",
+            "inactive": "Inactive",
+            "management": "{name}",
+            "managementTooltip": "Back to membership plan"
+        },
+        "details": {
+            "inactive": "Inactive"
+        }
+    }
+}

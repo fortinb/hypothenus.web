@@ -18,7 +18,9 @@
     },
     "validation": {
         "emailInvalid": "Le format du courriel est invalide.",
-        "descriptionRequired": "La description est requise."
+        "descriptionRequired": "La description est requise.",
+        "numericValue" : "Doit être une valeur numerique.",
+        "integerValue": "Doit être une valeur entière, les décimales ne sont pas autorisées."
     },
     "address": {
         "validation": {
@@ -242,6 +244,84 @@
             "no": "Annuler",
             "action": "Suppression en cours..."
         }
+    },
+    "membershipPlan": {
+        "validation": {
+            "alreadyExists": "Le code du plan d'abonnement doit être unique, ce code existe déjà.",
+            "nameRequired": "Le plan d'abonnement est requis.",
+            "includedGymsRequired": "Les salles de sport incluses sont requises.",
+            "includedCoursesRequired": "Les cours inclus sont requis.",
+            "numberOfClassesRequired": "Le nombre de cours doit être > 0.",
+            "descriptionRequired": "La description du plan d'abonnement est requise.",
+            "titleRequired": "Le titre du plan d'abonnement est requis.",
+            "onlyOneTrial": "Seule une classe d'essai est autorisée.",
+            "durationInMonthsInterval": "La durée en mois doit être comprise entre 0 et 12."
+        },
+        "navigation": {
+            "new": "Nouveau plan d'abonnement"
+        },
+        "courses": {
+            "available": "Cours disponibles",
+            "selected": "Cours inclus",
+            "addAll": "Tout sélectionner"
+        },
+        "gyms": {
+            "available": "Salles de sport disponibles",
+            "selected": "Salles de sport incluses",
+            "addAll": "Tout sélectionner"
+        },
+        "gymsSection": "Salles de sport incluses",
+        "coursesSection": "Cours inclus",
+        "name": "Nom",
+        "descriptionSection": "Descriptions du plan d'abonnement",
+        "description": "Description",
+        "titlesSection": "Titres du plan d'abonnement",
+        "title": "Titre",
+        "cost": {
+            "amount": "Montant",
+            "currency": "Devise"
+        },
+        "numberOfClasses": "Nombre de cours",
+        "period": {
+            "label": "Période",
+            "tooltip": "Cours = Nombre de cours, \nMensuel = # cours par mois\nHebdomadaire = # cours par semaine\nEssai = 1 cours\nHeures = nombre d'heures",
+            "classes": "Cours",
+            "monthly": "Mensuel",
+            "weekly": "Hebdomadaire",
+            "trial": "Essai",
+            "hours": "Heures"
+        },
+        "billingFrequency": {
+            "label": "Fréquence de facturation",
+            "oneTime": "Paiement unique",
+            "annual": "Annuel",
+            "monthly": "Mensuel",
+            "weekly": "Hebdomadaire",
+            "biweekly": "Bi-Hebdomadaire"
+        },
+        "durationInMonths": {
+            "label": "Durée en mois",
+           "tooltip": "Pour combien de mois le plan d'abonnement est-il valide après l'abonnement du membre. Par exemple, si la durée est de 3 mois et que le membre s'abonne le 15 janvier, le plan d'abonnement sera valide jusqu'au 15 avril. Ce champ est requis si la fréquence de facturation n'est pas 'Paiement unique'."
+         },
+        "guestPrivilege": "Privilège invité",
+        "isPromotional": "Promotionnel",
+        "isGiftCard": "Carte cadeau",
+        "courseSection": "Cours inclus",
+        "gymSection": "Salles de sport incluses",
+        "deleteConfirmation": {
+            "title": "Supprimer {name}",
+            "text": "Êtes vous certain de vouloir supprimer ce plan d'abonnement ?",
+            "yes": "Supprimer",
+            "no": "Annuler",
+            "action": "Suppression en cours..."
+        }
+    },
+    "cost": {
+        "validation": {
+            "amountRequired": "Le montant est requis."
+        },
+        "amount": "Montant",
+        "currency": "Devise"
     },
     "phoneNumber": {
         "validation": {

@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { Address, AddressSchema, newAddress } from "./address";
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from "./base-entity";
 import { Contact, ContactSchema, newContact, parseContact } from "./contact";
-import { PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum, newPhoneNumber } from "./phoneNumber";
+import { PhoneNumber, PhoneNumberSchema, newPhoneNumber } from "./phone-number";
+import { PhoneNumberTypeEnum } from './enum/phone-number-type-enum';
 
 export interface Gym extends BaseEntity {
   brandUuid?: any;
@@ -33,8 +34,8 @@ export const newGym = (): Gym => {
       newContact(),
     ],
     phoneNumbers: [
-      newPhoneNumber(PhoneNumberTypeEnum.Business),
-      newPhoneNumber(PhoneNumberTypeEnum.Mobile)],
+      newPhoneNumber(PhoneNumberTypeEnum.business),
+      newPhoneNumber(PhoneNumberTypeEnum.mobile)],
     messages: [],
     createdBy: undefined,
     modifiedBy: undefined
@@ -51,21 +52,25 @@ export const parseGym = (data: any): Gym => {
   }
 
   // Ensure at least one Mobile and one Business phone number
-  const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
-  const hasBusiness = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Business);
+  const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
+  const hasBusiness = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.business);
 
   if (!hasBusiness) {
-    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Business));
+    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.business));
   }
 
   if (!hasMobile) {
-    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+    gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.mobile));
   }
 
   // Parse each contact in the contacts array
   gym.contacts = gym.contacts?.map(contact => parseContact(contact));
 
   return gym;
+}
+
+export const serializeGym = (gym: Gym): any => {
+  return { ...gym };
 }
 
 export const GymSchema = z.object({
@@ -76,4 +81,9 @@ export const GymSchema = z.object({
   note: z.string().min(0),
   phoneNumbers: z.array(PhoneNumberSchema).min(1),
   contacts: z.array(ContactSchema)
+});
+
+export const GymReferenceSchema = z.object({
+  uuid: z.any().nullable(),
+  brandUuid: z.string().min(1)
 });

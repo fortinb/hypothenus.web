@@ -1,12 +1,6 @@
 import { z } from 'zod';
-import { BaseEntity } from './baseEntity';
-
-export enum RoleEnum {
-  Admin = "admin",
-  Manager = "manager",
-  Coach = "coach",
-  Member = "member"
-}
+import { BaseEntity } from './base-entity';
+import { RoleEnum } from './enum/role-enum';
 
 export interface User extends BaseEntity {
   uuid?: any;
@@ -16,7 +10,6 @@ export interface User extends BaseEntity {
   roles: RoleEnum[];
   isActive: boolean;
 }
-
 
 export const newUser = (): User => {
   let newUser: User = {
@@ -37,6 +30,10 @@ export const newUser = (): User => {
 export const parseUser = (data: any): User => {
   let user: User = data;
   return user;
+}
+
+export const serializeUser = (user: User): any => {
+  return { ...user };
 }
 
 export const UserSchema = z.object({

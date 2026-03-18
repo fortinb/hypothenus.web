@@ -1,4 +1,4 @@
-import { RoleEnum } from "../user";
+import { RoleEnum } from "../enum/role-enum";
 
 export interface RoleSelectedItem {
     role: RoleEnum;

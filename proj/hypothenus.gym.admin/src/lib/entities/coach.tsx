@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { newPerson, parsePerson, Person, PersonSchema } from './person';
-import { BaseEntity } from './baseEntity';
-import { LanguageEnum } from './language';
+import { BaseEntity } from './base-entity';
 
 export interface Coach extends BaseEntity {
   uuid?: any;
@@ -38,6 +37,10 @@ export const parseCoach = (data: any): Coach => {
   coach.person = parsePerson(data.person);
 
   return coach;
+}
+
+export const serializeCoach = (coach: Coach): any => {
+  return { ...coach };
 }
 
 export const CoachSchema = z.object({

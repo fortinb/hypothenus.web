@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
-import { LanguageEnum } from "@/src/lib/entities/language";
-import { LocalizedString } from "@/src/lib/entities/localizedString";
+import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
+import { LocalizedString } from "@/src/lib/entities/localized-string";
 import Form from "react-bootstrap/Form";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 

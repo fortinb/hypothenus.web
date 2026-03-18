@@ -17,7 +17,10 @@
         "deactivationError": "Deactivation failed !"
     },
     "validation": {
-        "emailInvalid": "Email format is invalid."
+        "emailInvalid": "Email format is invalid.",
+        "descriptionRequired": "Description is required.",
+        "numericValue": "Must be a numeric value.",
+        "integerValue": "Must be an integer value, decimals are not allowed."
     },
     "address": {
         "validation": {
@@ -241,6 +244,83 @@
             "no": "Cancel",
             "action": "Deleting..."
         }
+    },
+    "membershipPlan": {
+        "validation": {
+            "alreadyExists": "Membership plan code must be unique, code already exists.",
+            "nameRequired": "Membership plan is required.",
+            "includedGymsRequired": "Included gyms is required.",
+            "includedCoursesRequired": "Included courses is required.",
+            "numberOfClassesRequired": "Number of classes must be > 0.",
+            "descriptionRequired": "Membership plan description is required.",
+            "titleRequired": "Membership plan title is required.",
+            "onlyOneTrial": "Only one trial class is allowed.",
+            "durationInMonthsInterval": "Duration in months must be between 0 and 12."
+        },
+        "navigation": {
+            "new": "New membership plan"
+        },
+        "courses": {
+            "available": "Available courses",
+            "selected": "Included courses",
+            "addAll": "Select All"
+        },
+        "gyms": {
+            "available": "Available gyms",
+            "selected": "Included gyms",
+            "addAll": "Select All"
+        },
+        "gymsSection": "Included gyms",
+        "coursesSection": "Included courses",
+        "name": "Name",
+        "description": "Description",
+        "titlesSection": "Membership plan titles",
+        "title": "Title",
+        "cost": {
+            "amount": "Cost amount",
+            "currency": "Currency"
+        },
+        "numberOfClasses": "Number of classes",
+        "period": {
+            "label": "Period",
+            "tooltip": "Classes = Number of classes, \nMonthly = # of classes per month\nWeekly = # of classes per week\nTrial = 1 class\nHours = Number of hours",
+            "classes": "Classes",
+            "monthly": "Monthly",
+            "weekly": "Weekly",
+            "trial": "Trial",
+            "hours": "Hours"
+        },
+        "billingFrequency": {
+            "label": "Billing frequency",
+            "oneTime": "One time payment",
+            "annual": "Annual payment",
+            "monthly": "Monthly",
+            "weekly": "Weekly",
+            "biweekly": "Bi-Weekly"
+        },
+        "durationInMonths": {
+            "label": "Duration in months",
+            "tooltip": "For how many months the membership plan is valid, after the member's subscription. For example, if the duration is 3 months and the member subscribes on January 15th, the membership plan will be valid until April 15th. This field is required if billing frequency is not 'One time payment'."
+        },
+        "guestPrivilege": "Guest privilege",
+        "isPromotional": "Promotional",
+        "isGiftCard": "Gift card",
+        "courseSection": "Included courses",
+        "gymSection": "Included gyms",
+        "deleteConfirmation": {
+            "title": "Delete {name}",
+            "text": "Are you sure you want to delete this membership plan ?",
+            "yes": "Delete",
+            "no": "Cancel",
+            "action": "Deleting..."
+        }
+    },
+    "cost": {
+        "validation": {
+            "amountRequired": "Amount is required."
+        },
+        "amount": "Amount",
+        "currency": "Currency"
     },
     "phoneNumber": {
         "validation": {

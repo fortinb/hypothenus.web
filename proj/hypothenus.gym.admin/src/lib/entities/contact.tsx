@@ -1,4 +1,5 @@
-import { newPhoneNumber, PhoneNumber, PhoneNumberSchema, PhoneNumberTypeEnum } from "./phoneNumber"
+import { newPhoneNumber, PhoneNumber, PhoneNumberSchema } from "./phone-number";
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 import { z } from 'zod';
 
 export interface Contact {
@@ -17,8 +18,8 @@ export const newContact = (): Contact => {
     description: "",
     email: undefined,
     phoneNumbers: [
-      newPhoneNumber(PhoneNumberTypeEnum.Home),
-      newPhoneNumber(PhoneNumberTypeEnum.Mobile)]
+      newPhoneNumber(PhoneNumberTypeEnum.home),
+      newPhoneNumber(PhoneNumberTypeEnum.mobile)]
   };
 
   return newContact;
@@ -32,18 +33,22 @@ export const parseContact = (data: any): Contact => {
   }
   
   // Ensure at least one Mobile and one Home phone number
-  const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.Mobile);
-  const hasHome = contact.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.Home);
+  const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
+  const hasHome = contact.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.home);
 
   if (!hasHome) {
-    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Home));
+    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.home));
   }
 
   if (!hasMobile) {
-    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.Mobile));
+    contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.mobile));
   }
 
   return contact;
+}
+
+export const serializeContact = (contact: Contact): any => {
+  return { ...contact };
 }
 
 export function formatContactName(contact: Contact): string {

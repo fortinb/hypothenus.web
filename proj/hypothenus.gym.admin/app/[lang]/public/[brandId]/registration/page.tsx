@@ -6,7 +6,7 @@ import { fetchGyms } from "@/app/lib/services/gyms-data-service";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import RegistrationForm from "./registration-form";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
-import { LanguageEnum } from "@/src/lib/entities/language";
+import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {

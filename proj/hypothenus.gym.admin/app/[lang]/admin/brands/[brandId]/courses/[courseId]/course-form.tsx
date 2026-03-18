@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { clearCourseState, CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
-import { LanguageEnum } from "@/src/lib/entities/language";
+import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -100,6 +100,8 @@ export default function CourseForm({ lang, course }: {
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
+                    dispatch(updateCourseState(entity));
+                    showResultToast(true, t("action.saveSuccess"));
                     router.push(`/${lang}/admin/brands/${entity.brandUuid}/courses/${entity.uuid}`);
                 }
             },
@@ -120,7 +122,6 @@ export default function CourseForm({ lang, course }: {
             // Success
             async (entity) => {
                 dispatch(updateCourseState(entity));
-
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },

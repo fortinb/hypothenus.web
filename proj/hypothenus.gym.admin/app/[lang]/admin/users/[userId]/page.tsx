@@ -1,4 +1,4 @@
-import { RoleEnum, User, newUser } from "@/src/lib/entities/user";
+import { User, newUser } from "@/src/lib/entities/user";
 import UserForm from "./user-form";
 import UserMenu from "./user-menu";
 import { getUser } from "@/app/lib/services/users-data-service";
@@ -8,6 +8,7 @@ import { auth } from "@/src/security/auth";
 import { RoleSelectedItem } from "@/src/lib/entities/ui/role-selected-item";
 import { getTranslations } from "next-intl/server";
 import { failure } from "@/app/lib/http/handle-result";
+import { RoleEnum } from "@/src/lib/entities/enum/role-enum";
 
 interface PageProps {
     params: Promise<{ lang: string; userId: string }>;

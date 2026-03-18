@@ -1,4 +1,4 @@
-import { User, parseUser } from "@/src//lib/entities/user";
+import { User, parseUser, serializeUser } from "@/src//lib/entities/user";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 
@@ -63,7 +63,7 @@ export async function postUser(user: User): Promise<User> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.post(postURI.valueOf(), user, request);
+  let response = await axiosInstance.post(postURI.valueOf(), serializeUser(user), request);
 
   return parseUser(response.data);
 }
@@ -74,7 +74,7 @@ export async function putUser(user: User): Promise<User> {
 
   const request = initRequest({});
 
-  let response = await axiosInstance.put(putURI.valueOf(), user, request);
+  let response = await axiosInstance.put(putURI.valueOf(), serializeUser(user), request);
 
  return parseUser(response.data);
 }

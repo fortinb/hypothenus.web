@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { z } from 'zod';
-import { BaseEntity } from './baseEntity';
-import { LanguageEnum } from './language';
-import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localizedString';
+import { BaseEntity } from './base-entity';
+import { LanguageEnum } from './enum/language-enum';
+import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localized-string';
 import { localesConfig } from "@/i18n/locales-client";
 
 export interface Course extends BaseEntity {
@@ -27,6 +27,10 @@ export const parseCourse = (data: any): Course => {
   }
 
   return course;
+}
+
+export const serializeCourse = (course: Course): any => {
+  return { ...course };
 }
 
 export const newCourse = (): Course => {
@@ -74,4 +78,9 @@ export const CourseSchema = z.object({
 }).refine((course) => !course.endDate || !course.startDate || (moment(course.endDate).format("YYYYMMDD") > moment().format("YYYYMMDD")), {
   message: "course.validation.endDateGreaterThanToday",
   path: ["endDate"], // path of error;
-})
+});
+
+export const CourseReferenceSchema = z.object({
+  uuid: z.any().nullable(),
+  brandUuid: z.string().min(1)
+});
