@@ -196,6 +196,11 @@ footer {
     font-weight: bold;
 }
 
+.text-primary-small {
+    color: $text-primary-light;
+    font-size: small;
+}
+
 .text-secondary {
     color: $text-secondary !important;
 }

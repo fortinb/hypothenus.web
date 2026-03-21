@@ -2,13 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import { MemberState } from "@/app/lib/store/slices/member-state-slice";
-import { formatAddress } from "@/src/lib/entities/address";
-import { Contact, formatContactName } from "@/src/lib/entities/contact";
-import Link from "next/link";
-import Col from "react-bootstrap/Col";
+import { Contact } from "@/src/lib/entities/contact";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
+import EmergencyContactDisplay from "@/app/ui/components/contact/emergency-contact-display";
 
 export default function MemberResume() {
   const memberState: MemberState = useSelector((state: any) => state.memberState);
@@ -24,43 +21,13 @@ export default function MemberResume() {
         <hr />
       </div>
       <Container fluid={true}>
-        <Row className="gx-2">
-          <Col xs={12} >
-            <p className="card-text">
-              <Link className="link-element" href={`mailto:${memberState.member.person.email}`}>{memberState.member.person.email}</Link><br />
-              <span className="text-primary">{memberState.member.person.phoneNumbers[0]?.number}</span><br />
-              <span className="text-primary">{memberState.member.person.phoneNumbers[1]?.number}</span><br />
-            </p>
-          </Col>
-        </Row>
-
         {memberState.member.person.contacts?.map((contact: Contact, index: number) => {
 
-          return <Row key={index} className="gx-2">
-            <Col xs={12} >
-              <hr />
-              <p className="card-text">
-                <span className="text-secondary fw-bolder">{formatContactName(contact)}</span><br />
-                <span className="text-primary">{contact.description}</span><br />
-                <Link className="link-element" href={`mailto:${contact?.email}`}>{contact.email}</Link><br />
-                <span className="text-primary">{contact.phoneNumbers[0]?.number}</span><br />
-                <span className="text-primary">{contact.phoneNumbers[1]?.number}</span><br />
-              </p>
-            </Col>
-          </Row>
+          return (
+            <EmergencyContactDisplay contact={contact} index={index} />
+          )
 
         })}
-
-        <Row className="gx-2">
-          <Col xs={12} >
-            <hr />
-            <p className="card-text">
-              {memberState?.member?.person?.address &&
-                <span className="text-primary">{formatAddress(memberState.member.person.address)}</span>
-              }
-            </p>
-          </Col>
-        </Row>
       </Container>
     </div>
   );

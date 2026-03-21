@@ -29,31 +29,19 @@ export default function PhoneNumberInfo({ index, id, defaultType, formStatefield
         <Form.Group>
             <Form.Control type="hidden" id={`phone_input_type_${id}_${index}`} value={defaultType} {...register(`${formStatefield}.type`)} />
             <Form.Label className="text-primary" htmlFor={`phone_input_number_${id}_${index}`} >
-
-                {defaultType == PhoneNumberTypeEnum.home &&
-                    <span>{t("phoneNumber.home")}</span>
-                }
-
-                {defaultType == PhoneNumberTypeEnum.business &&
-                    <span>{t("phoneNumber.business")}</span>
-                }
-
-                {defaultType == PhoneNumberTypeEnum.mobile &&
-                    <span>{t("phoneNumber.mobile")}</span>
-                }
-
+                <span>{t(`phoneNumber.${defaultType}`)}</span>
             </Form.Label>
             <Controller
                 name={`${formStatefield}.number`}
-                 render={({ field }) => (
+                render={({ field }) => (
                     <IMaskInput
                         {...field}
                         mask="(000) 000-0000"
                         onAccept={(value) => field.onChange(value)}
                         inputRef={field.ref}
-                         id={`phone_input_number_${id}_${index}`}
+                        id={`phone_input_number_${id}_${index}`}
                         placeholder="(999) 999-9999"
-                        className={ "form-control" + (getError(index) ? " input-invalid" : "")}
+                        className={"form-control" + (getError(index) ? " input-invalid" : "")}
                     />
                 )}
             />
