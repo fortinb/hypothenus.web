@@ -12,7 +12,7 @@ export default function UserListDetails({ lang, user }: { lang: string; user: an
 
   return (
     <div className="col-6 p-2">
-      <Card>
+      <Card className="card-min-height">
         <Card.Body className={"m-2"}>
           <Card.Title>
             <Link className="link-element" href={`/${lang}/admin/users/${user.uuid}`}>

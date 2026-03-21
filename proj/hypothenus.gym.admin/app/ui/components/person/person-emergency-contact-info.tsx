@@ -20,6 +20,7 @@ export default function EmergencyContactInfo({ isEditMode }: { isEditMode: boole
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
     const { formState: { errors } } = useFormContext();
+
     const formContacts = useFieldArray({
         name: "person.contacts",
     });
@@ -65,7 +66,7 @@ export default function EmergencyContactInfo({ isEditMode }: { isEditMode: boole
                 </div>
             </Row>
             <Row className="m-0 pb-2">
-                <Accordion >
+                <Accordion defaultActiveKey={formContacts.fields?.map((_: Record<string, any>, index: number) => index.toString())} alwaysOpen>
 
                     {formContacts.fields?.map((contact: Record<string, any>, index: number) => {
 

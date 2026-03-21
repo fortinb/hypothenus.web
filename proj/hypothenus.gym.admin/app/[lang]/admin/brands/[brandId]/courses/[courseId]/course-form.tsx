@@ -234,8 +234,8 @@ export default function CourseForm({ lang, course }: {
                 const orderB = localesConfigLanguageOrder[b.language] ?? 999;
                 return orderA - orderB;
             }),
-            startDate: course.startDate ? moment(course.startDate).format("YYYY-MM-DD") : null,
-            endDate: course.endDate ? moment(course.endDate).format("YYYY-MM-DD") : null,
+            startDate: course.startDate ? moment(course.startDate).toISOString() : null,
+            endDate: course.endDate ? moment(course.endDate).toISOString() : null,
         }
     }
 
@@ -245,8 +245,8 @@ export default function CourseForm({ lang, course }: {
             code: formData.code,
             name: formData.name,
             description: formData.description,
-            startDate: moment(formData.startDate).format("YYYY-MM-DD"),
-            endDate: formData.endDate ? moment(formData.endDate).format("YYYY-MM-DD") : null,
+            startDate: moment(formData.startDate).toISOString(),
+            endDate: formData.endDate ? moment(formData.endDate).toISOString() : null,
         };
     }
 

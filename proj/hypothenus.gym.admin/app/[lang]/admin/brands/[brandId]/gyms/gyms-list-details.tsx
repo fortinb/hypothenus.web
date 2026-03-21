@@ -11,7 +11,7 @@ export default function GymListDetails({ lang, gym }: { lang: string; gym: Gym }
 
   return (
     <div className="col-6 p-2">
-      <Card>
+      <Card className="card-min-height">
         <Card.Body className={"m-2" + (gym.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`}> {gym.name}</Link>

@@ -10,9 +10,7 @@
     "breadcrumb": {
         "membershipPlans": "Membership Plans"
     },
-    "resume": {
-        "title": "Resume"
-    },
+  
     "list": {
         "menu": {
             "membershipPlan": "{name}",

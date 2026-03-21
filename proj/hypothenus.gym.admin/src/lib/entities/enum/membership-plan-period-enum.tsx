@@ -3,5 +3,6 @@ export enum MembershipPlanPeriodEnum {
 	monthly = "monthly",
 	weekly = "weekly",
 	trial = "trial",
-	hours = "hours"
+	hours = "hours",
+	merchandise = "merchandise"
 }

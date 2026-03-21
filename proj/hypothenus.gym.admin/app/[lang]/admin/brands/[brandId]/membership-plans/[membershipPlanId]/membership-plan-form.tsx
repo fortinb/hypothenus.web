@@ -26,6 +26,7 @@ import { GymSelectedItem } from "@/src/lib/entities/ui/gym-selected-item";
 import { Gym } from "@/src/lib/entities/gym";
 import { Course } from "@/src/lib/entities/course";
 import MembershipPlanInfo from "@/app/ui/components/membership-plan/membership-plan-info";
+import moment from "moment";
 
 export interface MembershipPlanFormData {
     membershipPlan: z.infer<typeof MembershipPlanSchema>;
@@ -305,7 +306,9 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
                     uuid: course.uuid,
                     brandUuid: course.brandUuid,
                 }
-            })
+            }),
+            startDate: membershipPlan.startDate ? moment(membershipPlan.startDate).toISOString() : null,
+            endDate: membershipPlan.endDate ? moment(membershipPlan.endDate).toISOString() : null
         };
     }
     function mapFormToEntity(formData: z.infer<typeof MembershipPlanFormSchema>, membershipPlan: MembershipPlan): MembershipPlan {
@@ -331,6 +334,8 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             includedCourses: formData.selectedCourseItems.map((item) => {
                 return item.course as Course;
             }),
+            startDate: moment(formData.membershipPlan.startDate).toISOString(),
+            endDate: formData.membershipPlan.endDate ? moment(formData.membershipPlan.endDate).toISOString() : null
         };
     }
 

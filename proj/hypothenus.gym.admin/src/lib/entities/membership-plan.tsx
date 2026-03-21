@@ -9,6 +9,7 @@ import { BaseEntity } from "./base-entity";
 import { newCurrency } from "./pricing/currency";
 import { LanguageEnum } from "./enum/language-enum";
 import { localesConfig } from "@/i18n/locales-client";
+import moment from "moment";
 
 export interface MembershipPlan extends BaseEntity {
     uuid?: any;
@@ -26,6 +27,8 @@ export interface MembershipPlan extends BaseEntity {
     isGiftCard: boolean;
     includedCourses: Course[];
     includedGyms: Gym[];
+    startDate?: any;
+    endDate?: any;
     isActive: boolean;
     activatedOn?: string;
     deactivatedOn?: string;
@@ -33,9 +36,16 @@ export interface MembershipPlan extends BaseEntity {
 
 export const parseMembershipPlan = (data: any): MembershipPlan => {
     let membershipPlan: MembershipPlan = {
-         ...data,
-         cost: parseCost(data.cost)
+        ...data,
+        cost: parseCost(data.cost)
     };
+
+    if (data.startDate) {
+        membershipPlan.startDate = moment(data.startDate).toDate().toISOString();
+    }
+    if (data.endDate) {
+        membershipPlan.endDate = moment(data.endDate).toDate().toISOString();
+    }
 
     return membershipPlan;
 }
@@ -67,6 +77,8 @@ export const newMembershipPlan = (): MembershipPlan => {
         isGiftCard: false,
         includedCourses: [],
         includedGyms: [],
+        startDate: moment().format("YYYY-MM-DD"),
+        endDate: undefined,
         isActive: true,
         messages: [],
         createdBy: undefined,
@@ -90,6 +102,13 @@ export function getMembershipPlanName(membershipPlan: MembershipPlan, language?:
     }
 
     return name?.text ?? "";
+}
+
+export function getMembershipPlanPrice(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+
+    let cost = parseCost(membershipPlan.cost); 
+    const amount = cost.amount.toFixed(2);
+    return `${amount}${cost.currency.symbol} (${cost.currency.code})`;
 }
 
 export function getMembershipPlanDescription(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
@@ -116,7 +135,7 @@ export const MembershipPlanSchema = z.object({
     name: z.array(LocalizedStringSchema(true, "membershipPlan.validation.nameRequired")).min(2),
     description: z.array(LocalizedStringSchema(true, "membershipPlan.validation.descriptionRequired")).min(2),
     title: z.array(LocalizedStringSchema(true, "membershipPlan.validation.titleRequired")).min(2),
-    numberOfClasses: z.coerce.number( { error: "validation.numericValue" })
+    numberOfClasses: z.coerce.number({ error: "validation.numericValue" })
         .gt(0, { error: "membershipPlan.validation.numberOfClassesRequired" })
         .int({ error: "validation.integerValue" }),
     period: z.enum(MembershipPlanPeriodEnum),
@@ -131,7 +150,15 @@ export const MembershipPlanSchema = z.object({
     isGiftCard: z.boolean(),
     includedGyms: z.array(GymReferenceSchema).min(0).nullable().optional(),
     includedCourses: z.array(CourseReferenceSchema).min(0).nullable().optional(),
+    startDate: z.string().nullable().refine((date) => !!date, { message: "membershipPlan.validation.startDateRequired" }),
+    endDate: z.string().nullable().optional(),
 }).refine((membershipPlan) => membershipPlan.period !== MembershipPlanPeriodEnum.trial || membershipPlan.numberOfClasses == 1, {
     message: "membershipPlan.validation.onlyOneTrial",
     path: ["numberOfClasses"]
+}).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") >= moment(membershipPlan.startDate).format("YYYYMMDD")), {
+  message: "membershipPlan.validation.endDateGreaterThanStartDate",
+  path: ["endDate"], // path of error
+}).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") > moment().format("YYYYMMDD")), {
+  message: "membershipPlan.validation.endDateGreaterThanToday",
+  path: ["endDate"], // path of error;
 });

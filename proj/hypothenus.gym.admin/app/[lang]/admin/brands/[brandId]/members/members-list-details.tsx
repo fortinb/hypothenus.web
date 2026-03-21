@@ -14,7 +14,7 @@ export default function MemberListDetails({ lang, member }: { lang: string; memb
 
   return (
     <div className="col-6 p-2">
-      <Card>
+      <Card className="card-min-height">
         <Card.Body className={"m-2" + (member.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${lang}/admin/brands/${member.brandUuid}/members/${member.uuid}`}> {formatPersonName(member.person)}</Link>

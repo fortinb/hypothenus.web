@@ -12,7 +12,7 @@ export default function CoachListDetails({ lang, coach }: { lang: string; coach:
 
   return (
     <div className="col-6 p-2">
-      <Card>
+      <Card className="card-min-height">
         <Card.Body className={"m-2" + (coach.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`}> {formatPersonName(coach.person)}</Link>

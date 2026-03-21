@@ -6,7 +6,7 @@
 @import "../node_modules/bootstrap/scss/functions";
 
 // Bootstratp base variables
-$white:    #fff !default;
+$white: #fff !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -16,7 +16,7 @@ $gray-600: #6c757d !default;
 $gray-700: #495057 !default;
 $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
-$black:    #000 !default;
+$black: #000 !default;
 
 $btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
 // 2. Include any default variable overrides here
@@ -24,7 +24,7 @@ $primary: #f7f7f7;
 $secondary: #bc1fc1;
 $info: #3b88fc;
 
-$body-bg:#cdcdce;
+$body-bg: #cdcdce;
 
 $tooltip-bg: #3b88fc;
 $tooltip-color: #fff;
@@ -44,14 +44,14 @@ $breadcrumb-divider-color: $secondary;
 $focus-ring-color: #3b88fc;
 $enable-shadows: true;
 
-$list-group-color:$gray-900;
-$list-group-bg:  $gray-400;
-$list-group-border-color:$gray-500;
+$list-group-color: $gray-900;
+$list-group-bg: $gray-400;
+$list-group-border-color: $gray-500;
 $list-group-border-width: 1px;
-$list-group-border-radius:  10px;
+$list-group-border-radius: 10px;
 $list-group-hover-bg: $gray-500;
 $list-group-hover-color: $gray-900;
-$list-group-active-bg: $info;  
+$list-group-active-bg: $info;
 $list-group-active-color: $white;
 $list-group-disabled-color: $white;
 $list-group-disabled-bg: $info;
@@ -114,7 +114,7 @@ $bg-secondary: $white;
 $bg-light: $gray-100;
 $bg-info: $info;
 $bg-header: #961a9b;
-$bg-tertiary:  #3b88fc;
+$bg-tertiary: #3b88fc;
 $bg-dark: $gray-500;
 
 $text-primary: $gray-900;
@@ -147,6 +147,7 @@ $button-secondary-disabled: $info;
 $card-shadow: $gray-700; //#3b88fc;
 $card-bg-primary: $gray-200;
 $card-bg-secondary: $gray-300;
+$card-bg-dark: $info;
 
 $bg-checkbox-switch: $gray-300;
 
@@ -203,6 +204,7 @@ footer {
     color: $text-tertiary;
     font-weight: bold;
 }
+
 .text-invalid {
     color: $text-invalid;
     font-weight: bold;
@@ -257,7 +259,7 @@ footer {
 //Accordeon
 .accordion-button:focus {
     box-shadow: none;
-   
+
 }
 
 .accordion-button:disabled {
@@ -271,17 +273,17 @@ footer {
     box-shadow: none;
 }
 
-.accordion-item  > .accordion-header .accordion-button {
+.accordion-item>.accordion-header .accordion-button {
     border: none !important;
     border-radius: 5px;
 }
 
-.accordion-item:first-of-type > .accordion-header .accordion-button {
-    border-radius: 5px!important;
+.accordion-item:first-of-type>.accordion-header .accordion-button {
+    border-radius: 5px !important;
 }
 
-.accordion-item:last-of-type > .accordion-header .accordion-button {
-    border-radius: 5px!important;
+.accordion-item:last-of-type>.accordion-header .accordion-button {
+    border-radius: 5px !important;
 }
 
 .accordion-header-light {
@@ -325,7 +327,7 @@ footer {
 
 .nav-link-img:hover {
     border-bottom: none;
-  
+
 }
 
 // breadcrumb
@@ -334,12 +336,12 @@ footer {
     font-weight: 400;
 }
 
-.breadcrumb-item > a {
+.breadcrumb-item>a {
     color: $button-primary;
-   // font-weight: bolder;
+    // font-weight: bolder;
 }
 
-.breadcrumb-item > a:hover {
+.breadcrumb-item>a:hover {
     color: $button-primary-hover;
     font-weight: bold;
     border-bottom: none;
@@ -362,24 +364,48 @@ footer {
 
 .link-disabled {
     pointer-events: none;
-    opacity:0.7;
+    opacity: 0.7;
 }
 
 // cards
 .card {
     transition: 250ms ease all;
-    min-height: 150px;
     background-color: $card-bg-primary;
 }
 
-.card h5.card-title {
+.card.card-min-height {
+    min-height: 150px;
+}
+
+.card card-title {
     color: $text-primary;
     opacity: 0.9;
     transition: 250ms ease all;
 }
 
-.card:hover h5.card-title {
+.card:hover card-title {
     color: $text-secondary;
+}
+
+.card.card-title.card-title-membership-plan {
+    color: $text-bright;
+    background-color: $info;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.card-text-smaller {
+    font-size: smaller;
+}
+
+.card-text-larger {
+    font-size: larger;
+        font-weight: bolder;
+}
+
+.card:hover .card-title.card-title-membership-plan {
+    color: $text-bright;
+    font-weight: h6;
 }
 
 .card-body {
@@ -537,6 +563,7 @@ footer {
 .btn-icon {
     padding: 6;
 }
+
 //list group
 .list-group-item.disabled {
     opacity: 0.7;
@@ -545,11 +572,11 @@ footer {
 }
 
 .select-multi-remove {
-  color: $secondary;
+    color: $secondary;
 }
 
 .select-multi-remove:hover {
-  color: darken($secondary, 10%);
+    color: darken($secondary, 10%);
 }
 
 //form controls
@@ -572,6 +599,7 @@ footer {
     color: $text-primary-light;
     cursor: pointer;
 }
+
 .dropzone-text {
     font-style: italic;
     font-weight: lighter;
@@ -584,4 +612,3 @@ footer {
 textarea {
     resize: none;
 }
-

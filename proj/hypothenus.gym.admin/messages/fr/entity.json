@@ -19,8 +19,13 @@
     "validation": {
         "emailInvalid": "Le format du courriel est invalide.",
         "descriptionRequired": "La description est requise.",
-        "numericValue" : "Doit être une valeur numerique.",
+        "numericValue": "Doit être une valeur numerique.",
         "integerValue": "Doit être une valeur entière, les décimales ne sont pas autorisées."
+    },
+    "list": {
+        "details": {
+            "inactive": "Inactif"
+        }
     },
     "address": {
         "validation": {
@@ -224,19 +229,19 @@
             "new": "Nouveau cours"
         },
         "coach": {
-            "available": "Entraineurs disponibles",
-            "selected": "Entraineurs qualifiés",
+            "available": "Entraîneurs disponibles",
+            "selected": "Entraîneurs qualifiés",
             "addAll": "Sélectionnez tout"
         },
         "code": "Code",
         "codePlaceholder": "Identification unique",
         "name": "Nom du cours",
-        "descriptions": "Descriptions du cours",
+        "namesSection": "Nom et description du cours",
         "description": "Description",
         "datesSection": "Période d'activation",
         "startDate": "Date de début",
         "endDate": "Date de fin",
-        "coachsSection": "Entraîneur qualifiés",
+        "coachsSection": "Entraîneur Qualifiés",
         "deleteConfirmation": {
             "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer ce cours ?",
@@ -255,10 +260,16 @@
             "descriptionRequired": "La description du plan d'abonnement est requise.",
             "titleRequired": "Le titre du plan d'abonnement est requis.",
             "onlyOneTrial": "Seule une classe d'essai est autorisée.",
-            "durationInMonthsInterval": "La durée en mois doit être comprise entre 0 et 12."
+            "durationInMonthsInterval": "La durée en mois doit être comprise entre 0 et 12.",
+            "startDateRequired": "La date de début est requise et doit être plus grande ou égale à la date du jour.",
+            "endDateGreaterThanToday": "La date de fin doit être plus grande que la date du jour.",
+            "endDateGreaterThanStartDate": "La date de fin doit être plus grande que la date de début."
         },
         "navigation": {
             "new": "Nouveau plan d'abonnement"
+        },
+        "resume": {
+            "title": "Visuel"
         },
         "courses": {
             "available": "Cours disponibles",
@@ -270,13 +281,17 @@
             "selected": "Salles de sport incluses",
             "addAll": "Tout sélectionner"
         },
+        "namesSection": "Nom et description du plan d'abonnement",
+        "planSection": "Détails du plan d'abonnement",
         "gymsSection": "Salles de sport incluses",
         "coursesSection": "Cours inclus",
         "name": "Nom",
-        "descriptionSection": "Descriptions du plan d'abonnement",
         "description": "Description",
         "titlesSection": "Titres du plan d'abonnement",
         "title": "Titre",
+        "datesSection": "Période d'activation",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
         "cost": {
             "amount": "Montant",
             "currency": "Devise"
@@ -289,7 +304,16 @@
             "monthly": "Mensuel",
             "weekly": "Hebdomadaire",
             "trial": "Essai",
-            "hours": "Heures"
+            "hours": "Heures",
+            "merchandise": "Marchandise",
+            "descriptions": {
+                "classes": "{classes} cours.",
+                "monthly": "{classes} cours par mois.",
+                "weekly": "{classes} cours par semaine.",
+                "trial": "{classes} cours d'essai.",
+                "hours": "{classes} heures.",
+                "merchandise": "Marchandise"
+            }
         },
         "billingFrequency": {
             "label": "Fréquence de facturation",
@@ -297,12 +321,19 @@
             "annual": "Annuel",
             "monthly": "Mensuel",
             "weekly": "Hebdomadaire",
-            "biweekly": "Bi-Hebdomadaire"
+            "biweekly": "Bi-Hebdomadaire",
+            "descriptions": {
+                "oneTime": "",
+                "annual": "par année.",
+                "monthly": "par mois.",
+                "weekly": "par semaine.",
+                "biweekly": "au deux semaines."
+            }
         },
         "durationInMonths": {
             "label": "Durée en mois",
-           "tooltip": "Pour combien de mois le plan d'abonnement est-il valide après l'abonnement du membre. Par exemple, si la durée est de 3 mois et que le membre s'abonne le 15 janvier, le plan d'abonnement sera valide jusqu'au 15 avril. Ce champ est requis si la fréquence de facturation n'est pas 'Paiement unique'."
-         },
+            "tooltip": "Pour combien de mois le plan d'abonnement est-il valide après l'abonnement du membre. Par exemple, si la durée est de 3 mois et que le membre s'abonne le 15 janvier, le plan d'abonnement sera valide jusqu'au 15 avril. Ce champ est requis si la fréquence de facturation n'est pas 'Paiement unique'."
+        },
         "guestPrivilege": "Privilège invité",
         "isPromotional": "Promotionnel",
         "isGiftCard": "Carte cadeau",

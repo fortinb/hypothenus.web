@@ -9,7 +9,7 @@ export interface Cost {
 export const parseCost = (data: any): Cost => {
     let cost: Cost = {
         ...data,
-        amount: data.amount / 100
+        amount: Number.isInteger(data.amount) ? data.amount / 100 : data.amount
     };
 
     return cost;

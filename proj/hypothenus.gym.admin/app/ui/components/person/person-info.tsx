@@ -33,6 +33,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
     const params = useParams<{ lang: string }>();
     const { register, formState: { errors } } = useFormContext();
     const [photoPreviewUri, setPhotoPreviewUri] = useState<string>();
+    const [accordeonDefaultActiveKeys] = useState<string[]>(["0", "1", "2"]);
 
     useEffect(() => {
         if (isCancelling === true) {
@@ -160,7 +161,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                 </Col>
             </Row>
             <Row className="m-0 pt-2">
-                <Accordion >
+                <Accordion defaultActiveKey={accordeonDefaultActiveKeys} alwaysOpen>
                     <Accordion.Item eventKey="0" className="pt-2">
                         <Accordion.Header className={(getError()?.address ? "accordeon-header-invalid" : "")}>{t("person.address")}</Accordion.Header>
                         <Accordion.Body className="p-0">

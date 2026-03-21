@@ -26,6 +26,7 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
     const { register, formState: { errors } } = useFormContext();
     const t = useTranslations("entity");
     const [logoPreviewUri, setLogoPreviewUri] = useState<string>();
+    const [accordeonDefaultActiveKeys] = useState<string[]>(["0", "1", "2"]);
 
     useEffect(() => {
         if (isCancelling === true) {
@@ -120,7 +121,7 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                     </Col>
                 </Row>
                 <Row className="m-0 pt-2">
-                    <Accordion >
+                    <Accordion defaultActiveKey={accordeonDefaultActiveKeys} alwaysOpen>
                         <Accordion.Item eventKey="0" className="pt-2">
                             <Accordion.Header className={(errors?.address ? "accordeon-header-invalid" : "")}>{t("brand.address")}</Accordion.Header>
                             <Accordion.Body className="p-0">

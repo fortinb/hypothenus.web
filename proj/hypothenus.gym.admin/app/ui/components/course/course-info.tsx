@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import "@/app/lib/i18n/datepicker-locales";
 import { localesConfig } from "@/i18n/locales-client";
 import FormLabelRequired from "../forms/form-label-required";
+import { useState } from "react";
 
 export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
     {
@@ -25,6 +26,8 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
     }) {
     const { register, formState: { errors } } = useFormContext();
     const t = useTranslations("entity");
+
+    const [accordeonDefaultActiveKeys] = useState<string[]>(["0", "1"]);
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="course_info_form" disabled={!isEditMode} >
@@ -40,9 +43,9 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                     </Col>
                 </Row>
                 <Row className="m-2 gx-2">
-                    <Accordion >
+                    <Accordion defaultActiveKey={accordeonDefaultActiveKeys} alwaysOpen>
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className={errors.name || errors.description ? "accordeon-header-invalid" : ""}>{t("course.descriptions")}</Accordion.Header>
+                            <Accordion.Header className={errors.name || errors.description ? "accordeon-header-invalid" : ""}>{t("course.namesSection")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -50,17 +53,16 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                             return (
                                                 <div key={language}>
                                                     <Row className="m-2 gx-2">
-                                                        <hr />
-                                                        <Form.Label className="text-primary h5" >{t(`language.${language}`)}</Form.Label>
-                                                    </Row>
-                                                    <Row className="m-2 gx-2">
+                                                        <Col xs={2} >
+                                                            <Form.Label className="text-primary" >{t(`language.${language}`)}</Form.Label>
+                                                        </Col>
                                                         <Col xs={4} >
                                                             <Form.Group>
                                                                 <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_name_${index}`} label={t("course.name")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`name.${index}`} parent="name"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
-                                                        <Col xs={8} >
+                                                        <Col xs={6} >
                                                             <Form.Group>
                                                                 <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_description_${index}`} label={t("course.description")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`description.${index}`} parent="description"></LocalizedStringInfo>
@@ -108,14 +110,14 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                             <Controller
                                                 name={"endDate"}
                                                 render={({ field }) => (
-                                                    <DatePicker 
-                                                        id={`course_input_endDate`} 
-                                                        minDate={new Date()} 
+                                                    <DatePicker
+                                                        id={`course_input_endDate`}
+                                                        minDate={new Date()}
                                                         onChange={(date: Date | null) => field.onChange(date ? date.toISOString() : null)}
                                                         selected={!field.value ? null : moment(field.value).toDate()}
-                                                        className={"form-control " + (errors.endDate ? " input-invalid " : "")} 
-                                                        locale={lang} 
-                                                        dateFormat="yyyy-MM-dd" 
+                                                        className={"form-control " + (errors.endDate ? " input-invalid " : "")}
+                                                        locale={lang}
+                                                        dateFormat="yyyy-MM-dd"
                                                         placeholderText={t("format.date")} />
                                                 )}
                                             />

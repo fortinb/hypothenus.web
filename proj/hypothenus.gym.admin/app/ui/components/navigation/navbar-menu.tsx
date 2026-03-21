@@ -10,6 +10,7 @@ import MemberMenu from "./member-menu";
 import { useTranslations } from "next-intl";
 import AdminButton from "./admin-button";
 import { Authorize } from "../security/authorize";
+import { Suspense } from "react";
 
 export default function NavbarMenu({ lang }: { lang: string }) {
   const t = useTranslations("layout");
@@ -50,7 +51,9 @@ export default function NavbarMenu({ lang }: { lang: string }) {
                   <SigninButton lang={lang} />
                 </div>
                 <div className="me-2">
-                  <LanguageButton lang={lang} />
+                  <Suspense fallback={null}>
+                    <LanguageButton lang={lang} />
+                  </Suspense>
                 </div>
               </div>
             </div>

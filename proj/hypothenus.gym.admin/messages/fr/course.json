@@ -1,6 +1,6 @@
 {
     "menu": {
-        "gym": "{name}",
+        "brand": "{name}",
         "sections": "Cours",
         "info": "Info",
         "management": "Cours",

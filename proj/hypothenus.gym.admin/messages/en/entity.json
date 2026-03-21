@@ -22,6 +22,11 @@
         "numericValue": "Must be a numeric value.",
         "integerValue": "Must be an integer value, decimals are not allowed."
     },
+    "list": {
+        "details": {
+            "inactive": "Inactive"
+        }
+    },
     "address": {
         "validation": {
             "civicNumberRequired": "Civic number is required.",
@@ -230,8 +235,8 @@
         },
         "code": "Code",
         "codePlaceholder": "Course unique code",
-        "name": "Course name",
-        "descriptions": "Course descriptions",
+        "name": "Name",
+        "namesSection": "Name and description of the course",
         "description": "Description",
         "datesSection": "Activation period",
         "startDate": "Start date",
@@ -255,10 +260,16 @@
             "descriptionRequired": "Membership plan description is required.",
             "titleRequired": "Membership plan title is required.",
             "onlyOneTrial": "Only one trial class is allowed.",
-            "durationInMonthsInterval": "Duration in months must be between 0 and 12."
+            "durationInMonthsInterval": "Duration in months must be between 0 and 12.",
+            "startDateRequired": "Start date is required, starting today or greater.",
+            "endDateGreaterThanToday": "End date must be greater than today.",
+            "endDateGreaterThanStartDate": "End date must be greater than start date."
         },
         "navigation": {
             "new": "New membership plan"
+        },
+        "resume": {
+            "title": "View"
         },
         "courses": {
             "available": "Available courses",
@@ -270,12 +281,17 @@
             "selected": "Included gyms",
             "addAll": "Select All"
         },
+        "namesSection": "Name and description of the membership plan",
+        "planSection": "Membership plan details",
         "gymsSection": "Included gyms",
         "coursesSection": "Included courses",
         "name": "Name",
         "description": "Description",
         "titlesSection": "Membership plan titles",
         "title": "Title",
+        "datesSection": "Activation period",
+        "startDate": "Start date",
+        "endDate": "End date",
         "cost": {
             "amount": "Cost amount",
             "currency": "Currency"
@@ -288,7 +304,16 @@
             "monthly": "Monthly",
             "weekly": "Weekly",
             "trial": "Trial",
-            "hours": "Hours"
+            "hours": "Hours",
+            "merchandise": "Merchandise",
+            "descriptions": {
+                "classes": "{classes} classes.",
+                "monthly": "{classes} classes per month.",
+                "weekly": "{classes} classes per week.",
+                "trial": "{classes} trial class.",
+                "hours": "{classes} hours.",
+                "merchandise": ""
+            }
         },
         "billingFrequency": {
             "label": "Billing frequency",
@@ -296,7 +321,14 @@
             "annual": "Annual payment",
             "monthly": "Monthly",
             "weekly": "Weekly",
-            "biweekly": "Bi-Weekly"
+            "biweekly": "Bi-Weekly",
+            "descriptions": {
+                "oneTime": "",
+                "annual": "per year.",
+                "monthly": "per month.",
+                "weekly": "per week.",
+                "biweekly": "every two weeks."
+            }
         },
         "durationInMonths": {
             "label": "Duration in months",

@@ -95,7 +95,7 @@ describe('CourseForm Integration Test', () => {
     const fillCourseFields = async (user: ReturnType<typeof userEvent.setup>) => {
         // Verify phone numbers have been reset
         // Expand phone numbers accordion
-        const descriptionAccordionButton = await screen.findByText(/course.descriptions/i);
+        const descriptionAccordionButton = await screen.findByText(/course.namesSection/i);
         await user.click(descriptionAccordionButton);
 
         await user.type(await screen.findByLabelText(/course.code/i), TEST_COURSE.code);
@@ -115,7 +115,7 @@ describe('CourseForm Integration Test', () => {
 
     const updateCourseFields = async (user: ReturnType<typeof userEvent.setup>) => {
         // Expand descriptions accordion to access name/description fields
-        const descriptionAccordionButton = await screen.findByText(/course.descriptions/i);
+        const descriptionAccordionButton = await screen.findByText(/course.namesSection/i);
         await user.click(descriptionAccordionButton);
 
         const [nameInput0, nameInput1] = await screen.findAllByLabelText(/course\.name/i);

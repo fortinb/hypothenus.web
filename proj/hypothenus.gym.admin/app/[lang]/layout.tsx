@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { Suspense } from "react";
 import Container from "react-bootstrap/Container";
 import Footer from "@/app/ui/components/layout/footer";
 import Header from "@/app/ui/components/layout/header";
@@ -80,13 +80,13 @@ export default async function RootLayout({
             <div className="container-fluid overflow-hidden w-100 h-100 p-0">
               <div className="d-flex flex-row w-100 h-100 p-0">
                 <div className="d-flex flex-column justify-content-between w-100 h-100">
-                  <ErrorBoundary>
-                    <Header lang={lang} brand={brand} />
-                    <Container fluid={true} className="overflow-hidden h-100">
-                      {children}
-                    </Container>
-                    <Footer />
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <Header lang={lang} brand={brand} />
+                      <Container fluid={true} className="overflow-hidden h-100">
+                        {children}
+                      </Container>
+                      <Footer />
+                    </ErrorBoundary>
                 </div>
               </div>
             </div>

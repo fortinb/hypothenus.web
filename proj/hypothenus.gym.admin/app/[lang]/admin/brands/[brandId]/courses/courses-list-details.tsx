@@ -12,7 +12,7 @@ export default function CourseListDetails({ lang, course }: { lang: string; cour
 
   return (
     <div className="col-6 p-2">
-      <Card>
+      <Card className="card-min-height">
         <Card.Body className={"m-2" + (course.isActive == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`}> 

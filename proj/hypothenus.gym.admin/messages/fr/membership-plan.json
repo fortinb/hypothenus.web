@@ -10,9 +10,6 @@
     "breadcrumb": {
         "membershipPlans": "Plans d'abonnement"
     },
-    "resume": {
-        "title": "Résumé"
-    },
     "list": {
         "menu": {
             "membershipPlan": "{name}",
