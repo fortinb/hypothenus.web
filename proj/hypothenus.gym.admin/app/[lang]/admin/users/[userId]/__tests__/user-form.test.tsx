@@ -116,7 +116,7 @@ describe('UserForm Integration Test', () => {
     };
 
     it('new user', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -154,7 +154,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('update user', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a user with uuid and full data for update mode
         const mockUserForUpdate = createMockUserWithData('existing-user-uuid');
@@ -197,7 +197,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('cancel edit', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a user with uuid and full data for update mode
         const mockUserForCancel = createMockUserWithData('existing-user-uuid-cancel');
@@ -238,7 +238,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('delete user', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a user with uuid and full data
         const mockUserForDelete = createMockUserWithData('existing-user-uuid-delete');
@@ -279,7 +279,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('activate user', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a user with uuid and full data, initially inactive
         const mockUserForActivate = createMockUserWithData('existing-user-uuid-activate');
@@ -312,7 +312,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('deactivate user', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a user with uuid and full data, initially active
         const mockUserForDeactivate = createMockUserWithData('existing-user-uuid-deactivate');
@@ -345,7 +345,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -370,7 +370,7 @@ describe('UserForm Integration Test', () => {
     }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>

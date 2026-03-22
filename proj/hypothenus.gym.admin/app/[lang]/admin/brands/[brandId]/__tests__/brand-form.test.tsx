@@ -141,7 +141,7 @@ describe('BrandForm Integration Test', () => {
     };
 
     it('new brand', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -197,7 +197,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('new duplicate brand', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Override mock to return entity with duplicate error message
         (createBrandAction as jest.Mock).mockImplementation(async (data: Brand) => {
@@ -248,7 +248,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('update brand', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a brand with uuid and full data for update mode
         const mockBrandForUpdate = createMockBrandWithData('existing-brand-uuid');
@@ -314,7 +314,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('cancel edit', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a brand with uuid and full data for update mode
         const mockBrandForCancel = createMockBrandWithData('existing-brand-uuid-cancel');
@@ -402,7 +402,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('delete brand', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a brand with uuid and full data
         const mockBrandForDelete = createMockBrandWithData('existing-brand-uuid-delete');
@@ -445,7 +445,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('activate brand', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a brand with uuid and full data, initially inactive
         const mockBrandForActivate = createMockBrandWithData('existing-brand-uuid-activate');
@@ -476,7 +476,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('deactivate brand', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a brand with uuid and full data, initially active
         const mockBrandForDeactivate = createMockBrandWithData('existing-brand-uuid-deactivate');
@@ -507,7 +507,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -535,7 +535,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -555,7 +555,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('validates code max length with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -578,7 +578,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('validates name max length with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -601,7 +601,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('validates phone number format with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -629,7 +629,7 @@ describe('BrandForm Integration Test', () => {
     }, 15000);
 
     it('validates contact required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>

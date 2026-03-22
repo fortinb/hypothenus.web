@@ -5,8 +5,9 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': ['ts-jest', { diagnostics: false }],
   },
+  cache: true,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1'

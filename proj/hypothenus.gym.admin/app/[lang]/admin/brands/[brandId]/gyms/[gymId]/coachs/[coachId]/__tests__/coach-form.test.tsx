@@ -147,7 +147,7 @@ describe('CoachForm Integration Test', () => {
     };
 
     it('new coach', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -205,7 +205,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('update coach', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a coach with uuid and full data for update mode
         const mockCoachForUpdate = createMockCoachWithData('existing-coach-uuid');
@@ -273,7 +273,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('cancel edit', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a coach with uuid and full data for update mode
         const mockCoachForCancel = createMockCoachWithData('existing-coach-uuid-cancel');
@@ -372,7 +372,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('delete coach', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a coach with uuid and full data
         const mockCoachForDelete = createMockCoachWithData('existing-coach-uuid-delete');
@@ -411,7 +411,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('activate coach', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a coach with uuid and full data, initially inactive
         const mockCoachForActivate = createMockCoachWithData('existing-coach-uuid-activate');
@@ -442,7 +442,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('deactivate coach', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a coach with uuid and full data, initially active
         const mockCoachForDeactivate = createMockCoachWithData('existing-coach-uuid-deactivate');
@@ -473,7 +473,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -496,7 +496,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -516,7 +516,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('validates phone number format with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -548,7 +548,7 @@ describe('CoachForm Integration Test', () => {
     }, 15000);
 
     it('validates contact required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>

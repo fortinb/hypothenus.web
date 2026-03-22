@@ -48,7 +48,7 @@ export default function BrandResume() {
 
         {brandState.brand.contacts?.map((contact: Contact, index: number) => {
           return (
-            <Row className="gx-2">
+            <Row key={index} className="gx-2">
               <Col xs={12} >
                 <EmergencyContactDisplay contact={contact} index={index} />
               </Col>

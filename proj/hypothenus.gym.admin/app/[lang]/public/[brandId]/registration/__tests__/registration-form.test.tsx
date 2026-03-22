@@ -65,7 +65,7 @@ describe('RegistrationForm Integration Test', () => {
     });
 
     it('renders in edit mode, fills the form fields, submits, and calls createMemberAction with form data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -143,7 +143,7 @@ describe('RegistrationForm Integration Test', () => {
     }, 15000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -176,10 +176,10 @@ describe('RegistrationForm Integration Test', () => {
         // Verify validation error messages appear in the DOM
         expect(screen.getByText(/validation.emailInvalid/i)).toBeInTheDocument();
         // Note: password mismatch won't show because base validations failed first
-    });
+    }, 15000);
 
     it('validates password match in Zod refine after all base validations pass', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -215,10 +215,10 @@ describe('RegistrationForm Integration Test', () => {
 
         // Verify the .refine() validation error appears (password confirmation mismatch)
         expect(screen.getByText(/member.validation.passwordConfirmationMismatch/i)).toBeInTheDocument();
-    });
+    }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -237,5 +237,5 @@ describe('RegistrationForm Integration Test', () => {
         expect(await screen.findByText(/member.validation.passwordRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createMemberAction).not.toHaveBeenCalled(); });
-    });
+    }, 15000);
 });

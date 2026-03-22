@@ -144,7 +144,7 @@ describe('CourseForm Integration Test', () => {
     };
 
     it('new course', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -159,7 +159,7 @@ describe('CourseForm Integration Test', () => {
         const saveButton = screen.getByRole('button', { name: /form.buttons.save/i });
         expect(saveButton).toBeEnabled();
         await user.click(saveButton);
-        
+
         logFormValidationErrors();
 
         // Assert
@@ -190,7 +190,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('new duplicate course', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Override mock to return entity with duplicate error message
         (createCourseAction as jest.Mock).mockImplementation(async (data: Course) => {
@@ -236,7 +236,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('update course', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a course with uuid and full data for update mode
         const mockCourseForUpdate = createMockCourseWithData('existing-course-uuid');
@@ -288,7 +288,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('cancel edit', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a course with uuid and full data for update mode
         const mockCourseForCancel = createMockCourseWithData('existing-course-uuid-cancel');
@@ -315,14 +315,16 @@ describe('CourseForm Integration Test', () => {
 
         // Wait for form to be back in read-only mode
         expect(await screen.findByLabelText(/course.code/i)).toBeDisabled();
-
-        // Verify all course fields have been reset to original values
-        expect(screen.getByLabelText(/course.code/i)).toHaveValue(TEST_COURSE.code);
-        expect(screen.getByLabelText(/course.startDate/i)).toHaveValue(moment(TEST_COURSE.startDate).format('YYYY-MM-DD'));
-        expect(screen.getByLabelText(/course.endDate/i)).toHaveValue(moment(TEST_COURSE.endDate).format('YYYY-MM-DD'));
-
+        const codeAfterCancel = await screen.findByLabelText(/course.code/i);
+        const startDateAfterCancel = await screen.findByLabelText(/course.startDate/i);
+        const endDateAfterCancel = await screen.findByLabelText(/course.endDate/i);
         const nameInputsAfterCancel = screen.getAllByLabelText(/course\.name/i);
         const descInputsAfterCancel = screen.getAllByLabelText(/course\.description/i);
+
+        // Verify all course fields have been reset to original values
+        expect(codeAfterCancel).toHaveValue(TEST_COURSE.code);
+        expect(startDateAfterCancel).toHaveValue(moment(TEST_COURSE.startDate).format('YYYY-MM-DD'));
+        expect(endDateAfterCancel).toHaveValue(moment(TEST_COURSE.endDate).format('YYYY-MM-DD'));
         expect(nameInputsAfterCancel[0]).toHaveValue(TEST_COURSE.name[0].text);
         expect(nameInputsAfterCancel[1]).toHaveValue(TEST_COURSE.name[1].text);
         expect(descInputsAfterCancel[0]).toHaveValue(TEST_COURSE.description[0].text);
@@ -334,7 +336,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('delete course', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a course with uuid and full data
         const mockCourseForDelete = createMockCourseWithData('existing-course-uuid-delete');
@@ -373,7 +375,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('activate course', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a course with uuid and full data, initially inactive
         const mockCourseForActivate = createMockCourseWithData('existing-course-uuid-activate');
@@ -404,7 +406,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('deactivate course', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a course with uuid and full data, initially active
         const mockCourseForDeactivate = createMockCourseWithData('existing-course-uuid-deactivate');
@@ -435,7 +437,7 @@ describe('CourseForm Integration Test', () => {
     }, 15000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -464,14 +466,14 @@ describe('CourseForm Integration Test', () => {
         await user.type(endDateInput, moment().format("YYYY-MM-DD"));
         await user.click(saveButton);
 
-           // Verify validation error messages appear in the DOM
+        // Verify validation error messages appear in the DOM
         expect(await screen.findByText(/course.validation.endDateGreaterThanToday/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createCourseAction).not.toHaveBeenCalled(); });
     }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>

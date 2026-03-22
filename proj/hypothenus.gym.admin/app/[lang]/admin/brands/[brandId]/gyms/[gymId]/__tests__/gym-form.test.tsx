@@ -137,7 +137,7 @@ describe('GymForm Integration Test', () => {
     };
 
     it('new gym', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -189,7 +189,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('new duplicate gym', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         (createGymAction as jest.Mock).mockImplementation(async (data: Gym) =>
             success({
@@ -235,7 +235,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('update gym', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
         const mockGymForUpdate = createMockGymWithData('existing-gym-uuid');
 
         render(
@@ -293,7 +293,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('cancel edit', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a gym with uuid and full data for update mode
         const mockGymForCancel = createMockGymWithData('existing-gym-uuid-cancel');
@@ -381,7 +381,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('delete gym', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a gym with uuid and full data
         const mockGymForDelete = createMockGymWithData('existing-gym-uuid-delete');
@@ -423,7 +423,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('activate gym', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a gym with uuid and full data, initially inactive
         const mockGymForActivate = createMockGymWithData('existing-gym-uuid-activate');
@@ -454,7 +454,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('deactivate gym', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a gym with uuid and full data, initially active
         const mockGymForDeactivate = createMockGymWithData('existing-gym-uuid-deactivate');
@@ -485,7 +485,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('validates schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -507,7 +507,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -524,7 +524,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('validates code max length', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -542,7 +542,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('validates name max length', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -560,7 +560,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('validates phone number format with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -588,7 +588,7 @@ describe('GymForm Integration Test', () => {
     }, 15000);
 
     it('validates contact required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>

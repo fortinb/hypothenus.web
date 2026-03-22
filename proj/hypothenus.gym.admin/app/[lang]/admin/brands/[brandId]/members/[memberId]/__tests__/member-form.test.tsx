@@ -174,7 +174,7 @@ describe('MemberForm Integration Test', () => {
      };
 
     it('new member', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -235,7 +235,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('update member', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a member with uuid and full data for update mode
         const mockMemberForUpdate = createMockMemberWithData('existing-member-uuid');
@@ -307,7 +307,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('cancel edit', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a member with uuid and full data for update mode
         const mockMemberForCancel = createMockMemberWithData('existing-member-uuid-cancel');
@@ -407,7 +407,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('delete member', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a member with uuid and full data
         const mockMemberForDelete = createMockMemberWithData('existing-member-uuid-delete');
@@ -447,7 +447,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('activate member', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a member with uuid and full data, initially inactive
         const mockMemberForActivate = createMockMemberWithData('existing-member-uuid-activate');
@@ -478,7 +478,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('deactivate member', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         // Create a member with uuid and full data, initially active
         const mockMemberForDeactivate = createMockMemberWithData('existing-member-uuid-deactivate');
@@ -510,7 +510,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -534,7 +534,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('validates required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -555,7 +555,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('validates phone number format with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
@@ -588,7 +588,7 @@ describe('MemberForm Integration Test', () => {
     }, 15000);
 
     it('validates contact required fields with Zod schema', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         render(
             <Provider store={store}>
