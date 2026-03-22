@@ -9,7 +9,7 @@ export default function PhoneNumberDisplay({ phoneNumber }: { phoneNumber: Phone
   return (
     <div>
       <span className="text-primary">{phoneNumber.number} </span>
-       <span className="text-primary-small">({t(`phoneNumber.${phoneNumber.type}`)})</span>
+      <span className="text-primary-small">({t(`phoneNumber.${phoneNumber.type}`)})</span>
     </div>
   );
 }

@@ -9,11 +9,14 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
+import PhoneNumberDisplay from "@/app/ui/components/contact/phone-number-display";
+import EmergencyContactDisplay from "@/app/ui/components/contact/emergency-contact-display";
+import AddressDisplay from "@/app/ui/components/contact/address-display";
 
 export default function BrandResume() {
   const brandState: BrandState = useSelector((state: any) => state.brandState);
   const t = useTranslations("brand");
-  
+
   return (
 
     <div className="d-flex flex-column justify-content-start w-100 h-100 page-menu overflow-auto">
@@ -26,39 +29,33 @@ export default function BrandResume() {
       <Container fluid={true}>
         <Row className="gx-2">
           <Col xs={12} >
-            <p className="card-text">
+            <div className="d-flex flex-row justify-content-center mb-2">
               <Link className="link-element" href={`mailto:${brandState.brand.email}`}>{brandState.brand.email}</Link><br />
-              <span className="text-primary">{brandState.brand.phoneNumbers?.[0]?.number}</span><br />
-              <span className="text-primary">{brandState.brand.phoneNumbers?.[1]?.number}</span><br />
-            </p>
+            </div>
+            {brandState.brand.phoneNumbers?.map((phoneNumber, index) => (
+              <div key={index} className="d-flex flex-row justify-content-center">
+                <PhoneNumberDisplay phoneNumber={phoneNumber} />
+              </div>
+            ))}
+            <div className="d-flex flex-row justify-content-center mb-2">
+              <AddressDisplay address={brandState.brand.address} />
+            </div>
+            <div className="ps-2 pe-2">
+              <hr />
+            </div>
           </Col>
         </Row>
 
         {brandState.brand.contacts?.map((contact: Contact, index: number) => {
-
-          return <Row key={index} className="gx-2">
-            <Col xs={12} >
-              <hr />
-              <p className="card-text">
-                <span className="text-secondary fw-bolder">{formatContactName(contact)}</span><br />
-                <span className="text-primary">{contact.description}</span><br />
-                <Link className="link-element" href={`mailto:${contact?.email}`}>{contact.email}</Link><br />
-                <span className="text-primary">{contact.phoneNumbers?.[0]?.number}</span><br />
-                <span className="text-primary">{contact.phoneNumbers?.[1]?.number}</span><br />
-              </p>
-            </Col>
-          </Row>
-
+          return (
+            <Row className="gx-2">
+              <Col xs={12} >
+                <EmergencyContactDisplay contact={contact} index={index} />
+              </Col>
+            </Row>
+          )
         })}
 
-        <Row className="gx-2">
-          <Col xs={12} >
-            <hr />
-            <p className="card-text">
-              <span className="text-primary">{formatAddress(brandState.brand.address)}</span>
-            </p>
-          </Col>
-        </Row>
       </Container>
     </div>
   );

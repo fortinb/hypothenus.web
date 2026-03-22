@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
 
-export default function CourseResume({lang}: { lang: string }) {
+export default function CourseResume({ lang }: { lang: string }) {
   const courseState: CourseState = useSelector((state: any) => state.courseState);
   const t = useTranslations("course");
 
@@ -22,7 +22,6 @@ export default function CourseResume({lang}: { lang: string }) {
           {courseState.course.name?.map((name: LocalizedString, index: number) => {
 
             if (name.language === lang as LanguageEnum) {
-
               return <span key={index} className="text-secondary fw-bolder">{name.text}</span>
             }
           })}
@@ -33,17 +32,15 @@ export default function CourseResume({lang}: { lang: string }) {
       </div>
 
       <Container fluid={true}>
-
         <br />
-
         {courseState.course.description?.map((description: LocalizedString, index: number) => {
 
           if (description.language === lang as LanguageEnum) {
             return <Row key={index} className="gx-2">
               <Col xs={12} >
-                <p className="card-text">
+                <div className="d-flex flex-row justify-content-center mb-2">
                   <span className="text-primary">{description.text}</span><br />
-                </p>
+                </div>
               </Col>
             </Row>
           }
@@ -51,17 +48,24 @@ export default function CourseResume({lang}: { lang: string }) {
 
         <hr />
         <Row className="gx-2">
-          <Col xs={6} >
-            <p className="card-text">
-              <span className="text-primary">{t("resume.activatedOn")}</span><br />
+          <Col xs={12} >
+            <div className="d-flex flex-row justify-content-center mb-2">
+              <span className="text-tertiary fw-bolder">{t("resume.activatedOn")}</span>
+            </div>
+            <div className="d-flex flex-row justify-content-center mb-2">
               <span className="text-primary">{formatDate(courseState.course.startDate)}</span><br />
-            </p>
+            </div>
           </Col>
-          <Col xs={6} >
-            <p className="card-text">
-              <span className="text-primary">{t("resume.deactivatedOn")}</span><br />
-              <span className="text-primary">{formatDate(courseState.course.endDate)}</span><br />
-            </p>
+        </Row>
+        <hr />
+        <Row className="gx-2">
+          <Col xs={12} >
+            <div className="d-flex flex-row justify-content-center mb-2">
+              <span className="text-tertiary fw-bolder">{t("resume.deactivatedOn")}</span>
+            </div>
+            <div className="d-flex flex-row justify-content-center mb-2">
+              <span className="text-tertiary">{formatDate(courseState.course.endDate)}</span><br />
+            </div>
           </Col>
         </Row>
       </Container>

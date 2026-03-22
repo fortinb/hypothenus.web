@@ -269,7 +269,7 @@
             "new": "Nouveau plan d'abonnement"
         },
         "resume": {
-            "title": "Visuel"
+            "title": "Plans"
         },
         "courses": {
             "available": "Cours disponibles",
@@ -327,7 +327,7 @@
                 "annual": "par année.",
                 "monthly": "par mois.",
                 "weekly": "par semaine.",
-                "biweekly": "au deux semaines."
+                "biweekly": "aux deux semaines."
             }
         },
         "durationInMonths": {

@@ -52,8 +52,8 @@ export const parseGym = (data: any): Gym => {
   }
 
   // Ensure at least one Mobile and one Business phone number
-  const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
   const hasBusiness = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.business);
+  const hasMobile = gym.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
 
   if (!hasBusiness) {
     gym.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.business));
@@ -79,7 +79,7 @@ export const GymSchema = z.object({
   address: AddressSchema,
   email: z.email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),
-  phoneNumbers: z.array(PhoneNumberSchema).min(1),
+  phoneNumbers: z.array(PhoneNumberSchema).min(2),
   contacts: z.array(ContactSchema)
 });
 
