@@ -22,11 +22,11 @@ export default function AdminButton({ lang }: { lang: string }) {
           <Dropdown.Item onClick={() => router.push(`/${lang}/admin/users`)}>
             {t("navbar.users.title")}
           </Dropdown.Item>
-          <Authorize roles={["admin"]}>
-            <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands`)}>
-              {t("navbar.brands.title")}
-            </Dropdown.Item>
-          </Authorize>
+        </Authorize>
+        <Authorize roles={["admin"]}>
+          <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands`)}>
+            {t("navbar.brands.title")}
+          </Dropdown.Item>
         </Authorize>
         <Authorize roles={["manager"]}>
           <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}`)}>
@@ -34,6 +34,15 @@ export default function AdminButton({ lang }: { lang: string }) {
           </Dropdown.Item>
           <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/gyms`)}>
             {t("navbar.gyms.title")}
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/coachs`)}>
+            {t("navbar.coachs.title")}
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/membership-plans`)}>
+            {t("navbar.membershipPlans.title")}
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/members`)}>
+            {t("navbar.members.title")}
           </Dropdown.Item>
         </Authorize>
       </Dropdown.Menu>

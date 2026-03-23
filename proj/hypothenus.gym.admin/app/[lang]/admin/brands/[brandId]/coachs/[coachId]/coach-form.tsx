@@ -23,7 +23,7 @@ import { uploadCoachPhoto } from "@/app/lib/services/coachs-data-service-client"
 import { activateCoachAction, createCoachAction, deactivateCoachAction, deleteCoachAction, saveCoachAction } from "./actions";
 import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import { useCrudActions } from "@/app/lib/hooks/useCrudActions";
-import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function CoachForm({ lang, coach }: { lang: string; coach: Coach }) {
@@ -31,7 +31,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
     const router = useRouter();
 
     const coachState: CoachState = useSelector((state: any) => state.coachState);
-    const gymState: GymState = useSelector((state: any) => state.gymState);
+    const brandState: BrandState = useSelector((state: any) => state.brandState);
     const dispatch = useAppDispatch();
 
     // Form state
@@ -85,17 +85,16 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
         }
     }
 
-    const uploadPhoto = async (brandUuid: string, gymUuid: string, coachUuid: string, photo: Blob) => {
+    const uploadPhoto = async (brandUuid: string, coachUuid: string, photo: Blob) => {
         const formData = new FormData();
         formData.append('file', photo);
 
-        let response = await uploadCoachPhoto(brandUuid, gymUuid, coachUuid, formData);
+        let response = await uploadCoachPhoto(brandUuid, coachUuid, formData);
         return response;
     }
 
     const createCoach = (coach: Coach) => {
-        coach.brandUuid = gymState.gym.brandUuid;
-        coach.gymUuid = gymState.gym.uuid;
+        coach.brandUuid = brandState.brand.uuid;
 
         createEntity(
             coach,
@@ -108,7 +107,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
                 dispatch(updateCoachState(entity));
 
                 showResultToast(true, t("action.saveSuccess"));
-                router.push(`/${lang}/admin/brands/${entity.brandUuid}/gyms/${entity.gymUuid}/coachs/${entity.uuid}`);
+                router.push(`/${lang}/admin/brands/${entity.brandUuid}/coachs/${entity.uuid}`);
             },
             // Error
             (result) => {
@@ -120,7 +119,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
     const saveCoach = (coach: Coach) => {
         saveEntity(
-            coach, `/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`,
+            coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
             // Before save
             async (entity) => {
                 await beforeSave(entity);
@@ -142,7 +141,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
     const beforeSave = async (coach: Coach) => {
         if (photoToUpload) {
-            const photoUri = await uploadPhoto(coach.brandUuid, coach.gymUuid, coach.uuid, photoToUpload);
+            const photoUri = await uploadPhoto(coach.brandUuid, coach.uuid, photoToUpload);
             coach.person.photoUri = photoUri;
             setPhotoToUpload(undefined);
         }
@@ -150,7 +149,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
     const activateCoach = (coach: Coach) => {
         activateEntity(
-            coach, `/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`,
+            coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
             (entity) => {
                 dispatch(updateCoachState(entity));
                 showResultToast(true, t("action.activationSuccess"));
@@ -163,7 +162,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
     const deactivateCoach = (coach: Coach) => {
         deactivateEntity(
-            coach, `/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`,
+            coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
             (entity) => {
                 dispatch(updateCoachState(entity));
                 showResultToast(true, t("action.deactivationSuccess"));
@@ -176,13 +175,13 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
     const deleteCoach = (coach: Coach) => {
         deleteEntity(
-            coach, `/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`,
+            coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
             () => {
                 dispatch(clearCoachState());
                 showResultToast(true, t("action.deleteSuccess"));
                 setShowDeleteConfirmation(false);
                 setTimeout(function () {
-                    router.push(`/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs`);
+                    router.push(`/${lang}/admin/brands/${coach.brandUuid}/coachs`);
                 }, 1000);
             },
             (result) => {
@@ -199,7 +198,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
         formContext.reset(mapEntityToForm(coachState.coach));
 
         if (coachState.coach.uuid === null) {
-            router.push(`/${lang}/admin/brands/${coachState.coach.brandUuid}/gyms/${coachState.coach.gymUuid}/coachs`);
+            router.push(`/${lang}/admin/brands/${coachState.coach.brandUuid}/coachs`);
         }
     }
 

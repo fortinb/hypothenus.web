@@ -1,20 +1,20 @@
 "use client"
 
 import { useTranslations } from "next-intl";
-import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Coach } from "@/src/lib/entities/coach";
 
 export default function CoachMenu({ lang, coach }: { lang: string; coach: Coach }) {
-  const gymState: GymState = useSelector((state: any) => state.gymState);
+  const brandState: BrandState = useSelector((state: any) => state.brandState);
   const t = useTranslations("coach");
 
   return (
 
     <div className="d-flex flex-column justify-content-start w-100 h-50 page-menu">
       <div className="d-flex flex-row justify-content-center">
-        <h2 className="text-secondary pt-4 ps-2">{t("menu.gym", { name: gymState.gym.name })}</h2>
+        <h2 className="text-secondary pt-4 ps-2">{t("menu.gym", { name: brandState.brand.name })}</h2>
       </div>
       <div className="d-flex flex-row justify-content-center">
         <h3 className="text-secondary pt-0 ps-2">{t("menu.sections")}
@@ -27,7 +27,7 @@ export default function CoachMenu({ lang, coach }: { lang: string; coach: Coach 
         <div className="col btn-navigation m-2">
           <div className="d-flex flex-column justify-content-center h-100">
             <div className="d-flex flex-row justify-content-center">
-              <Link className={"link-element" + (coach.uuid === null ? " link-element-disabled" : "")} href={`/${lang}/admin/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
+              <Link className={"link-element" + (coach.uuid === null ? " link-element-disabled" : "")} href={`/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`}><i className="icon icon-secondary bi-person-arms-up h1 m-0"></i></Link>
             </div>
             <div className="d-flex flex-row justify-content-center">
               <span className="text-primary mt-3">{t("menu.info")}</span>
