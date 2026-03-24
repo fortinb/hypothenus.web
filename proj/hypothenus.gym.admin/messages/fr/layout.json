@@ -23,7 +23,10 @@
         },
         "members": {
             "title": "Membres"
-        },           
+        },      
+        "courses": {
+            "title": "Cours"
+        },              
         "membershipPlans": {
             "title": "Plans d'abonnement"
         },        

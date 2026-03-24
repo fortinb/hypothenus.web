@@ -38,6 +38,9 @@ export default function AdminButton({ lang }: { lang: string }) {
           <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/coachs`)}>
             {t("navbar.coachs.title")}
           </Dropdown.Item>
+          <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/courses`)}>
+            {t("navbar.courses.title")}
+          </Dropdown.Item>
           <Dropdown.Item onClick={() => router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/membership-plans`)}>
             {t("navbar.membershipPlans.title")}
           </Dropdown.Item>
