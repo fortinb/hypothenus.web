@@ -90,6 +90,12 @@
             "emailInvalid": "Email format is invalid.",
             "noSpaceAllowed": "Spaces are not allowed."
         },
+        "coachs": {
+            "available": "Available coachs",
+            "selected": "Included coachs",
+            "addAll": "Select All"
+        },
+        "coachsSection": "Qualified coachs",
         "code": "Code",
         "codePlaceholder": "Gym unique code",
         "name": "Name",

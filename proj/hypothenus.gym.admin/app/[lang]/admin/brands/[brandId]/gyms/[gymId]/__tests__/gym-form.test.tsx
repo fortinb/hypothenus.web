@@ -22,6 +22,18 @@ import {
     updateContactFields,
     logFormValidationErrors
 } from '@/app/lib/test-utils/form-test-helpers';
+import { newCoach } from '@/src/lib/entities/coach';
+
+export const TEST_AVAILABLE_COACHS = [
+    { coach: { ...newCoach(), uuid: "coach1-uuid", brandUuid: "test-brand" }, label: "coachLabel1", value: 'coach1-uuid' },
+    { coach: { ...newCoach(), uuid: "coach2-uuid", brandUuid: "test-brand" }, label: "coachLabel2", value: 'coach2-uuid' },
+    { coach: { ...newCoach(), uuid: "coach3-uuid", brandUuid: "test-brand" }, label: "coachLabel3", value: 'coach3-uuid' }
+];
+
+export const TEST_SELECTED_COACHS = [
+    { coach: { ...newCoach(), uuid: "coach1-uuid", brandUuid: "test-brand" }, label: "coachLabel1", value: 'coach1-uuid' },
+    { coach: { ...newCoach(), uuid: "coach3-uuid", brandUuid: "test-brand" }, label: "coachLabel3", value: 'coach3-uuid' }
+];
 
 // Mock dependencies
 jest.mock('next-intl', () => ({
@@ -141,7 +153,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en"
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -206,7 +222,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en"
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -240,7 +260,12 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGymForUpdate} />
+                <GymForm lang="en"
+                    gym={mockGymForUpdate}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
+
             </Provider>
         );
 
@@ -300,7 +325,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGymForCancel} />
+                <GymForm lang="en"
+                    gym={mockGymForCancel}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -388,7 +417,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGymForDelete} />
+                <GymForm lang="en"
+                    gym={mockGymForDelete}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -431,7 +464,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGymForActivate} />
+                <GymForm lang="en" 
+                    gym={mockGymForActivate}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -462,7 +499,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGymForDeactivate} />
+                <GymForm lang="en" 
+                    gym={mockGymForDeactivate}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -489,7 +530,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en" 
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -511,7 +556,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en" 
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -528,7 +577,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en" 
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -546,7 +599,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en" 
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -564,7 +621,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en" 
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 
@@ -592,7 +653,11 @@ describe('GymForm Integration Test', () => {
 
         render(
             <Provider store={store}>
-                <GymForm lang="en" gym={mockGym} />
+                <GymForm lang="en" 
+                    gym={mockGym}
+                    initialAvailableCoachItems={TEST_AVAILABLE_COACHS}
+                    initialSelectedCoachItems={TEST_SELECTED_COACHS}
+                />
             </Provider>
         );
 

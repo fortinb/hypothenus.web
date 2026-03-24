@@ -22,7 +22,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
     const { formState: { errors } } = useFormContext();
 
     const formContacts = useFieldArray({
-        name: "contacts",
+        name: "gym.contacts",
     });
    
     function getError(index: number): Merge<FieldError, FieldErrorsImpl<Contact>> {
@@ -81,7 +81,7 @@ export default function GymContactInfo({ isEditMode }: { isEditMode: boolean }) 
                                                 </OverlayTrigger>
                                             </div>
                                         </Card.Title>
-                                        <ContactInfo key={contact.id} index={index} required={true} id={`gym_contact_${index}`} formStatefield={`contacts.${index}`} />
+                                        <ContactInfo key={contact.id} index={index} required={true} id={`gym_contact_${index}`} formStatefield={`gym.contacts.${index}`}  parent="gym" />
                                     </Card.Body>
                                 </Card>
                             </Accordion.Body>

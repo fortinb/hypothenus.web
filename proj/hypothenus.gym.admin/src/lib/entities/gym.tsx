@@ -4,6 +4,7 @@ import { BaseEntity } from "./base-entity";
 import { Contact, ContactSchema, newContact, parseContact } from "./contact";
 import { PhoneNumber, PhoneNumberSchema, newPhoneNumber } from "./phone-number";
 import { PhoneNumberTypeEnum } from './enum/phone-number-type-enum';
+import { Coach, CoachReferenceSchema, parseCoach } from './coach';
 
 export interface Gym extends BaseEntity {
   brandUuid?: any;
@@ -16,6 +17,7 @@ export interface Gym extends BaseEntity {
   isActive: boolean;
   note: string;
   contacts: Contact[];
+  coachs: Coach[];
   phoneNumbers: PhoneNumber[];
 }
 
@@ -36,6 +38,7 @@ export const newGym = (): Gym => {
     phoneNumbers: [
       newPhoneNumber(PhoneNumberTypeEnum.business),
       newPhoneNumber(PhoneNumberTypeEnum.mobile)],
+    coachs: [],
     messages: [],
     createdBy: undefined,
     modifiedBy: undefined
@@ -65,6 +68,7 @@ export const parseGym = (data: any): Gym => {
 
   // Parse each contact in the contacts array
   gym.contacts = gym.contacts?.map(contact => parseContact(contact));
+  gym.coachs = gym.coachs?.map(coach => parseCoach(coach));
 
   return gym;
 }
@@ -80,7 +84,8 @@ export const GymSchema = z.object({
   email: z.email("gym.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),
   phoneNumbers: z.array(PhoneNumberSchema).min(2),
-  contacts: z.array(ContactSchema)
+  contacts: z.array(ContactSchema),
+  coachs: z.array(CoachReferenceSchema)
 });
 
 export const GymReferenceSchema = z.object({

@@ -90,6 +90,12 @@
             "emailInvalid": "Le format du courriel est invalide.",
             "noSpaceAllowed": "Les espaces ne sont pas autorisés."
         },
+        "coachs": {
+            "available": "Entraîneurs disponibles",
+            "selected": "Entraîneurs sélectionnés",
+            "addAll": "Tout sélectionner"
+        },
+        "coachsSection": "Entraîneurs qualifiés",        
         "code": "Code",
         "codePlaceholder": "Identification unique",
         "name": "Nom",

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { CoachsStatePaging, includeInactive } from "@/app/lib/store/slices/coachs-state-paging-slice";
-import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
+import { GymState } from "@/app/lib/store/slices/gym-state-slice";
 import Link from "next/link";
 import { ChangeEvent } from "react";
 import Col from "react-bootstrap/Col";
@@ -15,7 +15,7 @@ import { Authorize } from "@/app/ui/components/security/authorize";
 
 export default function CoachsMenu({ lang }: { lang: string; }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
-  const brandState: BrandState = useSelector((state: any) => state.brandState);
+  const gymState: GymState = useSelector((state: any) => state.gymState);
 
   const dispatch = useAppDispatch();
   const t = useTranslations("coach");
@@ -28,7 +28,7 @@ export default function CoachsMenu({ lang }: { lang: string; }) {
 
     <div className="d-flex flex-column justify-content-start w-100 h-50 page-menu">
       <div className="d-flex flex-row justify-content-center">
-        <h2 className="text-secondary pt-4 ps-2">{t("list.menu.gym", { name: brandState.brand.name })}</h2>
+        <h2 className="text-secondary pt-4 ps-2">{t("list.menu.gym", { name: gymState.gym.name })}</h2>
       </div>
       <div className="d-flex flex-row justify-content-center">
         <h3 className="text-secondary pt-0 ps-2">{t("list.menu.title")}
@@ -46,7 +46,7 @@ export default function CoachsMenu({ lang }: { lang: string; }) {
                 <div className="btn-navigation m-2">
                   <div className="d-flex flex-column justify-content-center h-100">
                     <div className="d-flex flex-row justify-content-center">
-                      <Link className="link-element" href={`/${lang}/admin/brands/${brandState.brand.uuid}/coachs/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
+                      <Link className="link-element" href={`/${lang}/admin/brands/${gymState.gym.brandUuid}/gyms/${gymState.gym.uuid}/coachs/new`}><i className="icon icon-secondary bi bi-plus-square h1 m-0"></i></Link>
                     </div>
                     <div className="d-flex flex-row justify-content-center">
                       <span className="text-primary mt-3">{t("list.menu.add")}</span>
