@@ -25,5 +25,15 @@
         "details": {
             "inactive": "Inactive"
         }
+    },
+    "action": {
+        "assignationSuccess": "Coach assignation successfull !",
+        "assignationError": "Coach assignation failed !",
+        "unassignationSuccess": "Coach unassignation successfull !",
+        "unassignationError": "Coach unassignation failed !"
+    },
+    "coach": {
+        "assignTooltip": "Assign this coach to the gym",
+        "unassignTooltip": "Unassign this coach from the gym"
     }
 }

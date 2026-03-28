@@ -21,6 +21,7 @@ import Image from "next/image";
 import { Controller } from "react-hook-form";
 import FormLabelRequired from "../forms/form-label-required";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
+import { GymFormData } from "@/app/[lang]/admin/brands/[brandId]/gyms/[gymId]/gym-form";
 
 export default function GymInfo({ gym, availableCoachItems, formCoachsStateField, isEditMode, isCancelling, uploadHandler }:
     {
@@ -31,7 +32,7 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
         isCancelling: boolean,
         uploadHandler: (file: Blob) => void
     }) {
-    const { register, formState: { errors } } = useFormContext();
+    const { register, formState: { errors } } =  useFormContext<GymFormData>();
     const t = useTranslations("entity");
     const [logoPreviewUri, setLogoPreviewUri] = useState<string>();
     const [accordeonDefaultActiveKeys] = useState<string[]>(["0", "1", "2", "3"]);
@@ -51,6 +52,7 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
         })
     };
 
+    
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="gym_info_form" disabled={!isEditMode} >
             <Container >
@@ -87,7 +89,6 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
                                 </Dropzone>
                             }
                             <div className="d-flex flex-row justify-content-center mt-2">
-                                <Form.Control type="hidden" id={`gym_input_logoContent`}  {...register("gym.logoContent")} />
                                 <Controller
                                     name={"gym.logoUri"}
                                     render={({ field }) => (
@@ -131,7 +132,7 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
                 <Row className="m-0 pt-2">
                     <Accordion defaultActiveKey={accordeonDefaultActiveKeys} alwaysOpen>
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className={(errors?.address ? "accordeon-header-invalid" : "")}>{t("gym.address")}</Accordion.Header>
+                            <Accordion.Header className={(errors?.gym?.address ? "accordeon-header-invalid" : "")}>{t("gym.address")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -141,7 +142,7 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className={(errors?.phoneNumbers ? "accordeon-header-invalid" : "")} >{t("gym.phones")}</Accordion.Header>
+                            <Accordion.Header className={(errors?.gym?.phoneNumbers ? "accordeon-header-invalid" : "")} >{t("gym.phones")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -151,7 +152,7 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="2" className="pt-2">
-                            <Accordion.Header className={(errors?.contacts ? "accordeon-header-invalid" : "")}>{t("gym.contacts")}</Accordion.Header>
+                            <Accordion.Header className={(errors?.gym?.contacts ? "accordeon-header-invalid" : "")}>{t("gym.contacts")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -210,3 +211,5 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
         </fieldset>
     );
 }
+/* logo <Form.Control type="hidden" id={`gym_input_logoContent`}  {...register("logoContent")} />
+                               */

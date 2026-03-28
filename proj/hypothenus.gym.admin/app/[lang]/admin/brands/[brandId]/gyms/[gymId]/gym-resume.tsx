@@ -2,8 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
-import { formatAddress } from "@/src/lib/entities/address";
-import { Contact, formatContactName } from "@/src/lib/entities/contact";
+import { Contact } from "@/src/lib/entities/contact";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";

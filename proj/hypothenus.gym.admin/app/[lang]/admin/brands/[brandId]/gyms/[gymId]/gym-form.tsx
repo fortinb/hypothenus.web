@@ -319,7 +319,6 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
     }
 
     return (
-
         <>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
                 <div className="ps-2 pe-2">

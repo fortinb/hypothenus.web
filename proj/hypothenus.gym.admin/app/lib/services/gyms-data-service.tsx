@@ -95,3 +95,25 @@ export async function putGym(gym: Gym): Promise<Gym> {
  return parseGym(response.data);
 }
 
+export async function postAssignCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Gym> {
+
+  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/assign`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return parseGym(response.data);
+}
+
+export async function postUnassignCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Gym> {
+
+  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/unassign`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return parseGym(response.data);
+}
+

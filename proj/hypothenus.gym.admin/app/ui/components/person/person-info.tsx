@@ -1,6 +1,6 @@
 "use client"
 
-import {  useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Person } from "@/src/lib/entities/person";
 import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
@@ -17,8 +17,9 @@ import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { useParams } from "next/navigation";
 import moment from "moment";
-import "@/app/lib/i18n/datepicker-locales"; 
+import "@/app/lib/i18n/datepicker-locales";
 import FormLabelRequired from "../forms/form-label-required";
+import { localesConfig } from "@/i18n/locales-client";
 
 export default function PersonInfo({ id, formStatefield, isEditMode, isCancelling, uploadHandler }:
     {
@@ -83,13 +84,13 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                         <Controller
                             name={`${formStatefield}.dateOfBirth`}
                             render={({ field }) => (
-                                <DatePicker 
-                                    id={`person_input_dateOfBirth_${id}`} 
-                                    selected={!field.value ? null : moment(field.value).toDate()} 
+                                <DatePicker
+                                    id={`person_input_dateOfBirth_${id}`}
+                                    selected={!field.value ? null : moment(field.value).toDate()}
                                     onChange={(date: Date | null) => field.onChange(date?.toISOString())}
-                                    className={"form-control "} 
-                                    locale={params.lang} 
-                                    dateFormat="yyyy-MM-dd" 
+                                    className={"form-control "}
+                                    locale={params.lang}
+                                    dateFormat="yyyy-MM-dd"
                                     placeholderText={t("format.date")} />
                             )}
                         />
@@ -99,7 +100,7 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                     <Form.Group >
                         <Form.Label className="text-primary" htmlFor={`person_input_photoUri_${id}`}>{t("person.photoUri")}</Form.Label>
                         {isEditMode &&
-                            <Dropzone  disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={onDrop}>
+                            <Dropzone disabled={!isEditMode} maxFiles={1} accept={{ "image/jpeg": [], "image/png": [] }} onDrop={onDrop}>
                                 {({ getRootProps, getInputProps }) => (
                                     <section>
                                         <div className="dropzone"  {...getRootProps()}>
@@ -118,7 +119,6 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                             </Dropzone>
                         }
                         <div className="d-flex flex-row justify-content-center mt-2">
-                            <Form.Control type="hidden" id={`person_input_photoContent_${id}`}  {...register(`${formStatefield}.photoContent`)} />
                             <Controller
                                 name={`${formStatefield}.photoUri`}
                                 render={({ field }) => (
@@ -154,8 +154,9 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
                     <Form.Group>
                         <FormLabelRequired className="text-primary" htmlFor={`person_communication_language_dropdown_${id}`} label={t("person.communicationLanguage")}></FormLabelRequired>
                         <Form.Select id={`person_communication_language_dropdown_${id}`} {...register(`${formStatefield}.communicationLanguage`)}>
-                            <option value="en">{t("language.en")}</option>
-                            <option value="fr">{t("language.fr")}</option>
+                            {localesConfig.locales.map((lang: string, index: number) => {
+                                return <option key={index} value={`${lang}`} >{t(`language.${lang}`)}</option>
+                            })}
                         </Form.Select>
                     </Form.Group>
                 </Col>
@@ -205,3 +206,5 @@ export default function PersonInfo({ id, formStatefield, isEditMode, isCancellin
         </Container>
     );
 }
+/* photo <Form.Control type="hidden" id={`person_input_photoContent_${id}`}  {...register(`${formStatefield}.photoContent`)} />
+         */

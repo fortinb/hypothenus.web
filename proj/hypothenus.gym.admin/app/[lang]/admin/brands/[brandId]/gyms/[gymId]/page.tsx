@@ -55,7 +55,7 @@ export default async function GymPage({ params }: PageProps) {
 
   const initialSelectedCoachItems = availableCoachItems
     .filter((item) => gym.coachs?.some((selected) => selected.uuid === item.coach.uuid))
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort((a, b) => a.coach.person.lastname.localeCompare(b.coach.person.lastname));
 
   return (
     <div className="d-flex justify-content-between w-100 h-100">
