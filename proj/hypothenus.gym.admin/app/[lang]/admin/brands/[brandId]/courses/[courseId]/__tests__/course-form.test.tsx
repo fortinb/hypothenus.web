@@ -110,7 +110,9 @@ describe('CourseForm Integration Test', () => {
         const startDateInput = await screen.findByLabelText(/course.startDate/i);
         const endDateInput = await screen.findByLabelText(/course.endDate/i);
 
+        await user.clear(startDateInput);
         await user.type(startDateInput, TEST_COURSE.startDate);
+        await user.clear(endDateInput);
         await user.type(endDateInput, TEST_COURSE.endDate);
     };
 

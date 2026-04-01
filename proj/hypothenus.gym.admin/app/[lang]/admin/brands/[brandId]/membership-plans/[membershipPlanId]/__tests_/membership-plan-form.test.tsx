@@ -162,7 +162,7 @@ describe('MembershipPlanForm Integration Test', () => {
         const costAmount = await screen.findByLabelText(/membershipPlan.cost.amount/i);
         await user.clear(costAmount);
         await user.type(costAmount, TEST_MEMBERSHIP_PLAN.cost.amount.toString());
-        
+
         await user.type(screen.getByLabelText(/membershipPlan.durationInMonths/i), TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
 
         await user.click(screen.getByLabelText(/membershipPlan.guestPrivilege/i));
@@ -176,8 +176,13 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.type(titleInputs[0], TEST_MEMBERSHIP_PLAN.title[0].text);
         await user.type(titleInputs[1], TEST_MEMBERSHIP_PLAN.title[1].text);
 
-        await user.type(await screen.findByLabelText(/membershipPlan.startDate/i), TEST_MEMBERSHIP_PLAN.startDate);
-        await user.type(await screen.findByLabelText(/membershipPlan.endDate/i), TEST_MEMBERSHIP_PLAN.endDate);
+        const startDateInput = await screen.findByLabelText(/membershipPlan.startDate/i);
+        const endDateInput = await screen.findByLabelText(/membershipPlan.endDate/i);
+
+        await user.clear(startDateInput);
+        await user.type(startDateInput, TEST_MEMBERSHIP_PLAN.startDate);
+        await user.clear(endDateInput);
+        await user.type(endDateInput, TEST_MEMBERSHIP_PLAN.endDate);
     };
 
     // Helper method to update membershipPlan fields with _update_ suffix
@@ -583,7 +588,7 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.clear(endDateInput);
         await user.type(endDateInput, moment().format("YYYY-MM-DD"));
         await user.click(saveButton);
-   
+
         expect(await screen.findByText(/membershipPlan.validation.endDateGreaterThanToday/i)).toBeInTheDocument();
 
         // Invalid 
