@@ -7,9 +7,9 @@ import { HeaderDefinition, initRequest } from "./service-request";
 import { ActionResult,} from "@/app/lib/http/result";
 import { failure, success } from "@/app/lib/http/handle-result-client";
 
-export async function fetchCoachs(brandUuid: string, gymUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<ActionResult<Page<Coach>>> {
+export async function fetchCoachs(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<ActionResult<Page<Coach>>> {
 
-  const listURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs`;
+  const listURI: String = `/v1/brands/${brandUuid}/coachs`;
 
   const request = initRequest({
     page: page,
@@ -25,9 +25,9 @@ export async function fetchCoachs(brandUuid: string, gymUuid: string, page: numb
   }
 }
 
-export async function uploadCoachPhoto(brandUuid: string, gymUuid: string, coachUuid: string, multipartFormData: FormData): Promise<ActionResult<string>> {
+export async function uploadCoachPhoto(brandUuid: string, coachUuid: string, multipartFormData: FormData): Promise<ActionResult<string>> {
 
-  const metadata: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/photo`;
+  const metadata: String =  `/v1/brands/${brandUuid}/coachs/${coachUuid}/photo`;
   const postURI: String = `/v1/files/images/upload`;
   const header: HeaderDefinition = { name: "Content-Type", value: "multipart/form-data"};
   const request = initRequest({}, [header]);

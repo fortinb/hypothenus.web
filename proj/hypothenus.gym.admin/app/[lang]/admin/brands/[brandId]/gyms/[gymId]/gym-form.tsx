@@ -21,12 +21,30 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, Resolver, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
 import { activateGymAction, createGymAction, deactivateGymAction, deleteGymAction, saveGymAction } from "./actions";
+import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
+import { Coach } from "@/src/lib/entities/coach";
 
-export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
+export interface GymFormData {
+    gym: z.infer<typeof GymSchema>;
+    selectedCoachItems: CoachSelectedItem[];
+}
+
+export const GymFormSchema = z.object({
+    gym: GymSchema,
+    selectedCoachItems: z.any().array()
+});
+
+export default function GymForm({ lang, gym, initialAvailableCoachItems, initialSelectedCoachItems }:
+    {
+        lang: string;
+        gym: Gym;
+        initialAvailableCoachItems: CoachSelectedItem[];
+        initialSelectedCoachItems: CoachSelectedItem[]
+    }) {
     const t = useTranslations("entity");
     const router = useRouter();
 
@@ -38,6 +56,9 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
+    const [availableCoachItems, setAvailableCoachItems] = useState<CoachSelectedItem[]>(initialAvailableCoachItems);
+    const [originalSelectedCoachItems, setOriginalSelectedCoachItems] = useState<CoachSelectedItem[]>(initialSelectedCoachItems);
+
     const [logoToUpload, setLogoToUpload] = useState<Blob>();
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<Gym>({
@@ -50,9 +71,18 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
         }
     });
 
-    const formContext = useForm<z.infer<typeof GymSchema>>({
-        defaultValues: mapEntityToForm(gym),
-        resolver: zodResolver(GymSchema),
+    const formContext = useForm<GymFormData>({
+        defaultValues: {
+            gym: mapEntityToForm(gym),
+            selectedCoachItems: initialSelectedCoachItems
+        },
+        mode: "all",
+        resolver: zodResolver(GymFormSchema) as Resolver<GymFormData>
+    });
+
+    const { fields: coachFields } = useFieldArray({
+        control: formContext.control,
+        name: "selectedCoachItems"
     });
 
     // Toast Result State
@@ -68,9 +98,22 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
         if (gym.uuid === null) {
             setIsEditMode(true);
         }
-    }, [dispatch, gym]);
 
-    const onSubmit: SubmitHandler<z.infer<typeof GymSchema>> = (formData: z.infer<typeof GymSchema>) => {
+    }, [dispatch, gym, initialAvailableCoachItems, initialSelectedCoachItems]);
+
+    function updateInitialSelectedItems(updatedCoachs: Coach[]) {
+        if (!updatedCoachs) {
+            return;
+        }
+
+        const initialSelectedCoachItems = availableCoachItems
+            .filter((item) => updatedCoachs.some((selected) => selected.uuid === item.coach.uuid))
+            .sort((a, b) => a.coach.person.lastname.localeCompare(b.coach.person.lastname));
+
+        setOriginalSelectedCoachItems(initialSelectedCoachItems);
+    }
+
+    const onSubmit: SubmitHandler<GymFormData> = (formData: z.infer<typeof GymFormSchema>) => {
         setIsEditMode(false);
 
         let gym: Gym = mapFormToEntity(formData, gymState.gym);
@@ -81,10 +124,10 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
             saveGym(gym);
         }
     }
-    
+
     // Watch the entire form and log errors when present (debug only)
     useFormDebug(formContext);
-    
+
     const uploadLogo = async (brandUuid: string, gymUuid: string, logo: Blob) => {
         const formData = new FormData();
         formData.append('file', logo);
@@ -105,7 +148,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
             (entity) => {
                 const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
                 if (duplicate) {
-                    formContext.setError("code", { type: "manual", message: "gym.validation.alreadyExists" });
+                    formContext.setError("gym.code", { type: "manual", message: "gym.validation.alreadyExists" });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
@@ -132,6 +175,7 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
             // Success
             (entity) => {
                 dispatch(updateGymState(entity));
+                updateInitialSelectedItems(entity.coachs ?? []);
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
@@ -197,7 +241,11 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
     function onCancel() {
         setIsCancelling(true);
         setIsEditMode(false);
-        formContext.reset(mapEntityToForm(gymState.gym));
+
+        formContext.reset({
+            gym: mapEntityToForm(gymState.gym),
+            selectedCoachItems: originalSelectedCoachItems
+        });
 
         if (gymState.gym.uuid === null) {
             router.push(`/${lang}/admin/brands/${brandState?.brand?.uuid}/gyms`);
@@ -250,24 +298,32 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
                 const orderB = phoneNumberOrder[b.type] ?? 999;
                 return orderA - orderB;
             }),
+            coachs: gym.coachs?.map((coach) => {
+                return {
+                    uuid: coach.uuid,
+                    brandUuid: coach.brandUuid,
+                }
+            }),
         };
     }
 
-    function mapFormToEntity(formData: z.infer<typeof GymSchema>, gym: Gym): Gym {
+    function mapFormToEntity(formData: z.infer<typeof GymFormSchema>, gym: Gym): Gym {
         return {
             ...gym,  // Preserve original properties like id, isActive, messages, etc.
-            code: formData.code,
-            name: formData.name,
-            address: formData.address,
-            email: formData.email,
-            note: formData.note,
-            contacts: formData.contacts,
-            phoneNumbers: formData.phoneNumbers,
+            code: formData.gym.code,
+            name: formData.gym.name,
+            address: formData.gym.address,
+            email: formData.gym.email,
+            note: formData.gym.note,
+            contacts: formData.gym.contacts,
+            phoneNumbers: formData.gym.phoneNumbers,
+            coachs: formData.selectedCoachItems.map((item) => {
+                return item.coach as Coach;
+            }),
         };
     }
 
     return (
-
         <>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
                 <div className="ps-2 pe-2">
@@ -283,7 +339,11 @@ export default function GymForm({ lang, gym }: { lang: string; gym: Gym }) {
                                         isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.uuid == null ? true : false)} isActivationDisabled={(gymState.gym.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>
-                                <GymInfo gym={gymState.gym} isEditMode={isEditMode} uploadHandler={handleLogoToUpload} isCancelling={isCancelling} />
+                                <GymInfo gym={gymState.gym} uploadHandler={handleLogoToUpload}
+                                    availableCoachItems={availableCoachItems}
+                                    formCoachsStateField="selectedCoachItems"
+                                    isEditMode={isEditMode} isCancelling={isCancelling}
+                                />
                                 <hr className="mt-1 mb-1" />
                                 <FormActionButtons isSaving={isSaving} isEditMode={isEditMode} onCancel={onCancel} formId="gym_info_form" />
                             </Form>

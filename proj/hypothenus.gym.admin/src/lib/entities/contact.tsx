@@ -31,10 +31,10 @@ export const parseContact = (data: any): Contact => {
   if (!contact.phoneNumbers) {
     contact.phoneNumbers = [];
   }
-  
+
   // Ensure at least one Mobile and one Home phone number
-  const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
   const hasHome = contact.phoneNumbers?.some(pn => pn.type === PhoneNumberTypeEnum.home);
+  const hasMobile = contact.phoneNumbers.some(pn => pn.type === PhoneNumberTypeEnum.mobile);
 
   if (!hasHome) {
     contact.phoneNumbers.push(newPhoneNumber(PhoneNumberTypeEnum.home));

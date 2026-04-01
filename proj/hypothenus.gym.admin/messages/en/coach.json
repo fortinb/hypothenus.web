@@ -25,5 +25,28 @@
         "details": {
             "inactive": "Inactive"
         }
+    },
+    "action": {
+        "assignationSuccess": "Coach assignation successfull !",
+        "assignationError": "Coach assignation failed !",
+        "unassignationSuccess": "Coach unassignation successfull !",
+        "unassignationError": "Coach unassignation failed !",
+        "bar": {
+            "unassign": "Unassign",
+            "unassignTooltip": "Unassign this coach from the gym",
+            "assign": "Assign",
+            "assignTooltip": "Assign this coach to the gym"
+        }
+    },
+    "unassignConfirmation": {
+        "title": "Unassign {name}",
+        "text": "Are you sure you want to unassign this coach from the gym ?",
+        "yes": "Unassign",
+        "no": "Cancel",
+        "action": "Unassigning..."
+    },
+    "coachs": {
+        "select": "Select a coach for assignment",
+        "noOptions": "No coach available for assignment"
     }
 }

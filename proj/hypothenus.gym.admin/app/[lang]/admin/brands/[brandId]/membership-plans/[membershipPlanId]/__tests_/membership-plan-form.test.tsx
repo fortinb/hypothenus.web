@@ -17,16 +17,13 @@ import { BillingFrequencyEnum } from '@/src/lib/entities/enum/billing-frequency-
 import { newCurrency } from '@/src/lib/entities/pricing/currency';
 import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
 import moment from 'moment';
-import { TEST_COURSE } from '../../../courses/[courseId]/__tests__/course-form.test';
 
-// Test data constants for member
 export const TEST_AVAILABLE_GYMS = [
     { gym: { ...newGym(), uuid: "gym1-uuid", brandUuid: "test-brand" }, label: "gymLabel1", value: 'gym1-uuid' },
     { gym: { ...newGym(), uuid: "gym2-uuid", brandUuid: "test-brand" }, label: "gymLabel2", value: 'gym2-uuid' },
     { gym: { ...newGym(), uuid: "gym3-uuid", brandUuid: "test-brand" }, label: "gymLabel3", value: 'gym3-uuid' }
 ];
 
-// Test data constants for member
 export const TEST_AVAILABLE_COURSES = [
     { course: { ...newCourse(), uuid: "course1-uuid", brandUuid: "test-brand" }, label: "courseLabel1", value: 'course1-uuid' },
     { course: { ...newCourse(), uuid: "course2-uuid", brandUuid: "test-brand" }, label: "courseLabel2", value: 'course2-uuid' },
@@ -38,7 +35,6 @@ export const TEST_SELECTED_GYMS = [
     { gym: { ...newGym(), uuid: "gym3-uuid", brandUuid: "test-brand" }, label: "gymLabel3", value: 'gym3-uuid' }
 ];
 
-// Test data constants for member
 export const TEST_SELECTED_COURSES = [
     { course: { ...newCourse(), uuid: "course1-uuid", brandUuid: "test-brand" }, label: "courseLabel1", value: 'course1-uuid' },
     { course: { ...newCourse(), uuid: "course3-uuid", brandUuid: "test-brand" }, label: "courseLabel3", value: 'course3-uuid' }

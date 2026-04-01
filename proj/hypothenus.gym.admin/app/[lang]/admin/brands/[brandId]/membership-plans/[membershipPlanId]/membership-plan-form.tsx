@@ -24,7 +24,7 @@ import { activateMembershipPlanAction, createMembershipPlanAction, deactivateMem
 import { CourseSelectedItem } from "@/src/lib/entities/ui/course-selected-item";
 import { GymSelectedItem } from "@/src/lib/entities/ui/gym-selected-item";
 import { Gym } from "@/src/lib/entities/gym";
-import { Course } from "@/src/lib/entities/course";
+import { Course, getCourseName } from "@/src/lib/entities/course";
 import MembershipPlanInfo from "@/app/ui/components/membership-plan/membership-plan-info";
 import moment from "moment";
 
@@ -61,12 +61,12 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
-    const [isGymItemsInitialized, setIsGymItemsInitialized] = useState<boolean>(false);
-    const [availableGymItems, setAvailableGymItems] = useState<GymSelectedItem[]>([]);
-    const [originalSelectedGymItems, setOriginalSelectedGymItems] = useState<GymSelectedItem[]>([]);
-    const [isCourseItemsInitialized, setIsCourseItemsInitialized] = useState<boolean>(false);
-    const [availableCourseItems, setAvailableCourseItems] = useState<CourseSelectedItem[]>([]);
-    const [originalSelectedCourseItems, setOriginalSelectedCourseItems] = useState<CourseSelectedItem[]>([]);
+ 
+    const [availableGymItems, setAvailableGymItems] = useState<GymSelectedItem[]>(initialAvailableGymItems);
+    const [originalSelectedGymItems, setOriginalSelectedGymItems] = useState<GymSelectedItem[]>(initialSelectedGymItems);
+  
+    const [availableCourseItems, setAvailableCourseItems] = useState<CourseSelectedItem[]>(initialAvailableCourseItems);
+    const [originalSelectedCourseItems, setOriginalSelectedCourseItems] = useState<CourseSelectedItem[]>(initialSelectedCourseItems);
 
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<MembershipPlan>({
@@ -112,22 +112,25 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             setIsEditMode(true);
         }
 
-        // Initialize Gym Items
-        if (!isGymItemsInitialized) {
+    }, [dispatch, membershipPlan]);
+
+    function updateInitialSelectedItems(updatedGyms: Gym[], updatedCourses: Course[]) {
+        if (updatedGyms) {
+            const initialSelectedGymItems = availableGymItems
+                .filter((item) => updatedGyms.some((selected) => selected.uuid === item.gym.uuid))
+                .sort((a, b) => a.gym.name.localeCompare(b.gym.name));
+
             setOriginalSelectedGymItems(initialSelectedGymItems);
-            setAvailableGymItems(initialAvailableGymItems);
-
-            setIsGymItemsInitialized(true);
         }
 
-        // Initialize Course Items
-        if (!isCourseItemsInitialized) {
+        if (updatedCourses) {
+            const initialSelectedCourseItems = availableCourseItems
+                .filter((item) => updatedCourses.some((selected) => selected.uuid === item.course.uuid))
+                .sort((a, b) => getCourseName(a.course, lang as LanguageEnum).localeCompare(getCourseName(b.course, lang as LanguageEnum)));
+
             setOriginalSelectedCourseItems(initialSelectedCourseItems);
-            setAvailableCourseItems(initialAvailableCourseItems);
-
-            setIsCourseItemsInitialized(true);
         }
-    }, [dispatch, membershipPlan, initialAvailableGymItems, initialSelectedGymItems, initialAvailableCourseItems, initialSelectedCourseItems, isGymItemsInitialized, isCourseItemsInitialized]);
+    }
 
     const onSubmit: SubmitHandler<MembershipPlanFormData> = (formData: z.infer<typeof MembershipPlanFormSchema>) => {
         setIsEditMode(false);
@@ -135,13 +138,13 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
         let membershipPlan: MembershipPlan = mapFormToEntity(formData, membershipPlanState.membershipPlan);
 
         if (membershipPlan.uuid === null) {
-            createMembershipPlan(membershipPlan, formData.selectedGymItems, formData.selectedCourseItems);
+            createMembershipPlan(membershipPlan);
         } else {
-            saveMembershipPlan(membershipPlan, formData.selectedGymItems, formData.selectedCourseItems);
+            saveMembershipPlan(membershipPlan);
         }
     }
 
-    const createMembershipPlan = (membershipPlan: MembershipPlan, selectedGymItems: GymSelectedItem[], selectedCourseItems: CourseSelectedItem[]) => {
+    const createMembershipPlan = (membershipPlan: MembershipPlan) => {
         membershipPlan.brandUuid = brandState.brand.uuid;
 
         createEntity(
@@ -153,9 +156,6 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             async (entity) => {
                 dispatch(updateMembershipPlanState(entity));
                 showResultToast(true, t("action.saveSuccess"));
-
-                setOriginalSelectedGymItems(selectedGymItems);
-                setOriginalSelectedCourseItems(selectedCourseItems);
                 router.push(`/${lang}/admin/brands/${entity.brandUuid}/membership-plans/${entity.uuid}`);
             },
             // Error
@@ -166,7 +166,7 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
         );
     }
 
-    const saveMembershipPlan = (membershipPlan: MembershipPlan, selectedGymItems: GymSelectedItem[], selectedCourseItems: CourseSelectedItem[]) => {
+    const saveMembershipPlan = (membershipPlan: MembershipPlan) => {
         saveEntity(
             membershipPlan, `/${lang}/admin/brands/${membershipPlan.brandUuid}/membership-plans/${membershipPlan.uuid}`,
             // Before save
@@ -175,9 +175,7 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             // Success
             async (entity) => {
                 dispatch(updateMembershipPlanState(entity));
-                setOriginalSelectedGymItems(selectedGymItems);
-                setOriginalSelectedCourseItems(selectedCourseItems);
-
+                updateInitialSelectedItems(entity.includedGyms, entity.includedCourses);
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },

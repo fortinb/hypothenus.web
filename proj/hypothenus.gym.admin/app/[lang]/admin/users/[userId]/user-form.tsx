@@ -51,9 +51,8 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [isCancelling, setIsCancelling] = useState<boolean>(false);
-    const [isRoleItemsInitialized, setIsRoleItemsInitialized] = useState<boolean>(false);
-    const [availableRoleItems, setAvailableRoleItems] = useState<RoleSelectedItem[]>([]);
-    const [originalSelectedRoleItems, setOriginalSelectedRoleItems] = useState<RoleSelectedItem[]>([]);
+    const [availableRoleItems, setAvailableRoleItems] = useState<RoleSelectedItem[]>(initialAvailableRoleItems);
+    const [originalSelectedRoleItems, setOriginalSelectedRoleItems] = useState<RoleSelectedItem[]>(initialSelectedRoleItems);
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<User>({
         actions: {
@@ -89,18 +88,21 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
             setIsEditMode(true);
         }
 
-        // Initialize Roles Items
-        if (!isRoleItemsInitialized) {
-            setOriginalSelectedRoleItems(initialSelectedRoleItems);
-            setAvailableRoleItems(initialAvailableRoleItems);
+    }, [dispatch, user]);
 
-            setIsRoleItemsInitialized(true);
+    function updateInitialSelectedItems(updatedRoles: RoleEnum[]) {
+        if (updatedRoles) {
+            const initialSelectedRoleItems = availableRoleItems
+                .filter((item) => updatedRoles.some((selected) => selected === item.role))
+                .sort((a, b) => a.role.localeCompare(b.role));
+
+            setOriginalSelectedRoleItems(initialSelectedRoleItems);
         }
-    }, [dispatch, user, initialAvailableRoleItems, initialSelectedRoleItems, isRoleItemsInitialized]);
+    }
 
     // Watch the entire form and log errors when present (debug only)
     useFormDebug(formContext);
-    
+
     const onSubmit: SubmitHandler<UserFormData> = (formData: z.infer<typeof UserFormSchema>) => {
         setIsEditMode(false);
 
@@ -127,7 +129,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                     setIsEditMode(true);
                     return;
                 }
-                
+
                 const authorityLevel = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED)
                 if (authorityLevel) {
                     formContext.setError("selectedRoleItems", { type: "manual", message: "user.validation.roleAssignmentNotAllowed" });
@@ -163,6 +165,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                 }
 
                 dispatch(updateUserState(entity));
+                updateInitialSelectedItems(entity.roles);
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },

@@ -11,11 +11,11 @@ import { auth } from "@/src/security/auth";
 import { failure } from "@/app/lib/http/handle-result";
 
 interface PageProps {
-  params: Promise<{ lang: string; brandId: string, gymId: string, coachId: string }>;
+  params: Promise<{ lang: string; brandId: string, coachId: string }>;
 }
 
 export default async function CoachPage({ params }: PageProps) {
-  const { lang, brandId, gymId, coachId } = await params;
+  const { lang, brandId, coachId } = await params;
 
   const session = await auth();
   if (!session) {
@@ -27,7 +27,7 @@ export default async function CoachPage({ params }: PageProps) {
     if (coachId === "new") {
       coach = newCoach();
     } else {
-      coach = await getCoach(brandId, gymId, coachId);
+      coach = await getCoach(brandId, coachId);
     }
   } catch (error: any) {
     failure(error);
@@ -41,7 +41,7 @@ export default async function CoachPage({ params }: PageProps) {
           reset: false,
           id: "coach.[coachId].page",
           locale: `${lang}`,
-          href: `/admin/brands/${brandId}/gyms/${gymId}/coachs/${coachId}`,
+          href: `/admin/brands/${brandId}/coachs/${coachId}`,
           key: "",
           value: formatPersonName(coach.person),
           namespace: ""

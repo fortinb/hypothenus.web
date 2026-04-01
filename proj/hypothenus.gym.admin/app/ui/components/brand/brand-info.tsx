@@ -79,7 +79,7 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                                 </Dropzone>
                             }
                             <div className="d-flex flex-row justify-content-center mt-2">
-                                <Form.Control type="hidden" id={`brand_input_logoContent`}  {...register("logoContent")} />
+                     
                                 <Controller
                                     name={"logoUri"}
                                     render={({ field }) => (
@@ -166,3 +166,4 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
         </fieldset>
     );
 }
+/* logo <Form.Control type="hidden" id={`brand_input_logoContent`}  {...register("logoContent")} /> */

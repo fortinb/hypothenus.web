@@ -18,12 +18,35 @@
             "gym": "{name}",
             "title": "Entraîneurs",
             "add": "Ajouter un entraîneur",
-            "inactive": "Inactives",
+            "inactive": "Inactifs",
             "management": "{name}",
-            "managementTooltip": "Retour au studio"
+            "managementTooltip": "Retour à la salle de sport"
         },
         "details": {
-            "inactive": "Inactive"
+            "inactive": "Inactif"
         }
+    },
+    "action": {
+        "assignationSuccess": "Assignation de l'entraîneur réussie !",
+        "assignationError": "Échec de l'assignation de l'entraîneur !",
+        "unassignationSuccess": "Désassignation de l'entraîneur réussie !",
+        "unassignationError": "Échec de la désassignation de l'entraîneur !",
+        "bar": {
+            "unassign": "Désassigner",
+            "unassignTooltip": "Désassigner cet entraîneur de la salle de sport",
+            "assign": "Assigner",
+            "assignTooltip": "Assigner cet entraîneur à la salle de sport"
+        }
+    },
+    "unassignConfirmation": {
+        "title": "Désassigner {name}",
+        "text": "Êtes-vous sûr de vouloir désassigner cet entraîneur de la salle de sport ?",
+        "yes": "Désassigner",
+        "no": "Annuler",
+        "action": "Désassignation en cours..."
+    },
+    "coachs": {
+        "select": "Sélectionnez un entraîneur pour assignation",
+        "noOptions": "Aucun entraîneur disponible pour assignation"
     }
 }

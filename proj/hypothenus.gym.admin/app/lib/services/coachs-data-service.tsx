@@ -30,9 +30,9 @@ function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestCon
   return request;
 }
 
-export async function fetchCoachs(brandUuid: string, gymUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
+export async function fetchCoachs(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
 
-  const listURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs`;
+  const listURI: String = `/v1/brands/${brandUuid}/coachs`;
 
   const request = initRequest({
     page: page,
@@ -45,9 +45,9 @@ export async function fetchCoachs(brandUuid: string, gymUuid: string, page: numb
   return response.data;
 }
 
-export async function getCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Coach> {
+export async function getCoach(brandUuid: string, coachUuid: string): Promise<Coach> {
 
-  const getURI: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}`;
+  const getURI: String =  `/v1/brands/${brandUuid}/coachs/${coachUuid}`;
 
   const request = initRequest({});
 
@@ -56,20 +56,9 @@ export async function getCoach(brandUuid: string, gymUuid: string, coachUuid: st
   return parseCoach(response.data);
 }
 
-export async function postActivateCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Coach> {
+export async function postActivateCoach(brandUuid: string, coachUuid: string): Promise<Coach> {
 
-  const postURI: String =  `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/activate`;
-
-  const request = initRequest({});
-
-  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
-
-  return parseCoach(response.data);
-}
-
-export async function postDeactivateCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Coach> {
-
-  const postURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}/deactivate`; 
+  const postURI: String =  `/v1/brands/${brandUuid}/coachs/${coachUuid}/activate`;
 
   const request = initRequest({});
 
@@ -78,9 +67,20 @@ export async function postDeactivateCoach(brandUuid: string, gymUuid: string, co
   return parseCoach(response.data);
 }
 
-export async function delCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<void> {
+export async function postDeactivateCoach(brandUuid: string, coachUuid: string): Promise<Coach> {
 
-  const delURI: String = `/v1/brands/${brandUuid}/gyms/${gymUuid}/coachs/${coachUuid}`
+  const postURI: String = `/v1/brands/${brandUuid}/coachs/${coachUuid}/deactivate`; 
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.post(postURI.valueOf(), {}, request);
+
+  return parseCoach(response.data);
+}
+
+export async function delCoach(brandUuid: string, coachUuid: string): Promise<void> {
+
+  const delURI: String = `/v1/brands/${brandUuid}/coachs/${coachUuid}`
 
   const request = initRequest({});
 
@@ -91,7 +91,7 @@ export async function delCoach(brandUuid: string, gymUuid: string, coachUuid: st
 
 export async function postCoach(coach: Coach): Promise<Coach> {
 
-  const postURI: String = `/v1/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs`;
+  const postURI: String = `/v1/brands/${coach.brandUuid}/coachs`;
 
   const request = initRequest({});
 
@@ -102,7 +102,7 @@ export async function postCoach(coach: Coach): Promise<Coach> {
 
 export async function putCoach(coach: Coach): Promise<Coach> {
 
-  const putURI: String = `/v1/brands/${coach.brandUuid}/gyms/${coach.gymUuid}/coachs/${coach.uuid}`;
+  const putURI: String = `/v1/brands/${coach.brandUuid}/coachs/${coach.uuid}`;
 
   const request = initRequest({});
 

@@ -24,7 +24,7 @@ export default function CoachResume() {
         {coachState.coach.person.contacts?.map((contact: Contact, index: number) => {
 
           return (
-            <EmergencyContactDisplay contact={contact} index={index} />
+            <EmergencyContactDisplay key={index} contact={contact} index={index} />
           )
         })}
       </Container>

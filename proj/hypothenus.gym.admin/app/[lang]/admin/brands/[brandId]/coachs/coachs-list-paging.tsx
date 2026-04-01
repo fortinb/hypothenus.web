@@ -11,13 +11,13 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import CoachsList from "./coachs-list";
 import { clearCoachState } from "@/app/lib/store/slices/coach-state-slice";
 import { fetchCoachs } from "@/app/lib/services/coachs-data-service-client";
-import { GymState } from "@/app/lib/store/slices/gym-state-slice";
+import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
 import { useRouter } from "next/navigation";
 
 export default function CoachsListPaging({ lang}: { lang: string; }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
-  const gymState: GymState = useSelector((state: any) => state.gymState);
+  const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
   const router = useRouter();
   
@@ -29,7 +29,7 @@ export default function CoachsListPaging({ lang}: { lang: string; }) {
     const fetchCoachsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
-      let pageOfCoachs: ActionResult<Page<Coach>> = await fetchCoachs(gymState.gym.brandUuid, gymState.gym.uuid, page, pageSize, includeInactive);
+      let pageOfCoachs: ActionResult<Page<Coach>> = await fetchCoachs(brandState.brand.uuid, page, pageSize, includeInactive);
       if (pageOfCoachs.ok) {
         setPageOfCoachs(pageOfCoachs.data);
         if (pageOfCoachs.data.content && pageOfCoachs?.data?.pageable) {
@@ -47,7 +47,7 @@ export default function CoachsListPaging({ lang}: { lang: string; }) {
 
     fetchCoachsPage(coachsStatePaging.page, coachsStatePaging.pageSize, coachsStatePaging.includeInactive);
 
-  }, [dispatch, coachsStatePaging, gymState]);
+  }, [dispatch, coachsStatePaging, brandState]);
 
   const onFirstPage = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();

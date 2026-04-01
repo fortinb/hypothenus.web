@@ -18,6 +18,18 @@
         "gyms": {
             "title": "Salles de sport"
         },
+        "coachs": {
+            "title": "Entraîneurs"
+        },
+        "members": {
+            "title": "Membres"
+        },      
+        "courses": {
+            "title": "Cours"
+        },              
+        "membershipPlans": {
+            "title": "Plans d'abonnement"
+        },        
         "signin": {
             "title": "Se connecter"
         },

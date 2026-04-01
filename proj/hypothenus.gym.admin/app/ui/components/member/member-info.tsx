@@ -29,12 +29,12 @@ export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, av
                         <Form.Group>
                             <FormLabelRequired className="text-primary" htmlFor={`member-type-dropdown`} label={t("member.memberType")}></FormLabelRequired>
                             <Form.Select id="member-type-dropdown" defaultValue={MemberTypeEnum.regular} {...register(`memberType`)}>
-                                <option key={MemberTypeEnum.regular} value={MemberTypeEnum.regular}>{t("member.types.regular")}</option>
-                                <option key={MemberTypeEnum.premium} value={MemberTypeEnum.premium}>{t("member.types.premium")}</option>
-                                <option key={MemberTypeEnum.employee} value={MemberTypeEnum.employee}>{t("member.types.employee")}</option>
+                                {Object.values(MemberTypeEnum).map((type) => (
+                                    <option key={type} value={type}>{t(`member.types.${type}`)}</option>
+                                ))}
                             </Form.Select>
-                             {errors?.memberType && <Form.Text className="text-invalid">{t(errors.memberType.message as string)}</Form.Text>}
-                         </Form.Group>
+                            {errors?.memberType && <Form.Text className="text-invalid">{t(errors.memberType.message as string)}</Form.Text>}
+                        </Form.Group>
                     </Col>
                     <Col xs={6} >
                         <Form.Group>
@@ -44,7 +44,7 @@ export default function MemberInfo({ isEditMode, isCancelling, uploadHandler, av
                                     <option key={gym.value} value={gym.value}>{gym.label}</option>
                                 ))}
                             </Form.Select>
-                             {errors?.preferredGymUuid && <Form.Text className="text-invalid">{t(errors.preferredGymUuid.message as string)}</Form.Text>}
+                            {errors?.preferredGymUuid && <Form.Text className="text-invalid">{t(errors.preferredGymUuid.message as string)}</Form.Text>}
                         </Form.Group>
                     </Col>
                 </Row>

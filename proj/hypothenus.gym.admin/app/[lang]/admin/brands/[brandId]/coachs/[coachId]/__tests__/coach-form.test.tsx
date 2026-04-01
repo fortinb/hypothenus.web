@@ -33,7 +33,7 @@ jest.mock('next-intl', () => ({
 
 jest.mock('next/navigation', () => ({
     useRouter: jest.fn(),
-    useParams: () => ({ lang: 'en', brandId: 'test-brand', gymId: 'test-gym', coachId: 'test-coach' }),
+    useParams: () => ({ lang: 'en', brandId: 'test-brand', coachId: 'test-coach' }),
 }));
 
 jest.mock('../actions', () => ({

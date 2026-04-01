@@ -24,7 +24,7 @@ export default function MemberResume() {
         {memberState.member.person.contacts?.map((contact: Contact, index: number) => {
 
           return (
-            <EmergencyContactDisplay contact={contact} index={index} />
+            <EmergencyContactDisplay key={index} contact={contact} index={index} />
           )
 
         })}

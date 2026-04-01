@@ -18,6 +18,18 @@
         "gyms": {
             "title": "Gyms"
         },
+        "coachs": {
+            "title": "Coachs"
+        },
+        "members": {
+            "title": "Members"
+        },       
+        "courses": {
+            "title": "Courses"
+        },            
+        "membershipPlans": {
+            "title": "Membership Plans"
+        },
         "signin": {
             "title": "Sign In"
         },

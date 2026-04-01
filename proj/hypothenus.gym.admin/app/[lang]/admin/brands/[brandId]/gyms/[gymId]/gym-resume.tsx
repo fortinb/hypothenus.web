@@ -2,8 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
-import { formatAddress } from "@/src/lib/entities/address";
-import { Contact, formatContactName } from "@/src/lib/entities/contact";
+import { Contact } from "@/src/lib/entities/contact";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -48,7 +47,7 @@ export default function GymResume() {
 
         {gymState.gym.contacts?.map((contact: Contact, index: number) => {
           return (
-            <Row className="gx-2">
+            <Row key={index} className="gx-2">
               <Col xs={12} >
                 <EmergencyContactDisplay contact={contact} index={index} />
               </Col>
