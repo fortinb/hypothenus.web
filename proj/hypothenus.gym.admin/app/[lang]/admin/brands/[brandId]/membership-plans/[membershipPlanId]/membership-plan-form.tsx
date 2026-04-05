@@ -287,12 +287,12 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             period: membershipPlan.period,
             billingFrequency: membershipPlan.billingFrequency,
             cost: {
-                amount: membershipPlan.cost.amount
+                amount: membershipPlan.cost.amount / 100
             },
             durationInMonths: membershipPlan.durationInMonths,
             guestPrivilege: membershipPlan.guestPrivilege,
-            isPromotional: membershipPlan.isPromotional,
-            isGiftCard: membershipPlan.isGiftCard,
+            promotional: membershipPlan.promotional,
+            giftCard: membershipPlan.giftCard,
             includedGyms: membershipPlan.includedGyms?.map((gym) => {
                 return {
                     uuid: gym.uuid,
@@ -311,7 +311,7 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
     }
     function mapFormToEntity(formData: z.infer<typeof MembershipPlanFormSchema>, membershipPlan: MembershipPlan): MembershipPlan {
         return {
-            ...membershipPlan,  // Preserve original properties like id, isActive, messages, etc.
+            ...membershipPlan,  // Preserve original properties like id, active, messages, etc.
             name: formData.membershipPlan.name,
             title: formData.membershipPlan.title,
             description: formData.membershipPlan.description,
@@ -320,12 +320,12 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             billingFrequency: formData.membershipPlan.billingFrequency,
             cost: {
                 ...membershipPlan.cost,
-                amount: formData.membershipPlan.cost.amount
+                amount: formData.membershipPlan.cost.amount * 100
             },
             durationInMonths: formData.membershipPlan.durationInMonths,
             guestPrivilege: formData.membershipPlan.guestPrivilege,
-            isPromotional: formData.membershipPlan.isPromotional,
-            isGiftCard: formData.membershipPlan.isGiftCard,
+            promotional: formData.membershipPlan.promotional,
+            giftCard: formData.membershipPlan.giftCard,
             includedGyms: formData.selectedGymItems.map((item) => {
                 return item.gym as Gym;
             }),
@@ -348,7 +348,7 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="membershipPlan_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={membershipPlanState.membershipPlan.uuid == null ? true : membershipPlanState.membershipPlan.isActive}
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={membershipPlanState.membershipPlan.uuid == null ? true : membershipPlanState.membershipPlan.active}
                                     isEditDisable={isEditMode} isDeleteDisable={(membershipPlanState.membershipPlan.uuid == null ? true : false)} isActivationDisabled={(membershipPlanState.membershipPlan.uuid == null ? true : false)} isActivating={isActivating} />
                                 {<MembershipPlanInfo lang={lang}
                                     currency={membershipPlanState.membershipPlan.cost?.currency ?? { code: "", symbol: "" }}

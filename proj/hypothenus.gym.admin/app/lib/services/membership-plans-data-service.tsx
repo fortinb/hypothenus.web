@@ -1,6 +1,8 @@
 import { MembershipPlan, parseMembershipPlan, serializeMembershipPlan } from "@/src/lib/entities/membership-plan";
 import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
+import { Page } from "@/src/lib/entities/page";
+import moment from "moment";
 
 function initRequest(params: any): AxiosRequestConfig {
 
@@ -11,6 +13,23 @@ function initRequest(params: any): AxiosRequestConfig {
   }
 
   return request;
+}
+
+export async function fetchActiveMembershipPlans(brandUuid: string, currentDate: Date, page: number, pageSize: number): Promise<Page<MembershipPlan>> {
+
+  const listURI: String = `/v1/brands/${brandUuid}/membership/plans/active`;
+
+  const request = initRequest({
+    page: page,
+    pageSize: pageSize,
+    includeInactive: false,
+    currentDate: moment(currentDate).startOf('day').toISOString()
+  });
+
+  let response = await axiosInstance.get(listURI.valueOf(), request);
+  let responsePage: Page<MembershipPlan> = response.data;
+  responsePage.content = responsePage.content.map((membershipPlanData: any) => parseMembershipPlan(membershipPlanData));
+  return responsePage;
 }
 
 export async function getMembershipPlan(brandUuid: string, membershipPlanUuid: string): Promise<MembershipPlan> {

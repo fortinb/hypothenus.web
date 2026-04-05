@@ -26,7 +26,7 @@ function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestCon
       request.headers[header.name] = header.value;
     })
   }
- 
+
   return request;
 }
 
@@ -40,13 +40,15 @@ export async function fetchCourses(brandUuid: string, page: number, pageSize: nu
     includeInactive: includeInactive
   });
 
-    let response = await axiosInstance.get(listURI.valueOf(), request);
-    return response.data;
+  let response = await axiosInstance.get(listURI.valueOf(), request);
+  let responsePage: Page<Course> = response.data;
+  responsePage.content = responsePage.content.map((courseData: any) => parseCourse(courseData));
+  return responsePage;
 }
 
 export async function getCourse(brandUuid: string, courseUuid: string): Promise<Course> {
 
-  const getURI: String =  `/v1/brands/${brandUuid}/courses/${courseUuid}`;
+  const getURI: String = `/v1/brands/${brandUuid}/courses/${courseUuid}`;
 
   const request = initRequest({});
 
@@ -57,7 +59,7 @@ export async function getCourse(brandUuid: string, courseUuid: string): Promise<
 
 export async function postActivateCourse(brandUuid: string, courseUuid: string): Promise<Course> {
 
-  const postURI: String =  `/v1/brands/${brandUuid}/courses/${courseUuid}/activate`;
+  const postURI: String = `/v1/brands/${brandUuid}/courses/${courseUuid}/activate`;
 
   const request = initRequest({});
 
@@ -68,13 +70,13 @@ export async function postActivateCourse(brandUuid: string, courseUuid: string):
 
 export async function postDeactivateCourse(brandUuid: string, courseUuid: string): Promise<Course> {
 
-  const postURI: String = `/v1/brands/${brandUuid}/courses/${courseUuid}/deactivate`; 
+  const postURI: String = `/v1/brands/${brandUuid}/courses/${courseUuid}/deactivate`;
 
   const request = initRequest({});
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
- return parseCourse(response.data);
+  return parseCourse(response.data);
 }
 
 export async function delCourse(brandUuid: string, courseUuid: string): Promise<void> {

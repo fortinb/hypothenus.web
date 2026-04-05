@@ -311,14 +311,25 @@
             "weekly": "Hebdomadaire",
             "trial": "Essai",
             "hours": "Heures",
+            "amount": "Montant",
             "merchandise": "Marchandise",
             "descriptions": {
-                "classes": "{classes} cours.",
-                "monthly": "{classes} cours par mois.",
-                "weekly": "{classes} cours par semaine.",
-                "trial": "{classes} cours d'essai.",
-                "hours": "{classes} heures.",
+                "classes": "{classes} cour(s).",
+                "monthly": "{classes} cour(s) par mois.",
+                "weekly": "{classes} cour(s) par semaine.",
+                "trial": "{classes} cour(s) d'essai.",
+                "hours": "{classes} heure(s).",
+                "amount": "",
                 "merchandise": "Marchandise"
+            },
+            "title":{
+                "classes": "Carte de cours",
+                "monthly": "Abonnement mensuel",
+                "weekly": "Abonnement hebdomadaire",
+                "trial": "Nouveaux membres",
+                "hours": "Entraînement personnalisé",
+                "amount": "Carte cadeau",
+                "merchandise": "Marchandises"
             }
         },
         "billingFrequency": {
@@ -341,8 +352,8 @@
             "tooltip": "Pour combien de mois le plan d'abonnement est-il valide après l'abonnement du membre. Par exemple, si la durée est de 3 mois et que le membre s'abonne le 15 janvier, le plan d'abonnement sera valide jusqu'au 15 avril. Ce champ est requis si la fréquence de facturation n'est pas 'Paiement unique'."
         },
         "guestPrivilege": "Privilège invité",
-        "isPromotional": "Promotionnel",
-        "isGiftCard": "Carte cadeau",
+        "promotional": "Promotionnel",
+        "giftCard": "Carte cadeau",
         "courseSection": "Cours inclus",
         "gymSection": "Salles de sport incluses",
         "deleteConfirmation": {
@@ -355,7 +366,8 @@
     },
     "cost": {
         "validation": {
-            "amountRequired": "Le montant est requis."
+            "amountRequired": "Le montant est requis.",
+            "amountTooLarge": "Le montant doit être inférieur à 1 000 000."
         },
         "amount": "Montant",
         "currency": "Devise"

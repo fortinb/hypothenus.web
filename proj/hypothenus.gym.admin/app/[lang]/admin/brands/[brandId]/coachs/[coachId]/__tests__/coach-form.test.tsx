@@ -415,7 +415,7 @@ describe('CoachForm Integration Test', () => {
 
         // Create a coach with uuid and full data, initially inactive
         const mockCoachForActivate = createMockCoachWithData('existing-coach-uuid-activate');
-        mockCoachForActivate.isActive = false;
+        mockCoachForActivate.active = false;
 
         render(
             <Provider store={store}>
@@ -446,7 +446,7 @@ describe('CoachForm Integration Test', () => {
 
         // Create a coach with uuid and full data, initially active
         const mockCoachForDeactivate = createMockCoachWithData('existing-coach-uuid-deactivate');
-        mockCoachForDeactivate.isActive = true;
+        mockCoachForDeactivate.active = true;
 
         render(
             <Provider store={store}>

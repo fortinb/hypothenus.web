@@ -451,7 +451,7 @@ describe('MemberForm Integration Test', () => {
 
         // Create a member with uuid and full data, initially inactive
         const mockMemberForActivate = createMockMemberWithData('existing-member-uuid-activate');
-        mockMemberForActivate.isActive = false;
+        mockMemberForActivate.active = false;
         render(
             <Provider store={store}>
                 <MemberForm lang="en" member={mockMemberForActivate} 
@@ -482,7 +482,7 @@ describe('MemberForm Integration Test', () => {
 
         // Create a member with uuid and full data, initially active
         const mockMemberForDeactivate = createMockMemberWithData('existing-member-uuid-deactivate');
-        mockMemberForDeactivate.isActive = true;
+        mockMemberForDeactivate.active = true;
 
         render(
             <Provider store={store}>

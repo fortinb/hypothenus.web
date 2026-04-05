@@ -382,7 +382,7 @@ describe('CourseForm Integration Test', () => {
 
         // Create a course with uuid and full data, initially inactive
         const mockCourseForActivate = createMockCourseWithData('existing-course-uuid-activate');
-        mockCourseForActivate.isActive = false;
+        mockCourseForActivate.active = false;
 
         render(
             <Provider store={store}>
@@ -413,7 +413,7 @@ describe('CourseForm Integration Test', () => {
 
         // Create a course with uuid and full data, initially active
         const mockCourseForDeactivate = createMockCourseWithData('existing-course-uuid-deactivate');
-        mockCourseForDeactivate.isActive = true;
+        mockCourseForDeactivate.active = true;
 
         render(
             <Provider store={store}>

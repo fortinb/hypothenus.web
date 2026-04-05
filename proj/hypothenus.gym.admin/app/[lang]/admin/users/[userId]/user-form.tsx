@@ -298,7 +298,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="user_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                 <Authorize roles={["admin", "manager"]}>
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={userState.user.uuid == null ? true : userState.user.isActive}
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={userState.user.uuid == null ? true : userState.user.active}
                                         isEditDisable={isEditMode} isDeleteDisable={(userState.user.uuid == null ? true : false)} isActivationDisabled={(userState.user.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>

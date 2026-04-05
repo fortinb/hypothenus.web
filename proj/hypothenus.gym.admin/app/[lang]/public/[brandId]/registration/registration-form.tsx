@@ -136,7 +136,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
 
     function mapFormToEntity(formData: z.infer<typeof MemberRegistrationSchema>, member: Member): Member {
         return {
-            ...member,  // Preserve original properties like id, isActive, messages, etc.
+            ...member,  // Preserve original properties like id, active, messages, etc.
             person: { ...member.person, ...formData.person },
             memberType: formData.memberType,
             password: formData.password,

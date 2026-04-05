@@ -14,7 +14,7 @@ export interface Gym extends BaseEntity {
   address: Address;
   email?: string;
   logoUri?: any;
-  isActive: boolean;
+  active: boolean;
   note: string;
   contacts: Contact[];
   coachs: Coach[];
@@ -30,7 +30,7 @@ export const newGym = (): Gym => {
     address: newAddress(),
     email: undefined,
     logoUri: undefined,
-    isActive: true,
+    active: true,
     note: "",
     contacts: [
       newContact(),

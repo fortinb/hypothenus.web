@@ -460,7 +460,7 @@ describe('GymForm Integration Test', () => {
 
         // Create a gym with uuid and full data, initially inactive
         const mockGymForActivate = createMockGymWithData('existing-gym-uuid-activate');
-        mockGymForActivate.isActive = false;
+        mockGymForActivate.active = false;
 
         render(
             <Provider store={store}>
@@ -495,7 +495,7 @@ describe('GymForm Integration Test', () => {
 
         // Create a gym with uuid and full data, initially active
         const mockGymForDeactivate = createMockGymWithData('existing-gym-uuid-deactivate');
-        mockGymForDeactivate.isActive = true;
+        mockGymForDeactivate.active = true;
 
         render(
             <Provider store={store}>

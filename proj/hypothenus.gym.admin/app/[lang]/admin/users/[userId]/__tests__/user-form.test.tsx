@@ -283,7 +283,7 @@ describe('UserForm Integration Test', () => {
 
         // Create a user with uuid and full data, initially inactive
         const mockUserForActivate = createMockUserWithData('existing-user-uuid-activate');
-        mockUserForActivate.isActive = false;
+        mockUserForActivate.active = false;
 
         render(
             <Provider store={store}>
@@ -316,7 +316,7 @@ describe('UserForm Integration Test', () => {
 
         // Create a user with uuid and full data, initially active
         const mockUserForDeactivate = createMockUserWithData('existing-user-uuid-deactivate');
-        mockUserForDeactivate.isActive = true;
+        mockUserForDeactivate.active = true;
 
         render(
             <Provider store={store}>

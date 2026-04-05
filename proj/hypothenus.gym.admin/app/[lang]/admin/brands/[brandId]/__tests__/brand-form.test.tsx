@@ -449,7 +449,7 @@ describe('BrandForm Integration Test', () => {
 
         // Create a brand with uuid and full data, initially inactive
         const mockBrandForActivate = createMockBrandWithData('existing-brand-uuid-activate');
-        mockBrandForActivate.isActive = false;
+        mockBrandForActivate.active = false;
 
         render(
             <Provider store={store}>
@@ -480,7 +480,7 @@ describe('BrandForm Integration Test', () => {
 
         // Create a brand with uuid and full data, initially active
         const mockBrandForDeactivate = createMockBrandWithData('existing-brand-uuid-deactivate');
-        mockBrandForDeactivate.isActive = true;
+        mockBrandForDeactivate.active = true;
 
         render(
             <Provider store={store}>

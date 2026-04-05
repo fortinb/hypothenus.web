@@ -13,14 +13,14 @@ export default function CourseListDetails({ lang, course }: { lang: string; cour
   return (
     <div className="col-6 p-2">
       <Card className="card-min-height">
-        <Card.Body className={"m-2" + (course.isActive == false ? " card-body-inactive" : "")}>
+        <Card.Body className={"m-2" + (course.active == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`}> 
               {getCourseName(course, lang as LanguageEnum )}
             </Link>
           </Card.Title>
           <Card.Text>
-            {course.isActive == false &&
+            {course.active == false &&
               <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
               </>

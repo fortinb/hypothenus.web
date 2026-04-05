@@ -20,7 +20,6 @@ export default function BrandContactInfo({ isEditMode }: { isEditMode: boolean }
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [contactIndexToDelete, setContactIndexToDelete] = useState<number>(-1);
     const { formState: { errors } } = useFormContext();
-    const [accordeonDefaultActiveKeys] = useState<string[]>( ["0", "1", "2"]);
 
     const formContacts = useFieldArray({
         name: "contacts",

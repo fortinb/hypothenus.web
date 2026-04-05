@@ -171,8 +171,16 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                         <Form.Group>
                                             <div className="d-flex flex-row  justify-content-start m-2 gx-2">
                                                 <div className="form-check form-switch pe-2">
-                                                    <Form.Control aria-label={t("membershipPlan.guestPrivilege")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
-                                                        id="membershipPlan-guestPrivilege-checkbox" {...register("membershipPlan.guestPrivilege")} />
+                                                    <Controller
+                                                        name="membershipPlan.guestPrivilege"
+                                                        render={({ field }) => (
+                                                            <Form.Control aria-label={t("membershipPlan.guestPrivilege")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
+                                                                id="membershipPlan-guestPrivilege-checkbox"
+                                                                checked={field.value}
+                                                                onChange={(value) => field.onChange(value)}
+                                                                ref={field.ref} />
+                                                        )}
+                                                    />
                                                 </div>
                                                 <div>
                                                     <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-guestPrivilege-checkbox">
@@ -185,12 +193,20 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                         <Form.Group>
                                             <div className="d-flex flex-row  justify-content-start m-2 gx-2">
                                                 <div className="form-check form-switch pe-2">
-                                                    <Form.Control aria-label={t("membershipPlan.isPromotional")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
-                                                        id="membershipPlan-isPromotional-checkbox" {...register("membershipPlan.isPromotional")} />
+                                                    <Controller
+                                                        name="membershipPlan.promotional"
+                                                        render={({ field }) => (
+                                                            <Form.Control aria-label={t("membershipPlan.promotional")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
+                                                                id="membershipPlan-promotional-checkbox"
+                                                                checked={field.value}
+                                                                onChange={(value) => field.onChange(value)}
+                                                                ref={field.ref} />
+                                                        )}
+                                                    />
                                                 </div>
                                                 <div>
-                                                    <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-isPromotional-checkbox">
-                                                        {t("membershipPlan.isPromotional")}</Form.Label>
+                                                    <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-promotional-checkbox">
+                                                        {t("membershipPlan.promotional")}</Form.Label>
                                                 </div>
                                             </div>
                                         </Form.Group>
@@ -199,12 +215,20 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                         <Form.Group>
                                             <div className="d-flex flex-row  justify-content-start m-2 gx-2">
                                                 <div className="form-check form-switch pe-2">
-                                                    <Form.Control aria-label={t("membershipPlan.isGiftCard")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
-                                                        id="membershipPlan-isGiftCard-checkbox" {...register("membershipPlan.isGiftCard")} />
+                                                    <Controller
+                                                        name="membershipPlan.giftCard"
+                                                        render={({ field }) => (
+                                                            <Form.Control aria-label={t("membershipPlan.giftCard")} className="form-check-input form-check-input-lg" type="checkbox" role="switch"
+                                                                id="membershipPlan-giftCard-checkbox"
+                                                                checked={field.value}
+                                                                onChange={(value) => field.onChange(value)}
+                                                                ref={field.ref} />
+                                                        )}
+                                                    />
                                                 </div>
                                                 <div>
-                                                    <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-isGiftCard-checkbox">
-                                                        {t("membershipPlan.isGiftCard")}</Form.Label>
+                                                    <Form.Label className="text-primary ps-2" htmlFor="membershipPlan-giftCard-checkbox">
+                                                        {t("membershipPlan.giftCard")}</Form.Label>
                                                 </div>
                                             </div>
                                         </Form.Group>

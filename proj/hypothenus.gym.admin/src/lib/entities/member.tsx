@@ -10,7 +10,7 @@ export interface Member extends BaseEntity {
   person: Person;
   memberType: MemberTypeEnum;
   preferredGymUuid: string;
-  isActive: boolean;
+  active: boolean;
 }
 
 export const newMember = (): Member => {
@@ -21,7 +21,7 @@ export const newMember = (): Member => {
     person: newPerson(),
     memberType: MemberTypeEnum.regular,
     preferredGymUuid: "",
-    isActive: true,
+    active: true,
     messages: [],
     createdBy: undefined,
     modifiedBy: undefined

@@ -23,7 +23,7 @@ export default function UserListDetails({ lang, user }: { lang: string; user: an
             <Link className="link-element" href={`mailto:${user.email}`}>{user.email}</Link><br />
             <span className="text-primary">{roles}</span><br />
 
-            {user.isActive == false &&
+            {user.active == false &&
               <div>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
               </div>

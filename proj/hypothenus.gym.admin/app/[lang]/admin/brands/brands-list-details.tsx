@@ -22,7 +22,7 @@ export default function BrandListDetails({ lang, brand }: { lang: string; brand:
             <Link className="link-element" href={`mailto:${brand.email}`}>{brand.email}</Link><br />
             <span className="text-primary">{brand.code}</span><br />
 
-            {brand.isActive == false &&
+            {brand.active == false &&
               <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span>
                 <br />

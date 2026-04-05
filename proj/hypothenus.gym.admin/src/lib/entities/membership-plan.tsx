@@ -17,19 +17,20 @@ export interface MembershipPlan extends BaseEntity {
     name: LocalizedString[];
     title: LocalizedString[];
     description: LocalizedString[];
+    detail: LocalizedString[];
     numberOfClasses: number;
     period: MembershipPlanPeriodEnum;
     billingFrequency: BillingFrequencyEnum;
     cost: Cost;
     durationInMonths: number;
     guestPrivilege: boolean;
-    isPromotional: boolean;
-    isGiftCard: boolean;
+    promotional: boolean;
+    giftCard: boolean;
     includedCourses: Course[];
     includedGyms: Gym[];
     startDate?: any;
     endDate?: any;
-    isActive: boolean;
+    active: boolean;
     activatedOn?: string;
     deactivatedOn?: string;
 }
@@ -37,15 +38,10 @@ export interface MembershipPlan extends BaseEntity {
 export const parseMembershipPlan = (data: any): MembershipPlan => {
     let membershipPlan: MembershipPlan = {
         ...data,
-        cost: parseCost(data.cost)
+        cost: parseCost(data.cost),
+        startDate: data.startDate ? moment(data.startDate).toDate().toISOString() : data.startDate,
+        endDate: data.endDate ? moment(data.endDate).toDate().toISOString() : data.endDate,
     };
-
-    if (data.startDate) {
-        membershipPlan.startDate = moment(data.startDate).toDate().toISOString();
-    }
-    if (data.endDate) {
-        membershipPlan.endDate = moment(data.endDate).toDate().toISOString();
-    }
 
     return membershipPlan;
 }
@@ -53,7 +49,9 @@ export const parseMembershipPlan = (data: any): MembershipPlan => {
 export const serializeMembershipPlan = (membershipPlan: MembershipPlan): any => {
     return {
         ...membershipPlan,
-        cost: serializeCost(membershipPlan.cost)
+        cost: serializeCost(membershipPlan.cost),
+        startDate: membershipPlan.startDate ? moment(membershipPlan.startDate).startOf('day').toISOString() : membershipPlan.startDate,
+        endDate: membershipPlan.endDate ? moment(membershipPlan.endDate).startOf('day').toISOString() : membershipPlan.endDate,
     };
 }
 
@@ -64,6 +62,7 @@ export const newMembershipPlan = (): MembershipPlan => {
         name: [],
         title: [],
         description: [],
+        detail: [],
         numberOfClasses: 0,
         period: MembershipPlanPeriodEnum.classes,
         billingFrequency: BillingFrequencyEnum.oneTime,
@@ -73,13 +72,13 @@ export const newMembershipPlan = (): MembershipPlan => {
         },
         durationInMonths: 0,
         guestPrivilege: false,
-        isPromotional: false,
-        isGiftCard: false,
+        promotional: false,
+        giftCard: false,
         includedCourses: [],
         includedGyms: [],
         startDate: moment().format("YYYY-MM-DD"),
         endDate: undefined,
-        isActive: true,
+        active: true,
         messages: [],
         createdBy: undefined,
         modifiedBy: undefined,
@@ -89,6 +88,7 @@ export const newMembershipPlan = (): MembershipPlan => {
         newMembershipPlan.name.push(newLocalizedString(l as LanguageEnum));
         newMembershipPlan.title.push(newLocalizedString(l as LanguageEnum));
         newMembershipPlan.description.push(newLocalizedString(l as LanguageEnum));
+        newMembershipPlan.detail.push(newLocalizedString(l as LanguageEnum));
     });
 
     return newMembershipPlan;
@@ -106,8 +106,8 @@ export function getMembershipPlanName(membershipPlan: MembershipPlan, language?:
 
 export function getMembershipPlanPrice(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
 
-    let cost = parseCost(membershipPlan.cost); 
-    const amount = cost.amount.toFixed(2);
+    let cost = parseCost(membershipPlan.cost);
+    const amount = (cost.amount / 100).toFixed(2);
     return `${amount}${cost.currency.symbol} (${cost.currency.code})`;
 }
 
@@ -131,6 +131,16 @@ export function getMembershipPlanTitle(membershipPlan: MembershipPlan, language?
     return title?.text ?? "";
 }
 
+export function getMembershipPlanDetail(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+
+    let detail = membershipPlan.detail?.find(c => c.language === language);
+    if (!detail) {
+        detail = membershipPlan.detail?.find(c => c.language == localesConfig.defaultLocale as LanguageEnum);
+    }
+
+    return detail?.text ?? "";
+}
+
 export const MembershipPlanSchema = z.object({
     name: z.array(LocalizedStringSchema(true, "membershipPlan.validation.nameRequired")).min(2),
     description: z.array(LocalizedStringSchema(true, "membershipPlan.validation.descriptionRequired")).min(2),
@@ -146,8 +156,8 @@ export const MembershipPlanSchema = z.object({
         .lte(12, { error: "membershipPlan.validation.durationInMonthsInterval" })
         .int({ error: "validation.integerValue" }),
     guestPrivilege: z.boolean(),
-    isPromotional: z.boolean(),
-    isGiftCard: z.boolean(),
+    promotional: z.boolean(),
+    giftCard: z.boolean(),
     includedGyms: z.array(GymReferenceSchema).min(0).nullable().optional(),
     includedCourses: z.array(CourseReferenceSchema).min(0).nullable().optional(),
     startDate: z.string().nullable().refine((date) => !!date, { message: "membershipPlan.validation.startDateRequired" }),
@@ -156,9 +166,9 @@ export const MembershipPlanSchema = z.object({
     message: "membershipPlan.validation.onlyOneTrial",
     path: ["numberOfClasses"]
 }).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") >= moment(membershipPlan.startDate).format("YYYYMMDD")), {
-  message: "membershipPlan.validation.endDateGreaterThanStartDate",
-  path: ["endDate"], // path of error
+    message: "membershipPlan.validation.endDateGreaterThanStartDate",
+    path: ["endDate"], // path of error
 }).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") > moment().format("YYYYMMDD")), {
-  message: "membershipPlan.validation.endDateGreaterThanToday",
-  path: ["endDate"], // path of error;
+    message: "membershipPlan.validation.endDateGreaterThanToday",
+    path: ["endDate"], // path of error;
 });

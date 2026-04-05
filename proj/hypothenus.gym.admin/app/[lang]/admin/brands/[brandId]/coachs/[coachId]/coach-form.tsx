@@ -253,7 +253,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
     function mapFormToEntity(formData: z.infer<typeof CoachSchema>, coach: Coach): Coach {
         return {
-            ...coach,  // Preserve original properties like id, isActive, messages, etc.
+            ...coach,  // Preserve original properties like id, active, messages, etc.
             person: formData.person,
         };
     }
@@ -270,7 +270,7 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="coach_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                 <Authorize roles="manager">
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.uuid == null ? true : coachState.coach.isActive}
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={coachState.coach.uuid == null ? true : coachState.coach.active}
                                         isEditDisable={isEditMode} isDeleteDisable={(coachState.coach.uuid == null ? true : false)} isActivationDisabled={(coachState.coach.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>

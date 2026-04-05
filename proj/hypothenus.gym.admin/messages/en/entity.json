@@ -311,14 +311,25 @@
             "weekly": "Weekly",
             "trial": "Trial",
             "hours": "Hours",
+            "amount": "Amount",
             "merchandise": "Merchandise",
             "descriptions": {
-                "classes": "{classes} classes.",
-                "monthly": "{classes} classes per month.",
-                "weekly": "{classes} classes per week.",
-                "trial": "{classes} trial class.",
-                "hours": "{classes} hours.",
+                "classes": "{classes} class(es).",
+                "monthly": "{classes} class(es) per month.",
+                "weekly": "{classes} class(es) per week.",
+                "trial": "{classes} trial class(es).",
+                "hours": "{classes} hour(s).",
+                "amount": "",
                 "merchandise": ""
+            },
+            "title":{
+                "classes": "Class cards",
+                "monthly": "Monthly memberships",
+                "weekly": "Weekly memberships",
+                "trial": "New members",
+                "hours": "Personalized training",
+                "amount": "Gift cards",
+                "merchandise": "Merchandise"
             }
         },
         "billingFrequency": {
@@ -341,8 +352,8 @@
             "tooltip": "For how many months the membership plan is valid, after the member's subscription. For example, if the duration is 3 months and the member subscribes on January 15th, the membership plan will be valid until April 15th. This field is required if billing frequency is not 'One time payment'."
         },
         "guestPrivilege": "Guest privilege",
-        "isPromotional": "Promotional",
-        "isGiftCard": "Gift card",
+        "promotional": "Promotional",
+        "giftCard": "Gift card",
         "courseSection": "Included courses",
         "gymSection": "Included gyms",
         "deleteConfirmation": {
@@ -355,7 +366,8 @@
     },
     "cost": {
         "validation": {
-            "amountRequired": "Amount is required."
+            "amountRequired": "Amount is required.",
+            "amountTooLarge": "Amount must be less than 1,000,000."
         },
         "amount": "Amount",
         "currency": "Currency"

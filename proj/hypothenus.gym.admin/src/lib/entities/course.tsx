@@ -13,7 +13,7 @@ export interface Course extends BaseEntity {
   description: LocalizedString[];
   startDate?: any;
   endDate?: any; 
-  isActive: boolean;
+  active: boolean;
 }
 
 export const parseCourse = (data: any): Course => {
@@ -42,7 +42,7 @@ export const newCourse = (): Course => {
     description: [],
     startDate: moment().format("YYYY-MM-DD"),
     endDate: undefined,
-    isActive: true,
+    active: true,
     messages:  [],
     createdBy: undefined,
     modifiedBy: undefined,

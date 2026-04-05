@@ -8,7 +8,7 @@ export interface User extends BaseEntity {
   lastname?: string;
   email: string;
   roles: RoleEnum[];
-  isActive: boolean;
+  active: boolean;
 }
 
 export const newUser = (): User => {
@@ -18,7 +18,7 @@ export const newUser = (): User => {
     lastname: "",
     email: "",
     roles: [],
-    isActive: true,
+    active: true,
     messages: [],
     createdBy: undefined,
     modifiedBy: undefined

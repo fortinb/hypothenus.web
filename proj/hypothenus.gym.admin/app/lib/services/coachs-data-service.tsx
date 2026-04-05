@@ -41,8 +41,9 @@ export async function fetchCoachs(brandUuid: string, page: number, pageSize: num
   });
 
   let response = await axiosInstance.get(listURI.valueOf(), request);
-
-  return response.data;
+  let responsePage: Page<Coach> = response.data;
+  responsePage.content = responsePage.content.map((coachData: any) => parseCoach(coachData));
+  return responsePage;
 }
 
 export async function getCoach(brandUuid: string, coachUuid: string): Promise<Coach> {

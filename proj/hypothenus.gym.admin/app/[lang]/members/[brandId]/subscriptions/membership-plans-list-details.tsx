@@ -14,7 +14,7 @@ export default function MembershipPlanListDetails({ lang, membershipPlan }: { la
         membershipPlan={membershipPlan}
         locale={lang}
         tLocale={t}
-        linkActive={true}
+        linkActive={false}
       />
     </div>
   );

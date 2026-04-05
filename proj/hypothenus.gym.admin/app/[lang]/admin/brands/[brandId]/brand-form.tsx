@@ -251,7 +251,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
     // Update mapFormToEntity to map back to full Brand (add missing properties from original brand)
     function mapFormToEntity(formData: z.infer<typeof BrandSchema>, brand: Brand): Brand {
         return {
-            ...brand,  // Preserve original properties like id, isActive, messages, etc.
+            ...brand,  // Preserve original properties like id, active, messages, etc.
             code: formData.code,
             name: formData.name,
             address: formData.address,
@@ -274,7 +274,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="brand_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                 <Authorize roles="admin">
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.uuid == null ? true : brandState.brand.isActive}
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={brandState.brand.uuid == null ? true : brandState.brand.active}
                                         isEditDisable={isEditMode} isDeleteDisable={(brandState.brand.uuid == null ? true : false)} isActivationDisabled={(brandState.brand.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>

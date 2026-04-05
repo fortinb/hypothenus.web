@@ -262,7 +262,7 @@ export default function CourseForm({ lang, course }: {
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="course_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                 <Authorize roles="manager">
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == null ? true : courseState.course.isActive}
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={courseState.course.uuid == null ? true : courseState.course.active}
                                         isEditDisable={isEditMode} isDeleteDisable={(courseState.course.uuid == null ? true : false)} isActivationDisabled={(courseState.course.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>

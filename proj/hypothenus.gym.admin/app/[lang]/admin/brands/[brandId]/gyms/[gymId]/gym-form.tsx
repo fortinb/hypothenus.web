@@ -309,7 +309,7 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
 
     function mapFormToEntity(formData: z.infer<typeof GymFormSchema>, gym: Gym): Gym {
         return {
-            ...gym,  // Preserve original properties like id, isActive, messages, etc.
+            ...gym,  // Preserve original properties like id, active, messages, etc.
             code: formData.gym.code,
             name: formData.gym.name,
             address: formData.gym.address,
@@ -335,7 +335,7 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="gym_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                                 <Authorize roles="manager">
-                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.uuid == null ? true : gymState.gym.isActive}
+                                    <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={gymState.gym.uuid == null ? true : gymState.gym.active}
                                         isEditDisable={isEditMode} isDeleteDisable={(gymState.gym.uuid == null ? true : false)} isActivationDisabled={(gymState.gym.uuid == null ? true : false)} isActivating={isActivating} />
                                     <hr className="mt-1" />
                                 </Authorize>

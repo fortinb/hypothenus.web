@@ -74,7 +74,7 @@ export default function CoachListDetails({ lang, coach }:
     <>
       <Col xs={6} >
         <Card className="mb-2 me-2 card-min-height">
-          <Card.Body className={"m-2" + (coach.isActive == false ? " card-body-inactive" : "")}>
+          <Card.Body className={"m-2" + (coach.active == false ? " card-body-inactive" : "")}>
             <div className="d-flex flex-row justify-content-start">
               <div className="d-flex flex-column flex-fill justify-content-start">
                 <Card.Title >
@@ -83,7 +83,7 @@ export default function CoachListDetails({ lang, coach }:
                 <Card.Text>
                   <Link className="link-element" href={`mailto:${coach.person.email}`}>{coach.person.email}</Link><br />
 
-                  {coach.isActive == false &&
+                  {coach.active == false &&
                     <>
                       <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
                     </>

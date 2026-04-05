@@ -102,8 +102,8 @@ describe('MembershipPlanForm Integration Test', () => {
         },
         durationInMonths: 12,
         guestPrivilege: true,
-        isPromotional: true,
-        isGiftCard: true,
+        promotional: true,
+        giftCard: true,
         startDate: moment().format("YYYY-MM-DD"),
         endDate: moment().add(1, 'year').format("YYYY-MM-DD"),
     };
@@ -139,8 +139,8 @@ describe('MembershipPlanForm Integration Test', () => {
         mockMembershipPlanWithData.cost = TEST_MEMBERSHIP_PLAN.cost;
         mockMembershipPlanWithData.durationInMonths = TEST_MEMBERSHIP_PLAN.durationInMonths;
         mockMembershipPlanWithData.guestPrivilege = TEST_MEMBERSHIP_PLAN.guestPrivilege;
-        mockMembershipPlanWithData.isPromotional = TEST_MEMBERSHIP_PLAN.isPromotional;
-        mockMembershipPlanWithData.isGiftCard = TEST_MEMBERSHIP_PLAN.isGiftCard;
+        mockMembershipPlanWithData.promotional = TEST_MEMBERSHIP_PLAN.promotional;
+        mockMembershipPlanWithData.giftCard = TEST_MEMBERSHIP_PLAN.giftCard;
         mockMembershipPlanWithData.startDate = TEST_MEMBERSHIP_PLAN.startDate;
         mockMembershipPlanWithData.endDate = TEST_MEMBERSHIP_PLAN.endDate;
         return mockMembershipPlanWithData;
@@ -166,8 +166,8 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.type(screen.getByLabelText(/membershipPlan.durationInMonths/i), TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
 
         await user.click(screen.getByLabelText(/membershipPlan.guestPrivilege/i));
-        await user.click(screen.getByLabelText(/membershipPlan.isPromotional/i));
-        await user.click(screen.getByLabelText(/membershipPlan.isGiftCard/i));
+        await user.click(screen.getByLabelText(/membershipPlan.promotional/i));
+        await user.click(screen.getByLabelText(/membershipPlan.giftCard/i));
 
         const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
         await user.click(titlesAccordionButton);
@@ -213,8 +213,8 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.type(durationInMonths, `3`);
 
         await user.click(screen.getByLabelText(/membershipPlan.guestPrivilege/i));
-        await user.click(screen.getByLabelText(/membershipPlan.isPromotional/i));
-        await user.click(screen.getByLabelText(/membershipPlan.isGiftCard/i));
+        await user.click(screen.getByLabelText(/membershipPlan.promotional/i));
+        await user.click(screen.getByLabelText(/membershipPlan.giftCard/i));
 
         const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
         await user.click(titlesAccordionButton);
@@ -280,8 +280,8 @@ describe('MembershipPlanForm Integration Test', () => {
         expect(submittedData.cost.amount).toBe(TEST_MEMBERSHIP_PLAN.cost.amount);
         expect(submittedData.durationInMonths).toBe(TEST_MEMBERSHIP_PLAN.durationInMonths);
         expect(submittedData.guestPrivilege).toBe(TEST_MEMBERSHIP_PLAN.guestPrivilege);
-        expect(submittedData.isPromotional).toBe(TEST_MEMBERSHIP_PLAN.isPromotional);
-        expect(submittedData.isGiftCard).toBe(TEST_MEMBERSHIP_PLAN.isGiftCard);
+        expect(submittedData.promotional).toBe(TEST_MEMBERSHIP_PLAN.promotional);
+        expect(submittedData.giftCard).toBe(TEST_MEMBERSHIP_PLAN.giftCard);
         expect(submittedData.title[0].text).toBe(TEST_MEMBERSHIP_PLAN.title[0].text);
         expect(submittedData.title[1].text).toBe(TEST_MEMBERSHIP_PLAN.title[1].text);
         expect(moment(submittedData.startDate).format("YYYY-MM-DD")).toBe(moment(TEST_MEMBERSHIP_PLAN.startDate).format("YYYY-MM-DD"));
@@ -341,8 +341,8 @@ describe('MembershipPlanForm Integration Test', () => {
         expect(submittedData.cost.amount).toBe(999.99);
         expect(submittedData.durationInMonths).toBe(3);
         expect(submittedData.guestPrivilege).toBe(false);
-        expect(submittedData.isPromotional).toBe(false);
-        expect(submittedData.isGiftCard).toBe(false);
+        expect(submittedData.promotional).toBe(false);
+        expect(submittedData.giftCard).toBe(false);
         expect(submittedData.title[0].text).toBe(TEST_MEMBERSHIP_PLAN.title[0].text + '_update_');
         expect(submittedData.title[1].text).toBe(TEST_MEMBERSHIP_PLAN.title[1].text + '_update_');
         expect(moment(submittedData.startDate).format("YYYY-MM-DD")).toBe(moment().add(7, 'days').format("YYYY-MM-DD"));
@@ -395,8 +395,8 @@ describe('MembershipPlanForm Integration Test', () => {
         const costAmountAfterCancel = await screen.findByLabelText(/membershipPlan.cost.amount/i);
         const durationInMonthsAfterCancel = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
         const guestPrivilegeAfterCancel = await screen.findByLabelText(/membershipPlan.guestPrivilege/i);
-        const isPromotionalAfterCancel = await screen.findByLabelText(/membershipPlan.isPromotional/i);
-        const isGiftCardAfterCancel = await screen.findByLabelText(/membershipPlan.isGiftCard/i);
+        const promotionalAfterCancel = await screen.findByLabelText(/membershipPlan.promotional/i);
+        const giftCardAfterCancel = await screen.findByLabelText(/membershipPlan.giftCard/i);
         const startDateAfterCancel = await screen.findByLabelText(/membershipPlan.startDate/i);
         const endDateAfterCancel = await screen.findByLabelText(/membershipPlan.endDate/i);
 
@@ -410,8 +410,8 @@ describe('MembershipPlanForm Integration Test', () => {
         expect(costAmountAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.cost.amount.toString());
         expect(durationInMonthsAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
         expect(guestPrivilegeAfterCancel).toBeChecked();
-        expect(isPromotionalAfterCancel).toBeChecked();
-        expect(isGiftCardAfterCancel).toBeChecked();
+        expect(promotionalAfterCancel).toBeChecked();
+        expect(giftCardAfterCancel).toBeChecked();
         expect(startDateAfterCancel).toHaveValue(moment(TEST_MEMBERSHIP_PLAN.startDate).format('YYYY-MM-DD'));
         expect(endDateAfterCancel).toHaveValue(moment(TEST_MEMBERSHIP_PLAN.endDate).format('YYYY-MM-DD'));
 
@@ -479,7 +479,7 @@ describe('MembershipPlanForm Integration Test', () => {
 
         // Create a membershipPlan with uuid and full data, initially inactive
         const mockMembershipPlanForActivate = createMockMembershipPlanWithData('existing-membershipPlan-uuid-activate');
-        mockMembershipPlanForActivate.isActive = false;
+        mockMembershipPlanForActivate.active = false;
 
         render(
             <Provider store={store}>
@@ -516,7 +516,7 @@ describe('MembershipPlanForm Integration Test', () => {
 
         // Create a membershipPlan with uuid and full data, initially active
         const mockMembershipPlanForDeactivate = createMockMembershipPlanWithData('existing-membershipPlan-uuid-deactivate');
-        mockMembershipPlanForDeactivate.isActive = true;
+        mockMembershipPlanForDeactivate.active = true;
 
         render(
             <Provider store={store}>

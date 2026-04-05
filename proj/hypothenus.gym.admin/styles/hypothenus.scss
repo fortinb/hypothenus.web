@@ -405,7 +405,11 @@ footer {
 
 .card-text-larger {
     font-size: larger;
-        font-weight: bolder;
+    font-weight: bold;
+}
+
+.card-text-bolder {
+    font-weight: bolder;
 }
 
 .card:hover .card-title.card-title-membership-plan {

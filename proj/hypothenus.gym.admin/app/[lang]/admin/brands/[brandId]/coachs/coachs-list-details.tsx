@@ -13,14 +13,14 @@ export default function CoachListDetails({ lang, coach }: { lang: string; coach:
   return (
     <div className="col-6 p-2">
       <Card className="card-min-height">
-        <Card.Body className={"m-2" + (coach.isActive == false ? " card-body-inactive" : "")}>
+        <Card.Body className={"m-2" + (coach.active == false ? " card-body-inactive" : "")}>
           <Card.Title >
             <Link className="link-element" href={`/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`}> {formatPersonName(coach.person)}</Link>
           </Card.Title>
           <Card.Text>
             <Link className="link-element" href={`mailto:${coach.person.email}`}>{coach.person.email}</Link><br />
 
-            {coach.isActive == false &&
+            {coach.active == false &&
               <>
                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{t("list.details.inactive")}</span><br />
               </>

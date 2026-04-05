@@ -263,7 +263,7 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
 
     function mapFormToEntity(formData: z.infer<typeof MemberSchema>, member: Member): Member {
         return {
-            ...member,  // Preserve original properties like id, isActive, messages, etc.
+            ...member,  // Preserve original properties like id, active, messages, etc.
             person: formData.person,
             memberType: formData.memberType,
             preferredGymUuid: formData.preferredGymUuid
@@ -281,7 +281,7 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
                     <div className="w-100 h-100">
                         <FormProvider {...formContext} >
                             <Form as="form" className="d-flex flex-column justify-content-between w-100 h-100 p-2" id="member_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
-                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={memberState.member.uuid == null ? true : memberState.member.isActive}
+                                <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={memberState.member.uuid == null ? true : memberState.member.active}
                                     isEditDisable={isEditMode} isDeleteDisable={(memberState.member.uuid == null ? true : false)} isActivationDisabled={(memberState.member.uuid == null ? true : false)} isActivating={isActivating} />
                                 <hr className="mt-1" />
                                 <MemberInfo isEditMode={isEditMode} availableGymItems={availableGymItems} uploadHandler={handlePhotoToUpload} isCancelling={isCancelling} />

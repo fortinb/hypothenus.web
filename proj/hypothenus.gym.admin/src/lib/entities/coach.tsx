@@ -6,7 +6,7 @@ export interface Coach extends BaseEntity {
   uuid?: any;
   brandUuid?: any;
   person: Person;
-  isActive: boolean;
+  active: boolean;
 }
 
 export interface CoachReference extends BaseEntity {
@@ -19,7 +19,7 @@ export const newCoach = (): Coach => {
     uuid: null,
     brandUuid: null,
     person: newPerson(),
-    isActive: true,
+    active: true,
     messages:  [],
     createdBy: undefined,
     modifiedBy: undefined

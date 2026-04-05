@@ -8,8 +8,7 @@ export interface Cost {
 
 export const parseCost = (data: any): Cost => {
     let cost: Cost = {
-        ...data,
-        amount: Number.isInteger(data.amount) ? data.amount / 100 : data.amount
+        ...data
     };
 
     return cost;
@@ -18,10 +17,9 @@ export const parseCost = (data: any): Cost => {
 export const serializeCost = (cost: Cost): any => {
     return {
         ...cost,
-        amount: Math.round(cost.amount * 100)
     };
 }
 
 export const CostSchema = z.object({
-  amount: z.coerce.number( { error: "validation.numericValue" }).min(1, { error: "cost.validation.amountRequired" })
+  amount: z.coerce.number( { error: "validation.numericValue" }).min(1, { error: "cost.validation.amountRequired" }).max(1000000, { error: "cost.validation.amountTooLarge" })
 });

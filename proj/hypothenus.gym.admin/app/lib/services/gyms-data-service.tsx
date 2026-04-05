@@ -26,7 +26,9 @@ export async function fetchGyms(brandUuid: string, page: number, pageSize: numbe
 
   let response = await axiosInstance.get(listURI.valueOf(), request);
 
-  return response.data;
+  let responsePage: Page<Gym> = response.data;
+  responsePage.content = responsePage.content.map((gymData: any) => parseGym(gymData));
+  return responsePage;
 }
 
 export async function getGym(brandUuid: string, gymUuid: string): Promise<Gym> {
@@ -37,7 +39,7 @@ export async function getGym(brandUuid: string, gymUuid: string): Promise<Gym> {
 
   let response = await axiosInstance.get(getURI.valueOf(), request);
 
- return parseGym(response.data);
+  return parseGym(response.data);
 }
 
 export async function postActivateGym(brandUuid: string, gymUuid: string): Promise<Gym> {
@@ -59,7 +61,7 @@ export async function postDeactivateGym(brandUuid: string, gymUuid: string): Pro
 
   let response = await axiosInstance.post(postURI.valueOf(), {}, request);
 
- return parseGym(response.data);
+  return parseGym(response.data);
 }
 
 export async function delGym(brandUuid: string, gymUuid: string): Promise<void> {
@@ -92,7 +94,7 @@ export async function putGym(gym: Gym): Promise<Gym> {
 
   let response = await axiosInstance.put(putURI.valueOf(), serializeGym(gym), request);
 
- return parseGym(response.data);
+  return parseGym(response.data);
 }
 
 export async function postAssignCoach(brandUuid: string, gymUuid: string, coachUuid: string): Promise<Gym> {
