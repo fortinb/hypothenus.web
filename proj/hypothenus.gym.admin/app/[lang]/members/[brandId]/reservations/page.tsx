@@ -38,10 +38,10 @@ export default async function ReservationsPage({ params }: PageProps) {
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{
-          reset: false,
+          reset: true,
           id: "reservations.page",
           locale: `${lang}`,
-          href: `/${lang}/members/${brandId}/reservations`,
+          href: `/members/${brandId}/reservations`,
           key: "breadcrumb.reservations",
           namespace: "member"
         }}

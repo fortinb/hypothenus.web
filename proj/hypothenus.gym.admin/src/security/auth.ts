@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 type AzureAccessToken = {
     roles?: string[];
     groups?: string[];
+    oid: string;
     exp?: number;
 };
 
@@ -45,9 +46,11 @@ export const { auth,  handlers: { GET, POST }, signIn, signOut } = NextAuth({
             // First login only
             if (account?.access_token) {
                 const decoded = jwtDecode<AzureAccessToken>(account.access_token);
+                //console.log("Jwt callback - token:", account.access_token);
 
                 token.accessToken = account.access_token;
                 token.roles = decoded.roles ?? [];
+                token.oid = decoded.oid;
                 token.expiresAt = decoded.exp
                     ? decoded.exp * 1000
                     : Date.now() + 60 * 60 * 1000;
@@ -64,8 +67,9 @@ export const { auth,  handlers: { GET, POST }, signIn, signOut } = NextAuth({
             const decoded = jwtDecode<{ name?: string, email?: string }>(token.accessToken as string);
             session.user.name = decoded.name || "";
             session.user.email = decoded.email || "";
+            session.user.id = token.oid;
 
-             return session;
+            return session;
         },
     },
 });

@@ -13,10 +13,10 @@ export default async function ProfilePage({ params }: PageProps) {
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{
-          reset: false,
+          reset: true,
           id: "profile.page",
           locale: `${lang}`,
-          href: `/${lang}/members/${brandId}/profile`,
+          href: `/members/${brandId}/profile`,
           key: "breadcrumb.profile",
           namespace: "member"
         }}

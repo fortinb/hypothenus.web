@@ -5,7 +5,7 @@
         },
         "member": {
             "reservations": "Reservations",
-            "subscriptions": "Subscriptions",
+            "memberships": "Memberships",
             "payments": "Payments",
             "profile": "Profile"
         },

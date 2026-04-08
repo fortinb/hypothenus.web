@@ -13,10 +13,10 @@ export default async function PaymentsPage({ params }: PageProps) {
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{
-          reset: false,
+          reset: true,
           id: "payments.page",
           locale: `${lang}`,
-          href: `/${lang}/members/${brandId}/payments`,
+          href: `/members/${brandId}/payments`,
           key: "breadcrumb.payments",
           namespace: "member"
         }}

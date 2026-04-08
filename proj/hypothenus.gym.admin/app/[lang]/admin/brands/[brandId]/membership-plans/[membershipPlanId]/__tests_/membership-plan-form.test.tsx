@@ -176,8 +176,8 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.type(titleInputs[0], TEST_MEMBERSHIP_PLAN.title[0].text);
         await user.type(titleInputs[1], TEST_MEMBERSHIP_PLAN.title[1].text);
 
-        const startDateInput = await screen.findByLabelText(/membershipPlan.startDate/i);
-        const endDateInput = await screen.findByLabelText(/membershipPlan.endDate/i);
+        const startDateInput = await screen.findByLabelText(/membershipPlan.dates.startDate/i);
+        const endDateInput = await screen.findByLabelText(/membershipPlan.dates.endDate/i);
 
         await user.clear(startDateInput);
         await user.type(startDateInput, TEST_MEMBERSHIP_PLAN.startDate);
@@ -226,11 +226,11 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.type(titleInputs[1], `${TEST_MEMBERSHIP_PLAN.title[1].text}_update_`);
 
         // Expand dates accordion to access startDate/endDate fields
-        const datesAccordionButton = await screen.findByText(/membershipPlan.datesSection/i);
+        const datesAccordionButton = await screen.findByText(/membershipPlan.dates.datesSection/i);
         await user.click(datesAccordionButton);
 
-        const startDateInput = await screen.findByLabelText(/membershipPlan.startDate/i);
-        const endDateInput = await screen.findByLabelText(/membershipPlan.endDate/i);
+        const startDateInput = await screen.findByLabelText(/membershipPlan.dates.startDate/i);
+        const endDateInput = await screen.findByLabelText(/membershipPlan.dates.endDate/i);
 
         await user.clear(startDateInput);
         await user.type(startDateInput, moment().add(7, 'days').format("YYYY-MM-DD"));
@@ -397,8 +397,8 @@ describe('MembershipPlanForm Integration Test', () => {
         const guestPrivilegeAfterCancel = await screen.findByLabelText(/membershipPlan.guestPrivilege/i);
         const promotionalAfterCancel = await screen.findByLabelText(/membershipPlan.promotional/i);
         const giftCardAfterCancel = await screen.findByLabelText(/membershipPlan.giftCard/i);
-        const startDateAfterCancel = await screen.findByLabelText(/membershipPlan.startDate/i);
-        const endDateAfterCancel = await screen.findByLabelText(/membershipPlan.endDate/i);
+        const startDateAfterCancel = await screen.findByLabelText(/membershipPlan.dates.startDate/i);
+        const endDateAfterCancel = await screen.findByLabelText(/membershipPlan.dates.endDate/i);
 
         expect(nameInputsAfterCancel[0]).toHaveValue(TEST_MEMBERSHIP_PLAN.name[0].text);
         expect(nameInputsAfterCancel[1]).toHaveValue(TEST_MEMBERSHIP_PLAN.name[1].text);
@@ -569,8 +569,8 @@ describe('MembershipPlanForm Integration Test', () => {
         const durationInMonthsInput = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
         const numberOfClassesInput = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
         const costAmountInput = await screen.findByLabelText(/membershipPlan.cost.amount/i);
-        const startDateInput = screen.getByLabelText(/membershipPlan.startDate/i);
-        const endDateInput = screen.getByLabelText(/membershipPlan.endDate/i);
+        const startDateInput = screen.getByLabelText(/membershipPlan.dates.startDate/i);
+        const endDateInput = screen.getByLabelText(/membershipPlan.dates.endDate/i);
 
         await user.clear(startDateInput);
         await user.type(startDateInput, moment().add(7, 'days').format("YYYY-MM-DD"));
@@ -651,7 +651,7 @@ describe('MembershipPlanForm Integration Test', () => {
         const titlesAccordionButton = await screen.findByText(/membershipPlan.titlesSection/i);
         await user.click(titlesAccordionButton);
 
-        const startDateInput = screen.getByLabelText(/membershipPlan.startDate/i);
+        const startDateInput = screen.getByLabelText(/membershipPlan.dates.startDate/i);
         await user.clear(startDateInput);
 
         // Try to submit without filling required fields

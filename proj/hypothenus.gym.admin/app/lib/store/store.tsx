@@ -14,6 +14,7 @@ import memberStateReducer from "./slices/member-state-slice";
 import membershipPlansStatePagingReducer from "./slices/membership-plans-state-paging-slice";
 import membershipPlanStateReducer from "./slices/membership-plan-state-slice";
 import breadcrumbStateReducer from "./slices/breadcrumb-state-slice";
+import membershipPlanFilterStateReducer from "./slices/membership-plans-filter-state-slice";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     membersStatePaging: membersStatePagingReducer,
     membershipPlanState: membershipPlanStateReducer,
     membershipPlansStatePaging: membershipPlansStatePagingReducer,
+    membershipPlanFilterState: membershipPlanFilterStateReducer,
     breadcrumbState: breadcrumbStateReducer
   }
 })

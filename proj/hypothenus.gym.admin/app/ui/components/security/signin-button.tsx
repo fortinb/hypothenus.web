@@ -11,7 +11,7 @@ import { signOut as clientSignOut } from "next-auth/react";
 export default function SigninButton({ lang }: { lang: string }) {
   const t = useTranslations("welcome");
   const { data: session, status } = useSession();
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showSignoutConfirmation, setShowSignoutConfirmation] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const onSignin = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -24,7 +24,7 @@ export default function SigninButton({ lang }: { lang: string }) {
         await signIn("entra");
         break;
       case "authenticated":
-        setShowDeleteConfirmation(true);
+        setShowSignoutConfirmation(true);
         break;
       default:
         console.warn("Unhandled session status:", status);
@@ -34,7 +34,7 @@ export default function SigninButton({ lang }: { lang: string }) {
   const onSignOut = async (confirmation: boolean) => {
     if (confirmation) {
       setIsSigningOut(true);
-      setShowDeleteConfirmation(false);
+      setShowSignoutConfirmation(false);
       try {
         await logout();
       } catch (error) {
@@ -43,7 +43,7 @@ export default function SigninButton({ lang }: { lang: string }) {
         throw error;
       }
     } else {
-      setShowDeleteConfirmation(false);
+      setShowSignoutConfirmation(false);
     }
   }
 
@@ -59,7 +59,7 @@ export default function SigninButton({ lang }: { lang: string }) {
         yesText={t("signoutConfirmation.yes")} noText={t("signoutConfirmation.no")}
         actionText={t("signoutConfirmation.action")}
         isAction={isSigningOut}
-        show={showDeleteConfirmation} handleResult={onSignOut} />
+        show={showSignoutConfirmation} handleResult={onSignOut} />
     </>
   );
 }

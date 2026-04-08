@@ -265,7 +265,6 @@
             "numberOfClassesRequired": "Le nombre de cours doit être > 0.",
             "descriptionRequired": "La description du plan d'abonnement est requise.",
             "titleRequired": "Le titre du plan d'abonnement est requis.",
-            "onlyOneTrial": "Seule une classe d'essai est autorisée.",
             "durationInMonthsInterval": "La durée en mois doit être comprise entre 0 et 12.",
             "startDateRequired": "La date de début est requise et doit être plus grande ou égale à la date du jour.",
             "endDateGreaterThanToday": "La date de fin doit être plus grande que la date du jour.",
@@ -273,6 +272,10 @@
         },
         "navigation": {
             "new": "Nouveau plan d'abonnement"
+        },
+        "section": {
+            "promotional": "Promotions",
+            "giftCard": "Cartes cadeaux"
         },
         "resume": {
             "title": "Plans"
@@ -287,6 +290,14 @@
             "selected": "Salles de sport incluses",
             "addAll": "Tout sélectionner"
         },
+        "dates": {
+             "datesSection": "Période d'activation",
+             "startDate": "Date de début",
+             "endDate": "Date de fin",
+             "descriptions": {
+                "activationPeriod": "Valide du {startDate} au {endDate}."
+            }
+        },        
         "namesSection": "Nom et description du plan d'abonnement",
         "planSection": "Détails du plan d'abonnement",
         "gymsSection": "Salles de sport incluses",
@@ -295,9 +306,7 @@
         "description": "Description",
         "titlesSection": "Titres du plan d'abonnement",
         "title": "Titre",
-        "datesSection": "Période d'activation",
-        "startDate": "Date de début",
-        "endDate": "Date de fin",
+       
         "cost": {
             "amount": "Montant",
             "currency": "Devise"

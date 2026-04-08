@@ -265,7 +265,6 @@
             "numberOfClassesRequired": "Number of classes must be > 0.",
             "descriptionRequired": "Membership plan description is required.",
             "titleRequired": "Membership plan title is required.",
-            "onlyOneTrial": "Only one trial class is allowed.",
             "durationInMonthsInterval": "Duration in months must be between 0 and 12.",
             "startDateRequired": "Start date is required, starting today or greater.",
             "endDateGreaterThanToday": "End date must be greater than today.",
@@ -273,6 +272,10 @@
         },
         "navigation": {
             "new": "New membership plan"
+        },
+        "section": {
+            "promotional": "Promotions",
+            "giftCard": "Gift cards"
         },
         "resume": {
             "title": "Plans"
@@ -287,6 +290,14 @@
             "selected": "Included gyms",
             "addAll": "Select All"
         },
+        "dates": {
+             "datesSection": "Activation period",
+             "startDate": "Start date",
+             "endDate": "End date",
+             "descriptions": {
+                "activationPeriod": "Valid from {startDate} to {endDate}."
+            }
+        },
         "namesSection": "Name and description of the membership plan",
         "planSection": "Membership plan details",
         "gymsSection": "Included gyms",
@@ -295,9 +306,6 @@
         "description": "Description",
         "titlesSection": "Membership plan titles",
         "title": "Title",
-        "datesSection": "Activation period",
-        "startDate": "Start date",
-        "endDate": "End date",
         "cost": {
             "amount": "Cost amount",
             "currency": "Currency"

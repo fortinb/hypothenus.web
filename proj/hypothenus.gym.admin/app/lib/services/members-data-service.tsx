@@ -24,6 +24,17 @@ export async function getMember(brandUuid: string, memberUuid: string): Promise<
  return parseMember(response.data);
 }
 
+export async function getMemberByUserIdpId(brandUuid: string, userIdpId: string): Promise<Member> {
+
+  const getURI: String = `/v1/brands/${brandUuid}/members/users/${userIdpId}`;
+
+  const request = initRequest({});
+
+  let response = await axiosInstance.get(getURI.valueOf(), request);
+
+ return parseMember(response.data);
+}
+
 export async function postActivateMember(brandUuid: string, memberUuid: string): Promise<Member> {
 
   const postURI: String = `/v1/brands/${brandUuid}/members/${memberUuid}/activate`;

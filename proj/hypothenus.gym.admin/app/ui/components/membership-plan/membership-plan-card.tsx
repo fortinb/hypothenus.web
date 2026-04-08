@@ -5,6 +5,7 @@ import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { LocaleTranslator } from "@/i18n/create-translators";
 import Card from "react-bootstrap/Card";
 import Link from "next/link";
+import { formatDate } from "@/app/lib/utils/dateUtils";
 
 export default function MembershipPlanCard({ membershipPlan, locale, tLocale, linkActive = false }: {
     membershipPlan: MembershipPlan;
@@ -19,6 +20,10 @@ export default function MembershipPlanCard({ membershipPlan, locale, tLocale, li
 
     function getMembershipPlanBilling(membershipPlan: MembershipPlan, locale: LanguageEnum): string {
         return `${tLocale(`membershipPlan.billingFrequency.descriptions.${membershipPlan.billingFrequency}`)}`;
+    }
+
+    function getMembershipPlanDates(membershipPlan: MembershipPlan, locale: LanguageEnum): string {
+        return `${tLocale(`membershipPlan.dates.descriptions.activationPeriod`, { startDate: formatDate(membershipPlan.startDate), endDate: formatDate(membershipPlan.endDate) })}`;
     }
 
     return (
@@ -52,6 +57,14 @@ export default function MembershipPlanCard({ membershipPlan, locale, tLocale, li
                                 <span className="font-weight-bold"><i className="bi bi-ban icon icon-danger pe-2"></i>{tLocale("list.details.inactive")}</span>
                             </>
                         }
+
+                        {membershipPlan.promotional == true && membershipPlan.endDate &&
+                            <>
+                                <br />
+                                <span className="my-2 text-primary card-text-bolder">{getMembershipPlanDates(membershipPlan, locale as LanguageEnum)}</span><br />
+                            </>
+                        }
+
                     </Card.Text>
                 </div>
             </Card.Body>

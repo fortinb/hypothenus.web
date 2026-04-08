@@ -19,7 +19,7 @@ export default function MemberMenu({ lang }: { lang: string }) {
           <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/reservations`}>{t("navbar.member.reservations")}</Nav.Link>
         </div>
         <div className="d-flex align-items-center">
-          <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/subscriptions`}>{t("navbar.member.subscriptions")}</Nav.Link>
+          <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/memberships`}>{t("navbar.member.memberships")}</Nav.Link>
         </div>
         <div className="d-flex align-items-center">
           <Nav.Link as={Link} href={`/${lang}/members/${brandState?.brand?.uuid}/payments`}>{t("navbar.member.payments")}</Nav.Link>

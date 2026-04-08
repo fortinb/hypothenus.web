@@ -1,0 +1,12 @@
+{
+    "menu": {
+        "title": "Buy a membership"
+    },
+    "breadcrumb": "Memberships",
+    "gym": {
+        "filter": {
+            "noOptions": "No studios available for filtering",
+            "placeholder": "Select a studio to see its membership plans"
+        }
+    }
+}

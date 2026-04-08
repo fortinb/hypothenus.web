@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { MembershipPlan } from "@/src/lib/entities/membership-plan";
 import MembershipPlanCard from "@/app/ui/components/membership-plan/membership-plan-card";
 
-export default function MembershipPlanListDetails({ lang, membershipPlan }: { lang: string; membershipPlan: MembershipPlan }) {
+export default function MembershipPlansListDetails({ lang, membershipPlan }: { lang: string; membershipPlan: MembershipPlan }) {
   const t = useTranslations("entity");
 
   return (

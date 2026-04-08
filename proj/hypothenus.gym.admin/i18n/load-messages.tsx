@@ -15,6 +15,7 @@ const namespaces = [
     "home",
     "layout",
     "navigation",
+    "membership",
     "translation",
     "welcome"
 ] as const;

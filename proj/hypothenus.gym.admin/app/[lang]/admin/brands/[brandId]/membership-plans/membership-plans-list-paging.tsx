@@ -113,7 +113,7 @@ export default function MembershipPlansListPaging({ lang }: { lang: string; }) {
         <div>
           <PagingNavigation page={membershipPlansStatePaging.page + 1} totalPages={totalPages}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
-            searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />
+            searchActive={false} onSearch={onSearch} onSearchInput={onSearchInput} />
         </div>
         <div>
           <hr />

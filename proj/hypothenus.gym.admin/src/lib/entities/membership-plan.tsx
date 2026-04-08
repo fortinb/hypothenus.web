@@ -162,9 +162,6 @@ export const MembershipPlanSchema = z.object({
     includedCourses: z.array(CourseReferenceSchema).min(0).nullable().optional(),
     startDate: z.string().nullable().refine((date) => !!date, { message: "membershipPlan.validation.startDateRequired" }),
     endDate: z.string().nullable().optional(),
-}).refine((membershipPlan) => membershipPlan.period !== MembershipPlanPeriodEnum.trial || membershipPlan.numberOfClasses == 1, {
-    message: "membershipPlan.validation.onlyOneTrial",
-    path: ["numberOfClasses"]
 }).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") >= moment(membershipPlan.startDate).format("YYYYMMDD")), {
     message: "membershipPlan.validation.endDateGreaterThanStartDate",
     path: ["endDate"], // path of error

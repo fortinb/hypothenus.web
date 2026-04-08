@@ -237,12 +237,12 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className={(errors.membershipPlan?.startDate || errors.membershipPlan?.endDate ? "accordeon-header-invalid" : "")}>{t("membershipPlan.datesSection")}</Accordion.Header>
+                            <Accordion.Header className={(errors.membershipPlan?.startDate || errors.membershipPlan?.endDate ? "accordeon-header-invalid" : "")}>{t("membershipPlan.dates.datesSection")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={6} className="p-1" >
                                         <Form.Group>
-                                            <FormLabelRequired className="text-primary" required={true} htmlFor={`membershipPlan_input_startDate`} label={t("membershipPlan.startDate")}></FormLabelRequired>
+                                            <FormLabelRequired className="text-primary" required={true} htmlFor={`membershipPlan_input_startDate`} label={t("membershipPlan.dates.startDate")}></FormLabelRequired>
                                             <br />
                                             <Controller
                                                 name={`membershipPlan.startDate`}
@@ -265,7 +265,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                     </Col>
                                     <Col xs={6} className="p-1" >
                                         <Form.Group>
-                                            <Form.Label className="text-primary" htmlFor={`membershipPlan_input_endDate`}>{t("membershipPlan.endDate")}</Form.Label>
+                                            <Form.Label className="text-primary" htmlFor={`membershipPlan_input_endDate`}>{t("membershipPlan.dates.endDate")}</Form.Label>
                                             <br />
                                             <Controller
                                                 name={"membershipPlan.endDate"}

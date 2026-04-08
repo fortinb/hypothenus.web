@@ -1,0 +1,12 @@
+{
+    "menu": {
+        "title": "Acheter un abonnement"
+    },
+    "breadcrumb": "Abonnements",
+    "gym": {
+        "filter": {
+            "noOptions": "Aucun studio disponible pour le filtrage",
+            "placeholder": "Sélectionnez un studio pour voir ses plans d'abonnement"
+        }
+    }
+}

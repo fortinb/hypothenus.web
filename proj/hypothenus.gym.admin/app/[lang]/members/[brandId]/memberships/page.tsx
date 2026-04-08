@@ -8,7 +8,14 @@ import { MembershipPlan } from "@/src/lib/entities/membership-plan";
 import { Page } from "@/src/lib/entities/page";
 import moment from "moment";
 import { redirect } from "next/navigation";
+import { Gym } from "@/src/lib/entities/gym";
+import { fetchGyms } from "@/app/lib/services/gyms-data-service";
+import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
+import MembershipMenu from "./membership-menu";
 import MembershipPlansList from "./membership-plans-list";
+import { auth } from "@/src/security/auth";
+import { getMemberByUserIdpId } from "@/app/lib/services/members-data-service";
+import { Member } from "@/src/lib/entities/member";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
@@ -24,20 +31,44 @@ export const membershipPlanOrder: Record<MembershipPlanPeriodEnum, number> = {
   [MembershipPlanPeriodEnum.merchandise]: 7
 };
 
-export default async function SubscriptionsPage({ params }: PageProps) {
+export default async function MembershipsPage({ params }: PageProps) {
   const { lang, brandId } = await params;
 
+  const session = await auth();
+   
   let pageOfMembershipPlan: Page<MembershipPlan>;
+  let pageOfGyms: Page<Gym>;
+  let member: Member | null = null;
 
   try {
-    pageOfMembershipPlan = await fetchActiveMembershipPlans(brandId, moment().toDate(), 0, 1000);
+    if (session) {
+     [pageOfMembershipPlan, pageOfGyms, member] = await Promise.all([
+      fetchActiveMembershipPlans(brandId, moment().toDate(), 0, 1000),
+      fetchGyms(brandId, 0, 1000, false),
+      getMemberByUserIdpId(brandId, session.user.id ?? "")
+    ]);
+    } else {
+    [pageOfMembershipPlan, pageOfGyms] = await Promise.all([
+      fetchActiveMembershipPlans(brandId, moment().toDate(), 0, 1000),
+      fetchGyms(brandId, 0, 1000, false)
+    ]);
+    }
+
   } catch (error: any) {
     failure(error);
     redirect(`/${lang}/error`);
   }
 
-  let membershipPlans: MembershipPlan[] = pageOfMembershipPlan.content;
+  let gyms: Gym[] = pageOfGyms.content;
+  const availableGymItems: GymListItem[] = gyms?.map((gym: Gym) => {
+    return {
+      gym: gym,
+      label: gym.name,
+      value: gym.uuid,
+    } as GymListItem;
+  });
 
+  let membershipPlans: MembershipPlan[] = pageOfMembershipPlan.content;
   membershipPlans.sort((a, b) => {
     const orderA = membershipPlanOrder[a.period] ?? 999;
     const orderB = membershipPlanOrder[b.period] ?? 999;
@@ -45,19 +76,22 @@ export default async function SubscriptionsPage({ params }: PageProps) {
     return a.numberOfClasses - b.numberOfClasses;
   });
 
+  const preferredGymUuid = member?.preferredGymUuid ?? (availableGymItems.length > 0 ? availableGymItems[0].gym.uuid : null);
+
   return (
     <div className="d-flex justify-content-between w-100 h-100">
       <Breadcrumb
         crumb={{
-          reset: false,
-          id: "subscriptions.page",
+          reset: true,
+          id: "memberships.page",
           locale: `${lang}`,
-          href: `/${lang}/members/${brandId}/subscriptions`,
-          key: "breadcrumb.subscriptions",
+          href: `/members/${brandId}/memberships`,
+          key: "breadcrumb.memberships",
           namespace: "member"
         }}
       />
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
+        <MembershipMenu lang={lang} initialAvailableGymItems={availableGymItems} preferredGymUuid={preferredGymUuid} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
         <div className="overflow-auto flex-fill w-100 h-100">
