@@ -21,7 +21,6 @@ export default function NavbarMenu({ lang }: { lang: string }) {
       <Container className="container-fluid">
         <Navbar.Toggle aria-controls="navbarSupportedContent" />
         <Navbar.Collapse id="navbarSupportedContent">
-
           <div className="d-flex flex-row align-items-center w-100">
             <div className="d-flex flex-column align-items-start w-50">
               <Nav className="mb-2 mb-lg-0">
@@ -34,18 +33,16 @@ export default function NavbarMenu({ lang }: { lang: string }) {
                   </Nav.Link>
                 </div>
                 <div className="d-flex align-items-center">
-                  <Authorize roles="member">
-                    <MemberMenu lang={lang} />
-                  </Authorize>
+                  <MemberMenu lang={lang} />
                 </div>
               </Nav>
             </div>
             <div className="d-flex flex-column align-items-center w-50">
               <div className="d-flex flex-row justify-content-end w-100">
                 <div className="me-2">
-                 <Authorize roles={["admin", "manager"]}>
-                   <AdminButton lang={lang} />
-                 </Authorize>
+                  <Authorize roles={["admin", "manager"]}>
+                    <AdminButton lang={lang} />
+                  </Authorize>
                 </div>
                 <div className="me-2">
                   <SigninButton lang={lang} />

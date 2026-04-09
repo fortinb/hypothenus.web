@@ -87,7 +87,7 @@ export default function MembershipPlansList({ lang, membershipPlans }:
           </div>
         </div>
       )}
-
+      
     </div>
   );
 }

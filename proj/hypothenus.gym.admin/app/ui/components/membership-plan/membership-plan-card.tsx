@@ -7,10 +7,10 @@ import Card from "react-bootstrap/Card";
 import Link from "next/link";
 import { formatDate } from "@/app/lib/utils/dateUtils";
 
-export default function MembershipPlanCard({ membershipPlan, locale, tLocale, linkActive = false }: {
+export default function MembershipPlanCard({ membershipPlan, tLocale, locale, linkActive = false }: {
     membershipPlan: MembershipPlan;
-    locale: string;
     tLocale: LocaleTranslator["t"];
+    locale: string;
     linkActive?: boolean;
 }) {
 
@@ -40,7 +40,7 @@ export default function MembershipPlanCard({ membershipPlan, locale, tLocale, li
                                 <span className="my-2 text-tertiary card-text-bolder h5">{getMembershipPlanName(membershipPlan, locale as LanguageEnum)}</span><br />
                             </Link>
                         }
-                        
+
                         {linkActive == false &&
                             <>
                                 <span className="my-2 text-tertiary card-text-bolder h5">{getMembershipPlanName(membershipPlan, locale as LanguageEnum)}</span><br />

@@ -5,6 +5,7 @@ const namespaces = [
     "action",
     "brand",
     "user",
+    "cart",
     "coach",
     "course",
     "entity",
@@ -29,7 +30,7 @@ export async function loadMessages(locale: string) {
         );
 
         return Object.assign({}, ...messages);
-    } catch (error:any){
+    } catch (error: any) {
         debugLog('load i18n messages error:', error);
         notFound();
     }
