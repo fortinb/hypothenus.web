@@ -93,9 +93,9 @@
         "coachs": {
             "available": "Available coachs",
             "selected": "Included coachs",
-            "addAll": "Select All"
+            "addAll": "Select All",
+            "section": "Qualified coachs"
         },
-        "coachsSection": "Qualified coachs",
         "code": "Code",
         "codePlaceholder": "Gym unique code",
         "name": "Name",
@@ -234,20 +234,20 @@
         "navigation": {
             "new": "New course"
         },
-        "coach": {
-            "available": "Available coachs",
-            "selected": "Qualified coachs",
-            "addAll": "Select All"
-        },
         "code": "Code",
         "codePlaceholder": "Course unique code",
-        "name": "Name",
-        "namesSection": "Name and description of the course",
-        "description": "Description",
-        "datesSection": "Activation period",
-        "startDate": "Start date",
-        "endDate": "End date",
-        "coachsSection": "Qualified coachs",
+        "names": {
+            "section": "Name and description of the course",
+            "label": "Name"
+        },
+        "descriptions": {
+            "label": "Description"
+        },
+        "dates": {
+            "section": "Activation period",
+            "startDate": "Start date",
+            "endDate": "End date"
+        },
         "deleteConfirmation": {
             "title": "Delete {name}",
             "text": "Are you sure you want to delete this course ?",
@@ -265,6 +265,7 @@
             "numberOfClassesRequired": "Number of classes must be > 0.",
             "descriptionRequired": "Membership plan description is required.",
             "titleRequired": "Membership plan title is required.",
+            "detailRequired": "Membership plan detail is required.",
             "durationInMonthsInterval": "Duration in months must be between 0 and 12.",
             "startDateRequired": "Start date is required, starting today or greater.",
             "endDateGreaterThanToday": "End date must be greater than today.",
@@ -283,29 +284,42 @@
         "courses": {
             "available": "Available courses",
             "selected": "Included courses",
-            "addAll": "Select All"
+            "addAll": "Select All",
+            "section": "Included courses"
         },
         "gyms": {
             "available": "Available gyms",
             "selected": "Included gyms",
-            "addAll": "Select All"
+            "addAll": "Select All",
+            "section": "Included gyms"
         },
         "dates": {
-             "datesSection": "Activation period",
-             "startDate": "Start date",
-             "endDate": "End date",
-             "descriptions": {
+            "section": "Activation period",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "descriptions": {
                 "activationPeriod": "Valid from {startDate} to {endDate}."
             }
         },
-        "namesSection": "Name and description of the membership plan",
-        "planSection": "Membership plan details",
-        "gymsSection": "Included gyms",
-        "coursesSection": "Included courses",
-        "name": "Name",
-        "description": "Description",
-        "titlesSection": "Membership plan titles",
-        "title": "Title",
+        "names": {
+            "section": "Name and description of the membership plan",
+            "label": "Name"
+        },
+        "descriptions": {
+            "label": "Description"
+        },
+        "plan": {
+            "section": "Membership plan details"
+        },
+        "titles": {
+            "section": "Membership plan titles",
+            "label": "Title"
+        },
+        "termsOfUse": {
+            "label": "Terms",
+            "section": "Terms of use of the membership plan",
+            "tooltip": "Separate each term by a semicolon ';'."
+        },
         "cost": {
             "amount": "Cost amount",
             "currency": "Currency"
@@ -330,7 +344,7 @@
                 "amount": "",
                 "merchandise": ""
             },
-            "title":{
+            "title": {
                 "classes": "Class cards",
                 "monthly": "Monthly memberships",
                 "weekly": "Weekly memberships",
@@ -362,8 +376,6 @@
         "guestPrivilege": "Guest privilege",
         "promotional": "Promotional",
         "giftCard": "Gift card",
-        "courseSection": "Included courses",
-        "gymSection": "Included gyms",
         "deleteConfirmation": {
             "title": "Delete {name}",
             "text": "Are you sure you want to delete this membership plan ?",

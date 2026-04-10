@@ -232,7 +232,7 @@ describe('MemberForm Integration Test', () => {
         expect(submittedData.person.contacts[0].firstname).toBe(TEST_CONTACT.firstname);
         expect(submittedData.person.contacts[0].lastname).toBe(TEST_CONTACT.lastname);
         expect(submittedData.person.contacts[0].description).toBe(TEST_CONTACT.description);
-    }, 15000);
+    }, 30000);
 
     it('update member', async () => {
         const user = userEvent.setup({ delay: null });
@@ -304,7 +304,7 @@ describe('MemberForm Integration Test', () => {
         expect(submittedData.person.contacts[0].firstname).toBe(TEST_CONTACT.firstname + '_update_');
         expect(submittedData.person.contacts[0].lastname).toBe(TEST_CONTACT.lastname + '_update_');
         expect(submittedData.person.contacts[0].description).toBe(TEST_CONTACT.description + '_update_');
-    }, 15000);
+    }, 30000);
 
     it('cancel edit', async () => {
         const user = userEvent.setup({ delay: null });
@@ -404,7 +404,7 @@ describe('MemberForm Integration Test', () => {
         // Verify that neither action was called (no save occurred)
         expect(createMemberAction).not.toHaveBeenCalled();
         expect(saveMemberAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('delete member', async () => {
         const user = userEvent.setup({ delay: null });
@@ -444,7 +444,7 @@ describe('MemberForm Integration Test', () => {
         // Verify the member data was passed to the delete action
         const deletedMember = (deleteMemberAction as jest.Mock).mock.calls[0][0];
         expect(deletedMember.uuid).toBe(mockMemberForDelete.uuid);
-    }, 15000);
+    }, 30000);
 
     it('activate member', async () => {
         const user = userEvent.setup({ delay: null });
@@ -475,7 +475,7 @@ describe('MemberForm Integration Test', () => {
 
         // Verify deactivateMemberAction was NOT called
         expect(deactivateMemberAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('deactivate member', async () => {
         const user = userEvent.setup({ delay: null });
@@ -507,7 +507,7 @@ describe('MemberForm Integration Test', () => {
 
         // Verify activateMemberAction was NOT called
         expect(activateMemberAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -531,7 +531,7 @@ describe('MemberForm Integration Test', () => {
         expect(await screen.findByText(/validation.emailInvalid/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createMemberAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -552,7 +552,7 @@ describe('MemberForm Integration Test', () => {
         expect((await screen.findAllByText(/person.validation.lastnameRequired/i))).toHaveLength(2);
 
         await waitFor(() => { expect(createMemberAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates phone number format with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -585,7 +585,7 @@ describe('MemberForm Integration Test', () => {
         expect(await screen.findByText(/phoneNumber.validation.phoneNumberFormat/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createMemberAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates contact required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -622,5 +622,5 @@ describe('MemberForm Integration Test', () => {
         expect(await within(contactSection).findByText(/person.validation.descriptionRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createMemberAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 });

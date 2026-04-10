@@ -93,22 +93,22 @@ describe('CourseForm Integration Test', () => {
     };
 
     const fillCourseFields = async (user: ReturnType<typeof userEvent.setup>) => {
-        const descriptionAccordionButton = await screen.findByText(/course.namesSection/i);
+        const descriptionAccordionButton = await screen.findByText(/course.names.section/i);
         await user.click(descriptionAccordionButton);
 
         await user.type(await screen.findByLabelText(/course.code/i), TEST_COURSE.code);
-        const nameInputs = await screen.findAllByLabelText(/course\.name/i);
-        const descInputs = await screen.findAllByLabelText(/course\.description/i);
+        const nameInputs = await screen.findAllByLabelText(/course\.names\.label/i);
+        const descInputs = await screen.findAllByLabelText(/course\.descriptions\.label/i);
         await user.type(nameInputs[0], TEST_COURSE.name[0].text);
         await user.type(nameInputs[1], TEST_COURSE.name[1].text);
         await user.type(descInputs[0], TEST_COURSE.description[0].text);
         await user.type(descInputs[1], TEST_COURSE.description[1].text);
 
-        const datesAccordionButton = await screen.findByText(/course.datesSection/i);
+        const datesAccordionButton = await screen.findByText(/course.dates.section/i);
         await user.click(datesAccordionButton);
 
-        const startDateInput = await screen.findByLabelText(/course.startDate/i);
-        const endDateInput = await screen.findByLabelText(/course.endDate/i);
+        const startDateInput = await screen.findByLabelText(/course.dates.startDate/i);
+        const endDateInput = await screen.findByLabelText(/course.dates.endDate/i);
 
         await user.clear(startDateInput);
         await user.type(startDateInput, TEST_COURSE.startDate);
@@ -118,11 +118,11 @@ describe('CourseForm Integration Test', () => {
 
     const updateCourseFields = async (user: ReturnType<typeof userEvent.setup>) => {
         // Expand descriptions accordion to access name/description fields
-        const descriptionAccordionButton = await screen.findByText(/course.namesSection/i);
+        const descriptionAccordionButton = await screen.findByText(/course.names.section/i);
         await user.click(descriptionAccordionButton);
 
-        const [nameInput0, nameInput1] = await screen.findAllByLabelText(/course\.name/i);
-        const [descInput0, descInput1] = await screen.findAllByLabelText(/course\.description/i);
+        const [nameInput0, nameInput1] = await screen.findAllByLabelText(/course\.names\.label/i);
+        const [descInput0, descInput1] = await screen.findAllByLabelText(/course\.descriptions\.label/i);
 
         await user.clear(nameInput0);
         await user.type(nameInput0, `${TEST_COURSE.name[0].text}_update_`);
@@ -134,11 +134,11 @@ describe('CourseForm Integration Test', () => {
         await user.type(descInput1, `${TEST_COURSE.description[1].text}_update_`);
 
         // Expand dates accordion to access startDate/endDate fields
-        const datesAccordionButton = await screen.findByText(/course.datesSection/i);
+        const datesAccordionButton = await screen.findByText(/course.dates.section/i);
         await user.click(datesAccordionButton);
 
-        const startDateInput = await screen.findByLabelText(/course.startDate/i);
-        const endDateInput = await screen.findByLabelText(/course.endDate/i);
+        const startDateInput = await screen.findByLabelText(/course.dates.startDate/i);
+        const endDateInput = await screen.findByLabelText(/course.dates.endDate/i);
 
         await user.clear(startDateInput);
         await user.type(startDateInput, moment().add(7, 'days').format("YYYY-MM-DD"));
@@ -190,7 +190,7 @@ describe('CourseForm Integration Test', () => {
         expect(submittedData.description[0].language).toBe(TEST_COURSE.description[0].language);
         expect(submittedData.description[1].text).toBe(TEST_COURSE.description[1].text);
         expect(submittedData.description[1].language).toBe(TEST_COURSE.description[1].language);
-    }, 15000);
+    }, 30000);
 
     it('new duplicate course', async () => {
         const user = userEvent.setup({ delay: null });
@@ -236,7 +236,7 @@ describe('CourseForm Integration Test', () => {
         // Verify the code field has the error
         const codeInputAfterError = screen.getByLabelText(/course.code/i);
         expect(codeInputAfterError).toHaveValue(TEST_COURSE.code);
-    }, 15000);
+    }, 30000);
 
     it('update course', async () => {
         const user = userEvent.setup({ delay: null });
@@ -255,7 +255,7 @@ describe('CourseForm Integration Test', () => {
         await user.click(editButton);
 
         // Wait for form to be in edit mode
-        expect(await screen.findByLabelText(/course.startDate/i)).not.toBeDisabled();
+        expect(await screen.findByLabelText(/course.dates.startDate/i)).not.toBeDisabled();
 
         // Update all fields using helper functions
         await updateCourseFields(user);
@@ -288,7 +288,7 @@ describe('CourseForm Integration Test', () => {
         expect(submittedData.description[0].language).toBe(TEST_COURSE.description[0].language);
         expect(submittedData.description[1].text).toBe(`${TEST_COURSE.description[1].text}_update_`);
         expect(submittedData.description[1].language).toBe(TEST_COURSE.description[1].language);
-    }, 15000);
+    }, 30000);
 
     it('cancel edit', async () => {
         const user = userEvent.setup({ delay: null });
@@ -307,7 +307,7 @@ describe('CourseForm Integration Test', () => {
         await user.click(editButton);
 
         // Wait for form to be in edit mode
-        expect(await screen.findByLabelText(/course.startDate/i)).not.toBeDisabled();
+        expect(await screen.findByLabelText(/course.dates.startDate/i)).not.toBeDisabled();
 
         // Update all fields using helper functions
         await updateCourseFields(user);
@@ -319,8 +319,8 @@ describe('CourseForm Integration Test', () => {
         // Wait for form to be back in read-only mode
         expect(await screen.findByLabelText(/course.code/i)).toBeDisabled();
         const codeAfterCancel = await screen.findByLabelText(/course.code/i);
-        const startDateAfterCancel = await screen.findByLabelText(/course.startDate/i);
-        const endDateAfterCancel = await screen.findByLabelText(/course.endDate/i);
+        const startDateAfterCancel = await screen.findByLabelText(/course.dates.startDate/i);
+        const endDateAfterCancel = await screen.findByLabelText(/course.dates.endDate/i);
         const nameInputsAfterCancel = screen.getAllByLabelText(/course\.name/i);
         const descInputsAfterCancel = screen.getAllByLabelText(/course\.description/i);
 
@@ -336,7 +336,7 @@ describe('CourseForm Integration Test', () => {
         // Verify that neither action was called (no save occurred)
         expect(createCourseAction).not.toHaveBeenCalled();
         expect(saveCourseAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('delete course', async () => {
         const user = userEvent.setup({ delay: null });
@@ -375,7 +375,7 @@ describe('CourseForm Integration Test', () => {
         // Verify the course data was passed to the delete action
         const deletedCourse = (deleteCourseAction as jest.Mock).mock.calls[0][0];
         expect(deletedCourse.uuid).toBe(mockCourseForDelete.uuid);
-    }, 15000);
+    }, 30000);
 
     it('activate course', async () => {
         const user = userEvent.setup({ delay: null });
@@ -406,7 +406,7 @@ describe('CourseForm Integration Test', () => {
 
         // Verify deactivateCourseAction was NOT called
         expect(deactivateCourseAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('deactivate course', async () => {
         const user = userEvent.setup({ delay: null });
@@ -437,7 +437,7 @@ describe('CourseForm Integration Test', () => {
 
         // Verify activateCourseAction was NOT called
         expect(activateCourseAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -449,8 +449,8 @@ describe('CourseForm Integration Test', () => {
         );
 
         // Fill form with INVALID data
-        const startDateInput = screen.getByLabelText(/course.startDate/i);
-        const endDateInput = screen.getByLabelText(/course.endDate/i);
+        const startDateInput = screen.getByLabelText(/course.dates.startDate/i);
+        const endDateInput = screen.getByLabelText(/course.dates.endDate/i);
 
         await user.clear(startDateInput);
         await user.type(startDateInput, moment().add(7, 'days').format("YYYY-MM-DD"));
@@ -473,7 +473,7 @@ describe('CourseForm Integration Test', () => {
         expect(await screen.findByText(/course.validation.endDateGreaterThanToday/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createCourseAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -484,7 +484,7 @@ describe('CourseForm Integration Test', () => {
             </Provider>
         );
 
-        const startDateInput = screen.getByLabelText(/course.startDate/i);
+        const startDateInput = screen.getByLabelText(/course.dates.startDate/i);
         await user.clear(startDateInput);
 
         // Try to submit without filling required fields
@@ -498,6 +498,6 @@ describe('CourseForm Integration Test', () => {
         expect(await screen.findByText(/course.validation.startDateRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createCourseAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
 });

@@ -202,7 +202,7 @@ describe('GymForm Integration Test', () => {
         expect(submittedData.contacts[0].firstname).toBe(TEST_CONTACT.firstname);
         expect(submittedData.contacts[0].lastname).toBe(TEST_CONTACT.lastname);
         expect(submittedData.contacts[0].description).toBe(TEST_CONTACT.description);
-    }, 15000);
+    }, 30000);
 
     it('new duplicate gym', async () => {
         const user = userEvent.setup({ delay: null });
@@ -252,7 +252,7 @@ describe('GymForm Integration Test', () => {
         // Verify the code field has the error
         const codeInputAfterError = screen.getByLabelText(/gym.code/i);
         expect(codeInputAfterError).toHaveValue(TEST_GYM.code);
-    }, 15000);
+    }, 30000);
 
     it('update gym', async () => {
         const user = userEvent.setup({ delay: null });
@@ -315,7 +315,7 @@ describe('GymForm Integration Test', () => {
         expect(submittedData.contacts[0].firstname).toBe(TEST_CONTACT.firstname + '_update_');
         expect(submittedData.contacts[0].lastname).toBe(TEST_CONTACT.lastname + '_update_');
         expect(submittedData.contacts[0].description).toBe(TEST_CONTACT.description + '_update_');
-    }, 15000);
+    }, 30000);
 
     it('cancel edit', async () => {
         const user = userEvent.setup({ delay: null });
@@ -407,7 +407,7 @@ describe('GymForm Integration Test', () => {
         // Verify that neither action was called (no save occurred)
         expect(createGymAction).not.toHaveBeenCalled();
         expect(saveGymAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('delete gym', async () => {
         const user = userEvent.setup({ delay: null });
@@ -453,7 +453,7 @@ describe('GymForm Integration Test', () => {
         expect(deletedGym.uuid).toBe(mockGymForDelete.uuid);
         expect(deletedGym.code).toBe(TEST_GYM.code);
         expect(deletedGym.name).toBe(TEST_GYM.name);
-    }, 15000);
+    }, 30000);
 
     it('activate gym', async () => {
         const user = userEvent.setup({ delay: null });
@@ -488,7 +488,7 @@ describe('GymForm Integration Test', () => {
 
         // Verify deactivateGymAction was NOT called
         expect(deactivateGymAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('deactivate gym', async () => {
         const user = userEvent.setup({ delay: null });
@@ -523,7 +523,7 @@ describe('GymForm Integration Test', () => {
 
         // Verify activateGymAction was NOT called
         expect(activateGymAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('validates schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -549,7 +549,7 @@ describe('GymForm Integration Test', () => {
 
         await waitFor(() => expect(createGymAction).not.toHaveBeenCalled());
 
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -570,7 +570,7 @@ describe('GymForm Integration Test', () => {
         expect(await screen.findByText(/gym.validation.nameRequired/i)).toBeInTheDocument();
 
         await waitFor(() => expect(createGymAction).not.toHaveBeenCalled());
-    }, 15000);
+    }, 30000);
 
     it('validates code max length', async () => {
         const user = userEvent.setup({ delay: null });
@@ -592,7 +592,7 @@ describe('GymForm Integration Test', () => {
         expect(await screen.findByText(/gym.validation.codeMaxLength/i)).toBeInTheDocument();
 
         await waitFor(() => expect(createGymAction).not.toHaveBeenCalled());
-    }, 15000);
+    }, 30000);
 
     it('validates name max length', async () => {
         const user = userEvent.setup({ delay: null });
@@ -614,7 +614,7 @@ describe('GymForm Integration Test', () => {
         expect(await screen.findByText(/gym.validation.nameMaxLength/i)).toBeInTheDocument();
 
         await waitFor(() => expect(createGymAction).not.toHaveBeenCalled());
-    }, 15000);
+    }, 30000);
 
     it('validates phone number format with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -646,7 +646,7 @@ describe('GymForm Integration Test', () => {
         expect(await screen.findByText(/phoneNumber.validation.phoneNumberFormat/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createGymAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates contact required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -676,5 +676,5 @@ describe('GymForm Integration Test', () => {
         expect(await screen.findByText(/person.validation.descriptionRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createGymAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 });

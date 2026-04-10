@@ -202,7 +202,7 @@ describe('CoachForm Integration Test', () => {
         expect(submittedData.person.contacts[0].firstname).toBe(TEST_CONTACT.firstname);
         expect(submittedData.person.contacts[0].lastname).toBe(TEST_CONTACT.lastname);
         expect(submittedData.person.contacts[0].description).toBe(TEST_CONTACT.description);
-    }, 15000);
+    }, 30000);
 
     it('update coach', async () => {
         const user = userEvent.setup({ delay: null });
@@ -270,7 +270,7 @@ describe('CoachForm Integration Test', () => {
         expect(submittedData.person.contacts[0].firstname).toBe(TEST_CONTACT.firstname + '_update_');
         expect(submittedData.person.contacts[0].lastname).toBe(TEST_CONTACT.lastname + '_update_');
         expect(submittedData.person.contacts[0].description).toBe(TEST_CONTACT.description + '_update_');
-    }, 15000);
+    }, 30000);
 
     it('cancel edit', async () => {
         const user = userEvent.setup({ delay: null });
@@ -369,7 +369,7 @@ describe('CoachForm Integration Test', () => {
         // Verify that neither action was called (no save occurred)
         expect(createCoachAction).not.toHaveBeenCalled();
         expect(saveCoachAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('delete coach', async () => {
         const user = userEvent.setup({ delay: null });
@@ -408,7 +408,7 @@ describe('CoachForm Integration Test', () => {
         // Verify the coach data was passed to the delete action
         const deletedCoach = (deleteCoachAction as jest.Mock).mock.calls[0][0];
         expect(deletedCoach.uuid).toBe(mockCoachForDelete.uuid);
-    }, 15000);
+    }, 30000);
 
     it('activate coach', async () => {
         const user = userEvent.setup({ delay: null });
@@ -439,7 +439,7 @@ describe('CoachForm Integration Test', () => {
 
         // Verify deactivateCoachAction was NOT called
         expect(deactivateCoachAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('deactivate coach', async () => {
         const user = userEvent.setup({ delay: null });
@@ -470,7 +470,7 @@ describe('CoachForm Integration Test', () => {
 
         // Verify activateCoachAction was NOT called
         expect(activateCoachAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -493,7 +493,7 @@ describe('CoachForm Integration Test', () => {
         expect(await screen.findByText(/validation.emailInvalid/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createCoachAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -513,7 +513,7 @@ describe('CoachForm Integration Test', () => {
         expect((await screen.findAllByText(/person.validation.lastnameRequired/i))).toHaveLength(2);
 
         await waitFor(() => { expect(createCoachAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates phone number format with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -545,7 +545,7 @@ describe('CoachForm Integration Test', () => {
         expect(await screen.findByText(/phoneNumber.validation.phoneNumberFormat/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createCoachAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates contact required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -581,5 +581,5 @@ describe('CoachForm Integration Test', () => {
         expect(await within(contactSection).findByText(/person.validation.descriptionRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createCoachAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 });

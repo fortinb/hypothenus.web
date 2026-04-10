@@ -41,7 +41,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
     const { register, formState: { errors }, getValues } = useFormContext<MembershipPlanFormData>();
     const t = useTranslations("entity");
 
-    const [accordeonDefaultActiveKeys] = useState<string[]>(["0", "1", "2", "3", "4"]);
+    const [accordeonDefaultActiveKeys] = useState<string[]>(["0", "1", "2", "3", "4", "5"]);
 
     return (
         <fieldset className="d-flex flex-column overflow-auto h-100 w-100" form="membership_plan_info_form" disabled={!isEditMode} >
@@ -49,7 +49,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                 <Row className="gx-2">
                     <Accordion defaultActiveKey={accordeonDefaultActiveKeys} alwaysOpen>
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className={errors.membershipPlan?.title ? "accordeon-header-invalid" : ""}>{t("membershipPlan.namesSection")}</Accordion.Header>
+                            <Accordion.Header className={errors.membershipPlan?.name ? "accordeon-header-invalid" : ""}>{t("membershipPlan.names.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="gx-2">
                                     <Col xs={12} className="p-1" >
@@ -62,13 +62,13 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                                         </Col>
                                                         <Col xs={4} >
                                                             <Form.Group>
-                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_name_${index}`} label={t("membershipPlan.name")}></FormLabelRequired>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_name_${index}`} label={t("membershipPlan.names.label")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`membership_plan_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`membershipPlan.name.${index}`} parent="membershipPlan.name"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
                                                         <Col xs={6} >
                                                             <Form.Group>
-                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_description_${index}`} label={t("membershipPlan.description")}></FormLabelRequired>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_description_${index}`} label={t("membershipPlan.descriptions.label")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`membership_plan_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`membershipPlan.description.${index}`} parent="membershipPlan.description"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
@@ -81,7 +81,11 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className={errors.membershipPlan?.title ? "accordeon-header-invalid" : ""}>{t("membershipPlan.planSection")}</Accordion.Header>
+                            <Accordion.Header className={(errors.membershipPlan?.period
+                                || errors.membershipPlan?.numberOfClasses
+                                || errors.membershipPlan?.billingFrequency
+                                || errors.membershipPlan?.cost?.amount
+                                || errors.membershipPlan?.durationInMonths) ? "accordeon-header-invalid" : ""}>{t("membershipPlan.plan.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 gx-2">
                                     <Col xs={4} className="p-1" >
@@ -169,7 +173,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                 <Row className="m-2 gx-2">
                                     <Col xs={4} className="p-1" >
                                         <Form.Group>
-                                            <div className="d-flex flex-row  justify-content-start m-2 gx-2">
+                                            <div className="d-flex flex-row justify-content-start m-2 gx-2">
                                                 <div className="form-check form-switch pe-2">
                                                     <Controller
                                                         name="membershipPlan.guestPrivilege"
@@ -191,7 +195,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                     </Col>
                                     <Col xs={4} className="p-1" >
                                         <Form.Group>
-                                            <div className="d-flex flex-row  justify-content-start m-2 gx-2">
+                                            <div className="d-flex flex-row justify-content-start m-2 gx-2">
                                                 <div className="form-check form-switch pe-2">
                                                     <Controller
                                                         name="membershipPlan.promotional"
@@ -213,7 +217,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                     </Col>
                                     <Col xs={4} className="p-1" >
                                         <Form.Group>
-                                            <div className="d-flex flex-row  justify-content-start m-2 gx-2">
+                                            <div className="d-flex flex-row justify-content-start m-2 gx-2">
                                                 <div className="form-check form-switch pe-2">
                                                     <Controller
                                                         name="membershipPlan.giftCard"
@@ -237,7 +241,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className={(errors.membershipPlan?.startDate || errors.membershipPlan?.endDate ? "accordeon-header-invalid" : "")}>{t("membershipPlan.dates.datesSection")}</Accordion.Header>
+                            <Accordion.Header className={(errors.membershipPlan?.startDate || errors.membershipPlan?.endDate ? "accordeon-header-invalid" : "")}>{t("membershipPlan.dates.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={6} className="p-1" >
@@ -289,7 +293,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="2" className="pt-2">
-                            <Accordion.Header className={errors.membershipPlan?.title ? "accordeon-header-invalid" : ""}>{t("membershipPlan.titlesSection")}</Accordion.Header>
+                            <Accordion.Header className={errors.membershipPlan?.title ? "accordeon-header-invalid" : ""}>{t("membershipPlan.titles.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="p-2">
                                     <Col xs={12} className="p-1" >
@@ -302,7 +306,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                                         </Col>
                                                         <Col xs={10} >
                                                             <Form.Group>
-                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_title_${index}`} label={t("membershipPlan.title")}></FormLabelRequired>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_title_${index}`} label={t("membershipPlan.titles.label")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`membership_plan_info_input_title_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`membershipPlan.title.${index}`} parent="membershipPlan.title"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
@@ -315,7 +319,35 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="3" className="pt-2">
-                            <Accordion.Header>{t("membershipPlan.gymsSection")}</Accordion.Header>
+                            <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="membership-plan-terms_of_use_tooltip">{t("membershipPlan.termsOfUse.tooltip")}</Tooltip>}>
+                                <Accordion.Header className={errors.membershipPlan?.termsOfUse ? "accordeon-header-invalid" : ""}>{t("membershipPlan.termsOfUse.section")}</Accordion.Header>
+                            </OverlayTrigger>
+                            <Accordion.Body className="p-0">
+                                <Row className="p-2">
+                                    <Col xs={12} className="p-1" >
+                                        {localesConfig.locales.map((language: string, index: number) => {
+                                            return (
+                                                <div key={language}>
+                                                    <Row className="m-2 gx-2">
+                                                        <Col xs={2} >
+                                                            <Form.Label className="text-primary" >{t(`language.${language}`)}</Form.Label>
+                                                        </Col>
+                                                        <Col xs={10} >
+                                                            <Form.Group>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`membership_plan_info_input_terms_of_use_${index}`} label={t("membershipPlan.termsOfUse.label")}></FormLabelRequired>
+                                                                <LocalizedStringInfo key={index} index={index} id={`membership_plan_info_input_terms_of_use_${index}`} nbRows={4} language={language as LanguageEnum} formStatefield={`membershipPlan.termsOfUse.${index}`} parent="membershipPlan.termsOfUse"></LocalizedStringInfo>
+                                                            </Form.Group>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            )
+                                        })}
+                                    </Col>
+                                </Row>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="4" className="pt-2">
+                            <Accordion.Header>{t("membershipPlan.gyms.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -348,8 +380,8 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                 </Row>
                             </Accordion.Body>
                         </Accordion.Item>
-                        <Accordion.Item eventKey="4" className="pt-2">
-                            <Accordion.Header>{t("membershipPlan.coursesSection")}</Accordion.Header>
+                        <Accordion.Item eventKey="5" className="pt-2">
+                            <Accordion.Header>{t("membershipPlan.courses.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >

@@ -162,7 +162,7 @@ export default function GymInfo({ gym, availableCoachItems, formCoachsStateField
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="3" className="pt-2">
-                            <Accordion.Header>{t("gym.coachsSection")}</Accordion.Header>
+                            <Accordion.Header>{t("gym.coachs.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >

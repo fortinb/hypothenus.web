@@ -38,7 +38,7 @@ export default function MembershipPlanResume({ lang }: { lang: string }) {
         <Row className="gx-2">
           <Col xs={12} >
             {translators.map(({ locale, t: tLocale }, index) => (
-              <div className="clickable" onClick={() => setShowMembershipPlanDetailModal(true)}>
+              <div key={index} className="clickable" onClick={() => setShowMembershipPlanDetailModal(true)}>
                 <MembershipPlanCard
                   key={index}
                   membershipPlan={membershipPlanState.membershipPlan}

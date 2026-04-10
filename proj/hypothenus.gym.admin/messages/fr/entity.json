@@ -93,9 +93,9 @@
         "coachs": {
             "available": "Entraîneurs disponibles",
             "selected": "Entraîneurs sélectionnés",
-            "addAll": "Tout sélectionner"
+            "addAll": "Tout sélectionner",
+            "section": "Entraîneurs qualifiés"
         },
-        "coachsSection": "Entraîneurs qualifiés",        
         "code": "Code",
         "codePlaceholder": "Identification unique",
         "name": "Nom",
@@ -234,20 +234,20 @@
         "navigation": {
             "new": "Nouveau cours"
         },
-        "coach": {
-            "available": "Entraîneurs disponibles",
-            "selected": "Entraîneurs qualifiés",
-            "addAll": "Sélectionnez tout"
-        },
         "code": "Code",
         "codePlaceholder": "Identification unique",
-        "name": "Nom du cours",
-        "namesSection": "Nom et description du cours",
-        "description": "Description",
-        "datesSection": "Période d'activation",
-        "startDate": "Date de début",
-        "endDate": "Date de fin",
-        "coachsSection": "Entraîneur Qualifiés",
+        "names": {
+            "section": "Nom et description du cours",
+            "label": "Nom"
+        },
+        "descriptions": {
+            "label": "Description"
+        },
+        "dates": {
+            "section": "Période d'activation",
+            "startDate": "Date de début",
+            "endDate": "Date de fin"
+        },
         "deleteConfirmation": {
             "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer ce cours ?",
@@ -265,6 +265,7 @@
             "numberOfClassesRequired": "Le nombre de cours doit être > 0.",
             "descriptionRequired": "La description du plan d'abonnement est requise.",
             "titleRequired": "Le titre du plan d'abonnement est requis.",
+            "detailRequired": "Le détail du plan d'abonnement est requis.",
             "durationInMonthsInterval": "La durée en mois doit être comprise entre 0 et 12.",
             "startDateRequired": "La date de début est requise et doit être plus grande ou égale à la date du jour.",
             "endDateGreaterThanToday": "La date de fin doit être plus grande que la date du jour.",
@@ -283,30 +284,42 @@
         "courses": {
             "available": "Cours disponibles",
             "selected": "Cours inclus",
-            "addAll": "Tout sélectionner"
+            "addAll": "Tout sélectionner",
+            "section": "Cours inclus"
         },
         "gyms": {
             "available": "Salles de sport disponibles",
             "selected": "Salles de sport incluses",
-            "addAll": "Tout sélectionner"
+            "addAll": "Tout sélectionner",
+            "section": "Salles de sport incluses"
         },
         "dates": {
-             "datesSection": "Période d'activation",
-             "startDate": "Date de début",
-             "endDate": "Date de fin",
-             "descriptions": {
+            "section": "Période d'activation",
+            "startDate": "Date de début",
+            "endDate": "Date de fin",
+            "descriptions": {
                 "activationPeriod": "Valide du {startDate} au {endDate}."
             }
-        },        
-        "namesSection": "Nom et description du plan d'abonnement",
-        "planSection": "Détails du plan d'abonnement",
-        "gymsSection": "Salles de sport incluses",
-        "coursesSection": "Cours inclus",
-        "name": "Nom",
-        "description": "Description",
-        "titlesSection": "Titres du plan d'abonnement",
-        "title": "Titre",
-       
+        },
+        "names": {
+            "section": "Nom et description du plan d'abonnement",
+            "label": "Nom"
+        },
+        "descriptions": {
+            "label": "Description"
+        },
+        "plan": {
+            "section": "Détails du plan d'abonnement"
+        },
+        "titles": {
+            "section": "Titres du plan d'abonnement",
+            "label": "Titre"
+        },
+        "termsOfUse": {
+            "label": "Conditions",
+            "section": "Conditions d'utilisation du plan d'abonnement",
+            "tooltip": "Séparez chaque condition par un point-virgule ';'."
+        },
         "cost": {
             "amount": "Montant",
             "currency": "Devise"
@@ -331,7 +344,7 @@
                 "amount": "",
                 "merchandise": "Marchandise"
             },
-            "title":{
+            "title": {
                 "classes": "Carte de cours",
                 "monthly": "Abonnement mensuel",
                 "weekly": "Abonnement hebdomadaire",
@@ -363,8 +376,6 @@
         "guestPrivilege": "Privilège invité",
         "promotional": "Promotionnel",
         "giftCard": "Carte cadeau",
-        "courseSection": "Cours inclus",
-        "gymSection": "Salles de sport incluses",
         "deleteConfirmation": {
             "title": "Supprimer {name}",
             "text": "Êtes vous certain de vouloir supprimer ce plan d'abonnement ?",

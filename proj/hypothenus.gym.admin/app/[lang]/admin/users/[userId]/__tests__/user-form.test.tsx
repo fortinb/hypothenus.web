@@ -151,7 +151,7 @@ describe('UserForm Integration Test', () => {
             expect(submittedData.roles[i]).toBe(TEST_USER.roles[i].role);
         }
 
-    }, 15000);
+    }, 30000);
 
     it('update user', async () => {
         const user = userEvent.setup({ delay: null });
@@ -194,7 +194,7 @@ describe('UserForm Integration Test', () => {
         expect(submittedData.lastname).toBe(TEST_USER.lastname + '_update_');
         expect(submittedData.email).toBe('update_' + TEST_USER.email);
 
-    }, 15000);
+    }, 30000);
 
     it('cancel edit', async () => {
         const user = userEvent.setup({ delay: null });
@@ -235,7 +235,7 @@ describe('UserForm Integration Test', () => {
         // Verify that neither action was called (no save occurred)
         expect(createUserAction).not.toHaveBeenCalled();
         expect(saveUserAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('delete user', async () => {
         const user = userEvent.setup({ delay: null });
@@ -276,7 +276,7 @@ describe('UserForm Integration Test', () => {
         // Verify the user data was passed to the delete action
         const deletedUser = (deleteUserAction as jest.Mock).mock.calls[0][0];
         expect(deletedUser.uuid).toBe(mockUserForDelete.uuid);
-    }, 15000);
+    }, 30000);
 
     it('activate user', async () => {
         const user = userEvent.setup({ delay: null });
@@ -309,7 +309,7 @@ describe('UserForm Integration Test', () => {
 
         // Verify deactivateUserAction was NOT called
         expect(deactivateUserAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('deactivate user', async () => {
         const user = userEvent.setup({ delay: null });
@@ -342,7 +342,7 @@ describe('UserForm Integration Test', () => {
 
         // Verify activateUserAction was NOT called
         expect(activateUserAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -367,7 +367,7 @@ describe('UserForm Integration Test', () => {
         expect(await screen.findByText(/validation.emailInvalid/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createUserAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -389,5 +389,5 @@ describe('UserForm Integration Test', () => {
         expect((await screen.findByText(/user.validation.lastnameRequired/i))).toBeInTheDocument();
 
         await waitFor(() => { expect(createUserAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 });

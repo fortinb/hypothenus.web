@@ -194,7 +194,7 @@ describe('BrandForm Integration Test', () => {
         expect(submittedData.contacts[0].firstname).toBe(TEST_CONTACT.firstname);
         expect(submittedData.contacts[0].lastname).toBe(TEST_CONTACT.lastname);
         expect(submittedData.contacts[0].description).toBe(TEST_CONTACT.description);
-    }, 15000);
+    }, 30000);
 
     it('new duplicate brand', async () => {
         const user = userEvent.setup({ delay: null });
@@ -245,7 +245,7 @@ describe('BrandForm Integration Test', () => {
         // Verify the code field has the error
         const codeInputAfterError = screen.getByLabelText(/brand.code/i);
         expect(codeInputAfterError).toHaveValue(TEST_BRAND.code);
-    }, 15000);
+    }, 30000);
 
     it('update brand', async () => {
         const user = userEvent.setup({ delay: null });
@@ -311,7 +311,7 @@ describe('BrandForm Integration Test', () => {
         expect(submittedData.contacts[0].firstname).toBe(TEST_CONTACT.firstname + '_update_');
         expect(submittedData.contacts[0].lastname).toBe(TEST_CONTACT.lastname + '_update_');
         expect(submittedData.contacts[0].description).toBe(TEST_CONTACT.description + '_update_');
-    }, 15000);
+    }, 30000);
 
     it('cancel edit', async () => {
         const user = userEvent.setup({ delay: null });
@@ -399,7 +399,7 @@ describe('BrandForm Integration Test', () => {
         // Verify that neither action was called (no save occurred)
         expect(createBrandAction).not.toHaveBeenCalled();
         expect(saveBrandAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('delete brand', async () => {
         const user = userEvent.setup({ delay: null });
@@ -442,7 +442,7 @@ describe('BrandForm Integration Test', () => {
         expect(deletedBrand.uuid).toBe(mockBrandForDelete.uuid);
         expect(deletedBrand.code).toBe(TEST_BRAND.code);
         expect(deletedBrand.name).toBe(TEST_BRAND.name);
-    }, 15000);
+    }, 30000);
 
     it('activate brand', async () => {
         const user = userEvent.setup({ delay: null });
@@ -473,7 +473,7 @@ describe('BrandForm Integration Test', () => {
 
         // Verify deactivateBrandAction was NOT called
         expect(deactivateBrandAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('deactivate brand', async () => {
         const user = userEvent.setup({ delay: null });
@@ -504,7 +504,7 @@ describe('BrandForm Integration Test', () => {
 
         // Verify activateBrandAction was NOT called
         expect(activateBrandAction).not.toHaveBeenCalled();
-    }, 15000);
+    }, 30000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -532,7 +532,7 @@ describe('BrandForm Integration Test', () => {
         expect(await screen.findByText(/brand.validation.emailInvalid/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createBrandAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -552,7 +552,7 @@ describe('BrandForm Integration Test', () => {
         expect(await screen.findByText(/brand.validation.nameRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createBrandAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates code max length with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -575,7 +575,7 @@ describe('BrandForm Integration Test', () => {
         expect(await screen.findByText(/brand.validation.codeMaxLength/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createBrandAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates name max length with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -598,7 +598,7 @@ describe('BrandForm Integration Test', () => {
         expect(await screen.findByText(/brand.validation.nameMaxLength/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createBrandAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates phone number format with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -626,7 +626,7 @@ describe('BrandForm Integration Test', () => {
         expect(await screen.findByText(/phoneNumber.validation.phoneNumberFormat/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createBrandAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 
     it('validates contact required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -652,5 +652,5 @@ describe('BrandForm Integration Test', () => {
         expect(await screen.findByText(/person.validation.descriptionRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createBrandAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 });

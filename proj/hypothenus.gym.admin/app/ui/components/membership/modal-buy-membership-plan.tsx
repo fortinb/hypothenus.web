@@ -2,7 +2,7 @@
 
 import { LocaleTranslator } from "@/i18n/create-translators";
 import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
-import { getMembershipPlanDetail, getMembershipPlanName, getMembershipPlanPrice, getMembershipPlanTitle, MembershipPlan } from "@/src/lib/entities/membership-plan";
+import { getMembershipPlanTermsOfUse, getMembershipPlanName, getMembershipPlanPrice, getMembershipPlanTitle, MembershipPlan } from "@/src/lib/entities/membership-plan";
 import { useTranslations } from "next-intl";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -27,9 +27,9 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
         return `${tLocale(`membershipPlan.billingFrequency.descriptions.${membershipPlan.billingFrequency}`)}`;
     }
 
-    function splitMembershipPlanDetail(text: string): string[] {
-        if (text && text.includes(".")) {
-            return text.split(".").filter(line => line.trim() !== "");
+    function splitMembershipPlanTermsOfUse(text: string): string[] {
+        if (text && text.includes(";")) {
+            return text.split(";").filter(line => line.trim() !== "");
         }
 
         return [text];
@@ -61,7 +61,7 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
                     <div className="d-flex flex-row justify-content-center">
                         <span className="card-text-smaller">{getMembershipPlanPeriod(membershipPlan)}</span><br />
                     </div>
-                    {splitMembershipPlanDetail(getMembershipPlanDetail(membershipPlan, locale as LanguageEnum)).map((line, index) => (
+                    {splitMembershipPlanTermsOfUse(getMembershipPlanTermsOfUse(membershipPlan, locale as LanguageEnum)).map((line, index) => (
                         <div key={index} className="d-flex flex-row justify-content-center">
                             <span className="card-text-smaller">{line}</span><br />
                         </div>

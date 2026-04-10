@@ -45,7 +45,7 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                 <Row className="m-2 gx-2">
                     <Accordion defaultActiveKey={accordeonDefaultActiveKeys} alwaysOpen>
                         <Accordion.Item eventKey="0" className="pt-2">
-                            <Accordion.Header className={errors.name || errors.description ? "accordeon-header-invalid" : ""}>{t("course.namesSection")}</Accordion.Header>
+                            <Accordion.Header className={errors.name || errors.description ? "accordeon-header-invalid" : ""}>{t("course.names.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={12} className="p-1" >
@@ -58,13 +58,13 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                                         </Col>
                                                         <Col xs={4} >
                                                             <Form.Group>
-                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_name_${index}`} label={t("course.name")}></FormLabelRequired>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_name_${index}`} label={t("course.names.label")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`course_info_input_name_${index}`} nbRows={1} language={language as LanguageEnum} formStatefield={`name.${index}`} parent="name"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
                                                         <Col xs={6} >
                                                             <Form.Group>
-                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_description_${index}`} label={t("course.description")}></FormLabelRequired>
+                                                                <FormLabelRequired className="text-primary" required={true} htmlFor={`course_info_input_description_${index}`} label={t("course.descriptions.label")}></FormLabelRequired>
                                                                 <LocalizedStringInfo key={index} index={index} id={`course_info_input_description_${index}`} nbRows={2} language={language as LanguageEnum} formStatefield={`description.${index}`} parent="description"></LocalizedStringInfo>
                                                             </Form.Group>
                                                         </Col>
@@ -77,12 +77,12 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1" className="pt-2">
-                            <Accordion.Header className={(errors.startDate || errors.endDate ? "accordeon-header-invalid" : "")}>{t("course.datesSection")}</Accordion.Header>
+                            <Accordion.Header className={(errors.startDate || errors.endDate ? "accordeon-header-invalid" : "")}>{t("course.dates.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 p-2">
                                     <Col xs={6} className="p-1" >
                                         <Form.Group>
-                                            <FormLabelRequired className="text-primary" required={true} htmlFor={`course_input_startDate`} label={t("course.startDate")}></FormLabelRequired>
+                                            <FormLabelRequired className="text-primary" required={true} htmlFor={`course_input_startDate`} label={t("course.dates.startDate")}></FormLabelRequired>
                                             <br />
                                             <Controller
                                                 name={`startDate`}
@@ -105,7 +105,7 @@ export default function CourseInfo({ lang, course, isEditMode, isCancelling }:
                                     </Col>
                                     <Col xs={6} className="p-1" >
                                         <Form.Group>
-                                            <Form.Label className="text-primary" htmlFor={`course_input_endDate`}>{t("course.endDate")}</Form.Label>
+                                            <FormLabelRequired className="text-primary" required={true} htmlFor={`course_input_endDate`} label={t("course.dates.endDate")}></FormLabelRequired>
                                             <br />
                                             <Controller
                                                 name={"endDate"}

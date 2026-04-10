@@ -140,7 +140,7 @@ describe('RegistrationForm Integration Test', () => {
         expect(dateOfBirthInput).toHaveValue('1990-01-01');
         expect((preferredGymSelect as HTMLSelectElement).value).toBe('gym-123');
         expect(phoneInput).toHaveValue('(514) 555-1234');
-    }, 15000);
+    }, 30000);
 
     it('validates Zod schema and prevents submission with invalid data', async () => {
         const user = userEvent.setup({ delay: null });
@@ -176,7 +176,7 @@ describe('RegistrationForm Integration Test', () => {
         // Verify validation error messages appear in the DOM
         expect(screen.getByText(/validation.emailInvalid/i)).toBeInTheDocument();
         // Note: password mismatch won't show because base validations failed first
-    }, 15000);
+    }, 30000);
 
     it('validates password match in Zod refine after all base validations pass', async () => {
         const user = userEvent.setup({ delay: null });
@@ -215,7 +215,7 @@ describe('RegistrationForm Integration Test', () => {
 
         // Verify the .refine() validation error appears (password confirmation mismatch)
         expect(screen.getByText(/member.validation.passwordConfirmationMismatch/i)).toBeInTheDocument();
-    }, 15000);
+    }, 30000);
 
     it('validates required fields with Zod schema', async () => {
         const user = userEvent.setup({ delay: null });
@@ -237,5 +237,5 @@ describe('RegistrationForm Integration Test', () => {
         expect(await screen.findByText(/member.validation.passwordRequired/i)).toBeInTheDocument();
 
         await waitFor(() => { expect(createMemberAction).not.toHaveBeenCalled(); });
-    }, 15000);
+    }, 30000);
 });

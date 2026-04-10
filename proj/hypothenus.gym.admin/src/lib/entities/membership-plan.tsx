@@ -17,7 +17,7 @@ export interface MembershipPlan extends BaseEntity {
     name: LocalizedString[];
     title: LocalizedString[];
     description: LocalizedString[];
-    detail: LocalizedString[];
+    termsOfUse: LocalizedString[];
     numberOfClasses: number;
     period: MembershipPlanPeriodEnum;
     billingFrequency: BillingFrequencyEnum;
@@ -62,7 +62,7 @@ export const newMembershipPlan = (): MembershipPlan => {
         name: [],
         title: [],
         description: [],
-        detail: [],
+        termsOfUse: [],
         numberOfClasses: 0,
         period: MembershipPlanPeriodEnum.classes,
         billingFrequency: BillingFrequencyEnum.oneTime,
@@ -88,7 +88,7 @@ export const newMembershipPlan = (): MembershipPlan => {
         newMembershipPlan.name.push(newLocalizedString(l as LanguageEnum));
         newMembershipPlan.title.push(newLocalizedString(l as LanguageEnum));
         newMembershipPlan.description.push(newLocalizedString(l as LanguageEnum));
-        newMembershipPlan.detail.push(newLocalizedString(l as LanguageEnum));
+        newMembershipPlan.termsOfUse.push(newLocalizedString(l as LanguageEnum));
     });
 
     return newMembershipPlan;
@@ -131,11 +131,11 @@ export function getMembershipPlanTitle(membershipPlan: MembershipPlan, language?
     return title?.text ?? "";
 }
 
-export function getMembershipPlanDetail(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+export function getMembershipPlanTermsOfUse(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
 
-    let detail = membershipPlan.detail?.find(c => c.language === language);
+    let detail = membershipPlan.termsOfUse?.find(c => c.language === language);
     if (!detail) {
-        detail = membershipPlan.detail?.find(c => c.language == localesConfig.defaultLocale as LanguageEnum);
+        detail = membershipPlan.termsOfUse?.find(c => c.language == localesConfig.defaultLocale as LanguageEnum);
     }
 
     return detail?.text ?? "";
@@ -144,6 +144,7 @@ export function getMembershipPlanDetail(membershipPlan: MembershipPlan, language
 export const MembershipPlanSchema = z.object({
     name: z.array(LocalizedStringSchema(true, "membershipPlan.validation.nameRequired")).min(2),
     description: z.array(LocalizedStringSchema(true, "membershipPlan.validation.descriptionRequired")).min(2),
+    termsOfUse: z.array(LocalizedStringSchema(true, "membershipPlan.validation.termsOfUseRequired")).min(2),
     title: z.array(LocalizedStringSchema(true, "membershipPlan.validation.titleRequired")).min(2),
     numberOfClasses: z.coerce.number({ error: "validation.numericValue" })
         .gt(0, { error: "membershipPlan.validation.numberOfClassesRequired" })
