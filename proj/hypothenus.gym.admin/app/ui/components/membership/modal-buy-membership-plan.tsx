@@ -17,7 +17,6 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
         onlyDisplay?: boolean;
         handleResult: (addToCart: boolean, buyNow: boolean, membershipPlan: MembershipPlan) => void
     }) {
-    const t = useTranslations("cart");
 
     function getMembershipPlanPeriod(membershipPlan: MembershipPlan): string {
         return `${tLocale(`membershipPlan.period.descriptions.${membershipPlan.period}`, { classes: membershipPlan.numberOfClasses })}`;
@@ -42,7 +41,7 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
             keyboard={false}
             centered={true}
             animation={true}
-            onHide={() => handleResult(false, false, membershipPlan)}
+            onHide={() => {handleResult(false, false, membershipPlan)}}
         >
             <Modal.Header closeButton={true}>
                 <Modal.Title className="w-100">
@@ -69,33 +68,30 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
                 </div>
             </Modal.Body>
             <Modal.Footer className="w-100">
-                {onlyDisplay == false &&
+                <div className="d-flex flex-row justify-content-center w-100">
+                    <div className="d-flex flex-column ms-2">
+                        <Button className="btn btn-secondary" disabled={isAction || onlyDisplay} onClick={() => handleResult(true, false, membershipPlan)}>
 
-                    <div className="d-flex flex-row justify-content-center w-100">
-                        <div className="d-flex flex-column ms-2">
-                            <Button className="btn btn-secondary" disabled={isAction} onClick={() => handleResult(true, false, membershipPlan)}>
+                            {isAction &&
+                                <div className="spinner-border spinner-border-sm me-2"></div>
+                            }
 
-                                {isAction &&
-                                    <div className="spinner-border spinner-border-sm me-2"></div>
-                                }
+                            {isAction ? tLocale("cart.actions.addingToCart") : tLocale("cart.buttons.addToCart")}
+                            <i className="icon bi bi-cart h4 ms-2"></i>
 
-                                {isAction ? t("actions.addingToCart") : t("buttons.addToCart")}
-                                <i className="icon bi bi-cart h4 ms-2"></i>
-
-                            </Button>
-                        </div>
-                        <div className="d-flex flex-column ms-2">
-                            <Button className="btn btn-primary" disabled={isAction} onClick={() => handleResult(false, true, membershipPlan)}>
-                                {isAction &&
-                                    <div className="spinner-border spinner-border-sm me-2"></div>
-                                }
-
-                                {isAction ? t("actions.buyingNow") : t("buttons.buyNow")}
-                                <i className="icon bi bi-currency-dollar h4 ms-2"></i>
-                            </Button>
-                        </div>
+                        </Button>
                     </div>
-                }
+                    <div className="d-flex flex-column ms-2">
+                        <Button className="btn btn-primary" disabled={isAction || onlyDisplay} onClick={() => handleResult(false, true, membershipPlan)}>
+                            {isAction &&
+                                <div className="spinner-border spinner-border-sm me-2"></div>
+                            }
+
+                            {isAction ? tLocale("cart.actions.buyingNow") : tLocale("cart.buttons.buyNow")}
+                            <i className="icon bi bi-currency-dollar h4 ms-2"></i>
+                        </Button>
+                    </div>
+                </div>
             </Modal.Footer>
         </Modal>
     );

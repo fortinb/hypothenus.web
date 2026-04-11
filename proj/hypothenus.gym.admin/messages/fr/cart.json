@@ -1,11 +1,3 @@
 {
-    "buttons": {
-     
-        "buyNow": "Acheter maintenant",
-        "addToCart": "Ajouter au panier"
-    },
-    "actions": {
-        "buyingNow": "Merci pour votre achat !",
-        "addingToCart": "Ajout au panier..."
-    }
+
 }

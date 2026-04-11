@@ -42,6 +42,16 @@
         "state": "Province",
         "zipcode": "Postal code"
     },
+    "cart": {
+        "buttons": {
+            "buyNow": "Buy now",
+            "addToCart": "Add to cart"
+        },
+        "actions": {
+            "buyingNow": "Thank you for your purchase !",
+            "addingToCart": "Adding to cart..."
+        }
+    },
     "brand": {
         "navigation": {
             "new": "New brand"

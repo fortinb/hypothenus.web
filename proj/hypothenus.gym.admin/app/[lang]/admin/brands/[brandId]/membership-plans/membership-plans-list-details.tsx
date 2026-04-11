@@ -12,7 +12,7 @@ export default function MembershipPlanListDetails({ lang, membershipPlan }: { la
       <MembershipPlanCard
         key={0}
         membershipPlan={membershipPlan}
-        locale={lang}
+        lang={lang}
         tLocale={t}
         linkActive={true}
       />

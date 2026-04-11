@@ -42,6 +42,16 @@
         "state": "Province",
         "zipcode": "Code postal"
     },
+    "cart": {
+        "buttons": {
+            "buyNow": "Acheter maintenant",
+            "addToCart": "Ajouter au panier"
+        },
+        "actions": {
+            "buyingNow": "Merci pour votre achat !",
+            "addingToCart": "Ajout au panier..."
+        }
+    },    
     "brand": {
         "navigation": {
             "new": "Nouvelle marque"

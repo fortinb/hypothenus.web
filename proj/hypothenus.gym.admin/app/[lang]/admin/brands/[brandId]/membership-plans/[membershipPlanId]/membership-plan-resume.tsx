@@ -1,17 +1,15 @@
 "use client"
 
-import { AbstractIntlMessages, useTranslations } from "next-intl";
 import { MembershipPlanState } from "@/app/lib/store/slices/membership-plan-state-slice";
+import MembershipPlanCard from "@/app/ui/components/membership-plan/membership-plan-card";
+import { createTranslators } from "@/i18n/create-translators";
+import enMessages from "@/messages/en/entity.json";
+import frMessages from "@/messages/fr/entity.json";
+import { AbstractIntlMessages, useTranslations } from "next-intl";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
-import { createTranslators } from "@/i18n/create-translators";
-import enMessages from "@/messages/en/entity.json";
-import frMessages from "@/messages/fr/entity.json";
-import MembershipPlanCard from "@/app/ui/components/membership-plan/membership-plan-card";
-import { useState } from "react";
-import ModalBuyMembershipPlan from "@/app/ui/components/membership/modal-buy-membership-plan";
 
 const messagesMap: Record<string, AbstractIntlMessages> = {
   en: { entity: enMessages },
@@ -23,8 +21,6 @@ const translators = createTranslators("entity", messagesMap);
 export default function MembershipPlanResume({ lang }: { lang: string }) {
   const membershipPlanState: MembershipPlanState = useSelector((state: any) => state.membershipPlanState);
   const t = useTranslations("entity");
-
-  const [showMembershipPlanDetailModal, setShowMembershipPlanDetailModal] = useState(false);
 
   return (
     <div className="d-flex flex-column justify-content-start w-100 h-100 page-menu overflow-auto">
@@ -38,21 +34,20 @@ export default function MembershipPlanResume({ lang }: { lang: string }) {
         <Row className="gx-2">
           <Col xs={12} >
             {translators.map(({ locale, t: tLocale }, index) => (
-              <div key={index} className="clickable" onClick={() => setShowMembershipPlanDetailModal(true)}>
                 <MembershipPlanCard
                   key={index}
                   membershipPlan={membershipPlanState.membershipPlan}
-                  locale={locale}
+                  lang={locale}
                   tLocale={tLocale}
                   linkActive={false}
+                  onlyDisplay={true}
                 />
-              </div>
+     
             ))}
-            <ModalBuyMembershipPlan membershipPlan={membershipPlanState.membershipPlan} tLocale={t} onlyDisplay={true} locale={lang}
-              isAction={false} show={showMembershipPlanDetailModal} handleResult={() => setShowMembershipPlanDetailModal(false)} />
-          </Col>
+           </Col>
         </Row>
       </Container>
     </div>
   );
 }
+ 
