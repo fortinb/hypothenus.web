@@ -8,7 +8,9 @@
         "buttons": {
             "cancel": "Cancel",
             "save": "Save",
-            "saving": "Saving..."
+            "saving": "Saving...",
+            "submit": "Submit",
+            "submitting": "Submitting..."
         }
     }
 }

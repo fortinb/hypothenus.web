@@ -1,3 +1,56 @@
 {
-
+    "panel": {
+        "title": "Votre panier",
+        "empty": "Votre panier est vide.",
+        "emptySubtitle": "Parcourez les forfaits et ajoutez-en un pour commencer.",
+        "subtotal": "Sous-total",
+        "itemCount": "{count, plural, =0 {aucun article} one {# article} other {# articles}}",
+        "proceedToCheckout": "Passer à la caisse"
+    },
+    "item": {
+        "remove": "Retirer",
+        "quantity": "Qté",
+        "lineTotal": "Total"
+    },
+    "checkout": {
+        "title": "Caisse",
+        "fields": {
+            "fullName": "Nom complet",
+            "email": "Courriel",
+            "addressLine1": "Adresse ligne 1",
+            "addressLine2": "Adresse ligne 2 (facultatif)",
+            "city": "Ville",
+            "postalCode": "Code postal",
+            "paymentMethod": "Mode de paiement"
+        },
+        "paymentMethods": {
+            "creditCard": "Carte de crédit",
+            "bankTransfer": "Virement bancaire"
+        },
+        "buttons": {
+            "submit": "Passer la commande",
+            "submitting": "Commande en cours..."
+        },
+       "validation": {
+            "fullNameRequired": "Le nom complet est requis.",
+            "emailRequired": "Le courriel est requis.",
+            "emailInvalid": "Veuillez entrer une adresse courriel valide.",
+            "paymentMethodRequired": "Veuillez sélectionner un mode de paiement."
+        }
+    },
+    "confirmation": {
+        "title": "Commande confirmée!",
+        "subtitle": "Merci pour votre commande.",
+        "orderNumber": "Commande #{orderUuid}",
+        "placedOn": "Passée le {date}",
+        "total": "Total de la commande",
+        "viewMemberships": "Voir mes abonnements"
+    },
+    "toast": {
+        "submitSuccess": "Votre commande a été passée avec succès!",
+        "submitError": "Une erreur est survenue. Veuillez réessayer."
+    },
+    "badge": {
+        "ariaLabel": "{count, plural, =0 {panier vide} one {# article dans le panier} other {# articles dans le panier}}"
+    }
 }

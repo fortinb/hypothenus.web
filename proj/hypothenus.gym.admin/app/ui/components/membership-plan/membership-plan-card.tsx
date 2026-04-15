@@ -4,11 +4,13 @@ import { MembershipPlan, getMembershipPlanDescription, getMembershipPlanName, ge
 import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { LocaleTranslator } from "@/i18n/create-translators";
 import Card from "react-bootstrap/Card";
-import Link from "next/link";
 import { formatDate } from "@/app/lib/utils/dateUtils";
 import { useState } from "react";
 import ModalBuyMembershipPlan from "../membership/modal-buy-membership-plan";
 import { useRouter } from "next/navigation";
+import { useOrderActions } from "@/app/lib/hooks/useOrderActions";
+import { Order } from "@/src/lib/entities/cart/order";
+import { ActionResult } from "@/app/lib/http/result";
 
 export default function MembershipPlanCard({ membershipPlan, tLocale, lang, linkActive = false, onlyDisplay = false }: {
     membershipPlan: MembershipPlan;
@@ -19,6 +21,27 @@ export default function MembershipPlanCard({ membershipPlan, tLocale, lang, link
 }) {
     const router = useRouter();
     const [showMembershipPlanDetailModal, setShowMembershipPlanDetailModal] = useState(false);
+
+    const { addToCart : addToCartAction } = useOrderActions({
+        actions: {
+            submitOrder: function (...args: any[]): Promise<ActionResult<Order>> {
+                throw new Error("Function not implemented.");
+            },
+            createOrder: function (...args: any[]): Promise<ActionResult<Order>> {
+                throw new Error("Function not implemented.");
+            }
+        }
+    });
+    function handleResult(addToCart: boolean, buyNow: boolean, membershipPlan: MembershipPlan) {
+        setShowMembershipPlanDetailModal(false);
+        if ((addToCart || buyNow) && membershipPlan) {
+            addToCartAction(membershipPlan);
+            if (buyNow) {
+                router.push("todo bruno")
+               // document.getElementById("cart-panel")?.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    }
 
     function getMembershipPlanPeriod(membershipPlan: MembershipPlan): string {
         return `${tLocale(`membershipPlan.period.descriptions.${membershipPlan.period}`, { classes: membershipPlan.numberOfClasses })}`;
@@ -77,7 +100,7 @@ export default function MembershipPlanCard({ membershipPlan, tLocale, lang, link
                 </Card>
             </div>
             <ModalBuyMembershipPlan membershipPlan={membershipPlan} tLocale={tLocale} onlyDisplay={onlyDisplay} locale={lang}
-                isAction={false} show={showMembershipPlanDetailModal} handleResult={(addToCart: boolean, buyNow: boolean, membershipPlan: MembershipPlan) => setShowMembershipPlanDetailModal(false)} />
+                isAction={false} show={showMembershipPlanDetailModal} handleResult={handleResult} />
         </>
     );
 }

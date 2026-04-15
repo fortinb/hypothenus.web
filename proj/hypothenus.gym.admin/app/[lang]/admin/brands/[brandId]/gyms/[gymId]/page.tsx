@@ -23,7 +23,7 @@ export default async function GymPage({ params }: PageProps) {
 
   const session = await auth();
   if (!session) {
-    redirect("/");
+    redirect("/public/signin");
   }
 
   let gym: Gym;

@@ -18,7 +18,7 @@ export default async function CoursePage({ params }: PageProps) {
 
   const session = await auth();
   if (!session) {
-    redirect("/");
+    redirect("/public/signin");
   }
 
   let course: Course;

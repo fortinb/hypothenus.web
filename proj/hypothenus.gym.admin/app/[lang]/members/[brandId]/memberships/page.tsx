@@ -1,5 +1,3 @@
-
-
 import { failure } from "@/app/lib/http/handle-result";
 import { fetchActiveMembershipPlans } from "@/app/lib/services/membership-plans-data-service";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
@@ -16,6 +14,7 @@ import MembershipPlansList from "./membership-plans-list";
 import { auth } from "@/src/security/auth";
 import { getMemberByUserIdpId } from "@/app/lib/services/members-data-service";
 import { Member } from "@/src/lib/entities/member";
+import MembershipCart from "./membership-cart";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string }>;
@@ -99,6 +98,7 @@ export default async function MembershipsPage({ params }: PageProps) {
         </div>
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
+        {member && <MembershipCart brandId={brandId} lang={lang} member={member} />}
       </div>
     </div>
   );

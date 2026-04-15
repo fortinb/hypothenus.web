@@ -1,34 +1,7 @@
 import { Course, parseCourse, serializeCourse } from "@/src//lib/entities/course";
-import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Page } from "@/src/lib/entities/page";
-
-
-interface HeaderDefinition {
-  name: string,
-  value: string
-}
-
-function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestConfig {
-
-  let request: AxiosRequestConfig =
-  {
-    baseURL: process.env.NEXT_PUBLIC_HYPOTHENUS_ADMIN_MS_BASE_URL,
-    params: params
-  }
-
-  if (headers) {
-    headers.forEach(header => {
-      if (!request.headers) {
-        request["headers"] = {};
-      }
-
-      request.headers[header.name] = header.value;
-    })
-  }
-
-  return request;
-}
+import { initRequest } from "./service-request";
 
 export async function fetchCourses(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Course>> {
 

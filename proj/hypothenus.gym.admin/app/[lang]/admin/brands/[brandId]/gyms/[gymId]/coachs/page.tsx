@@ -21,7 +21,7 @@ export default async function Coachs({ params }: PageProps) {
 
   const session = await auth();
   if (!session) {
-    redirect("/");
+    redirect("/public/signin");
   }
 
   let pageOfCoachs: Page<Coach>;

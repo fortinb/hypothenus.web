@@ -17,7 +17,7 @@ export default async function BrandPage({ params }: PageProps) {
 
   const session = await auth();
   if (!session) {
-    redirect('/');
+    redirect("/public/signin");
   }
 
   let brand: Brand;

@@ -1,6 +1,7 @@
 "use client"
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { saveBreadcrumbState } from "../store-persistence";
 
 export interface Crumb {
   reset: boolean,
@@ -37,29 +38,21 @@ export const breadcrumbStateSlice = createSlice({
         state.breadcrumbs[crumbIndex].key = action.payload.key;
         state.breadcrumbs.splice(crumbIndex+1);
       }
-
-      sessionStorage.setItem("breadcrumbs", JSON.stringify(state.breadcrumbs));
-    },
-    initBreadcrumbs: (state) => {
-      try {
-        state.breadcrumbs = JSON.parse(sessionStorage.getItem("breadcrumbs") ?? "[]");
-      } catch (e) {
-        state.breadcrumbs = [];
-      }     
+      saveBreadcrumbState(state);
     },
     updateBreadcrumbsLocale: (state, action: PayloadAction<string>) => {
       state.breadcrumbs.forEach((crumb) => crumb.locale = action.payload);
-      sessionStorage.setItem("breadcrumbs", JSON.stringify(state.breadcrumbs));
+      saveBreadcrumbState(state);
     },
     resetBreadcrumbs: (state, action: PayloadAction<Crumb>) => {
       state.breadcrumbs = [];
       state.breadcrumbs.push(action.payload);
-      sessionStorage.setItem("breadcrumbs", JSON.stringify(state.breadcrumbs));
+      saveBreadcrumbState(state);
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { pushBreadcrumb, initBreadcrumbs, resetBreadcrumbs, updateBreadcrumbsLocale } = breadcrumbStateSlice.actions
+export const { pushBreadcrumb, resetBreadcrumbs, updateBreadcrumbsLocale } = breadcrumbStateSlice.actions
 
 export default breadcrumbStateSlice.reducer

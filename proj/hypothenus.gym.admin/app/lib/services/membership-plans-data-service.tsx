@@ -1,19 +1,8 @@
 import { MembershipPlan, parseMembershipPlan, serializeMembershipPlan } from "@/src/lib/entities/membership-plan";
-import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Page } from "@/src/lib/entities/page";
 import moment from "moment";
-
-function initRequest(params: any): AxiosRequestConfig {
-
-  let request: AxiosRequestConfig =
-  {
-    baseURL: process.env.NEXT_PUBLIC_HYPOTHENUS_ADMIN_MS_BASE_URL,
-    params: params
-  }
-
-  return request;
-}
+import { initRequest } from "./service-request";
 
 export async function fetchActiveMembershipPlans(brandUuid: string, currentDate: Date, page: number, pageSize: number): Promise<Page<MembershipPlan>> {
 

@@ -24,7 +24,12 @@ import { z } from "zod";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { createMemberAction } from "./actions";
 
-export default function RegistrationForm({ lang, member, gyms }: { lang: string; member: Member; gyms: GymListItem[] }) {
+export default function RegistrationForm({ lang, member, gyms }:
+    {
+        lang: string;
+        member: Member;
+        gyms: GymListItem[]
+    }) {
     const t = useTranslations("entity");
     const router = useRouter();
 
@@ -73,7 +78,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
     const onSubmit: SubmitHandler<z.infer<typeof MemberRegistrationSchema>> = async (formData: z.infer<typeof MemberRegistrationSchema>) => {
         setIsEditMode(false);
 
-        let member: Member = mapFormToEntity(formData, memberState.member);
+        const member: Member = mapFormToEntity(formData, memberState.member);
         createMember(member);
     }
 
@@ -111,7 +116,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
         setIsEditMode(false);
 
         formContext.reset(mapEntityToForm(memberState.member));
-     
+
         router.push(`/${lang}/public/signin`);
     }
 

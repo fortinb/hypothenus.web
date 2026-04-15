@@ -13,9 +13,7 @@ interface UseGymActionsParams<Gym> {
   actions: GymActions<Gym>;
 }
 
-export function useGymActions<Gym>({
-  actions
-}: UseGymActionsParams<Gym>) {
+export function useGymActions<Gym>({ actions}: UseGymActionsParams<Gym>) {
   const [isAssigningCoach, startAssignCoach] = useTransition();
 
   const assignCoachToGym = (entity: Gym, coachUuid: string, entityPath?: string, onSuccess?: (entity: Gym) => void, onError?: (result: ActionResult<Gym>) => void) => {

@@ -1,18 +1,7 @@
 import { Gym, parseGym, serializeGym } from "@/src//lib/entities/gym";
-import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { Page } from "@/src/lib/entities/page";
-
-function initRequest(params: any): AxiosRequestConfig {
-
-  let request: AxiosRequestConfig =
-  {
-    baseURL: process.env.NEXT_PUBLIC_HYPOTHENUS_ADMIN_MS_BASE_URL,
-    params: params
-  }
-
-  return request;
-}
+import { initRequest } from "./service-request";
 
 export async function fetchGyms(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Gym>> {
 

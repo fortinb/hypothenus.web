@@ -1,34 +1,8 @@
 import { Coach, parseCoach, serializeCoach } from "@/src//lib/entities/coach";
 import { Page } from "@/src//lib/entities/page";
-import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
+import { initRequest } from "./service-request";
 
-
-interface HeaderDefinition {
-  name: string,
-  value: string
-}
-
-function initRequest(params: any, headers?: HeaderDefinition[]): AxiosRequestConfig {
-
-  let request: AxiosRequestConfig =
-  {
-    baseURL: process.env.NEXT_PUBLIC_HYPOTHENUS_ADMIN_MS_BASE_URL,
-    params: params
-  }
-
-  if (headers) {
-    headers.forEach(header => {
-      if (!request.headers) {
-        request["headers"] = {};
-      }
-
-      request.headers[header.name] = header.value;
-    })
-  }
- 
-  return request;
-}
 
 export async function fetchCoachs(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Coach>> {
 

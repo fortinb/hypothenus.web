@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { newPerson, parsePerson, Person, PersonRegistrationSchema, PersonSchema } from './person';
 import { BaseEntity } from './base-entity';
 import { MemberTypeEnum } from './enum/member-type-enum';
+import { PaymentOption } from './payment-option';
 
 export interface Member extends BaseEntity {
   uuid?: any;
@@ -10,6 +11,7 @@ export interface Member extends BaseEntity {
   person: Person;
   memberType: MemberTypeEnum;
   preferredGymUuid: string;
+  paymentOptions: PaymentOption[];
   active: boolean;
 }
 
@@ -22,6 +24,7 @@ export const newMember = (): Member => {
     memberType: MemberTypeEnum.regular,
     preferredGymUuid: "",
     active: true,
+    paymentOptions: [],
     messages: [],
     createdBy: undefined,
     modifiedBy: undefined
@@ -33,6 +36,10 @@ export const newMember = (): Member => {
 export const parseMember = (data: any): Member => {
   let member: Member = data;
   member.person = parsePerson(data.person);
+  
+  if (!member.paymentOptions) {
+    member.paymentOptions = [];
+  }
 
   return member;
 }

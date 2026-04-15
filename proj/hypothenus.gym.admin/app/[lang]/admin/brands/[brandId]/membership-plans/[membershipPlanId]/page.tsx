@@ -26,7 +26,7 @@ export default async function MembershipPlanPage({ params }: PageProps) {
 
   const session = await auth();
   if (!session) {
-    redirect("/");
+    redirect("/public/signin");
   }
 
   let membershipPlan: MembershipPlan;
