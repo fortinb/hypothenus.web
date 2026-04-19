@@ -1,6 +1,6 @@
 "use client"
 
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import UserListDetails from "./users-list-details";
 import { User } from "@/src/lib/entities/user";
 

@@ -3,7 +3,7 @@ import { fetchActiveMembershipPlans } from "@/app/lib/services/membership-plans-
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { MembershipPlanPeriodEnum } from "@/src/lib/entities/enum/membership-plan-period-enum";
 import { MembershipPlan } from "@/src/lib/entities/membership-plan";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import moment from "moment";
 import { redirect } from "next/navigation";
 import { Gym } from "@/src/lib/entities/gym";

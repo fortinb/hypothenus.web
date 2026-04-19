@@ -8,7 +8,7 @@ import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Coach } from "@/src//lib/entities/coach";
 import { Gym } from "@/src/lib/entities/gym";
-import { formatPersonName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
 import { useTranslations } from "next-intl";
 import Image from 'next/image';
 import Link from "next/link";

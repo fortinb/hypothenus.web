@@ -423,5 +423,19 @@
             "no": "Annuler",
             "action": "Suppression en cours..."
         }
+    },
+    "financialInstrument": {
+        "validation": {
+            "typeRequired": "Le type est requis.",
+            "cardNumberRequired": "Le numéro de carte est requis.",
+            "cardHolderNameRequired": "Le nom du titulaire de la carte est requis.",
+            "expirationDateRequired": "La date d'expiration est requise.",
+            "cvvRequired": "Le CVV est requis."
+        },
+        "type": "Type",
+        "cardNumber": "Numéro de carte",
+        "cardHolderName": "Nom du titulaire de la carte",
+        "expirationDate": "Date d'expiration",
+        "cvv": "CVV"
     }
 }

@@ -1,6 +1,6 @@
 
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
-import { Order, parseOrder, serializeOrder } from "@/src/lib/entities/cart/order";
+import { Order, parseOrder, serializeOrder } from "@/src/lib/entities/financial/order";
 import { initRequest } from "./service-request";
 import { Cart, serializeCart } from "@/src/lib/entities/cart/cart";
 

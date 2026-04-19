@@ -6,7 +6,7 @@ import { CartState, updateCartOwnership } from "@/app/lib/store/slices/cart-stat
 import FormActionCartButtons from "@/app/ui/components/actions/form-action-cart-buttons";
 import { CartInfo } from "@/app/ui/components/cart/cart-info";
 import { Cart } from "@/src/lib/entities/cart/cart";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useEffect, useState } from "react";
@@ -29,6 +29,7 @@ export default function MembershipCart({ lang, brandId, member }:
     const dispatch = useDispatch();
 
     const [isEditMode, setIsEditMode] = useState<boolean>(true);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     // Toast Result State
     const { resultStatus, showResult, resultText, resultErrorTextCode, showResultToast, toggleShowResult } = useToastResult();
@@ -50,6 +51,7 @@ export default function MembershipCart({ lang, brandId, member }:
 
     function onCheckout(e: MouseEvent<HTMLButtonElement>) {
         setIsEditMode(false);
+        setIsSubmitting(true);
 
         createOrder(cartState.cart);
     }
@@ -70,6 +72,7 @@ export default function MembershipCart({ lang, brandId, member }:
             (result) => {
                 showResultToast(false, t("action.createOrderError"), !result.ok ? result.error?.message : undefined);
                 setIsEditMode(true);
+                setIsSubmitting(false);
             }
         );
     }
@@ -84,7 +87,7 @@ export default function MembershipCart({ lang, brandId, member }:
                     <hr className="mt-1" />
                     <CartInfo lang={lang} isEditMode={isEditMode} cart={cartState.cart} />
                     <hr className="mt-1 mb-1" />
-                    <FormActionCartButtons onCheckout={onCheckout} />
+                    <FormActionCartButtons onCheckout={onCheckout} isSubmitting={isSubmitting} />
                 </Container>
             </div>
             <ToastResult show={showResult} result={resultStatus} text={resultText} errorTextCode={resultErrorTextCode} toggleShow={toggleShowResult} />

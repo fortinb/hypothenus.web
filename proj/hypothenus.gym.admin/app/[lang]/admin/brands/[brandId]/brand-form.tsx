@@ -13,7 +13,7 @@ import BrandInfo from "@/app/ui/components/brand/brand-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Authorize } from "@/app/ui/components/security/authorize";
 import { Brand, BrandSchema } from "@/src/lib/entities/brand";
-import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
+import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from "@/src/lib/entities/entity/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

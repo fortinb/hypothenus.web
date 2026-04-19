@@ -5,7 +5,7 @@ import CoachMenu from "./coach-menu";
 import CoachResume from "./coach-resume";
 import { Coach, newCoach } from "@/src/lib/entities/coach";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
-import { formatPersonName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
 import { failure } from "@/app/lib/http/handle-result";

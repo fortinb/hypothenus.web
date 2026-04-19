@@ -1,7 +1,7 @@
 "use client";
 
 import { Member } from "@/src/lib/entities/member";
-import { formatPersonName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
 import { useTranslations } from "next-intl";
 import { Container } from "react-bootstrap";
 import Col from "react-bootstrap/Col";

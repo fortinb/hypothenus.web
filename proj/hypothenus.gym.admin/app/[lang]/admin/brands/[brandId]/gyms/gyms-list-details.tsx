@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Gym } from "@/src//lib/entities/gym";
-import { formatAddress } from "@/src/lib/entities/address";
+import { formatAddress } from "@/src/lib/entities/contact/address";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
 

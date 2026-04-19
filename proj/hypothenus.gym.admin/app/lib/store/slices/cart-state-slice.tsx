@@ -1,9 +1,14 @@
 import { Cart, CartItem, newCart } from "@/src/lib/entities/cart/cart";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { saveCartState } from "../store-persistence";
 
 export interface CartState {
 	cart: Cart;
 }
+
+type CartStateSlice = {
+	cartState: CartState;
+};
 
 export const initialState: CartState = {
 	cart: newCart()
@@ -14,10 +19,12 @@ export const cartStateSlice = createSlice({
 	initialState: initialState,
 	reducers: {
 		updateCartOwnership: (state, action: PayloadAction<Partial<Cart>>) => {
-			  return {
+			  const cart = {
 				...state,
 				cart: { ...state.cart, ...action.payload }
 			  }
+			  saveCartState(cart);
+			  return cart;
 		},
 		addToCart: (state, action: PayloadAction<CartItem>) => {
 			const existingIndex = state.cart.items.findIndex(
@@ -36,16 +43,18 @@ export const cartStateSlice = createSlice({
 					},
 				};
 			}
-			return {
+			const cart = {
 				...state,
 				cart: {
 					...state.cart,
 					items: [...state.cart.items, action.payload],
 				},
 			};
+			saveCartState(cart);
+			return cart;
 		},
 		removeFromCart: (state, action: PayloadAction<{ membershipPlanUuid: string }>) => {
-			return {
+			const cart = {
 				...state,
 				cart: {
 					...state.cart,
@@ -54,10 +63,12 @@ export const cartStateSlice = createSlice({
 					),
 				},
 			};
+			saveCartState(cart);
+			return cart;
 		},
 		updateQuantity: (state, action: PayloadAction<{ membershipPlanUuid: string; quantity: number }>) => {
 			if (action.payload.quantity <= 0) {
-				return {
+				const cart = {
 					...state,
 					cart: {
 						...state.cart,
@@ -65,9 +76,11 @@ export const cartStateSlice = createSlice({
 							(item) => item.membershipPlan.uuid !== action.payload.membershipPlanUuid
 						),
 					},
-				}
+				};
+				saveCartState(cart);
+				return cart;
 			}
-			return {
+			const cart = {
 				...state,
 				cart: {
 					...state.cart,
@@ -78,12 +91,16 @@ export const cartStateSlice = createSlice({
 					),
 				},
 			};
+			saveCartState(cart);
+			return cart;
 		},
 		clearCart: (state) => {
-			return {
+			const cart = {
 				...state,
 				cart: newCart()
 			};
+			saveCartState(cart);
+			return cart;
 		}
 	},
 });
@@ -96,5 +113,8 @@ export const {
 	clearCart,
 	updateCartOwnership
 } = cartStateSlice.actions;
+
+export const selectCartCount = (state: CartStateSlice): number =>
+	state.cartState.cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
 
 export default cartStateSlice.reducer;

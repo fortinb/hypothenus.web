@@ -6,7 +6,7 @@ import {
     removeFromCart as removeFromCartState,
     updateQuantity as updateQuantityState,
 } from "@/app/lib/store/slices/cart-state-slice";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
 import { MembershipPlan } from "@/src/lib/entities/membership-plan";
 import { useTransition } from "react";
 import { ActionResult } from "../http/result";

@@ -1,7 +1,7 @@
 
 import { redirect } from "next/navigation";
 import { Gym } from "@/src/lib/entities/gym";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { fetchGyms } from "@/app/lib/services/gyms-data-service";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";

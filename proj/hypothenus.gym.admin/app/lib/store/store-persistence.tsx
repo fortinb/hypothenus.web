@@ -1,19 +1,20 @@
+import { newCart } from "@/src/lib/entities/cart/cart";
 import { BreadcrumbState } from "./slices/breadcrumb-state-slice";
 import { CartState } from "./slices/cart-state-slice";
 
 const CART_STORAGE_KEY = "hypothenus.cart";
 const BREADCRUMB_STORAGE_KEY = "hypothenus.breadcrumbs";
 
-export function loadCartState(): Partial<CartState> {
+export function loadCartState(): CartState {
 	if (typeof window === "undefined") {
-		return {};
+		return { cart: newCart() };
 	}
 	try {
 		const serialized = localStorage.getItem(CART_STORAGE_KEY);
-		if (!serialized) return {};
-		return JSON.parse(serialized) as Partial<CartState>;
+		if (!serialized) return { cart: newCart() };
+		return JSON.parse(serialized);
 	} catch {
-		return {};
+		return { cart: newCart() };
 	}
 }
 

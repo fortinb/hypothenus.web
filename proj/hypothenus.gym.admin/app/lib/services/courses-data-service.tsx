@@ -1,6 +1,6 @@
 import { Course, parseCourse, serializeCourse } from "@/src//lib/entities/course";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { initRequest } from "./service-request";
 
 export async function fetchCourses(brandUuid: string, page: number, pageSize: number, includeInactive: boolean): Promise<Page<Course>> {

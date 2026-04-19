@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { z } from 'zod';
-import { BaseEntity } from './base-entity';
+import { BaseEntity } from './entity/base-entity';
 import { LanguageEnum } from './enum/language-enum';
-import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localized-string';
+import { LocalizedString, LocalizedStringSchema, newLocalizedString } from './localized/localized-string';
 import { localesConfig } from "@/i18n/locales-client";
 
 export interface Course extends BaseEntity {

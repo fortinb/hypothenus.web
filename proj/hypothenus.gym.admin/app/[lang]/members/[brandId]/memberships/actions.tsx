@@ -4,7 +4,7 @@ import { failure, success } from '@/app/lib/http/handle-result';
 import { ActionResult, ErrorType } from '@/app/lib/http/result';
 import { postOrder } from '@/app/lib/services/order-data-service';
 import { Cart } from '@/src/lib/entities/cart/cart';
-import { Order } from '@/src/lib/entities/cart/order';
+import { Order } from '@/src/lib/entities/financial/order';
 
 export async function createOrderAction(cart: Cart): Promise<ActionResult<Order>> {
   // 1. Validation (server-side)

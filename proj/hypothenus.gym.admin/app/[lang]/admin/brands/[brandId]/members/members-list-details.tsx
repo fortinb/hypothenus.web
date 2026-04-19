@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Member } from "@/src//lib/entities/member";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
-import { formatPersonName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
 import { formatDate } from "@/app/lib/utils/dateUtils";
 import Image from 'next/image';
 import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";

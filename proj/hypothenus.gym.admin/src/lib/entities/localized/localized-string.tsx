@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LanguageEnum } from "./enum/language-enum";
+import { LanguageEnum } from "../enum/language-enum";
 
 export interface LocalizedString {
   language: LanguageEnum;

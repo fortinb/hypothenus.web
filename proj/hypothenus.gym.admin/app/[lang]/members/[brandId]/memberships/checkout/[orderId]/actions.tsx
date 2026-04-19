@@ -3,7 +3,7 @@
 import { failure, success } from '@/app/lib/http/handle-result';
 import { ActionResult, ErrorType } from '@/app/lib/http/result';
 import { submitOrder } from '@/app/lib/services/order-data-service';
-import { Order } from '@/src/lib/entities/cart/order';
+import { Order } from '@/src/lib/entities/financial/order';
 
 export async function submitOrderAction(data: Order): Promise<ActionResult<Order>> {
   // 1. Validation (server-side)

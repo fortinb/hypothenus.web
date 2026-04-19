@@ -6,9 +6,9 @@ import { useToastResult } from "@/app/lib/hooks/useToastResult";
 import FormActionCheckoutButtons from "@/app/ui/components/actions/form-action-checkout-buttons";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { CheckoutInfo } from "@/app/ui/components/order/checkout-info";
-import { Order, OrderSchema } from "@/src/lib/entities/cart/order";
+import { Order, OrderSchema } from "@/src/lib/entities/financial/order";
 import { Member } from "@/src/lib/entities/member";
-import { PaymentOption } from "@/src/lib/entities/payment-option";
+import { FinancialInstrument } from "@/src/lib/entities/financial/financial-instrument";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -85,17 +85,17 @@ export function CheckoutForm({ lang, brandId, member, preparedOrder }:
 
     function mapEntityToForm(order?: Order): z.infer<typeof OrderSchema> {
         return {
-            paymentOptionUuid: order?.paymentOption?.uuid ?? "",
-            expirationDate: order?.paymentOption?.expirationDate ?? "",
-            cvv: order?.paymentOption?.cvv ?? ""
+            financialInstrumentUuid: order?.financialInstrument?.uuid ?? "",
+            expirationDate: order?.financialInstrument?.expirationDate ?? "",
+            cvv: order?.financialInstrument?.cvv ?? ""
         };
     }
 
     function mapFormToEntity(formData: z.infer<typeof OrderSchema>, order: Order, member: Member): Order {
         return {
             ...order,
-            paymentOption: {
-                ...member.paymentOptions?.find(option => option.uuid === formData.paymentOptionUuid) as PaymentOption,
+            financialInstrument: {
+                ...member.financialInstruments?.find(option => option.uuid === formData.financialInstrumentUuid) as FinancialInstrument,
                 expirationDate: formData.expirationDate,
                 cvv: formData.cvv
             }
@@ -110,10 +110,10 @@ export function CheckoutForm({ lang, brandId, member, preparedOrder }:
                 <FormProvider {...formContext}>
                     <Form as="form" className="d-flex flex-column align-items-centerjustify-content-between w-100 h-100 p-2" id="member_info_form" onSubmit={formContext.handleSubmit(onSubmit)}>
                         <div className="d-flex flex-column align-items-center">
-                            <h1 className="text-tertiary">{t("checkout.title")}</h1>
+                            <h1 className="text-tertiary">{t("title")}</h1>
                         </div>
                         <hr className="mt-1" />
-                        <CheckoutInfo lang={lang} brandId={brandId} order={order} paymentOptions={member.paymentOptions} />
+                        <CheckoutInfo lang={lang} brandId={brandId} order={order} financialInstruments={member.financialInstruments} />
                         <hr className="mt-1 mb-1" />
                         <FormActionCheckoutButtons isSubmitting={isSubmitting} isEditMode={isEditMode} formId="member_info_form" />
                     </Form>

@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
-import { formatAddress } from "@/src/lib/entities/address";
-import { Contact, formatContactName } from "@/src/lib/entities/contact";
+import { formatAddress } from "@/src/lib/entities/contact/address";
+import { Contact, formatContactName } from "@/src/lib/entities/contact/contact";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";

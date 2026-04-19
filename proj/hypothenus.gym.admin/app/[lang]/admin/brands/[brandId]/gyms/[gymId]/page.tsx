@@ -8,10 +8,10 @@ import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
 import { failure } from "@/app/lib/http/handle-result";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { Coach } from "@/src/lib/entities/coach";
 import { fetchCoachs } from "@/app/lib/services/coachs-data-service";
-import { formatPersonName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
 import { CoachSelectedItem } from "@/src/lib/entities/ui/coach-selected-item";
 
 interface PageProps {

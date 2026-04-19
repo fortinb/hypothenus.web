@@ -1,7 +1,7 @@
 "use client";
 
 import { OrderInfo } from "@/app/ui/components/order/order-info";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Button from "react-bootstrap/Button";

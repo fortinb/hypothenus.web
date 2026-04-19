@@ -9,8 +9,8 @@ import cartStateReducer, {
 } from "@/app/lib/store/slices/cart-state-slice";
 import { useOrderActions } from "../useOrderActions";
 import { newMembershipPlan } from "@/src/lib/entities/membership-plan";
-import { PaymentMethodEnum } from "@/src/lib/entities/enum/payment-method-enum";
-import { newAddress } from "@/src/lib/entities/address";
+import { FinancialInstrumentTypeEnum } from "@/src/lib/entities/enum/financial-instrument-type-enum";
+import { newAddress } from "@/src/lib/entities/contact/address";
 
 // ── mocks ────────────────────────────────────────────────────────────────────
 
@@ -52,7 +52,7 @@ function HookTester() {
         fullName: "Alice",
         email: "alice@example.com",
         address: newAddress(),
-        paymentMethod: PaymentMethodEnum.creditCard,
+        paymentMethod: FinancialInstrumentTypeEnum.creditCard,
     };
 
     return (

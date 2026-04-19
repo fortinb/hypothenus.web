@@ -1,7 +1,7 @@
 "use client"
 
 import { Member } from "@/src/lib/entities/member";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import MemberListDetails from "./members-list-details";
 
 export default function MembersList({ lang, pageOfMembers }: { lang: string; pageOfMembers?: Page<Member> }) {

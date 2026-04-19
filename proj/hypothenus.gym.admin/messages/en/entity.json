@@ -423,5 +423,19 @@
             "no": "Cancel",
             "action": "Deleting..."
         }
+    },
+    "financialInstrument": {
+        "validation": {
+            "typeRequired": "Type is required.",
+            "cardNumberRequired": "Card number is required.",
+            "cardHolderNameRequired": "Card holder name is required.",
+            "expirationDateRequired": "Expiration date is required.",
+            "cvvRequired": "CVV is required."
+        },
+        "type": "Type",
+        "cardNumber": "Card number",
+        "cardHolderName": "Card holder name",
+        "expirationDate": "Expiration date",
+        "cvv": "CVV"
     }
 }

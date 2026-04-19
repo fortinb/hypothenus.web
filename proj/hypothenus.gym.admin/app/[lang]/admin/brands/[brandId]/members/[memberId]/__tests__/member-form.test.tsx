@@ -23,7 +23,7 @@ import {
     INVALID_EMAIL
 } from '@/app/lib/test-utils/form-test-helpers';
 import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
-import { newContact } from '@/src/lib/entities/contact';
+import { newContact } from '@/src/lib/entities/contact/contact';
 import moment from 'moment';
 import { newGym } from '@/src/lib/entities/gym';
 import { MemberTypeEnum } from '@/src/lib/entities/enum/member-type-enum';

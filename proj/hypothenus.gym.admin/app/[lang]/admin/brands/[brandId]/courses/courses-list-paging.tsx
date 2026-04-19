@@ -4,7 +4,7 @@ import Loader from "@/app/ui/components/navigation/loader";
 import PagingNavigation from "@/app/ui/components/navigation/paging-navigation";
 import { CoursesStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/courses-state-paging-slice";
 import { Course } from "@/src/lib/entities/course";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";

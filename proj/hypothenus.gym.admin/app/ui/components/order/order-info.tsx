@@ -1,7 +1,9 @@
 "use client";
 
 import { formatDate } from "@/app/lib/utils/dateUtils";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
+import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
+import { getMembershipPlanName } from "@/src/lib/entities/membership-plan";
 import { useTranslations } from "next-intl";
 
 
@@ -9,7 +11,7 @@ export function OrderInfo({ lang, brandId, order }:
     {
         lang: string;
         brandId: string;
-        order: Order | null;
+        order: Order;
     }) {
     const t = useTranslations("entity");
 
@@ -34,7 +36,7 @@ export function OrderInfo({ lang, brandId, order }:
                     {order.items.map((item) => (
                         <div key={item.membershipPlan.uuid} className="d-flex flex-row justify-content-between align-items-center py-2">
                             <div className="d-flex flex-column">
-                                <span className="text-primary">{item.membershipPlan.name}</span>
+                                <span className="text-primary">{getMembershipPlanName(item.membershipPlan, lang as LanguageEnum)}</span>
                             </div>
                         </div>
 
@@ -44,12 +46,12 @@ export function OrderInfo({ lang, brandId, order }:
                 <div className="d-flex flex-row justify-content-between align-items-center px-2 pt-3">
                     <span className="">{t("panel.subtotal")}</span>
                     <span className="">
-                        {subtotalAmount.toFixed(2)}{subtotalSymbol}
+                        {order.subTotal.amount.toFixed(2)}{order.subTotal.currency.symbol} ({order.subTotal.currency.code})
                     </span>
                 </div>
                 <div className="d-flex flex-row justify-content-end px-2 pt-1">
                     <span className="">
-                        {t("panel.itemCount", { count: cart.items.length })}
+                        {t("panel.itemCount", { count: order.items.length })}
                     </span>
                 </div>
             </div>

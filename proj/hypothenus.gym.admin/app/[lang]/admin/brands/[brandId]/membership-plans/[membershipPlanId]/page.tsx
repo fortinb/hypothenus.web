@@ -9,7 +9,7 @@ import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { redirect } from "next/navigation";
 import { auth } from "@/src/security/auth";
 import { failure } from "@/app/lib/http/handle-result";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { Gym } from "@/src/lib/entities/gym";
 import { Course, getCourseName } from "@/src/lib/entities/course";
 import { fetchGyms } from "@/app/lib/services/gyms-data-service";

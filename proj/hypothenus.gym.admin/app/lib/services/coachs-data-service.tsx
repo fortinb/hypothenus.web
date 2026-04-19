@@ -1,5 +1,5 @@
 import { Coach, parseCoach, serializeCoach } from "@/src//lib/entities/coach";
-import { Page } from "@/src//lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
 import { initRequest } from "./service-request";
 

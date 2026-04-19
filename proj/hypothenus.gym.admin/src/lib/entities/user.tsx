@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BaseEntity } from './base-entity';
+import { BaseEntity } from './entity/base-entity';
 import { RoleEnum } from './enum/role-enum';
 
 export interface User extends BaseEntity {

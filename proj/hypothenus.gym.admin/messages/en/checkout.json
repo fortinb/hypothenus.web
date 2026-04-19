@@ -1,0 +1,33 @@
+{
+    "title": "Checkout",
+    "financialInstrument": {
+        "label": "Select a payment method",
+        "expirationDate": {
+            "label": "Expiration Date"
+        },
+        "cvv": {
+            "label": "CVV"
+        }
+    },
+    "buttons": {
+        "submit": "Place Order",
+        "submitting": "Placing order..."
+    },
+    "validation": {
+        "financialInstrumentRequired": "Please select a payment option.",
+        "expirationDateRequired": "Please enter the expiration date.",
+        "cvvRequired": "Please enter the CVV."
+    },
+    "confirmation": {
+        "title": "Order Confirmed!",
+        "subtitle": "Thank you for your order.",
+        "orderNumber": "Order #{orderUuid}",
+        "placedOn": "Placed on {date}",
+        "total": "Order Total",
+        "viewMemberships": "View My Memberships"
+    },
+    "action": {
+        "submitSuccess": "Your order has been placed successfully!",
+        "submitError": "Something went wrong placing your order. Please try again."
+    }
+}

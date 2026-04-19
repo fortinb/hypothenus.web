@@ -10,7 +10,7 @@ import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { clearCourseState, CourseState, updateCourseState } from "@/app/lib/store/slices/course-state-slice";
 import { Course, CourseSchema, getCourseName } from "@/src/lib/entities/course";
 import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
-import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/messages";
+import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST } from "@/src/lib/entities/entity/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";

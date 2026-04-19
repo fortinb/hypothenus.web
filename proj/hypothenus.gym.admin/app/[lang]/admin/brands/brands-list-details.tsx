@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
-import { formatAddress } from "@/src/lib/entities/address";
+import { formatAddress } from "@/src/lib/entities/contact/address";
 
 export default function BrandListDetails({ lang, brand }: { lang: string; brand: any }) {
   const t = useTranslations("brand");

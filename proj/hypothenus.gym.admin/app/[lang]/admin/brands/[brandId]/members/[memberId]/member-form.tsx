@@ -12,8 +12,8 @@ import ModalConfirmation from "@/app/ui/components/actions/modal-confirmation";
 import MemberInfo from "@/app/ui/components/member/member-info";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Member, MemberSchema } from "@/src/lib/entities/member";
-import { formatPersonName } from "@/src/lib/entities/person";
-import { phoneNumberOrder } from "@/src/lib/entities/phone-number";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
+import { phoneNumberOrder } from "@/src/lib/entities/contact/phone-number";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 import { z } from "zod";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { activateMemberAction, createMemberAction, deactivateMemberAction, deleteMemberAction, saveMemberAction } from "./actions";
-import { DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST } from "@/src/lib/entities/messages";
+import { DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST } from "@/src/lib/entities/entity/messages";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 
 export default function MemberForm({ lang, member, gyms }: { lang: string; member: Member; gyms: GymListItem[] }) {

@@ -7,7 +7,7 @@ import { BillingInfo } from "@/app/ui/components/order/billing-info";
 import { Member } from "@/src/lib/entities/member";
 import { getMemberByUserIdpId } from "@/app/lib/services/members-data-service";
 import { failure } from "@/app/lib/http/handle-result";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
 import { fetchCourses } from "@/app/lib/services/courses-data-service";
 import { getOrder } from "@/app/lib/services/order-data-service";
 

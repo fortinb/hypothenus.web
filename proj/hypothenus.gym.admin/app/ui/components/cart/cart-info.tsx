@@ -3,7 +3,7 @@
 import { useOrderActions } from "@/app/lib/hooks/useOrderActions";
 import { ActionResult } from "@/app/lib/http/result";
 import { Cart } from "@/src/lib/entities/cart/cart";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
 import { useTranslations } from "next-intl";
 import { CartItemRow } from "./cart-item-row";
 
@@ -23,13 +23,10 @@ export function CartInfo({ lang, isEditMode, cart }:
             createOrder: function (...args: any[]): Promise<ActionResult<Order>> {
                 throw new Error("Function not implemented.");
             },
-
         }
     });
 
-    const subtotalAmount = cart.items.reduce(
-        (total, item) => total + (item.membershipPlan.cost.amount / 100) * item.quantity, 0
-    );
+    const subtotalAmount = cart.items?.reduce((total, item) => total + (item.membershipPlan.cost.amount / 100) * item.quantity, 0) ?? 0;
     const subtotalSymbol = cart.items[0]?.membershipPlan.cost.currency?.symbol ?? "";
 
     return (
@@ -50,7 +47,6 @@ export function CartInfo({ lang, isEditMode, cart }:
                             />
                         ))}
                     </div>
-
                     <div className="d-flex flex-row justify-content-between align-items-center px-2 pt-3">
                         <span className="">{t("subtotal")}</span>
                         <span className="">

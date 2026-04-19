@@ -1,7 +1,7 @@
 "use client"
 
 import { Brand } from "@/src/lib/entities/brand";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import axiosInstance from "@/app/lib/http/axiosInterceptor-client";
 import { HeaderDefinition, initRequest } from "./service-request";
 import { ActionResult } from "@/app/lib/http/result";

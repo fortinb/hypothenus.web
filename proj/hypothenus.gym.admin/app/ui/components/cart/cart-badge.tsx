@@ -13,14 +13,10 @@ export function CartBadge() {
 		<div className="position-relative d-inline-flex align-items-center">
 			<i
 				className="bi bi-cart3 h4 mb-0"
-				aria-label={t("badge.ariaLabel", { count })}
+				aria-label={t("badge.label", { count })}
 			></i>
 			{count > 0 && (
-				<Badge
-					pill
-					bg="primary"
-					className="position-absolute top-0 start-100 translate-middle"
-				>
+				<Badge pill	bg="primary" className="position-absolute top-0 start-100 translate-middle">
 					{count}
 				</Badge>
 			)}

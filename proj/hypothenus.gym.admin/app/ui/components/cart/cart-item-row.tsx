@@ -15,45 +15,35 @@ export function CartItemRow({ lang, item, isEditMode, onRemove, onUpdateQuantity
         onUpdateQuantity: (membershipPlanUuid: string, quantity: number) => void;
     }) {
     const t = useTranslations("cart");
-
     const lineTotal = ((item.membershipPlan.cost.amount / 100) * item.quantity).toFixed(2);
 
     return (
         <div className="d-flex flex-row justify-content-between align-items-center border-bottom py-2">
             <div className="d-flex flex-column flex-fill">
-                <span className="fw-semibold">
+                <span className="text-primary">
                     {getMembershipPlanName(item.membershipPlan, lang as LanguageEnum)}
                 </span>
                 <span className="card-text-smaller text-muted">
                     {getMembershipPlanPrice(item.membershipPlan, lang as LanguageEnum)}
                 </span>
             </div>
-            <div className="d-flex flex-row align-items-center gap-2 me-2">
-                <Button
-                    disabled={!isEditMode || item.quantity <= 1}
-                    onClick={() => onUpdateQuantity(item.membershipPlan.uuid, item.quantity - 1)}
-                >
-                    <i className="bi bi-dash"></i>
+            <div className="d-flex flex-row align-items-center me-2">
+                <Button className="btn btn-icon btn-sm" disabled={!isEditMode || item.quantity <= 1}
+                    onClick={() => onUpdateQuantity(item.membershipPlan.uuid, item.quantity - 1)}>
+                    <i className="icon icon-light bi bi-dash me-2 h7"></i>
                 </Button>
-                <span className="px-1">{item.quantity}</span>
-                <Button
-                    disabled={!isEditMode}
-                    onClick={() => onUpdateQuantity(item.membershipPlan.uuid, item.quantity + 1)}
-                >
-                    <i className="bi bi-plus"></i>
+                <span className="text-primary px-1">{item.quantity}</span>
+                <Button className="btn btn-icon btn-sm" disabled={!isEditMode} onClick={() => onUpdateQuantity(item.membershipPlan.uuid, item.quantity + 1)}>
+                    <i className="icon icon-light bi bi-plus me-2 h7"></i>
                 </Button>
             </div>
             <div className="me-3">
-                <span className="card-text-smaller fw-semibold">
-                    {lineTotal}{item.membershipPlan.cost.currency?.symbol}
+                <span className="text-primary-small">
+                    {lineTotal}{item.membershipPlan.cost.currency.symbol}
                 </span>
             </div>
-            <Button
-                onClick={() => onRemove(item.membershipPlan.uuid)}
-                title={t("item.remove")}
-                disabled={!isEditMode}
-            >
-                <i className="bi bi-trash"></i>
+            <Button className="btn btn-icon btn-sm" onClick={() => onRemove(item.membershipPlan.uuid)} title={t("item.remove")} disabled={!isEditMode}>
+                <i className="icon icon-light bi bi-trash me-2 h7"></i>
             </Button>
         </div>
     );

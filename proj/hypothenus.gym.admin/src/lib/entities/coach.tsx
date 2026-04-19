@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { newPerson, parsePerson, Person, PersonSchema } from './person';
-import { BaseEntity } from './base-entity';
+import { newPerson, parsePerson, Person, PersonSchema } from './contact/person';
+import { BaseEntity } from './entity/base-entity';
 
 export interface Coach extends BaseEntity {
   uuid?: any;

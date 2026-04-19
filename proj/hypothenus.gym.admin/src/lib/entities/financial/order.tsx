@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { OrderStatusEnum } from "../enum/order-status-enum";
 import moment from "moment";
-import { Cost } from "../pricing/cost";
-import { Tax } from "../pricing/tax";
-import { parsePaymentOption, PaymentOption, serializePaymentOption } from "../payment-option";
+import { Cost } from "./cost";
+import { Tax } from "./tax";
+import { parseFinancialInstrument, FinancialInstrument, serializeFinancialInstrument } from "./financial-instrument";
 import { Address } from "node:cluster";
 import { MembershipPlan } from "../membership-plan";
 
@@ -23,11 +23,12 @@ export interface Order {
 	number: string;
 	status: OrderStatusEnum;
 	items: OrderItem[];
-	paymentOption: PaymentOption;
+	financialInstrument: FinancialInstrument;
 	taxes: Tax[];
 	subTotal: Cost;
 	total: Cost;
 	createdOn?: any;
+	submittedOn?: any;
 }
 
 export const parseOrder = (data: any): Order => {
@@ -36,8 +37,11 @@ export const parseOrder = (data: any): Order => {
 	if (data.createdOn) {
 		order.createdOn = moment(data.createdOn).toDate().toISOString();
 	}
-	if (data.paymentOption) {
-		order.paymentOption = parsePaymentOption(data.paymentOption);
+	if (data.submittedOn) {
+		order.submittedOn = moment(data.submittedOn).toDate().toISOString();
+	}
+	if (data.financialInstrument) {
+		order.financialInstrument = parseFinancialInstrument(data.financialInstrument);
 	}
 	return order;
 }
@@ -45,14 +49,14 @@ export const parseOrder = (data: any): Order => {
 export const serializeOrder = (order: Order): any => {
 	return { 
 		...order, 
-		paymentOption: serializePaymentOption(order.paymentOption) 
+		financialInstrument: serializeFinancialInstrument(order.financialInstrument) 
 	};
 }
 
 export const OrderSchema = z.object({
-	paymentOptionUuid: z.string().min(1, { message: "checkout.validation.paymentOptionRequired" }),
-	expirationDate: z.string().min(4, { message: "checkout.validation.expirationDateRequired" }),
-	cvv: z.string().min(3, { message: "checkout.validation.cvvRequired" }),
+	financialInstrumentUuid: z.string().min(1, { message: "validation.financialInstrumentRequired" }),
+	expirationDate: z.string().min(4, { message: "validation.expirationDateRequired" }),
+	cvv: z.string().min(3, { message: "validation.cvvRequired" }),
 });
 
 

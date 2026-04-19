@@ -1,52 +1,20 @@
 {
-    "panel": {
-        "title": "Your Cart",
-        "empty": "Your cart is empty.",
-        "emptySubtitle": "Browse membership plans and add one to get started.",
-        "subtotal": "Subtotal",
-        "itemCount": "{count, plural, =0 {no items} one {# item} other {# items}}",
-        "proceedToCheckout": "Proceed to Checkout"
-    },
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "emptySubtitle": "Browse membership plans and add one to get started.",
+    "subtotal": "Subtotal",
+    "itemCount": "{count, plural, =0 {no items} one {# item} other {# items}}",
     "item": {
-        "remove": "Remove",
-        "quantity": "Qty",
-        "lineTotal": "Total"
+        "remove": "Remove"
     },
-    "checkout": {
-        "title": "Checkout",
-        "fields": {
-            "fullName": "Full Name",
-            "email": "Email",
-            "paymentMethod": "Payment Method"
-        },
-        "paymentMethods": {
-            "creditCard": "Credit Card",
-            "bankTransfer": "Bank Transfer"
-        },
-        "buttons": {
-            "submit": "Place Order",
-            "submitting": "Placing order..."
-        },
-        "validation": {
-            "fullNameRequired": "Full name is required.",
-            "emailRequired": "Email is required.",
-            "emailInvalid": "Please enter a valid email address.",
-            "paymentMethodRequired": "Please select a payment method."
+    "buttons": {
+        "checkout": {
+            "label": "Checkout",
+            "tooltip": "Proceed to checkout",
+            "submitting": "Submitting..."
         }
     },
-    "confirmation": {
-        "title": "Order Confirmed!",
-        "subtitle": "Thank you for your order.",
-        "orderNumber": "Order #{orderUuid}",
-        "placedOn": "Placed on {date}",
-        "total": "Order Total",
-        "viewMemberships": "View My Memberships"
-    },
-    "action": {
-        "submitSuccess": "Your order has been placed successfully!",
-        "submitError": "Something went wrong placing your order. Please try again."
-    },
     "badge": {
-        "ariaLabel": "{count, plural, =0 {cart is empty} one {# item in cart} other {# items in cart}}"
+        "label": "{count, plural, =0 {cart is empty} one {# item in cart} other {# items in cart}}"
     }
 }

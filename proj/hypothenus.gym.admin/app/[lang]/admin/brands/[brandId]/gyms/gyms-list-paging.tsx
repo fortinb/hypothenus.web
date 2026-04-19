@@ -1,7 +1,7 @@
 "use client"
 
 import { Gym } from "@/src/lib/entities/gym";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "@/app/ui/components/navigation/loader";

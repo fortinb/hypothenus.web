@@ -9,7 +9,7 @@ import { useState } from "react";
 import ModalBuyMembershipPlan from "../membership/modal-buy-membership-plan";
 import { useRouter } from "next/navigation";
 import { useOrderActions } from "@/app/lib/hooks/useOrderActions";
-import { Order } from "@/src/lib/entities/cart/order";
+import { Order } from "@/src/lib/entities/financial/order";
 import { ActionResult } from "@/app/lib/http/result";
 
 export default function MembershipPlanCard({ membershipPlan, tLocale, lang, linkActive = false, onlyDisplay = false }: {

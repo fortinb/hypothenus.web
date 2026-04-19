@@ -1,6 +1,6 @@
 import { MembershipPlan, parseMembershipPlan, serializeMembershipPlan } from "@/src/lib/entities/membership-plan";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import moment from "moment";
 import { initRequest } from "./service-request";
 

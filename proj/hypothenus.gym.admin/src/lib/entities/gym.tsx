@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { Address, AddressSchema, newAddress } from "./address";
-import { BaseEntity } from "./base-entity";
-import { Contact, ContactSchema, newContact, parseContact } from "./contact";
-import { PhoneNumber, PhoneNumberSchema, newPhoneNumber } from "./phone-number";
+import { Address, AddressSchema, newAddress } from "./contact/address";
+import { BaseEntity } from "./entity/base-entity";
+import { Contact, ContactSchema, newContact, parseContact } from "./contact/contact";
+import { PhoneNumber, PhoneNumberSchema, newPhoneNumber } from "./contact/phone-number";
 import { PhoneNumberTypeEnum } from './enum/phone-number-type-enum';
 import { Coach, CoachReferenceSchema, parseCoach } from './coach';
 

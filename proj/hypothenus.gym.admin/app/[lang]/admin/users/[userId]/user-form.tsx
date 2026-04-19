@@ -21,7 +21,7 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-
 import { useSelector } from "react-redux";
 import { z } from 'zod';
 import { activateUserAction, createUserAction, deactivateUserAction, deleteUserAction, saveUserAction } from "./actions";
-import { DOMAIN_EXCEPTION_USER_ALREADY_EXIST, DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED } from "@/src/lib/entities/messages";
+import { DOMAIN_EXCEPTION_USER_ALREADY_EXIST, DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED } from "@/src/lib/entities/entity/messages";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { RoleEnum } from "@/src/lib/entities/enum/role-enum";
 

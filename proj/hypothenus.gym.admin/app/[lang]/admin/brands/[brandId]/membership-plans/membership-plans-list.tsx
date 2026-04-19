@@ -1,7 +1,7 @@
 "use client"
 
 import { MembershipPlan } from "@/src/lib/entities/membership-plan";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import MembershipPlanListDetails from "./membership-plans-list-details";
 
 export default function MembershipPlansList({ lang, pageOfMembershipPlans }: { lang: string; pageOfMembershipPlans?: Page<MembershipPlan> }) {
