@@ -21,7 +21,6 @@ export default function MembersListPaging({ lang }: { lang: string; }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [pageOfMembers, setPageOfMembers] = useState<Page<Member>>();
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -31,9 +30,6 @@ export default function MembersListPaging({ lang }: { lang: string; }) {
       let pageOfMembers: ActionResult<Page<Member>> = await fetchMembers(brandState.brand.uuid, page, pageSize, includeInactive);
       if (pageOfMembers.ok) {
         setPageOfMembers(pageOfMembers.data);
-        if (pageOfMembers.data.content && pageOfMembers?.data?.pageable) {
-          setTotalPages(pageOfMembers.data.totalPages);
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -48,9 +44,6 @@ export default function MembersListPaging({ lang }: { lang: string; }) {
 
       if (pageOfMembers.ok) {
         setPageOfMembers(pageOfMembers.data);
-        if (pageOfMembers.data.content && pageOfMembers?.data?.pageable) {
-          setTotalPages(0); // Force 0 since we don"t know the total count of the search
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -111,7 +104,8 @@ export default function MembersListPaging({ lang }: { lang: string; }) {
     <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation page={membersStatePaging.page + 1} totalPages={totalPages}
+         <PagingNavigation page={pageOfMembers ? pageOfMembers.pageNumber + 1 : 0} totalPages={pageOfMembers?.totalPages ?? 0}
+            hasPrevious={pageOfMembers?.hasPrevious ?? false} hasNext={pageOfMembers?.hasNext ?? false}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
             searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />
         </div>

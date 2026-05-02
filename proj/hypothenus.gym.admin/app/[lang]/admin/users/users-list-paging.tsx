@@ -18,9 +18,8 @@ export default function UsersListPaging({ lang }: { lang: string }) {
     const usersStatePaging: UsersStatePaging = useSelector((state: any) => state.usersStatePaging);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    
+
     const [pageOfUsers, setPageOfUsers] = useState<Page<User>>();
-    const [totalPages, setTotalPages] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -30,9 +29,7 @@ export default function UsersListPaging({ lang }: { lang: string }) {
             const pageOfUsers: ActionResult<Page<User>> = await fetchUsers(page, pageSize, includeInactive);
             if (pageOfUsers.ok) {
                 setPageOfUsers(pageOfUsers.data);
-                if (pageOfUsers.data.content && pageOfUsers?.data?.pageable) {
-                    setTotalPages(pageOfUsers.data.totalPages);
-                }
+
             } else {
                 router.push(`/${lang}/error`);
             }
@@ -46,10 +43,6 @@ export default function UsersListPaging({ lang }: { lang: string }) {
             const pageOfUsers: ActionResult<Page<User>> = await searchUsers(page, pageSize, includeInactive, criteria);
             if (pageOfUsers.ok) {
                 setPageOfUsers(pageOfUsers.data);
-
-                if (pageOfUsers.data.content && pageOfUsers.data.pageable) {
-                    setTotalPages(0); // Force 0 since we don"t know the total count of the search
-                }
             } else {
                 router.push(`/${lang}/error`);
             }
@@ -111,9 +104,10 @@ export default function UsersListPaging({ lang }: { lang: string }) {
         <>
             <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
                 <div>
-                    <PagingNavigation page={usersStatePaging.page + 1} totalPages={totalPages}
+                    <PagingNavigation page={pageOfUsers ? pageOfUsers.pageNumber + 1 : 0} totalPages={pageOfUsers?.totalPages ?? 0}
+                        hasPrevious={pageOfUsers?.hasPrevious ?? false} hasNext={pageOfUsers?.hasNext ?? false}
                         onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
-                        searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />
+                        searchActive={false} onSearch={onSearch} onSearchInput={onSearchInput} />
                 </div>
                 <div>
                     <hr />

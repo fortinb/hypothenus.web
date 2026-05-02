@@ -26,8 +26,8 @@ export interface MembershipPlan extends BaseEntity {
     guestPrivilege: boolean;
     promotional: boolean;
     giftCard: boolean;
-    includedCourses: Course[];
-    includedGyms: Gym[];
+    includedCourseUuids: string[];
+    includedGymUuids: string[];
     startDate?: any;
     endDate?: any;
     active: boolean;
@@ -74,8 +74,8 @@ export const newMembershipPlan = (): MembershipPlan => {
         guestPrivilege: false,
         promotional: false,
         giftCard: false,
-        includedCourses: [],
-        includedGyms: [],
+        includedCourseUuids: [],
+        includedGymUuids: [],
         startDate: moment().format("YYYY-MM-DD"),
         endDate: undefined,
         active: true,
@@ -159,8 +159,8 @@ export const MembershipPlanSchema = z.object({
     guestPrivilege: z.boolean(),
     promotional: z.boolean(),
     giftCard: z.boolean(),
-    includedGyms: z.array(GymReferenceSchema).min(0).nullable().optional(),
-    includedCourses: z.array(CourseReferenceSchema).min(0).nullable().optional(),
+    includedGymUuids: z.array(z.string()).min(0).nullable().optional(),
+    includedCourseUuids: z.array(z.string()).min(0).nullable().optional(),
     startDate: z.string().nullable().refine((date) => !!date, { message: "membershipPlan.validation.startDateRequired" }),
     endDate: z.string().nullable().optional(),
 }).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") >= moment(membershipPlan.startDate).format("YYYYMMDD")), {

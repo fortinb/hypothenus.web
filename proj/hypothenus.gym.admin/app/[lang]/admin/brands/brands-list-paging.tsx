@@ -18,9 +18,8 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
   const brandsStatePaging: BrandsStatePaging = useSelector((state: any) => state.brandsStatePaging);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  
+
   const [pageOfBrands, setPageOfBrands] = useState<Page<Brand>>();
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -30,9 +29,6 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
       const pageOfBrands: ActionResult<Page<Brand>> = await fetchBrands(page, pageSize, includeInactive);
       if (pageOfBrands.ok) {
         setPageOfBrands(pageOfBrands.data);
-        if (pageOfBrands.data.content && pageOfBrands?.data?.pageable) {
-          setTotalPages(pageOfBrands.data.totalPages);
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -46,9 +42,6 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
       const pageOfBrands: ActionResult<Page<Brand>> = await searchBrands(page, pageSize, includeInactive, criteria);
       if (pageOfBrands.ok) {
         setPageOfBrands(pageOfBrands.data);
-        if (pageOfBrands.data.content && pageOfBrands?.data?.pageable) {
-          setTotalPages(0); // Force 0 since we don"t know the total count of the search
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -110,7 +103,8 @@ export default function BrandsListPaging({ lang }: { lang: string }) {
     <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation page={brandsStatePaging.page + 1} totalPages={totalPages}
+          <PagingNavigation page={pageOfBrands ? pageOfBrands.pageNumber + 1 : 0} totalPages={pageOfBrands?.totalPages ?? 0}
+            hasPrevious={pageOfBrands?.hasPrevious ?? false} hasNext={pageOfBrands?.hasNext ?? false}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
             searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />
         </div>

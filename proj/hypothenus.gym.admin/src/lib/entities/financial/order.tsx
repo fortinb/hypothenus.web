@@ -3,7 +3,6 @@ import { OrderStatusEnum } from "../enum/order-status-enum";
 import moment from "moment";
 import { Cost } from "./cost";
 import { Tax } from "./tax";
-import { parseFinancialInstrument, FinancialInstrument, serializeFinancialInstrument } from "./financial-instrument";
 import { Address } from "node:cluster";
 import { MembershipPlan } from "../membership-plan";
 
@@ -23,7 +22,7 @@ export interface Order {
 	number: string;
 	status: OrderStatusEnum;
 	items: OrderItem[];
-	financialInstrument: FinancialInstrument;
+	financialInstrumentUuid: string;
 	taxes: Tax[];
 	subTotal: Cost;
 	total: Cost;
@@ -40,23 +39,22 @@ export const parseOrder = (data: any): Order => {
 	if (data.submittedOn) {
 		order.submittedOn = moment(data.submittedOn).toDate().toISOString();
 	}
-	if (data.financialInstrument) {
+	/*if (data.financialInstrument) {
 		order.financialInstrument = parseFinancialInstrument(data.financialInstrument);
-	}
+	}*/
 	return order;
 }
 
 export const serializeOrder = (order: Order): any => {
 	return { 
-		...order, 
-		financialInstrument: serializeFinancialInstrument(order.financialInstrument) 
+		...order
 	};
 }
 
 export const OrderSchema = z.object({
 	financialInstrumentUuid: z.string().min(1, { message: "validation.financialInstrumentRequired" }),
-	expirationDate: z.string().min(4, { message: "validation.expirationDateRequired" }),
-	cvv: z.string().min(3, { message: "validation.cvvRequired" }),
+/*	expirationDate: z.string().min(4, { message: "validation.expirationDateRequired" }),
+	cvv: z.string().min(3, { message: "validation.cvvRequired" }),*/
 });
 
 

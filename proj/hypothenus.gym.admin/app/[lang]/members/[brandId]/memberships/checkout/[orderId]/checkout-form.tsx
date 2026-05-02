@@ -85,22 +85,18 @@ export function CheckoutForm({ lang, brandId, member, preparedOrder }:
 
     function mapEntityToForm(order?: Order): z.infer<typeof OrderSchema> {
         return {
-            financialInstrumentUuid: order?.financialInstrument?.uuid ?? "",
-            expirationDate: order?.financialInstrument?.expirationDate ?? "",
-            cvv: order?.financialInstrument?.cvv ?? ""
+            financialInstrumentUuid: order?.financialInstrumentUuid ?? "",
         };
     }
 
     function mapFormToEntity(formData: z.infer<typeof OrderSchema>, order: Order, member: Member): Order {
         return {
             ...order,
-            financialInstrument: {
-                ...member.financialInstruments?.find(option => option.uuid === formData.financialInstrumentUuid) as FinancialInstrument,
-                expirationDate: formData.expirationDate,
-                cvv: formData.cvv
-            }
+            financialInstrumentUuid: formData.financialInstrumentUuid
         };
-    }
+            
+        };
+    
     return (
         <div className="d-flex flex-column justify-content-start w-100 h-100 page-main">
             <div className="ps-2 pe-2">

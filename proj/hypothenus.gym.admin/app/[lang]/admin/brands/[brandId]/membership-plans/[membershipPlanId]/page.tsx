@@ -73,11 +73,11 @@ export default async function MembershipPlanPage({ params }: PageProps) {
   });
 
   const initialSelectedGymItems = availableGymItems
-    .filter((item) => membershipPlan.includedGyms?.some((selected) => selected.uuid === item.gym.uuid))
+    .filter((item) => membershipPlan.includedGymUuids?.some((selected) => selected === item.gym.uuid))
     .sort((a, b) => a.label.localeCompare(b.label));
 
   const initialSelectedCourseItems = availableCourseItems
-    .filter((item) => membershipPlan.includedCourses?.some((selected) => selected.uuid === item.course.uuid))
+    .filter((item) => membershipPlan.includedCourseUuids?.some((selected) => selected === item.course.uuid))
     .sort((a, b) => a.label.localeCompare(b.label));
 
   return (

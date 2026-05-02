@@ -20,10 +20,11 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from 'zod';
-import { activateUserAction, createUserAction, deactivateUserAction, deleteUserAction, saveUserAction } from "./actions";
+import { activateUserAction, deactivateUserAction, deleteUserAction, saveUserAction } from "./actions";
 import { DOMAIN_EXCEPTION_USER_ALREADY_EXIST, DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED } from "@/src/lib/entities/entity/messages";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { RoleEnum } from "@/src/lib/entities/enum/role-enum";
+import { ActionResult } from "@/app/lib/http/result";
 
 export interface UserFormData {
     user: z.infer<typeof UserSchema>;
@@ -56,7 +57,9 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
     const { isSaving, isActivating, isDeleting, createEntity, saveEntity, activateEntity, deactivateEntity, deleteEntity
     } = useCrudActions<User>({
         actions: {
-            create: createUserAction,
+            create: function (...args: any[]): Promise<ActionResult<User>> {
+                throw new Error("Function not implemented.");
+            },
             save: saveUserAction,
             activate: activateUserAction,
             deactivate: deactivateUserAction,
@@ -108,14 +111,14 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
 
         let user: User = mapFormToEntity(formData, userState.user);
 
-        if (user.uuid === null) {
+     /*   if (user.uuid === null) {
             createUser(user);
-        } else {
+        } else {*/
             saveUser(user);
-        }
+       /* }*/
     }
 
-    const createUser = (user: User) => {
+ /*   const createUser = (user: User) => {
         createEntity(
             user,
             async (entity) => {
@@ -148,6 +151,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
             }
         );
     }
+        */
 
     const saveUser = (user: User) => {
         saveEntity(

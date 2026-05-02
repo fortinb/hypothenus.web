@@ -32,9 +32,9 @@ export function CheckoutInfo({ lang, brandId, financialInstruments, order }:
 					<Col xs={12}>
 						<Form.Group>
 							<FormLabelRequired className="text-primary" label={t("financialInstrument.label")} />
-							<Form.Select id="checkout-financial-instruments-dropdown" {...register(`financialInstrumentUuid`)} defaultValue={financialInstruments ? financialInstruments.length > 0 ? financialInstruments.find(option => option.preferred)?.uuid : "" : ""}>
+							<Form.Select id="checkout-financial-instruments-dropdown" {...register(`financialInstrumentUuid`)} defaultValue={financialInstruments ? financialInstruments.length > 0 ? financialInstruments.find(option => option.preferredInstrument)?.uuid : "" : ""}>
 								{financialInstruments?.map((option) => (
-									<option key={option.uuid} value={option.uuid}>{option.cardNumber}</option>
+									<option key={option.uuid} value={option.uuid}>{option.creditCard?.cardNumber}</option>
 								))}
 							</Form.Select>
 							{errors.financialInstrumentUuid && <Form.Text className="text-invalid">{t(errors.financialInstrumentUuid.message as string)}</Form.Text>}

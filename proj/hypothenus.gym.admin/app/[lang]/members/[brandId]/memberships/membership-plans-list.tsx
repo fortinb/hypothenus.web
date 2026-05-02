@@ -28,7 +28,7 @@ export default function MembershipPlansList({ lang, membershipPlans }:
 
   useEffect(() => {
     if (membershipPlanFilterState.gymSelectedItem) {
-      const filteredPlans = membershipPlans?.filter(mp => mp.includedGyms.some(gym => gym.uuid === membershipPlanFilterState.gymSelectedItem?.gym.uuid)) ?? [];
+      const filteredPlans = membershipPlans?.filter(mp => mp.includedGymUuids.some(gymUuid => gymUuid === membershipPlanFilterState.gymSelectedItem?.gym.uuid)) ?? [];
       const promotionalPlans = filteredPlans?.filter((mp) => mp.promotional) ?? [];
       const giftCardPlans = filteredPlans?.filter((mp) => mp.giftCard) ?? [];
       const regularPlans = filteredPlans?.filter((mp) => !mp.promotional && !mp.giftCard) ?? [];
