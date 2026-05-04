@@ -45,7 +45,7 @@ export default function FormActionBar({ onEdit, onDelete, onActivation, isEditDi
                         {isActivating &&
                             <div className="spinner-border spinner-border-sm me-2"></div>
                         }
-                        
+
                         {t("form.bar.activate")}</Form.Label>
                 </div>
             </div>

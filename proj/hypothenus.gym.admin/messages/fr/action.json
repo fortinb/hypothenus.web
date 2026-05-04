@@ -8,7 +8,9 @@
         "buttons": {
             "cancel": "Annuler",
             "save": "Sauvegarder",
-            "saving": "Sauvegarde en cours..."
+            "saving": "Sauvegarde en cours...",
+            "submit": "Soumettre",
+            "submitting": "Soumission en cours..."
         }
     }
 }

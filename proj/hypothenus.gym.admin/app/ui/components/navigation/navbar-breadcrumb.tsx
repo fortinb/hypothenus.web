@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
-import { BreadcrumbState, initBreadcrumbs, updateBreadcrumbsLocale } from "@/app/lib/store/slices/breadcrumb-state-slice";
+import { BreadcrumbState, updateBreadcrumbsLocale } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import Link from "next/link";
 import { useEffect } from "react";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -14,12 +14,12 @@ export default function NavbarBreadcrumb() {
   const locale = useLocale();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (breadcrumbState.breadcrumbs.length === 0) {
       dispatch(initBreadcrumbs());
     }
 
-  }, [dispatch, breadcrumbState.breadcrumbs.length]);
+  }, [dispatch, breadcrumbState.breadcrumbs.length]);*/
 
   useEffect(() => {
     // Update breadcrumbs whenever locale changes

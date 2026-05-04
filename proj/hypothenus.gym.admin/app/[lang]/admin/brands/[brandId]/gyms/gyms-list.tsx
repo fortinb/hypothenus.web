@@ -1,7 +1,7 @@
 "use client"
 
 import { Gym } from "@/src/lib/entities/gym";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import GymListDetails from "./gyms-list-details";
 
 export default function GymsList({ lang, pageOfGyms }: { lang: string; pageOfGyms?: Page<Gym> }) {

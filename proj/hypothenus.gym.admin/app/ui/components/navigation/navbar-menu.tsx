@@ -11,8 +11,13 @@ import { useTranslations } from "next-intl";
 import AdminButton from "./admin-button";
 import { Authorize } from "../security/authorize";
 import { Suspense } from "react";
+import { CartBadge } from "../cart/cart-badge";
 
-export default function NavbarMenu({ lang }: { lang: string }) {
+export default function NavbarMenu({ lang, brandUuid }: 
+  { 
+    lang: string; 
+    brandUuid: string 
+  }) {
   const t = useTranslations("layout");
 
   return (
@@ -51,6 +56,9 @@ export default function NavbarMenu({ lang }: { lang: string }) {
                   <Suspense fallback={null}>
                     <LanguageButton lang={lang} />
                   </Suspense>
+                </div>
+                <div className="me-2">
+                  <CartBadge lang={lang} brandUuid={brandUuid} />
                 </div>
               </div>
             </div>

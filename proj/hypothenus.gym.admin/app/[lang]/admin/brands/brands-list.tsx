@@ -1,6 +1,6 @@
 "use client"
 
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import BrandListDetails from "./brands-list-details";
 import { Brand } from "@/src/lib/entities/brand";
 

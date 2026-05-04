@@ -1,3 +1,20 @@
 {
- 
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "emptySubtitle": "Browse membership plans and add one to get started.",
+    "subtotal": "Subtotal",
+    "itemCount": "{count, plural, zero {no items} one {# item} other {# items}}",
+    "item": {
+        "remove": "Remove"
+    },
+    "buttons": {
+        "checkout": {
+            "label": "Checkout",
+            "tooltip": "Proceed to checkout",
+            "submitting": "Submitting..."
+        }
+    },
+    "badge": {
+        "label": "{count, plural, zero {cart is empty} one {# item in cart} other {# items in cart}}"
+    }
 }

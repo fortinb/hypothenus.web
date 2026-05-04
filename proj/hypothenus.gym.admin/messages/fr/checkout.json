@@ -1,0 +1,33 @@
+{
+    "title": "Checkout",
+    "financialInstrument": {
+        "label": "Veuillez sélectionner un mode de paiement",
+        "expirationDate": {
+            "label": "Date d'expiration"
+        },
+        "cvv": {
+            "label": "CVV"
+        }
+    },
+    "buttons": {
+        "submit": "Passer la commande",
+        "submitting": "Passage de la commande..."
+    },
+    "validation": {
+        "financialInstrumentRequired": "Veuillez sélectionner un mode de paiement.",
+        "expirationDateRequired": "Veuillez entrer la date d'expiration.",
+        "cvvRequired": "Veuillez entrer le CVV."
+    },
+    "confirmation": {
+        "title": "Commande confirmée !",
+        "subtitle": "Merci pour votre commande.",
+        "orderNumber": "Commande #{orderUuid}",
+        "placedOn": "Passée le {date}",
+        "total": "Total de la commande",
+        "viewMemberships": "Voir mes abonnements"
+    },
+    "action": {
+        "submitSuccess": "Votre commande a été passée avec succès !",
+        "submitError": "Une erreur est survenue lors de la passation de votre commande. Veuillez réessayer."
+    }
+}

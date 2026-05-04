@@ -1,6 +1,6 @@
 "use client"
 
-import { Address } from "@/src/lib/entities/address";
+import { Address } from "@/src/lib/entities/contact/address";
 
 export default function AddressDisplay({ address }: { address: Address }) {
 

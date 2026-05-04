@@ -18,7 +18,7 @@ export default function Header({ lang, brand }: { lang: string; brand: Brand }) 
   return (
     <div>
       <header className="navbar shadow sticky-top p-0">
-        <NavbarMenu lang={lang} />
+        <NavbarMenu lang={lang} brandUuid={brand.uuid} />
       </header>
       <div className="d-flex flex-row justify-content-start ms-5">
         <NavbarBreadcrumb />

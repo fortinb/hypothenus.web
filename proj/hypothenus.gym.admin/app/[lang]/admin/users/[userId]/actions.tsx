@@ -20,7 +20,7 @@ export async function saveUserAction(data: User, path: string): Promise<ActionRe
   }
 }
 
-export async function createUserAction(data: User): Promise<ActionResult<User>> {
+/*export async function createUserAction(data: User): Promise<ActionResult<User>> {
   if (!data.email)
     return failure({ type: ErrorType.Validation, message: 'User email is required' });
 
@@ -31,7 +31,7 @@ export async function createUserAction(data: User): Promise<ActionResult<User>> 
   } catch (error: any) {
     return failure(error);
   }
-}
+}*/
 
 export async function activateUserAction(data: User, path: string): Promise<ActionResult<User>> {
   if (!data.uuid)

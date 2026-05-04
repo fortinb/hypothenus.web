@@ -1,17 +1,6 @@
 import { Member, parseMember, serializeMember } from "@/src//lib/entities/member";
-import { AxiosRequestConfig } from "axios";
 import axiosInstance from "@/app/lib/http/axiosInterceptor";
-
-function initRequest(params: any): AxiosRequestConfig {
-
-  let request: AxiosRequestConfig =
-  {
-    baseURL: process.env.NEXT_PUBLIC_HYPOTHENUS_ADMIN_MS_BASE_URL,
-    params: params
-  }
-
-  return request;
-}
+import { initRequest } from "./service-request";
 
 export async function getMember(brandUuid: string, memberUuid: string): Promise<Member> {
 

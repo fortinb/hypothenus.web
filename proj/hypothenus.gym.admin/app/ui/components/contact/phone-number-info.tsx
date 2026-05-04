@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { IMaskInput } from "react-imask";
-import { PhoneNumber } from "@/src/lib/entities/phone-number";
+import { PhoneNumber } from "@/src/lib/entities/contact/phone-number";
 
 export default function PhoneNumberInfo({ index, id, defaultType, formStatefield, parent }:
     {

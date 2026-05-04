@@ -10,7 +10,7 @@ import { success } from '@/app/lib/http/handle-result';
 import { logFormValidationErrors } from '@/app/lib/test-utils/form-test-helpers';
 import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
 import moment from 'moment';
-import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST, MessageSeverityEnum } from '@/src/lib/entities/messages';
+import { DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST, MessageSeverityEnum } from '@/src/lib/entities/entity/messages';
 
 // Test data constants for course
 export const TEST_COURSE = {

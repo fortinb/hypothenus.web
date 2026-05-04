@@ -10,8 +10,8 @@ import FormActionButtons from "@/app/ui/components/actions/form-action-buttons";
 import MemberRegistration from "@/app/ui/components/member/member-registration";
 import ToastResult from "@/app/ui/components/notifications/toast-result";
 import { Member, MemberRegistrationSchema, MemberSchema } from "@/src/lib/entities/member";
-import { DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST } from "@/src/lib/entities/messages";
-import { phoneNumberOrder } from "@/src/lib/entities/phone-number";
+import { DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST } from "@/src/lib/entities/entity/messages";
+import { phoneNumberOrder } from "@/src/lib/entities/contact/phone-number";
 import { GymListItem } from "@/src/lib/entities/ui/gym-list-item";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -24,7 +24,12 @@ import { z } from "zod";
 import { useFormDebug } from "@/app/lib/hooks/useFormDebug";
 import { createMemberAction } from "./actions";
 
-export default function RegistrationForm({ lang, member, gyms }: { lang: string; member: Member; gyms: GymListItem[] }) {
+export default function RegistrationForm({ lang, member, gyms }:
+    {
+        lang: string;
+        member: Member;
+        gyms: GymListItem[]
+    }) {
     const t = useTranslations("entity");
     const router = useRouter();
 
@@ -73,7 +78,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
     const onSubmit: SubmitHandler<z.infer<typeof MemberRegistrationSchema>> = async (formData: z.infer<typeof MemberRegistrationSchema>) => {
         setIsEditMode(false);
 
-        let member: Member = mapFormToEntity(formData, memberState.member);
+        const member: Member = mapFormToEntity(formData, memberState.member);
         createMember(member);
     }
 
@@ -111,7 +116,7 @@ export default function RegistrationForm({ lang, member, gyms }: { lang: string;
         setIsEditMode(false);
 
         formContext.reset(mapEntityToForm(memberState.member));
-     
+
         router.push(`/${lang}/public/signin`);
     }
 

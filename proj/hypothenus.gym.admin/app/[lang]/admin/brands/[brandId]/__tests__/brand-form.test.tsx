@@ -7,8 +7,8 @@ import { createBrandAction, saveBrandAction, deleteBrandAction, activateBrandAct
 import { useRouter } from 'next/navigation';
 import { Brand, newBrand } from '@/src/lib/entities/brand';
 import { success } from '@/app/lib/http/handle-result';
-import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from '@/src/lib/entities/messages';
-import { MessageSeverityEnum } from '@/src/lib/entities/messages';
+import { DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST } from '@/src/lib/entities/entity/messages';
+import { MessageSeverityEnum } from '@/src/lib/entities/entity/messages';
 import {
     TEST_ADDRESS,
     TEST_PHONE_NUMBERS,

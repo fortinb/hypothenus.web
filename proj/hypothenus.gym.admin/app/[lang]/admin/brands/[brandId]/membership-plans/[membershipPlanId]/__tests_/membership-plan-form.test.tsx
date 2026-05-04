@@ -14,7 +14,7 @@ import { newGym } from '@/src/lib/entities/gym';
 import { newCourse } from '@/src/lib/entities/course';
 import { MembershipPlanPeriodEnum } from '@/src/lib/entities/enum/membership-plan-period-enum';
 import { BillingFrequencyEnum } from '@/src/lib/entities/enum/billing-frequency-enum';
-import { newCurrency } from '@/src/lib/entities/pricing/currency';
+import { newCurrency } from '@/src/lib/entities/financial/currency';
 import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
 import moment from 'moment';
 

@@ -4,7 +4,7 @@ import Loader from "@/app/ui/components/navigation/loader";
 import PagingNavigation from "@/app/ui/components/navigation/paging-navigation";
 import { CoursesStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/courses-state-paging-slice";
 import { Course } from "@/src/lib/entities/course";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -20,9 +20,8 @@ export default function CoursesListPaging({ lang }: { lang: string; }) {
   const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  
+
   const [pageOfCourses, setPageOfCourses] = useState<Page<Course>>();
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,9 +31,6 @@ export default function CoursesListPaging({ lang }: { lang: string; }) {
       let pageOfCourses: ActionResult<Page<Course>> = await fetchCourses(brandState.brand.uuid, page, pageSize, includeInactive);
       if (pageOfCourses.ok) {
         setPageOfCourses(pageOfCourses.data);
-        if (pageOfCourses.data.content && pageOfCourses?.data?.pageable) {
-          setTotalPages(pageOfCourses.data.totalPages);
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -68,7 +64,8 @@ export default function CoursesListPaging({ lang }: { lang: string; }) {
     <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation page={coursesStatePaging.page + 1} totalPages={totalPages}
+          <PagingNavigation page={pageOfCourses ? pageOfCourses.pageNumber + 1 : 0} totalPages={pageOfCourses?.totalPages ?? 0}
+            hasPrevious={pageOfCourses?.hasPrevious ?? false} hasNext={pageOfCourses?.hasNext ?? false}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
             searchActive={false} />
         </div>

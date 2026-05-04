@@ -4,7 +4,7 @@ import Loader from "@/app/ui/components/navigation/loader";
 import PagingNavigation from "@/app/ui/components/navigation/paging-navigation";
 import { CoachsStatePaging, firstPage, nextPage, previousPage } from "@/app/lib/store/slices/coachs-state-paging-slice";
 import { Coach } from "@/src/lib/entities/coach";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
@@ -15,26 +15,22 @@ import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
 import { useRouter } from "next/navigation";
 
-export default function CoachsListPaging({ lang}: { lang: string; }) {
+export default function CoachsListPaging({ lang }: { lang: string; }) {
   const coachsStatePaging: CoachsStatePaging = useSelector((state: any) => state.coachsStatePaging);
   const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  
+
   const [pageOfCoachs, setPageOfCoachs] = useState<Page<Coach>>();
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchCoachsPage = async (page: number, pageSize: number, includeInactive: boolean) => {
       setIsLoading(true);
 
       let pageOfCoachs: ActionResult<Page<Coach>> = await fetchCoachs(brandState.brand.uuid, page, pageSize, includeInactive);
       if (pageOfCoachs.ok) {
         setPageOfCoachs(pageOfCoachs.data);
-        if (pageOfCoachs.data.content && pageOfCoachs?.data?.pageable) {
-          setTotalPages(pageOfCoachs.data.totalPages);
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -68,7 +64,8 @@ export default function CoachsListPaging({ lang}: { lang: string; }) {
     <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation page={coachsStatePaging.page + 1} totalPages={totalPages}
+          <PagingNavigation page={pageOfCoachs ? pageOfCoachs.pageNumber + 1 : 0} totalPages={pageOfCoachs?.totalPages ?? 0}
+            hasPrevious={pageOfCoachs?.hasPrevious ?? false} hasNext={pageOfCoachs?.hasNext ?? false}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
             searchActive={false} />
         </div>

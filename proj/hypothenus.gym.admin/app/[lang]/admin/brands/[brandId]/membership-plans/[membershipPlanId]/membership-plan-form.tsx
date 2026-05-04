@@ -114,18 +114,18 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
 
     }, [dispatch, membershipPlan]);
 
-    function updateInitialSelectedItems(updatedGyms: Gym[], updatedCourses: Course[]) {
-        if (updatedGyms) {
+    function updateInitialSelectedItems(updatedGymUuids: string[], updatedCourseUuids: string[]) {
+        if (updatedGymUuids) {
             const initialSelectedGymItems = availableGymItems
-                .filter((item) => updatedGyms.some((selected) => selected.uuid === item.gym.uuid))
+                .filter((item) => updatedGymUuids.some((selected) => selected === item.gym.uuid))
                 .sort((a, b) => a.gym.name.localeCompare(b.gym.name));
 
             setOriginalSelectedGymItems(initialSelectedGymItems);
         }
 
-        if (updatedCourses) {
+        if (updatedCourseUuids) {
             const initialSelectedCourseItems = availableCourseItems
-                .filter((item) => updatedCourses.some((selected) => selected.uuid === item.course.uuid))
+                .filter((item) => updatedCourseUuids.some((selected) => selected === item.course.uuid))
                 .sort((a, b) => getCourseName(a.course, lang as LanguageEnum).localeCompare(getCourseName(b.course, lang as LanguageEnum)));
 
             setOriginalSelectedCourseItems(initialSelectedCourseItems);
@@ -175,7 +175,7 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             // Success
             async (entity) => {
                 dispatch(updateMembershipPlanState(entity));
-                updateInitialSelectedItems(entity.includedGyms, entity.includedCourses);
+                updateInitialSelectedItems(entity.includedGymUuids, entity.includedCourseUuids);
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
@@ -294,17 +294,11 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             guestPrivilege: membershipPlan.guestPrivilege,
             promotional: membershipPlan.promotional,
             giftCard: membershipPlan.giftCard,
-            includedGyms: membershipPlan.includedGyms?.map((gym) => {
-                return {
-                    uuid: gym.uuid,
-                    brandUuid: gym.brandUuid,
-                }
+            includedGymUuids: membershipPlan.includedGymUuids?.map((gymUuid) => {
+                return gymUuid;
             }),
-            includedCourses: membershipPlan.includedCourses?.map((course) => {
-                return {
-                    uuid: course.uuid,
-                    brandUuid: course.brandUuid,
-                }
+            includedCourseUuids: membershipPlan.includedCourseUuids?.map((courseUuid) => {
+                return courseUuid;  
             }),
             startDate: membershipPlan.startDate ? moment(membershipPlan.startDate).toISOString() : null,
             endDate: membershipPlan.endDate ? moment(membershipPlan.endDate).toISOString() : null
@@ -328,11 +322,11 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             guestPrivilege: formData.membershipPlan.guestPrivilege,
             promotional: formData.membershipPlan.promotional,
             giftCard: formData.membershipPlan.giftCard,
-            includedGyms: formData.selectedGymItems.map((item) => {
-                return item.gym as Gym;
+            includedGymUuids: formData.selectedGymItems.map((item) => {
+                return item.gym.uuid;
             }),
-            includedCourses: formData.selectedCourseItems.map((item) => {
-                return item.course as Course;
+            includedCourseUuids: formData.selectedCourseItems.map((item) => {
+                return item.course.uuid;
             }),
             startDate: moment(formData.membershipPlan.startDate).toISOString(),
             endDate: formData.membershipPlan.endDate ? moment(formData.membershipPlan.endDate).toISOString() : null

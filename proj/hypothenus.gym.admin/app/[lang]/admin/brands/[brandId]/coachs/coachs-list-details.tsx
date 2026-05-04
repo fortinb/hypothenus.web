@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Coach } from "@/src//lib/entities/coach";
-import { formatPersonName } from "@/src/lib/entities/person";
+import { formatPersonName } from "@/src/lib/entities/contact/person";
 import Link from "next/link";
 import Card from "react-bootstrap/Card";
 import Image from 'next/image';

@@ -13,7 +13,7 @@ export default async function MembersPage({ params }: PageProps) {
   
   const session = await auth();
   if (!session) {
-    redirect("/");
+    redirect("/public/signin");
   }
   
   return (

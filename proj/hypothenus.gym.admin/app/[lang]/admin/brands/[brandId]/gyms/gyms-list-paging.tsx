@@ -1,7 +1,7 @@
 "use client"
 
 import { Gym } from "@/src/lib/entities/gym";
-import { Page } from "@/src/lib/entities/page";
+import { Page } from "@/src/lib/entities/paging/page";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "@/app/ui/components/navigation/loader";
@@ -22,7 +22,6 @@ export default function GymsListPaging({ lang }: { lang: string; }) {
   const router = useRouter();
   
   const [pageOfGyms, setPageOfGyms] = useState<Page<Gym>>();
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,9 +31,6 @@ export default function GymsListPaging({ lang }: { lang: string; }) {
       let pageOfGyms: ActionResult<Page<Gym>> = await fetchGyms(brandState.brand.uuid, page, pageSize, includeInactive);
       if (pageOfGyms.ok) {
         setPageOfGyms(pageOfGyms.data);
-        if (pageOfGyms.data.content && pageOfGyms?.data?.pageable) {
-          setTotalPages(pageOfGyms.data.totalPages);
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -49,9 +45,6 @@ export default function GymsListPaging({ lang }: { lang: string; }) {
 
       if (pageOfGyms.ok) {
         setPageOfGyms(pageOfGyms.data);
-        if (pageOfGyms.data.content && pageOfGyms?.data?.pageable) {
-          setTotalPages(0); // Force 0 since we don"t know the total count of the search
-        }
       } else {
         router.push(`/${lang}/error`);
       }
@@ -113,9 +106,10 @@ export default function GymsListPaging({ lang }: { lang: string; }) {
     <>
       <div className="d-flex flex-column justify-content-start w-100 h-100 page-part">
         <div>
-          <PagingNavigation page={gymsStatePaging.page + 1} totalPages={totalPages}
+          <PagingNavigation page={pageOfGyms ? pageOfGyms.pageNumber + 1 : 0} totalPages={pageOfGyms?.totalPages ?? 0}
+            hasPrevious={pageOfGyms?.hasPrevious ?? false} hasNext={pageOfGyms?.hasNext ?? false}
             onFirstPage={onFirstPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage}
-            searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />
+            searchActive={true} onSearch={onSearch} onSearchInput={onSearchInput} />          
         </div>
         <div>
           <hr />

@@ -14,7 +14,7 @@ export default async function UsersPage({ params }: PageProps) {
   const session = await auth();
 
   if (!session) {
-    redirect("/");
+    redirect("/public/signin");
   }
 
    return (

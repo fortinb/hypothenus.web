@@ -19,8 +19,9 @@ export default async function UserPage({ params }: PageProps) {
 
     const session = await auth();
     if (!session) {
-        redirect('/');
+       redirect("/public/signin");
     }
+    
     const t = await getTranslations({
         locale: lang,
         namespace: "entity"

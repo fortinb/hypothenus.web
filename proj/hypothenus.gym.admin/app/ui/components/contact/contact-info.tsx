@@ -1,6 +1,6 @@
 "use client"
 
-import { Contact } from "@/src/lib/entities/contact";
+import { Contact } from "@/src/lib/entities/contact/contact";
 import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";

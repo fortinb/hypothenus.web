@@ -11,6 +11,8 @@ import Row from "react-bootstrap/Row";
 export default function PagingNavigation(
   { page,
     totalPages,
+    hasPrevious,
+    hasNext,
     onNextPage,
     onPreviousPage,
     onFirstPage,
@@ -21,12 +23,14 @@ export default function PagingNavigation(
     {
       page: number,
       totalPages: number,
+      hasPrevious: boolean,
+      hasNext: boolean
       onNextPage: MouseEventHandler<HTMLButtonElement>,
       onPreviousPage: MouseEventHandler<HTMLButtonElement>,
       onFirstPage: MouseEventHandler<HTMLButtonElement>,
       onSearch?: FormEventHandler<HTMLFormElement>,
       onSearchInput?: ReactEventHandler<HTMLInputElement>
-      searchActive: boolean
+      searchActive: boolean,
     }
 ) {
   const t = useTranslations("navigation");
@@ -52,11 +56,11 @@ export default function PagingNavigation(
         </Col>
         <Col sm="auto" xxl={3} className="d-flex justify-content-end">
           <Button className="btn btn-primary" type="button" variant="primary" onClick={onPreviousPage}
-            disabled={page <= 1}><i className="bi bi-rewind-btn me-2" />{t("paging.buttons.previous")}</Button>
+            disabled={!hasPrevious}><i className="bi bi-rewind-btn me-2" />{t("paging.buttons.previous")}</Button>
         </Col>
         <Col sm="auto" xxl={2} >
           <Button className="btn btn-primary" type="button" variant="primary" onClick={onNextPage}
-            disabled={page >= totalPages}>{t("paging.buttons.next")}<i className="bi bi-fast-forward-btn ms-2" /></Button>
+            disabled={!hasNext}>{t("paging.buttons.next")}<i className="bi bi-fast-forward-btn ms-2" /></Button>
         </Col>
       </Row>
       <Row className="m-0 p-0">

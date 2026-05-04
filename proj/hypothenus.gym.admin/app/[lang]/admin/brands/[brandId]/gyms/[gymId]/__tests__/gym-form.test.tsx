@@ -7,8 +7,8 @@ import { createGymAction, saveGymAction, deleteGymAction, activateGymAction, dea
 import { useRouter } from 'next/navigation';
 import { Gym, newGym } from '@/src/lib/entities/gym';
 import { success } from '@/app/lib/http/handle-result';
-import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from '@/src/lib/entities/messages';
-import { MessageSeverityEnum } from '@/src/lib/entities/messages';
+import { DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST } from '@/src/lib/entities/entity/messages';
+import { MessageSeverityEnum } from '@/src/lib/entities/entity/messages';
 import {
     TEST_ADDRESS,
     TEST_PHONE_NUMBERS,

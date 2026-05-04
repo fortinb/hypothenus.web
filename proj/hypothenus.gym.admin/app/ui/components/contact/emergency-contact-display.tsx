@@ -1,6 +1,6 @@
 "use client"
 
-import { Contact, formatContactName } from "@/src/lib/entities/contact";
+import { Contact, formatContactName } from "@/src/lib/entities/contact/contact";
 import { useTranslations } from "next-intl";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";

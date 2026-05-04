@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { getParentErrorField } from "@/app/lib/forms/errorsUtils";
-import { Address } from "@/src/lib/entities/address";
+import { Address } from "@/src/lib/entities/contact/address";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";

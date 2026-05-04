@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { GymState } from "@/app/lib/store/slices/gym-state-slice";
-import { Contact } from "@/src/lib/entities/contact";
+import { Contact } from "@/src/lib/entities/contact/contact";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";

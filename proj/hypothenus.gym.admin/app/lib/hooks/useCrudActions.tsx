@@ -16,9 +16,7 @@ interface UseCrudActionsParams<T> {
   actions: CrudActions<T>;
 }
 
-export function useCrudActions<T>({
-  actions
-}: UseCrudActionsParams<T>) {
+export function useCrudActions<T>({ actions }: UseCrudActionsParams<T>) {
   const [isSaving, startSave] = useTransition();
   const [isActivating, startActivate] = useTransition();
   const [isDeleting, startDelete] = useTransition();

@@ -1,12 +1,10 @@
-import { Cost, CostSchema, parseCost, serializeCost } from "./pricing/cost";
+import { Cost, CostSchema, parseCost, serializeCost } from "./financial/cost";
 import { z } from 'zod';
-import { Course, CourseReferenceSchema } from "./course";
 import { BillingFrequencyEnum } from "./enum/billing-frequency-enum";
 import { MembershipPlanPeriodEnum } from "./enum/membership-plan-period-enum";
-import { Gym, GymReferenceSchema } from "./gym";
-import { LocalizedString, LocalizedStringSchema, newLocalizedString } from "./localized-string";
-import { BaseEntity } from "./base-entity";
-import { newCurrency } from "./pricing/currency";
+import { LocalizedString, LocalizedStringSchema, newLocalizedString } from "./localized/localized-string";
+import { BaseEntity } from "./entity/base-entity";
+import { newCurrency } from "./financial/currency";
 import { LanguageEnum } from "./enum/language-enum";
 import { localesConfig } from "@/i18n/locales-client";
 import moment from "moment";
@@ -26,8 +24,8 @@ export interface MembershipPlan extends BaseEntity {
     guestPrivilege: boolean;
     promotional: boolean;
     giftCard: boolean;
-    includedCourses: Course[];
-    includedGyms: Gym[];
+    includedCourseUuids: string[];
+    includedGymUuids: string[];
     startDate?: any;
     endDate?: any;
     active: boolean;
@@ -74,8 +72,8 @@ export const newMembershipPlan = (): MembershipPlan => {
         guestPrivilege: false,
         promotional: false,
         giftCard: false,
-        includedCourses: [],
-        includedGyms: [],
+        includedCourseUuids: [],
+        includedGymUuids: [],
         startDate: moment().format("YYYY-MM-DD"),
         endDate: undefined,
         active: true,
@@ -159,8 +157,8 @@ export const MembershipPlanSchema = z.object({
     guestPrivilege: z.boolean(),
     promotional: z.boolean(),
     giftCard: z.boolean(),
-    includedGyms: z.array(GymReferenceSchema).min(0).nullable().optional(),
-    includedCourses: z.array(CourseReferenceSchema).min(0).nullable().optional(),
+    includedGymUuids: z.array(z.string()).min(0).nullable().optional(),
+    includedCourseUuids: z.array(z.string()).min(0).nullable().optional(),
     startDate: z.string().nullable().refine((date) => !!date, { message: "membershipPlan.validation.startDateRequired" }),
     endDate: z.string().nullable().optional(),
 }).refine((membershipPlan) => !membershipPlan.endDate || !membershipPlan.startDate || (moment(membershipPlan.endDate).format("YYYYMMDD") >= moment(membershipPlan.startDate).format("YYYYMMDD")), {

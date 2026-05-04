@@ -1,6 +1,6 @@
 "use client"
 
-import { Contact, formatContactName, newContact } from "@/src/lib/entities/contact";
+import { Contact, formatContactName, newContact } from "@/src/lib/entities/contact/contact";
 import { MouseEvent, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";

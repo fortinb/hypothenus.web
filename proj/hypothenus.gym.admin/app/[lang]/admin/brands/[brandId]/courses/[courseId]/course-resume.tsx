@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { CourseState } from "@/app/lib/store/slices/course-state-slice";
 import { formatDate } from "@/app/lib/utils/dateUtils";
 import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
-import { LocalizedString } from "@/src/lib/entities/localized-string";
+import { LocalizedString } from "@/src/lib/entities/localized/localized-string";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

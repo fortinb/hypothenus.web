@@ -21,7 +21,7 @@ import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { CourseSelectedItem } from "@/src/lib/entities/ui/course-selected-item";
 import { MembershipPlanPeriodEnum } from "@/src/lib/entities/enum/membership-plan-period-enum";
 import { BillingFrequencyEnum } from "@/src/lib/entities/enum/billing-frequency-enum";
-import { Currency } from "@/src/lib/entities/pricing/currency";
+import { Currency } from "@/src/lib/entities/financial/currency";
 import { useState } from "react";
 import { IMaskInput } from "react-imask";
 import DatePicker from "react-datepicker";

@@ -15,6 +15,8 @@ import membershipPlansStatePagingReducer from "./slices/membership-plans-state-p
 import membershipPlanStateReducer from "./slices/membership-plan-state-slice";
 import breadcrumbStateReducer from "./slices/breadcrumb-state-slice";
 import membershipPlanFilterStateReducer from "./slices/membership-plans-filter-state-slice";
+import cartStateReducer from "./slices/cart-state-slice";
+import { loadBreadcrumbState, loadCartState } from "./store-persistence";
 
 export const store = configureStore({
   reducer: {
@@ -33,8 +35,13 @@ export const store = configureStore({
     membershipPlanState: membershipPlanStateReducer,
     membershipPlansStatePaging: membershipPlansStatePagingReducer,
     membershipPlanFilterState: membershipPlanFilterStateReducer,
-    breadcrumbState: breadcrumbStateReducer
-  }
+    breadcrumbState: breadcrumbStateReducer,
+    cartState: cartStateReducer,
+  },
+  preloadedState: {
+    cartState: loadCartState() as ReturnType<typeof cartStateReducer>,
+    breadcrumbState: loadBreadcrumbState() as ReturnType<typeof breadcrumbStateReducer>,
+  },
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

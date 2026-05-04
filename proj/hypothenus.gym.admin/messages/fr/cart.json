@@ -1,3 +1,20 @@
 {
-
+    "title": "Votre Panier",
+    "empty": "Votre panier est vide.",
+    "emptySubtitle": "Parcourez les forfaits et ajoutez-en un pour commencer.",
+    "subtotal": "Sous-total",
+    "itemCount": "{count, plural, zero {aucun article} one {# article} other {# articles}}",
+    "item": {
+        "remove": "Retirer"
+    },
+    "buttons": {
+        "checkout": {
+            "label": "Passer à la caisse",
+            "tooltip": "Passer à la caisse",
+            "submitting": "En cours..."
+        }
+    },
+    "badge": {
+        "label": "{count, plural, zero {panier vide} one {# article dans le panier} other {# articles dans le panier}}"
+    }
 }

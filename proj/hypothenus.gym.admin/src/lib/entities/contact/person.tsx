@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Address, AddressSchema, AddressSchemaOptional, newAddress } from "./address";
 import { Contact, ContactSchema, parseContact } from "./contact";
-import { LanguageEnum } from "./enum/language-enum";
+import { LanguageEnum } from "../enum/language-enum";
 import { newPhoneNumber, PhoneNumber, PhoneNumberSchema } from "./phone-number";
 import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum"; 
 import { z } from 'zod';

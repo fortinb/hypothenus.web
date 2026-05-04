@@ -1,3 +1,5 @@
+import { MembershipPlan } from "@/src/lib/entities/membership-plan";
+import { Page } from "@/src/lib/entities/paging/page";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export const DEFAULT_PAGING_SIZE: number = 6;

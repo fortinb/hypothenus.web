@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { MemberState } from "@/app/lib/store/slices/member-state-slice";
-import { Contact } from "@/src/lib/entities/contact";
+import { Contact } from "@/src/lib/entities/contact/contact";
 import Container from "react-bootstrap/Container";
 import { useSelector } from "react-redux";
 import EmergencyContactDisplay from "@/app/ui/components/contact/emergency-contact-display";

@@ -1,6 +1,6 @@
 "use client"
 
-import { PhoneNumber } from "@/src/lib/entities/phone-number";
+import { PhoneNumber } from "@/src/lib/entities/contact/phone-number";
 import { useTranslations } from "next-intl";
 
 export default function PhoneNumberDisplay({ phoneNumber }: { phoneNumber: PhoneNumber }) {
