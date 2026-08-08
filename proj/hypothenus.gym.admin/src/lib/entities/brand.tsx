@@ -4,12 +4,14 @@ import { BaseEntity } from "./entity/base-entity";
 import { Contact, ContactSchema, newContact, parseContact } from "./contact/contact";
 import { PhoneNumber, PhoneNumberSchema, newPhoneNumber } from "./contact/phone-number";
 import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
+import { Currency, CurrencySchema, newCurrency } from './finance/currency';
 
 export interface Brand extends BaseEntity {
   uuid?: any;
   code: string;
   name: string;
   address: Address;
+  currency: Currency;
   email?: string;
   logoUri?: any;
   active: boolean;
@@ -24,6 +26,7 @@ export const newBrand = (): Brand => {
     code: "",
     name: "",
     address: newAddress(),
+    currency: newCurrency(),
     email: undefined,
     logoUri: undefined,
     active: true,
@@ -73,6 +76,7 @@ export const serializeBrand = (brand: Brand): any => {
 export const BrandSchema = z.object({
   code: z.string().trim().min(1, { message: "brand.validation.codeRequired" }).max(20, { message: "brand.validation.codeMaxLength" }).regex(/^\S+$/, 'brand.validation.noSpaceAllowed'),
   name: z.string().min(1, { message: "brand.validation.nameRequired" }).max(100, { message: "brand.validation.nameMaxLength" }),
+ // currency: CurrencySchema,
   address: AddressSchema,
   email: z.email("brand.validation.emailInvalid").optional().or(z.literal("")),
   note: z.string().min(0),

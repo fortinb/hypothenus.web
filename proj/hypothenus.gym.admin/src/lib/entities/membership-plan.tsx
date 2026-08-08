@@ -1,13 +1,14 @@
-import { Cost, CostSchema, parseCost, serializeCost } from "./financial/cost";
+import { Cost, CostSchema, formatCost, parseCost, serializeCost } from "./finance/cost";
 import { z } from 'zod';
 import { BillingFrequencyEnum } from "./enum/billing-frequency-enum";
 import { MembershipPlanPeriodEnum } from "./enum/membership-plan-period-enum";
 import { LocalizedString, LocalizedStringSchema, newLocalizedString } from "./localized/localized-string";
 import { BaseEntity } from "./entity/base-entity";
-import { newCurrency } from "./financial/currency";
+import { newCurrency } from "./finance/currency";
 import { LanguageEnum } from "./enum/language-enum";
 import { localesConfig } from "@/i18n/locales-client";
 import moment from "moment";
+import { LocaleTranslator } from "@/i18n/create-translators";
 
 export interface MembershipPlan extends BaseEntity {
     uuid?: any;
@@ -19,7 +20,7 @@ export interface MembershipPlan extends BaseEntity {
     numberOfClasses: number;
     period: MembershipPlanPeriodEnum;
     billingFrequency: BillingFrequencyEnum;
-    cost: Cost;
+    price: Cost;
     durationInMonths: number;
     guestPrivilege: boolean;
     promotional: boolean;
@@ -36,7 +37,7 @@ export interface MembershipPlan extends BaseEntity {
 export const parseMembershipPlan = (data: any): MembershipPlan => {
     let membershipPlan: MembershipPlan = {
         ...data,
-        cost: parseCost(data.cost),
+        price: parseCost(data.price),
         startDate: data.startDate ? moment(data.startDate).toDate().toISOString() : data.startDate,
         endDate: data.endDate ? moment(data.endDate).toDate().toISOString() : data.endDate,
     };
@@ -47,7 +48,7 @@ export const parseMembershipPlan = (data: any): MembershipPlan => {
 export const serializeMembershipPlan = (membershipPlan: MembershipPlan): any => {
     return {
         ...membershipPlan,
-        cost: serializeCost(membershipPlan.cost),
+        price: serializeCost(membershipPlan.price),
         startDate: membershipPlan.startDate ? moment(membershipPlan.startDate).startOf('day').toISOString() : membershipPlan.startDate,
         endDate: membershipPlan.endDate ? moment(membershipPlan.endDate).startOf('day').toISOString() : membershipPlan.endDate,
     };
@@ -64,7 +65,7 @@ export const newMembershipPlan = (): MembershipPlan => {
         numberOfClasses: 0,
         period: MembershipPlanPeriodEnum.classes,
         billingFrequency: BillingFrequencyEnum.oneTime,
-        cost: {
+        price: {
             amount: 0,
             currency: newCurrency()
         },
@@ -92,7 +93,11 @@ export const newMembershipPlan = (): MembershipPlan => {
     return newMembershipPlan;
 }
 
-export function getMembershipPlanName(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+export function getMembershipPlanName(membershipPlan: Partial<MembershipPlan>, language?: LanguageEnum): string {
+
+    if (!membershipPlan.name) {
+        return "";
+    }
 
     let name = membershipPlan.name?.find(c => c.language === language);
     if (!name) {
@@ -102,14 +107,15 @@ export function getMembershipPlanName(membershipPlan: MembershipPlan, language?:
     return name?.text ?? "";
 }
 
-export function getMembershipPlanPrice(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
-
-    let cost = parseCost(membershipPlan.cost);
-    const amount = (cost.amount / 100).toFixed(2);
-    return `${amount}${cost.currency.symbol} (${cost.currency.code})`;
+export function getMembershipPlanPrice(membershipPlan: Partial<MembershipPlan>, showCurrency: boolean = true): string {
+    return formatCost(membershipPlan.price, showCurrency);
 }
 
-export function getMembershipPlanDescription(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+export function getMembershipPlanDescription(membershipPlan: Partial<MembershipPlan>, language?: LanguageEnum): string {
+
+    if (!membershipPlan.description) {
+        return "";
+    }
 
     let description = membershipPlan.description?.find(c => c.language === language);
     if (!description) {
@@ -119,7 +125,11 @@ export function getMembershipPlanDescription(membershipPlan: MembershipPlan, lan
     return description?.text ?? "";
 }
 
-export function getMembershipPlanTitle(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+export function getMembershipPlanTitle(membershipPlan: Partial<MembershipPlan>, language?: LanguageEnum): string {
+
+    if (!membershipPlan.title) {
+        return "";
+    }
 
     let title = membershipPlan.title?.find(c => c.language === language);
     if (!title) {
@@ -129,7 +139,11 @@ export function getMembershipPlanTitle(membershipPlan: MembershipPlan, language?
     return title?.text ?? "";
 }
 
-export function getMembershipPlanTermsOfUse(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+export function getMembershipPlanTermsOfUse(membershipPlan: Partial<MembershipPlan>, language?: LanguageEnum): string {
+
+    if (!membershipPlan.termsOfUse) {
+        return "";
+    }
 
     let detail = membershipPlan.termsOfUse?.find(c => c.language === language);
     if (!detail) {
@@ -138,6 +152,22 @@ export function getMembershipPlanTermsOfUse(membershipPlan: MembershipPlan, lang
 
     return detail?.text ?? "";
 }
+
+ /*function getMembershipPlanBilling(membershipPlan: MembershipPlan): string {
+        return `${t(`membershipPlan.billingFrequency.descriptions.${membershipPlan.billingFrequency}`)}`;
+}*/
+
+/*export function getMembershipPlanOrderItemDescription(membershipPlan: MembershipPlan, language?: LanguageEnum): string {
+                
+                    {getMembershipPlanPrice(item.membershipPlan, lang as LanguageEnum)}  {getMembershipPlanBilling(item.membershipPlan)}
+ 
+    let itemDescription = getMembershipPlanName(item.membershipPlan, lang as LanguageEnum) + " - " + getMembershipPlanPrice(item.membershipPlan, lang as LanguageEnum) + " - " + getMembershipPlanBilling(item.membershipPlan);
+    if (!title) {
+        title = membershipPlan.title?.find(c => c.language == localesConfig.defaultLocale as LanguageEnum);
+    }
+
+    return title?.text ?? "";
+}*/
 
 export const MembershipPlanSchema = z.object({
     name: z.array(LocalizedStringSchema(true, "membershipPlan.validation.nameRequired")).min(2),
@@ -149,7 +179,7 @@ export const MembershipPlanSchema = z.object({
         .int({ error: "validation.integerValue" }),
     period: z.enum(MembershipPlanPeriodEnum),
     billingFrequency: z.enum(BillingFrequencyEnum),
-    cost: CostSchema,
+    price: CostSchema,
     durationInMonths: z.coerce.number({ error: "validation.numericValue" })
         .gte(0, { error: "membershipPlan.validation.durationInMonthsInterval" })
         .lte(12, { error: "membershipPlan.validation.durationInMonthsInterval" })

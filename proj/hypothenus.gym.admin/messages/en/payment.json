@@ -1,0 +1,34 @@
+{
+    "title": "Payment mode",
+    "financialInstrument": {
+        "title": {
+            "creditCard": "Credit Card"
+        },
+        "filter": {
+            "noOptions": "No payment methods available",
+            "placeholder": "Select a payment method"
+        }
+    },
+    "creditcard": {
+        "selection": "Card ending with {cardNumber}, exp ({expirationDate}):"
+    },
+    "buttons": {
+        "addCreditCard": "Add Credit Card"
+    },
+    "validation": {
+        "financialInstrumentRequired": "Please select a payment method."
+    },
+    "confirmation": {
+        "title": "",
+        "subtitle": ""
+    },
+    "action": {
+        "submitSuccess": "",
+        "submitError": ""
+    },
+    "paymentDetail": {
+        "validation": {
+            "financialInstrumentRequired": "Please select a payment method."
+        }
+    }
+}

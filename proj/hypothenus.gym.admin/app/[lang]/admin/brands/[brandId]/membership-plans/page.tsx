@@ -30,7 +30,7 @@ export default async function MembershipPlansPage({ params }: PageProps) {
       />
 
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-5">
-        <MembershipPlansMenu lang={lang}  />
+        <MembershipPlansMenu lang={lang} />
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
         <MembershipPlansListPaging lang={lang} />

@@ -54,7 +54,7 @@ export default function AddressInfo({ id, formStatefield, required = false, pare
                 </Col>
             </Row>
             <Row className="gx-2 pt-2">
-                <Col xs={8} >
+                <Col xs={6} >
                     <Form.Group>
                         <FormLabelRequired className="text-primary" required={required} htmlFor={`address_input_city_${id}`} label={t("address.city")} ></FormLabelRequired>
                         <Form.Control type="input" id={`address_input_city_${id}`}  {...register(`${formStatefield}.city`)}
@@ -68,6 +68,14 @@ export default function AddressInfo({ id, formStatefield, required = false, pare
                         <Form.Control type="input" id={`address_input_state_${id}`}  {...register(`${formStatefield}.state`)}
                             className={getError()?.state ? "input-invalid" : ""} />
                         {getError()?.state && <Form.Text className="text-invalid">{t(getError()?.state?.message ?? "")}</Form.Text>}
+                    </Form.Group>
+                </Col>
+                <Col xs={2} >
+                    <Form.Group>
+                        <FormLabelRequired className="text-primary" required={required} htmlFor={`address_input_country_${id}`} label={t("address.country")} ></FormLabelRequired>
+                        <Form.Control type="input" id={`address_input_country_${id}`}  {...register(`${formStatefield}.country`)}
+                            className={getError()?.country ? "input-invalid" : ""} />
+                        {getError()?.country && <Form.Text className="text-invalid">{t(getError()?.country?.message ?? "")}</Form.Text>}
                     </Form.Group>
                 </Col>
                 <Col xs={2} >

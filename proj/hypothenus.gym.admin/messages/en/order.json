@@ -1,0 +1,9 @@
+{
+    "title": "Your order",
+    "subtotal": "Subtotal",
+    "itemCount": "{count, plural, zero {no items} one {# item} other {# items}}",
+    "item": {
+        "quantity": "Quantity: {quantity}",
+        "price": "Price: {price}"
+    }
+}

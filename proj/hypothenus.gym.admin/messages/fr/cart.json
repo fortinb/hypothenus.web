@@ -14,6 +14,10 @@
             "submitting": "En cours..."
         }
     },
+    "action": {
+        "createOrderError": "Échec de la création de la commande !",
+        "trialError": "L'abonnement d'essai est uniquement disponible pour les nouveaux membres."
+    },
     "badge": {
         "label": "{count, plural, zero {panier vide} one {# article dans le panier} other {# articles dans le panier}}"
     }

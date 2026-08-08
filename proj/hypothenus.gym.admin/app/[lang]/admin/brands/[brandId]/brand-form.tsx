@@ -95,21 +95,22 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
     const createBrand = (brand: Brand) => {
         createEntity(
             brand,
+            `/${lang}/admin/brands`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (brand) => {
+                await beforeSave(brand);
             },
             // Success
-            (entity) => {
-                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
+            (brand) => {
+                const duplicate = brand.messages?.find(m => m.code == DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("code", { type: "manual", message: "brand.validation.alreadyExists" });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
-                    dispatch(updateBrandState(entity));
+                    dispatch(updateBrandState(brand));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${entity.uuid}`);
+                    router.push(`/${lang}/admin/brands/${brand.uuid}`);
                 }
             },
             // Error
@@ -124,12 +125,12 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
         saveEntity(
             brand, `/${lang}/admin/brands/${brand.uuid}`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (brand) => {
+                await beforeSave(brand);
             },
             // Success            
-            (entity) => {
-                dispatch(updateBrandState(entity));
+            (brand) => {
+                dispatch(updateBrandState(brand));
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
@@ -241,6 +242,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
             code: brand.code,
             name: brand.name,
             address: brand.address,
+         //   currency: brand.currency,
             email: brand.email,
             note: brand.note,
             phoneNumbers: brand.phoneNumbers,  // Assuming sorted as needed
@@ -255,6 +257,7 @@ export default function BrandForm({ lang, brand }: { lang: string; brand: Brand 
             code: formData.code,
             name: formData.name,
             address: formData.address,
+            currency: brand.currency,
             email: formData.email,
             note: formData.note,
             phoneNumbers: formData.phoneNumbers,

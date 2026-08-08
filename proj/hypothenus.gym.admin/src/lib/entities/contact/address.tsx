@@ -5,6 +5,7 @@ export interface Address {
   streetName: string;
   appartment: string;
   city: string;
+  country: string;
   state: string;
   zipCode: string;
 }
@@ -15,6 +16,7 @@ export const newAddress = (): Address => {
     streetName: "",
     appartment: "",
     city: "",
+    country: "",
     state: "",
     zipCode: ""
   };
@@ -33,11 +35,12 @@ export function formatAddress(address: Address): String {
   const city = address.city ? address.city  + "," : "";
   const state = address.state ? address.state : "";
   const zipCode = address.zipCode ? address.zipCode : "";
+  const country = address.country ? address.country : "";
 
-  return `${civicNumber} ${streetName} ${appartment} ${city} ${state} ${zipCode}`;
+  return `${civicNumber} ${streetName} ${appartment} ${city} ${state} ${country} ${zipCode} `;
 }
 
-const zipCodeRegex = new RegExp(/^\d{5}$|(^\d{5}-\d{4}$)|[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ ]?\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d/);
+export const zipCodeRegex = new RegExp(/^\d{5}$|(^\d{5}-\d{4}$)|[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ ]?\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d/);
 
 export const AddressSchema = z.object({
   civicNumber: z.string().min(1, { message: "address.validation.civicNumberRequired"  }),
@@ -45,6 +48,7 @@ export const AddressSchema = z.object({
   appartment: z.string().min(0),
   city: z.string().min(1, { message: "address.validation.cityRequired" }),
   state: z.string().min(2, { message: "address.validation.stateRequired" }),
+  country: z.string().min(2, { message: "address.validation.countryRequired" }),
   zipCode: z.string().regex(zipCodeRegex, { message: "address.validation.zipcodeFormat" }),
 });
 
@@ -54,5 +58,6 @@ export const AddressSchemaOptional = z.object({
   appartment: z.string().min(0),
   city: z.string().min(0),
   state: z.string().min(0),
+  country: z.string().min(0),
   zipCode: z.string().min(0).regex(zipCodeRegex, { message: "address.validation.zipcodeFormat" }).or(z.literal("")),
 });

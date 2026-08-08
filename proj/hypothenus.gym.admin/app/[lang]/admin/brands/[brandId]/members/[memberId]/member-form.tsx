@@ -100,21 +100,22 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
 
         createEntity(
             member,
+             `/${lang}/admin/brands/${member.brandUuid}/members`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (member) => {
+                await beforeSave(member);
             },
             // Success
-            async (entity) => {
-                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST)
+            async (member) => {
+                const duplicate = member.messages?.find(m => m.code == DOMAIN_EXCEPTION_MEMBER_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("person.email", { type: "manual", message: "member.validation.alreadyExists" });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
-                    dispatch(updateMemberState(entity));
+                    dispatch(updateMemberState(member));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/members/${entity.uuid}`);
+                    router.push(`/${lang}/admin/brands/${member.brandUuid}/members/${member.uuid}`);
                 }
             },
             // Error
@@ -129,12 +130,12 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
         saveEntity(
             member, `/${lang}/admin/brands/${member.brandUuid}/members/${member.uuid}`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (member) => {
+                await beforeSave(member);
             },
             // Success
-            async (entity) => {
-                dispatch(updateMemberState(entity));
+            async (member) => {
+                dispatch(updateMemberState(member));
 
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
@@ -158,8 +159,8 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
     const activateMember = (member: Member) => {
         activateEntity(
             member, `/${lang}/admin/brands/${member.brandUuid}/members/${member.uuid}`,
-            (entity) => {
-                dispatch(updateMemberState(entity));
+            (member) => {
+                dispatch(updateMemberState(member));
                 showResultToast(true, t("action.activationSuccess"));
             },
             (result) => {
@@ -171,8 +172,8 @@ export default function MemberForm({ lang, member, gyms }: { lang: string; membe
     const deactivateMember = (member: Member) => {
         deactivateEntity(
             member, `/${lang}/admin/brands/${member.brandUuid}/members/${member.uuid}`,
-            (entity) => {
-                dispatch(updateMemberState(entity));
+            (member) => {
+                dispatch(updateMemberState(member));
                 showResultToast(true, t("action.deactivationSuccess"));
             },
             (result) => {

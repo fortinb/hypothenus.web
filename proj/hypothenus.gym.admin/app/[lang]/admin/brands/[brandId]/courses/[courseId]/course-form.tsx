@@ -89,20 +89,21 @@ export default function CourseForm({ lang, course }: {
 
         createEntity(
             course,
+             `/${lang}/admin/brands/${course.brandUuid}/courses`,
             // Before save
-            (_entity) => {
+            (_course) => {
             },
             // Success
-            (entity) => {
-                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
+            (course) => {
+                const duplicate = course.messages?.find(m => m.code == DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("code", { type: "manual", message: t("course.validation.alreadyExists") });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
-                    dispatch(updateCourseState(entity));
+                    dispatch(updateCourseState(course));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/courses/${entity.uuid}`);
+                    router.push(`/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`);
                 }
             },
             // Error
@@ -117,11 +118,11 @@ export default function CourseForm({ lang, course }: {
         saveEntity(
             course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
             // Before save
-            (_entity) => {
+            (_course) => {
             },
             // Success
-            async (entity) => {
-                dispatch(updateCourseState(entity));
+            async (course) => {
+                dispatch(updateCourseState(course));
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
@@ -136,8 +137,8 @@ export default function CourseForm({ lang, course }: {
     const activateCourse = (course: Course) => {
         activateEntity(
             course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
-            (entity) => {
-                dispatch(updateCourseState(entity));
+            (course) => {
+                dispatch(updateCourseState(course));
                 showResultToast(true, t("action.activationSuccess"));
             },
             (result) => {
@@ -149,8 +150,8 @@ export default function CourseForm({ lang, course }: {
     const deactivateCourse = (course: Course) => {
         deactivateEntity(
             course, `/${lang}/admin/brands/${course.brandUuid}/courses/${course.uuid}`,
-            (entity) => {
-                dispatch(updateCourseState(entity));
+            (course) => {
+                dispatch(updateCourseState(course));
                 showResultToast(true, t("action.deactivationSuccess"));
             },
             (result) => {

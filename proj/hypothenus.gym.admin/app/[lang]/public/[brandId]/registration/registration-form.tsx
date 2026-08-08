@@ -87,6 +87,7 @@ export default function RegistrationForm({ lang, member, gyms }:
 
         createEntity(
             member,
+             `/${lang}/admin/brands/${member.brandUuid}/members`,
             // Before save
             async (entity) => {
                 // No before create actions
@@ -142,7 +143,14 @@ export default function RegistrationForm({ lang, member, gyms }:
     function mapFormToEntity(formData: z.infer<typeof MemberRegistrationSchema>, member: Member): Member {
         return {
             ...member,  // Preserve original properties like id, active, messages, etc.
-            person: { ...member.person, ...formData.person },
+            person: 
+                { ...member.person, 
+                  ...formData.person,
+                 address: { ...member.person.address,
+                    country: brandState.brand.address.country,
+                    state: brandState.brand.address.state
+                  }
+                },
             memberType: formData.memberType,
             password: formData.password,
             preferredGymUuid: formData.preferredGymUuid

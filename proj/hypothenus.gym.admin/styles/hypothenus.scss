@@ -209,6 +209,11 @@ footer {
     color: $text-secondary !important;
 }
 
+.text-secondary-dark {
+    color: $text-secondary !important;
+    font-weight: bold;
+}
+
 .text-tertiary {
     color: $text-tertiary;
     font-weight: bold;
@@ -624,4 +629,15 @@ footer {
 
 textarea {
     resize: none;
+}
+
+.modal {
+    border: solid;
+    border-color: transparent;
+    border-width: 0px;
+    box-shadow: 5px 10px 20px $card-shadow;
+}
+
+.modal-content-light {
+    background-color: $bg-secondary;
 }

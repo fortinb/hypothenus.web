@@ -21,7 +21,7 @@ import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { CourseSelectedItem } from "@/src/lib/entities/ui/course-selected-item";
 import { MembershipPlanPeriodEnum } from "@/src/lib/entities/enum/membership-plan-period-enum";
 import { BillingFrequencyEnum } from "@/src/lib/entities/enum/billing-frequency-enum";
-import { Currency } from "@/src/lib/entities/financial/currency";
+import { Currency } from "@/src/lib/entities/finance/currency";
 import { useState } from "react";
 import { IMaskInput } from "react-imask";
 import DatePicker from "react-datepicker";
@@ -84,7 +84,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                             <Accordion.Header className={(errors.membershipPlan?.period
                                 || errors.membershipPlan?.numberOfClasses
                                 || errors.membershipPlan?.billingFrequency
-                                || errors.membershipPlan?.cost?.amount
+                                || errors.membershipPlan?.price?.amount
                                 || errors.membershipPlan?.durationInMonths) ? "accordeon-header-invalid" : ""}>{t("membershipPlan.plan.section")}</Accordion.Header>
                             <Accordion.Body className="p-0">
                                 <Row className="m-2 gx-2">
@@ -127,11 +127,11 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                     </Col>
                                     <Col xs={4} className="p-1" >
                                         <Form.Group>
-                                            <FormLabelRequired className="text-primary" htmlFor="membership_plan_info_input_cost_amount" required={true} label={t("membershipPlan.cost.amount")}></FormLabelRequired>
+                                            <FormLabelRequired className="text-primary" htmlFor="membership_plan_info_input_price_amount" required={true} label={t("membershipPlan.price.amount")}></FormLabelRequired>
                                             <div className="d-flex flex-row align-items-center">
                                                 <div>
                                                     <Controller
-                                                        name={`membershipPlan.cost.amount`}
+                                                        name={`membershipPlan.price.amount`}
                                                         render={({ field }) => (
                                                             <IMaskInput
                                                                 {...field}
@@ -145,9 +145,9 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                                                 padFractionalZeros={true}  // always show .00
                                                                 onAccept={(value) => field.onChange(value)}
                                                                 inputRef={field.ref}
-                                                                id={"membership_plan_info_input_cost_amount"}
+                                                                id={"membership_plan_info_input_price_amount"}
                                                                 placeholder="0.00"
-                                                                className={"form-control" + (errors.membershipPlan?.cost?.amount ? " input-invalid" : "")}
+                                                                className={"form-control" + (errors.membershipPlan?.price?.amount ? " input-invalid" : "")}
                                                             />
                                                         )}
                                                     />
@@ -156,7 +156,7 @@ export default function MembershipPlanInfo({ lang, currency, availableGymItems, 
                                                     {currency.symbol} ({currency.code})
                                                 </div>
                                             </div>
-                                            {errors.membershipPlan?.cost?.amount && <Form.Text className="text-invalid">{t(errors.membershipPlan?.cost?.amount.message as string)}</Form.Text>}
+                                            {errors.membershipPlan?.price?.amount && <Form.Text className="text-invalid">{t(errors.membershipPlan?.price?.amount.message as string)}</Form.Text>}
                                         </Form.Group>
                                     </Col>
                                     <Col xs={4} className="p-1" >

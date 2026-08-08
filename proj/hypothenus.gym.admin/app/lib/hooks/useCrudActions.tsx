@@ -21,11 +21,11 @@ export function useCrudActions<T>({ actions }: UseCrudActionsParams<T>) {
   const [isActivating, startActivate] = useTransition();
   const [isDeleting, startDelete] = useTransition();
 
-  const createEntity = (entity: T, beforeSave?: (entity: T) => void, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
+  const createEntity = (entity: T, entityPath?: string, beforeSave?: (entity: T) => void, onSuccess?: (entity: T) => void, onError?: (result: ActionResult<T>) => void) => {
     startSave(async () => {
       beforeSave?.(entity);
       
-      const result = await actions.create(entity);
+      const result = await actions.create(entity, entityPath);
 
       if (!result.ok) {
         debugLog('createEntity error', result);

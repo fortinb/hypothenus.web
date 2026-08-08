@@ -7,10 +7,13 @@ import { useSession, signIn } from "next-auth/react";
 import ModalConfirmation from "../actions/modal-confirmation";
 import { logout } from "@/src/security/actions";
 import { signOut as clientSignOut } from "next-auth/react";
+import { useDispatch } from "react-redux";
+import { clearCart, resetCart } from "@/app/lib/store/slices/cart-state-slice";
 
 export default function SigninButton({ lang }: { lang: string }) {
   const t = useTranslations("welcome");
   const { data: session, status } = useSession();
+  const dispatch = useDispatch();
   const [showSignoutConfirmation, setShowSignoutConfirmation] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -35,6 +38,9 @@ export default function SigninButton({ lang }: { lang: string }) {
     if (confirmation) {
       setIsSigningOut(true);
       setShowSignoutConfirmation(false);
+      
+      // Clear Session State and Cart State before signing out
+      dispatch(clearCart());
       try {
         await logout();
       } catch (error) {

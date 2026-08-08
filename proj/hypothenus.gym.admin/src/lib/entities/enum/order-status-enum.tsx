@@ -1,7 +1,9 @@
 export enum OrderStatusEnum {
   idle = "idle",
-  submitting = "submitting",
-  pending = "pending",
-  confirmed = "confirmed",
-  failed = "failed"
+  created = "created",
+  submitted = "submitted",
+  paymentFailed = "paymentFailed",
+  paymentSucceeded = "paymentSucceeded",
+  completed = "completed",
+  cancelled = "cancelled"
 }

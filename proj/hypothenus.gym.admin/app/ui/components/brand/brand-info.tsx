@@ -15,6 +15,7 @@ import Image from "next/image";
 import { Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 import FormLabelRequired from "../forms/form-label-required";
+import CurrencyDisplay from "../finance/currency-display";
 
 export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandler }:
     {
@@ -79,7 +80,7 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                                 </Dropzone>
                             }
                             <div className="d-flex flex-row justify-content-center mt-2">
-                     
+
                                 <Controller
                                     name={"logoUri"}
                                     render={({ field }) => (
@@ -118,6 +119,16 @@ export default function BrandInfo({ brand, isEditMode, isCancelling, uploadHandl
                                 className={errors.email ? "input-invalid" : ""} />
                             {errors.email && <Form.Text className="text-invalid">{t(errors.email.message as string)}</Form.Text>}
                         </Form.Group>
+                    </Col>
+                </Row>
+                <Row className="m-2 gx-2">
+                    <Col xs={6} >
+                        <Form.Group>
+                            <Form.Label className="text-primary" htmlFor="brand_info_input_currency">{t("brand.currency")}</Form.Label>
+                            <CurrencyDisplay currency={brand.currency} />
+                        </Form.Group>
+                    </Col>
+                    <Col xs={6} >
                     </Col>
                 </Row>
                 <Row className="m-0 pt-2">

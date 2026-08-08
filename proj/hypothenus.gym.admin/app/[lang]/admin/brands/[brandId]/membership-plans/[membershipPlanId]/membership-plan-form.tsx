@@ -149,14 +149,15 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
 
         createEntity(
             membershipPlan,
+             `/${lang}/admin/brands/${membershipPlan.brandUuid}/membership-plans`,
             // Before save
-            (_entity) => {
+            (_membershipPlan) => {
             },
             // Success
-            async (entity) => {
-                dispatch(updateMembershipPlanState(entity));
+            async (membershipPlan) => {
+                dispatch(updateMembershipPlanState(membershipPlan));
                 showResultToast(true, t("action.saveSuccess"));
-                router.push(`/${lang}/admin/brands/${entity.brandUuid}/membership-plans/${entity.uuid}`);
+                router.push(`/${lang}/admin/brands/${membershipPlan.brandUuid}/membership-plans/${membershipPlan.uuid}`);
             },
             // Error
             (result) => {
@@ -170,12 +171,12 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
         saveEntity(
             membershipPlan, `/${lang}/admin/brands/${membershipPlan.brandUuid}/membership-plans/${membershipPlan.uuid}`,
             // Before save
-            (_entity) => {
+            (_membershipPlan) => {
             },
             // Success
-            async (entity) => {
-                dispatch(updateMembershipPlanState(entity));
-                updateInitialSelectedItems(entity.includedGymUuids, entity.includedCourseUuids);
+            async (membershipPlan) => {
+                dispatch(updateMembershipPlanState(membershipPlan));
+                updateInitialSelectedItems(membershipPlan.includedGymUuids, membershipPlan.includedCourseUuids);
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
@@ -190,8 +191,8 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
     const activateMembershipPlan = (membershipPlan: MembershipPlan) => {
         activateEntity(
             membershipPlan, `/${lang}/admin/brands/${membershipPlan.brandUuid}/membership-plans/${membershipPlan.uuid}`,
-            (entity) => {
-                dispatch(updateMembershipPlanState(entity));
+            (membershipPlan) => {
+                dispatch(updateMembershipPlanState(membershipPlan));
                 showResultToast(true, t("action.activationSuccess"));
             },
             (result) => {
@@ -203,8 +204,8 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
     const deactivateMembershipPlan = (membershipPlan: MembershipPlan) => {
         deactivateEntity(
             membershipPlan, `/${lang}/admin/brands/${membershipPlan.brandUuid}/membership-plans/${membershipPlan.uuid}`,
-            (entity) => {
-                dispatch(updateMembershipPlanState(entity));
+            (membershipPlan) => {
+                dispatch(updateMembershipPlanState(membershipPlan));
                 showResultToast(true, t("action.deactivationSuccess"));
             },
             (result) => {
@@ -287,8 +288,8 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             numberOfClasses: membershipPlan.numberOfClasses,
             period: membershipPlan.period,
             billingFrequency: membershipPlan.billingFrequency,
-            cost: {
-                amount: membershipPlan.cost.amount / 100
+            price: {
+                amount: membershipPlan.price.amount / 100
             },
             durationInMonths: membershipPlan.durationInMonths,
             guestPrivilege: membershipPlan.guestPrivilege,
@@ -314,9 +315,9 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
             numberOfClasses: formData.membershipPlan.numberOfClasses,
             period: formData.membershipPlan.period,
             billingFrequency: formData.membershipPlan.billingFrequency,
-            cost: {
-                ...membershipPlan.cost,
-                amount: formData.membershipPlan.cost.amount * 100
+            price: {
+                ...membershipPlan.price,
+                amount: formData.membershipPlan.price.amount * 100
             },
             durationInMonths: formData.membershipPlan.durationInMonths,
             guestPrivilege: formData.membershipPlan.guestPrivilege,
@@ -347,7 +348,7 @@ export default function MembershipPlanForm({ lang, membershipPlan, initialAvaila
                                 <FormActionBar onEdit={onEdit} onDelete={onDeleteConfirmation} onActivation={onActivation} isActivationChecked={membershipPlanState.membershipPlan.uuid == null ? true : membershipPlanState.membershipPlan.active}
                                     isEditDisable={isEditMode} isDeleteDisable={(membershipPlanState.membershipPlan.uuid == null ? true : false)} isActivationDisabled={(membershipPlanState.membershipPlan.uuid == null ? true : false)} isActivating={isActivating} />
                                 {<MembershipPlanInfo lang={lang}
-                                    currency={membershipPlanState.membershipPlan.cost?.currency ?? { code: "", symbol: "" }}
+                                    currency={membershipPlanState.membershipPlan.price?.currency ?? { code: "", symbol: "" }}
                                     formGymsStateField="selectedGymItems"
                                     availableGymItems={availableGymItems}
                                     formCoursesStateField="selectedCourseItems"

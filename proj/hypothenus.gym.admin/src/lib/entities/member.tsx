@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { newPerson, parsePerson, Person, PersonRegistrationSchema, PersonSchema } from './contact/person';
 import { BaseEntity } from './entity/base-entity';
 import { MemberTypeEnum } from './enum/member-type-enum';
-import { FinancialInstrument } from './financial/financial-instrument';
+import { FinancialInstrument } from './finance/financial-instrument';
 
 export interface Member extends BaseEntity {
   uuid?: any;
@@ -11,6 +11,7 @@ export interface Member extends BaseEntity {
   person: Person;
   memberType: MemberTypeEnum;
   preferredGymUuid: string;
+  preferredFinancialInstrumentUuid: string;
   financialInstruments: FinancialInstrument[];
   active: boolean;
 }
@@ -23,6 +24,7 @@ export const newMember = (): Member => {
     person: newPerson(),
     memberType: MemberTypeEnum.regular,
     preferredGymUuid: "",
+    preferredFinancialInstrumentUuid: "",
     active: true,
     financialInstruments: [],
     messages: [],

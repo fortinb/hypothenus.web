@@ -7,14 +7,14 @@ const BREADCRUMB_STORAGE_KEY = "hypothenus.breadcrumbs";
 
 export function loadCartState(): CartState {
 	if (typeof window === "undefined") {
-		return { cart: newCart() };
+		return { cart: newCart(), redirectToCheckout: false, isCheckingOut: false, buyNow: false };
 	}
 	try {
 		const serialized = localStorage.getItem(CART_STORAGE_KEY);
-		if (!serialized) return { cart: newCart() };
+		if (!serialized) return { cart: newCart(), redirectToCheckout: false, isCheckingOut: false, buyNow: false };
 		return JSON.parse(serialized);
 	} catch {
-		return { cart: newCart() };
+		return { cart: newCart(), redirectToCheckout: false, isCheckingOut: false, buyNow: false };
 	}
 }
 

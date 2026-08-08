@@ -17,6 +17,7 @@ export default function ModalConfirmation({ title, text, yesText, noText, action
       
     return (
         <Modal
+            className="modal"
             show={show}
             backdrop="static"
             keyboard={false}

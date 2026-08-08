@@ -1,22 +1,13 @@
 {
     "title": "Checkout",
-    "financialInstrument": {
-        "label": "Select a payment method",
-        "expirationDate": {
-            "label": "Expiration Date"
-        },
-        "cvv": {
-            "label": "CVV"
-        }
-    },
     "buttons": {
-        "submit": "Place Order",
-        "submitting": "Placing order..."
+        "submit": "Submit Order",
+        "submitting": "Submitting Order..."
     },
     "validation": {
         "financialInstrumentRequired": "Please select a payment option.",
         "expirationDateRequired": "Please enter the expiration date.",
-        "cvvRequired": "Please enter the CVV."
+        "cvdRequired": "Please enter the CVD."
     },
     "confirmation": {
         "title": "Order Confirmed!",
@@ -29,5 +20,30 @@
     "action": {
         "submitSuccess": "Your order has been placed successfully!",
         "submitError": "Something went wrong placing your order. Please try again."
+    },
+    "billingDetail": {
+        "title": "Billed To",
+        "name": "Name",
+        "email": "Email",
+        "address": {
+            "title": "Billing Address"
+        },
+        "payment": {
+            "title": "Payment Method"
+        },
+        "validation": {
+            "emailInvalid": "Email format is invalid.",
+            "nameRequired": "Name is required."
+        }
+    },
+    "shippingDetail": {
+        "title": "Shipped To",
+        "address": {
+            "title": "Shipping Address"
+        },
+        "validation": {
+            "emailInvalid": "Email format is invalid.",
+            "nameRequired": "Name is required."
+        }
     }
 }

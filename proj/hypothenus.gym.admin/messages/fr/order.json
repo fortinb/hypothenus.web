@@ -1,0 +1,9 @@
+{
+    "title": "Votre commande",
+    "subtotal": "Sous-total",
+    "itemCount": "{count, plural, zero {aucun article} one {# article} other {# articles}}",
+    "item": {
+        "quantity": "Quantité : {quantity}",
+        "price": "Prix : {price}"
+    }
+}

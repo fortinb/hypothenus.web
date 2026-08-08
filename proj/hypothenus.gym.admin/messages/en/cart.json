@@ -14,6 +14,10 @@
             "submitting": "Submitting..."
         }
     },
+    "action": {
+        "createOrderError": "Create order failed !",
+        "trialError": "Trial membership plan is only available for new members."
+    },
     "badge": {
         "label": "{count, plural, zero {cart is empty} one {# item in cart} other {# items in cart}}"
     }

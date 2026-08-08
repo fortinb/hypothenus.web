@@ -14,7 +14,7 @@ import { newGym } from '@/src/lib/entities/gym';
 import { newCourse } from '@/src/lib/entities/course';
 import { MembershipPlanPeriodEnum } from '@/src/lib/entities/enum/membership-plan-period-enum';
 import { BillingFrequencyEnum } from '@/src/lib/entities/enum/billing-frequency-enum';
-import { newCurrency } from '@/src/lib/entities/financial/currency';
+import { newCurrency } from '@/src/lib/entities/finance/currency';
 import { LanguageEnum } from '@/src/lib/entities/enum/language-enum';
 import moment from 'moment';
 
@@ -100,7 +100,7 @@ describe('MembershipPlanForm Integration Test', () => {
         numberOfClasses: 20,
         period: MembershipPlanPeriodEnum.classes,
         billingFrequency: BillingFrequencyEnum.oneTime,
-        cost: {
+        price: {
             amount: 199.99,
             currency: newCurrency()
         },
@@ -142,9 +142,9 @@ describe('MembershipPlanForm Integration Test', () => {
         mockMembershipPlanWithData.numberOfClasses = TEST_MEMBERSHIP_PLAN.numberOfClasses;
         mockMembershipPlanWithData.period = TEST_MEMBERSHIP_PLAN.period;
         mockMembershipPlanWithData.billingFrequency = TEST_MEMBERSHIP_PLAN.billingFrequency;
-        mockMembershipPlanWithData.cost = {
-            amount: TEST_MEMBERSHIP_PLAN.cost.amount * 100,
-            currency: TEST_MEMBERSHIP_PLAN.cost.currency
+        mockMembershipPlanWithData.price = {
+            amount: TEST_MEMBERSHIP_PLAN.price.amount * 100,
+            currency: TEST_MEMBERSHIP_PLAN.price.currency
         };
         mockMembershipPlanWithData.durationInMonths = TEST_MEMBERSHIP_PLAN.durationInMonths;
         mockMembershipPlanWithData.guestPrivilege = TEST_MEMBERSHIP_PLAN.guestPrivilege;
@@ -171,9 +171,9 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.selectOptions(screen.getByLabelText(/membershipPlan.billingFrequency/i), TEST_MEMBERSHIP_PLAN.billingFrequency);
 
         await user.type(screen.getByLabelText(/membershipPlan.numberOfClasses/i), TEST_MEMBERSHIP_PLAN.numberOfClasses.toString());
-        const costAmount = await screen.findByLabelText(/membershipPlan.cost.amount/i);
-        await user.clear(costAmount);
-        await user.type(costAmount, TEST_MEMBERSHIP_PLAN.cost.amount.toString());
+        const priceAmount = await screen.findByLabelText(/membershipPlan.price.amount/i);
+        await user.clear(priceAmount);
+        await user.type(priceAmount, TEST_MEMBERSHIP_PLAN.price.amount.toString());
 
         await user.type(screen.getByLabelText(/membershipPlan.durationInMonths/i), TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
 
@@ -223,13 +223,13 @@ describe('MembershipPlanForm Integration Test', () => {
         await user.selectOptions(screen.getByLabelText(/membershipPlan.billingFrequency/i), BillingFrequencyEnum.monthly);
 
         const numberOfClasses = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
-        const costAmount = await screen.findByLabelText(/membershipPlan.cost.amount/i);
+        const priceAmount = await screen.findByLabelText(/membershipPlan.price.amount/i);
         const durationInMonths = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
 
         await user.clear(numberOfClasses);
         await user.type(numberOfClasses, `99`);
-        await user.clear(costAmount);
-        await user.type(costAmount, `999.99`);
+        await user.clear(priceAmount);
+        await user.type(priceAmount, `999.99`);
         await user.clear(durationInMonths);
         await user.type(durationInMonths, `3`);
 
@@ -298,7 +298,7 @@ describe('MembershipPlanForm Integration Test', () => {
         expect(submittedData.period).toBe(TEST_MEMBERSHIP_PLAN.period);
         expect(submittedData.billingFrequency).toBe(TEST_MEMBERSHIP_PLAN.billingFrequency);
         expect(submittedData.numberOfClasses).toBe(TEST_MEMBERSHIP_PLAN.numberOfClasses);
-        expect(submittedData.cost.amount).toBe(TEST_MEMBERSHIP_PLAN.cost.amount * 100);
+        expect(submittedData.price.amount).toBe(TEST_MEMBERSHIP_PLAN.price.amount * 100);
         expect(submittedData.durationInMonths).toBe(TEST_MEMBERSHIP_PLAN.durationInMonths);
         expect(submittedData.guestPrivilege).toBe(TEST_MEMBERSHIP_PLAN.guestPrivilege);
         expect(submittedData.promotional).toBe(TEST_MEMBERSHIP_PLAN.promotional);
@@ -361,7 +361,7 @@ describe('MembershipPlanForm Integration Test', () => {
         expect(submittedData.period).toBe(MembershipPlanPeriodEnum.monthly);
         expect(submittedData.billingFrequency).toBe(BillingFrequencyEnum.monthly);
         expect(submittedData.numberOfClasses).toBe(99);
-        expect(submittedData.cost.amount).toBe(99999);
+        expect(submittedData.price.amount).toBe(99999);
         expect(submittedData.durationInMonths).toBe(3);
         expect(submittedData.guestPrivilege).toBe(false);
         expect(submittedData.promotional).toBe(false);
@@ -418,7 +418,7 @@ describe('MembershipPlanForm Integration Test', () => {
         const periodAfterCancel = await screen.findByLabelText(/membershipPlan.period/i);
         const billingFrequencyAfterCancel = await screen.findByLabelText(/membershipPlan.billingFrequency/i);
         const numberOfClassesAfterCancel = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
-        const costAmountAfterCancel = await screen.findByLabelText(/membershipPlan.cost.amount/i);
+        const priceAmountAfterCancel = await screen.findByLabelText(/membershipPlan.price.amount/i);
         const durationInMonthsAfterCancel = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
         const guestPrivilegeAfterCancel = await screen.findByLabelText(/membershipPlan.guestPrivilege/i);
         const promotionalAfterCancel = await screen.findByLabelText(/membershipPlan.promotional/i);
@@ -435,7 +435,7 @@ describe('MembershipPlanForm Integration Test', () => {
         expect(periodAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.period);
         expect(billingFrequencyAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.billingFrequency);
         expect(numberOfClassesAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.numberOfClasses.toString());
-        expect(costAmountAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.cost.amount.toString());
+        expect(priceAmountAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.price.amount.toString());
         expect(durationInMonthsAfterCancel).toHaveValue(TEST_MEMBERSHIP_PLAN.durationInMonths.toString());
         expect(guestPrivilegeAfterCancel).toBeChecked();
         expect(promotionalAfterCancel).toBeChecked();
@@ -596,7 +596,7 @@ describe('MembershipPlanForm Integration Test', () => {
         const periodInput = await screen.findByLabelText(/membershipPlan.period/i);
         const durationInMonthsInput = await screen.findByLabelText(/membershipPlan.durationInMonths/i);
         const numberOfClassesInput = await screen.findByLabelText(/membershipPlan.numberOfClasses/i);
-        const costAmountInput = await screen.findByLabelText(/membershipPlan.cost.amount/i);
+        const priceAmountInput = await screen.findByLabelText(/membershipPlan.price.amount/i);
         const startDateInput = screen.getByLabelText(/membershipPlan.dates.startDate/i);
         const endDateInput = screen.getByLabelText(/membershipPlan.dates.endDate/i);
 
@@ -622,17 +622,17 @@ describe('MembershipPlanForm Integration Test', () => {
         // Invalid 
         await user.type(numberOfClassesInput, "text-instead-of-number");
         await user.type(durationInMonthsInput, "text-instead-of-number");
-        await user.type(costAmountInput, "text-instead-of-number");
+        await user.type(priceAmountInput, "text-instead-of-number");
         await user.click(saveButton);
 
         // Verify validation error messages appear in the DOM
         expect(await screen.findAllByText(/validation.numericValue/i)).toHaveLength(2);
         await user.clear(numberOfClassesInput);
         await user.clear(durationInMonthsInput);
-        await user.clear(costAmountInput);
+        await user.clear(priceAmountInput);
         await user.type(numberOfClassesInput, "1");
         await user.type(durationInMonthsInput, "0");
-        await user.type(costAmountInput, "1");
+        await user.type(priceAmountInput, "1");
 
         await user.selectOptions(periodInput, MembershipPlanPeriodEnum.classes);
         await user.clear(durationInMonthsInput);

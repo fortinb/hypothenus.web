@@ -121,6 +121,7 @@ export default function UserForm({ lang, user, initialAvailableRoleItems, initia
  /*   const createUser = (user: User) => {
         createEntity(
             user,
+             `/${lang}/admin/brands`,
             async (entity) => {
                 // before save (none)
             },

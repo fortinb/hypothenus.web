@@ -5,6 +5,7 @@ export const DOMAIN_EXCEPTION_USER_ALREADY_EXIST: string = "1001";
 export const DOMAIN_EXCEPTION_USER_ROLE_ASSIGNMENT_NOT_ALLOWED: string = "1002";
 export const DOMAIN_EXCEPTION_COURSE_CODE_ALREADY_EXIST: string = "1002";
 export const DOMAIN_EXCEPTION_BRAND_CODE_ALREADY_EXIST: string = "2001";
+export const DOMAIN_EXCEPTION_TRIAL_MEMBERSHIP_PLAN_ONLY_FOR_NEW_MEMBER: string = "1001";
 
 export enum MessageSeverityEnum {
   Info = "Info",

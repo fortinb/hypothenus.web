@@ -15,7 +15,7 @@ import { BrandState } from "@/app/lib/store/slices/brand-state-slice";
 import { ActionResult } from "@/app/lib/http/result";
 import { useRouter } from "next/navigation";
 
-export default function MembershipPlansListPaging({ lang }: { lang: string; }) {
+export default function MembershipPlansListPaging({ lang}: { lang: string; }) {
   const membershipPlansStatePaging: MembershipPlansStatePaging = useSelector((state: any) => state.membershipPlansStatePaging);
   const brandState: BrandState = useSelector((state: any) => state.brandState);
   const dispatch = useAppDispatch();
@@ -80,7 +80,7 @@ export default function MembershipPlansListPaging({ lang }: { lang: string; }) {
 
         {!isLoading &&
           <div className="overflow-auto flex-fill w-100 h-100">
-            <MembershipPlansList lang={lang} pageOfMembershipPlans={pageOfMembershipPlans} />
+            <MembershipPlansList lang={lang} brandId={brandState.brand.uuid} pageOfMembershipPlans={pageOfMembershipPlans} />
           </div>
         }
 

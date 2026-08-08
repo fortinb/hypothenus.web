@@ -5,27 +5,29 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { MouseEvent } from "react";
 
-export default function FormActionCartButtons({ onCheckout, isSubmitting }:
+export default function FormActionCartButtons({ onCheckout, hasItems, isSaving, isEditMode }:
     {
         onCheckout: (e: MouseEvent<HTMLButtonElement>) => void,
-        isSubmitting: boolean;
+        hasItems: boolean;
+        isSaving: boolean;
+        isEditMode: boolean;
     }) {
     const t = useTranslations("cart");
 
     return (
         <div className="d-flex flex-row justify-content-end" >
             <OverlayTrigger placement="top" overlay={<Tooltip style={{ position: "fixed" }} id="action_checkout_tooltip">{t("buttons.checkout.tooltip")}</Tooltip>}>
-                 <Button aria-label={t("buttons.checkout.label")} className="btn btn-icon btn-sm" onClick={onCheckout}>
+                 <Button  disabled={!isEditMode || !hasItems} aria-label={t("buttons.checkout.label")} className="btn btn-icon btn-sm" onClick={onCheckout}>
                     
-                    {isSubmitting &&
+                    {isSaving &&
                         <div className="spinner-border spinner-border-sm me-2"></div>
                     }
 
-                    {!isSubmitting &&
+                    {!isSaving &&
                         <i className="icon icon-light bi bi-bag-check me-2 h7"></i>
                     }
 
-                    {isSubmitting ? t("buttons.checkout.submitting") :  t("buttons.checkout.label")}
+                    {isSaving ? t("buttons.checkout.submitting") :  t("buttons.checkout.label")}
                 </Button>
             </OverlayTrigger>
         </div>

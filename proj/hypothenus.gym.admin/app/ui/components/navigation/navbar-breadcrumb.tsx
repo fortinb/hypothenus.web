@@ -3,7 +3,7 @@
 import { useAppDispatch } from "@/app/lib/hooks/useStore";
 import { BreadcrumbState, updateBreadcrumbsLocale } from "@/app/lib/store/slices/breadcrumb-state-slice";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { useSelector } from "react-redux";
 import { BreadcrumbItemLabel } from "./breadcrumb-item-label";
@@ -14,12 +14,14 @@ export default function NavbarBreadcrumb() {
   const locale = useLocale();
   const dispatch = useAppDispatch();
 
-  /*useEffect(() => {
-    if (breadcrumbState.breadcrumbs.length === 0) {
-      dispatch(initBreadcrumbs());
-    }
+  const [isClient, setIsClient] = useState<boolean>(false);
 
-  }, [dispatch, breadcrumbState.breadcrumbs.length]);*/
+  useEffect(() => {
+    // SSR Hydration complete, now we can use client-side features
+    setIsClient(true);
+  }, [isClient]);
+
+  const renderedBreadcrumbs = isClient ? breadcrumbState.breadcrumbs : [];
 
   useEffect(() => {
     // Update breadcrumbs whenever locale changes
@@ -28,10 +30,10 @@ export default function NavbarBreadcrumb() {
 
   return (
     <div className="d-flex flex-row justify-content-center text-secondary fw-bold pe-3">
-      {breadcrumbState.breadcrumbs?.length > 1 &&
+      {renderedBreadcrumbs?.length > 1 &&
         <Breadcrumb>
-          {breadcrumbState.breadcrumbs?.map((item, index) => {
-            return index === breadcrumbState?.breadcrumbs?.length - 1 ? (
+          {renderedBreadcrumbs?.map((item, index) => {
+            return index === renderedBreadcrumbs?.length - 1 ? (
               <Breadcrumb.Item key={item.id} active>
                 <BreadcrumbItemLabel
                   namespace={item.namespace}

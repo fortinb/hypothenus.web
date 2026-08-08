@@ -4,6 +4,9 @@ import { saveCartState } from "../store-persistence";
 
 export interface CartState {
 	cart: Cart;
+	redirectToCheckout: boolean;
+	isCheckingOut: boolean;
+	buyNow: boolean;
 }
 
 type CartStateSlice = {
@@ -11,17 +14,69 @@ type CartStateSlice = {
 };
 
 export const initialState: CartState = {
-	cart: newCart()
+	cart: newCart(),
+	redirectToCheckout: false,
+	isCheckingOut: false,
+	buyNow: false
 }
 
 export const cartStateSlice = createSlice({
 	name: "cartState",
 	initialState: initialState,
 	reducers: {
-		updateCartOwnership: (state, action: PayloadAction<Partial<Cart>>) => {
+		updateCartOrderUuid: (state, action: PayloadAction<string>) => {
+			const cart = {
+				...state,
+				cart: {
+					...state.cart,
+					orderUuid: action.payload
+				}
+			};
+			saveCartState(cart);
+			return cart;
+		},
+		updateCartBrandOwnership: (state, action: PayloadAction<string>) => {
+			const cart = {
+				...state,
+				cart: {
+					...state.cart,
+					brandUuid: action.payload
+				}
+			};
+			saveCartState(cart);
+			return cart;
+		},
+		updateCartMemberOwnership: (state, action: PayloadAction<string | null>) => {
+			const cart = {
+				...state,
+				cart: {
+					...state.cart,
+					memberUuid: action.payload
+				}
+			};
+			saveCartState(cart);
+			return cart;
+		},		
+		setRedirectToCheckout: (state, action: PayloadAction<boolean>) => {
 			  const cart = {
 				...state,
-				cart: { ...state.cart, ...action.payload }
+				redirectToCheckout: action.payload
+			  }
+			  saveCartState(cart);
+			  return cart;
+		},	
+		setBuyNow: (state, action: PayloadAction<boolean>) => {
+			  const cart = {
+				...state,
+				buyNow: action.payload
+			  }
+			  saveCartState(cart);
+			  return cart;
+		},			
+		setCartCheckout: (state, action: PayloadAction<boolean>) => {
+			  const cart = {
+				...state,
+				isCheckingOut: action.payload
 			  }
 			  saveCartState(cart);
 			  return cart;
@@ -97,7 +152,23 @@ export const cartStateSlice = createSlice({
 		clearCart: (state) => {
 			const cart = {
 				...state,
+				redirectToCheckout: false,
+				isCheckingOut: false,
 				cart: newCart()
+			};
+			saveCartState(cart);
+			return cart;
+		},
+		resetCart: (state) => {
+			const cart = {
+				...state,
+				redirectToCheckout: false,
+				isCheckingOut: false,
+				cart: {
+					...state.cart,
+					orderUuid: null,
+					memberUuid: null,
+				}
 			};
 			saveCartState(cart);
 			return cart;
@@ -111,7 +182,13 @@ export const {
 	removeFromCart,
 	updateQuantity,
 	clearCart,
-	updateCartOwnership
+	resetCart,
+	updateCartBrandOwnership,
+	updateCartMemberOwnership,
+	setRedirectToCheckout,
+	setBuyNow,
+	setCartCheckout,
+	updateCartOrderUuid
 } = cartStateSlice.actions;
 
 export const selectCartCount = (state: CartStateSlice): number =>

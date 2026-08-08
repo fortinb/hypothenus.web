@@ -3,7 +3,6 @@
 import { LocaleTranslator } from "@/i18n/create-translators";
 import { LanguageEnum } from "@/src/lib/entities/enum/language-enum";
 import { getMembershipPlanTermsOfUse, getMembershipPlanName, getMembershipPlanPrice, getMembershipPlanTitle, MembershipPlan } from "@/src/lib/entities/membership-plan";
-import { useTranslations } from "next-intl";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -36,6 +35,7 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
 
     return (
         <Modal
+            className="modal"
             show={show}
             backdrop="static"
             keyboard={false}
@@ -53,7 +53,7 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
             <Modal.Body>
                 <div className="d-flex flex-column justify-content-center mb-3">
                     <div className="d-flex flex-row justify-content-center">
-                        <span className="my-2 me-2 card-text-larger">{getMembershipPlanPrice(membershipPlan, locale as LanguageEnum)}</span>
+                        <span className="my-2 me-2 card-text-larger">{getMembershipPlanPrice(membershipPlan)}</span>
                         <span className="my-2 card-text-larger">{getMembershipPlanBilling(membershipPlan, locale as LanguageEnum)}</span>
 
                     </div>
@@ -67,8 +67,8 @@ export default function ModalBuyMembershipPlan({ tLocale, locale, membershipPlan
                     ))}
                 </div>
             </Modal.Body>
-            <Modal.Footer className="w-100">
-                <div className="d-flex flex-row justify-content-center w-100">
+            <Modal.Footer>
+                <div className="d-flex flex-row flex-fill justify-content-center">
                     <div className="d-flex flex-column ms-2">
                         <Button className="btn btn-secondary" disabled={isAction || onlyDisplay} onClick={() => handleResult(true, false, membershipPlan)}>
 

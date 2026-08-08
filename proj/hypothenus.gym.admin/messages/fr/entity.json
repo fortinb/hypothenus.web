@@ -27,12 +27,20 @@
             "inactive": "Inactif"
         }
     },
+    "currency": {
+        "validation": {
+            "codeRequired": "Le code de la devise est requis.",
+            "nameRequired": "Le nom de la devise est requis.",
+            "symbolRequired": "Le symbole de la devise est requis."
+        }
+    },
     "address": {
         "validation": {
             "civicNumberRequired": "Le numéro civique est requis.",
             "streetRequired": "La rue est requise.",
             "cityRequired": "La ville est requise.",
             "stateRequired": "La province est requise.",
+            "countryRequired": "Le pays est requis.",
             "zipcodeFormat": "A9A 9A9"
         },
         "civicNumber": "# Civique",
@@ -40,6 +48,7 @@
         "city": "Ville",
         "appartment": "# Appartement",
         "state": "Province",
+        "country": "Pays",
         "zipcode": "Code postal"
     },
     "cart": {
@@ -56,7 +65,7 @@
             "buyingNow": "Merci pour votre achat !",
             "addingToCart": "Ajout au panier..."
         }
-    },    
+    },
     "brand": {
         "navigation": {
             "new": "Nouvelle marque"
@@ -75,6 +84,7 @@
         "name": "Nom",
         "email": "Courriel",
         "address": "Adresse",
+        "currency": "Devise",
         "phones": "Téléphones",
         "contacts": "Contacts",
         "note": "Notes",
@@ -335,7 +345,7 @@
             "section": "Conditions d'utilisation du plan d'abonnement",
             "tooltip": "Séparez chaque condition par un point-virgule ';'."
         },
-        "cost": {
+        "price": {
             "amount": "Montant",
             "currency": "Devise"
         },
@@ -399,7 +409,7 @@
             "action": "Suppression en cours..."
         }
     },
-    "cost": {
+    "price": {
         "validation": {
             "amountRequired": "Le montant est requis.",
             "amountTooLarge": "Le montant doit être inférieur à 1 000 000."
@@ -435,12 +445,40 @@
             "cardNumberRequired": "Le numéro de carte est requis.",
             "cardHolderNameRequired": "Le nom du titulaire de la carte est requis.",
             "expirationDateRequired": "La date d'expiration est requise.",
-            "cvvRequired": "Le CVV est requis."
+            "expirationDateInvalidMonth": "Le mois de la date d'expiration doit être entre 01 et 12.",
+            "cvdRequired": "Le CVD est requis.",
+            "zipCodeRequired": "Le code postal est requis."
         },
         "type": "Type",
-        "cardNumber": "Numéro de carte",
-        "cardHolderName": "Nom du titulaire de la carte",
-        "expirationDate": "Date d'expiration",
-        "cvv": "CVV"
+        "creditCard": {
+            "title": "Ajouter une carte de crédit",
+            "cardNumber": "Numéro de carte",
+            "cardHolderName": "Nom du titulaire de la carte",
+            "expirationDate": "Date d'expiration",
+            "cvd": "CVD",
+            "zipCode": "Code postal"
+        }
+    },
+    "order": {
+        "header": {
+            "product": "Produit",
+            "unitPrice": "Prix",
+            "quantity": "Qte",
+            "total": "Total"
+        },
+        "label": {
+            "subtotal": "Sous-total",
+            "itemCount": "{count, plural, zero {aucun article} one {# article} other {# articles}}",
+            "tax": "Taxes",
+            "shipping": "Frais de livraison",
+            "discount": "Rabais",
+            "total": "Total"
+        },
+        "status": {
+            "pending": "En attente",
+            "paid": "Payé",
+            "cancelled": "Annulé",
+            "refunded": "Remboursé"
+        }
     }
 }

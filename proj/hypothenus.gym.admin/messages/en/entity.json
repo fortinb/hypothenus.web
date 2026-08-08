@@ -27,12 +27,20 @@
             "inactive": "Inactive"
         }
     },
+    "currency": {
+        "validation": {
+            "codeRequired": "Currency code is required.",
+            "nameRequired": "Currency name is required.",
+            "symbolRequired": "Currency symbol is required."
+        }
+    },
     "address": {
         "validation": {
             "civicNumberRequired": "Civic number is required.",
             "streetRequired": "Street name is required.",
             "cityRequired": "City name is required.",
             "stateRequired": "Province is required.",
+            "countryRequired": "Country is required.",
             "zipcodeFormat": "A9A 9A9"
         },
         "civicNumber": "Civic number",
@@ -40,6 +48,7 @@
         "city": "City",
         "appartment": "# Appartment",
         "state": "Province",
+        "country": "Country",
         "zipcode": "Postal code"
     },
     "cart": {
@@ -75,6 +84,7 @@
         "name": "Name",
         "email": "Email address",
         "address": "Address",
+        "currency": "Currency",
         "phones": "Phones",
         "contacts": "Contacts",
         "note": "Notes",
@@ -335,8 +345,8 @@
             "section": "Terms of use of the membership plan",
             "tooltip": "Separate each term by a semicolon ';'."
         },
-        "cost": {
-            "amount": "Cost amount",
+        "price": {
+            "amount": "Price amount",
             "currency": "Currency"
         },
         "numberOfClasses": "Number of classes",
@@ -399,7 +409,7 @@
             "action": "Deleting..."
         }
     },
-    "cost": {
+    "price": {
         "validation": {
             "amountRequired": "Amount is required.",
             "amountTooLarge": "Amount must be less than 1,000,000."
@@ -435,12 +445,40 @@
             "cardNumberRequired": "Card number is required.",
             "cardHolderNameRequired": "Card holder name is required.",
             "expirationDateRequired": "Expiration date is required.",
-            "cvvRequired": "CVV is required."
+            "expirationDateInvalidMonth": "The expiration date month must be between 01 and 12.",
+            "cvdRequired": "CVD is required.",
+            "zipCodeRequired": "Postal code is required."
         },
         "type": "Type",
-        "cardNumber": "Card number",
-        "cardHolderName": "Card holder name",
-        "expirationDate": "Expiration date",
-        "cvv": "CVV"
+        "creditCard": {
+            "title": "Add Credit Card",
+            "cardNumber": "Card number",
+            "cardHolderName": "Card holder name",
+            "expirationDate": "Expiration date",
+            "cvd": "CVD",
+            "zipCode": "Postal Code"
+        }
+    },
+    "order": {
+        "header": {
+            "product": "Product",
+            "unitPrice": "Price",
+            "quantity": "Qte",
+            "total": "Total"
+        },
+        "label": {
+            "subtotal": "Subtotal",
+            "itemCount": "{count, plural, zero {no items} one {# item} other {# items}}",
+            "tax": "Tax",
+            "shipping": "Shipping",
+            "discount": "Discount",
+            "total": "Total"
+        },
+        "status": {
+            "pending": "Pending",
+            "paid": "Paid",
+            "cancelled": "Cancelled",
+            "refunded": "Refunded"
+        }
     }
 }

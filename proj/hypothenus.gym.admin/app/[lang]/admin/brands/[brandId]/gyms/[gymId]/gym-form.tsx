@@ -140,21 +140,22 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
         gym.brandUuid = brandState.brand.uuid;
         createEntity(
             gym,
+             `/${lang}/admin/brands/${gym.brandUuid}/gyms`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (gym) => {
+                await beforeSave(gym);
             },
             // Success
-            (entity) => {
-                const duplicate = entity.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
+            (gym) => {
+                const duplicate = gym.messages?.find(m => m.code == DOMAIN_EXCEPTION_GYM_CODE_ALREADY_EXIST)
                 if (duplicate) {
                     formContext.setError("gym.code", { type: "manual", message: "gym.validation.alreadyExists" });
                     showResultToast(false, t("action.saveError"), undefined);
                     setIsEditMode(true);
                 } else {
-                    dispatch(updateGymState(entity));
+                    dispatch(updateGymState(gym));
                     showResultToast(true, t("action.saveSuccess"));
-                    router.push(`/${lang}/admin/brands/${entity.brandUuid}/gyms/${entity.uuid}`);
+                    router.push(`/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`);
                 }
             },
             // Error
@@ -169,13 +170,13 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
         saveEntity(
             gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (gym) => {
+                await beforeSave(gym);
             },
             // Success
-            (entity) => {
-                dispatch(updateGymState(entity));
-                updateInitialSelectedItems(entity.coachs ?? []);
+            (gym) => {
+                dispatch(updateGymState(gym));
+                updateInitialSelectedItems(gym.coachs ?? []);
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
             },
@@ -198,8 +199,8 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
     const activateGym = (gym: Gym) => {
         activateEntity(
             gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
-            (entity) => {
-                dispatch(updateGymState(entity));
+            (gym) => {
+                dispatch(updateGymState(gym));
                 showResultToast(true, t("action.activationSuccess"));
             },
             (result) => {
@@ -211,8 +212,8 @@ export default function GymForm({ lang, gym, initialAvailableCoachItems, initial
     const deactivateGym = (gym: Gym) => {
         deactivateEntity(
             gym, `/${lang}/admin/brands/${gym.brandUuid}/gyms/${gym.uuid}`,
-            (entity) => {
-                dispatch(updateGymState(entity));
+            (gym) => {
+                dispatch(updateGymState(gym));
                 showResultToast(true, t("action.deactivationSuccess"));
             },
             (result) => {

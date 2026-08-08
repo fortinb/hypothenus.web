@@ -98,16 +98,17 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
 
         createEntity(
             coach,
+            `/${lang}/admin/brands/${brandState.brand.uuid}/coachs`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (coach) => {
+                await beforeSave(coach);
             },
             // Success
-            async (entity) => {
-                dispatch(updateCoachState(entity));
+            async (coach) => {
+                dispatch(updateCoachState(coach));
 
                 showResultToast(true, t("action.saveSuccess"));
-                router.push(`/${lang}/admin/brands/${entity.brandUuid}/coachs/${entity.uuid}`);
+                router.push(`/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`);
             },
             // Error
             (result) => {
@@ -121,12 +122,12 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
         saveEntity(
             coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
             // Before save
-            async (entity) => {
-                await beforeSave(entity);
+            async (coach) => {
+                await beforeSave(coach);
             },
             // Success
-            async (entity) => {
-                dispatch(updateCoachState(entity));
+            async (coach) => {
+                dispatch(updateCoachState(coach));
 
                 showResultToast(true, t("action.saveSuccess"));
                 setIsEditMode(true);
@@ -150,8 +151,8 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
     const activateCoach = (coach: Coach) => {
         activateEntity(
             coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
-            (entity) => {
-                dispatch(updateCoachState(entity));
+            (coach) => {
+                dispatch(updateCoachState(coach));
                 showResultToast(true, t("action.activationSuccess"));
             },
             (result) => {
@@ -163,8 +164,8 @@ export default function CoachForm({ lang, coach }: { lang: string; coach: Coach 
     const deactivateCoach = (coach: Coach) => {
         deactivateEntity(
             coach, `/${lang}/admin/brands/${coach.brandUuid}/coachs/${coach.uuid}`,
-            (entity) => {
-                dispatch(updateCoachState(entity));
+            (coach) => {
+                dispatch(updateCoachState(coach));
                 showResultToast(true, t("action.deactivationSuccess"));
             },
             (result) => {
