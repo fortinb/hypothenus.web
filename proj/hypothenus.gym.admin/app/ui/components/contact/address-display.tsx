@@ -2,9 +2,9 @@
 
 import { Address } from "@/src/lib/entities/contact/address";
 
-export default function AddressDisplay({ address, alignCenter = true }: { address: Address, alignCenter?: boolean }) {
+export default function AddressDisplay({ address, align = "center" }: { address: Address, align?: string }) {
 
-  const justifyClass = alignCenter ? "justify-content-center" : "justify-content-start";
+  const justifyClass = `justify-content-${align}`;
 
   return (
     <div>

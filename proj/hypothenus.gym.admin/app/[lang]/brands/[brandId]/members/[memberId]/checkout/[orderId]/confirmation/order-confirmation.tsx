@@ -2,20 +2,23 @@
 
 import { formatDate } from "@/app/lib/utils/dateUtils";
 import AddressDisplay from "@/app/ui/components/contact/address-display";
+import PhoneNumberDisplay from "@/app/ui/components/contact/phone-number-display";
 import { OrderInfo } from "@/app/ui/components/order/order-info";
+import { Brand } from "@/src/lib/entities/brand";
+import { PhoneNumberTypeEnum } from "@/src/lib/entities/enum/phone-number-type-enum";
 import { Order } from "@/src/lib/entities/sale/order";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
-export function OrderConfirmation({ lang, brandId, order }:
+export function OrderConfirmation({ lang, brandId, order, brand }:
     {
         lang: string;
         brandId: string;
         order: Order;
+        brand: Brand;
     }) {
     const t = useTranslations("checkout");
 
@@ -32,33 +35,53 @@ export function OrderConfirmation({ lang, brandId, order }:
                         </h2>
                     </div>
                     <hr />
-
                     <div>
                         <Row className="gx-2">
                             <Col xs={2} ></Col>
                             <Col xs={4} >
                                 <div className="d-flex flex-column justify-content-center">
                                     <div className="d-flex flex-row justify-content-start">
-                                        <span className="text-primary">{order.billingDetail?.name}</span>
+                                        <span className="text-secondary">{order.billingDetail?.name}</span>
+                                    </div>
+
+                                    <div className="d-flex flex-row justify-content-start">
+                                        {order.billingDetail?.address &&
+                                            <AddressDisplay align="start" address={order.billingDetail?.address}></AddressDisplay>}
                                     </div>
                                     <div className="d-flex flex-row justify-content-start">
                                         <span className="text-primary">{order.billingDetail?.email}</span>
                                     </div>
-                                    <div className="d-flex flex-row justify-content-start">
-                                        {order.billingDetail?.address &&
-                                            <AddressDisplay alignCenter={false} address={order.billingDetail?.address}></AddressDisplay>}
-                                    </div>
                                 </div>
                             </Col>
-
                             <Col xs={4} >
                                 <div className="d-flex flex-column justify-content-start align-items-end">
                                     <div>
-                                        <span className="text-primary">{order.orderNumber}</span>
+                                        <span className="text-secondary ">{brand.name}</span>
                                     </div>
-                                    <div>
-                                        <span className="text-primary">{formatDate(order.submittedOn)}</span>
+                                    <div >
+                                        {brand.address &&
+                                            <AddressDisplay align="end" address={brand.address}></AddressDisplay>}
                                     </div>
+                                    <div >
+                                        <PhoneNumberDisplay phoneNumber={brand.phoneNumbers.find(p => p.type == PhoneNumberTypeEnum.business)}></PhoneNumberDisplay>
+                                    </div>
+
+
+                                </div>
+                            </Col>
+                            <Col xs={2} ></Col>
+                        </Row>
+                        <hr />
+                        <Row className="gx-2">
+                            <Col xs={2} ></Col>
+                            <Col xs={4} >
+                                <div className="d-flex flex-column justify-content-start">
+                                    <span className="text-primary">{order.orderNumber}</span>
+                                </div>
+                            </Col>
+                            <Col xs={4} >
+                                <div className="d-flex flex-column justify-content-start align-items-end">
+                                    <span className="text-primary">{formatDate(order.submittedOn)}</span>
                                 </div>
                             </Col>
                             <Col xs={2} ></Col>

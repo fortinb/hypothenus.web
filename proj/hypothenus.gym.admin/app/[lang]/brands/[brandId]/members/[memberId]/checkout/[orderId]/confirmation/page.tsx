@@ -1,11 +1,12 @@
 
 
-import { Breadcrumb } from "@/app/ui/components/navigation/breadcrumb";
 import { auth } from "@/src/security/auth";
 import { redirect } from "next/navigation";
 import { OrderConfirmation } from "./order-confirmation";
 import { Order } from "@/src/lib/entities/sale/order";
+import { Brand } from "@/src/lib/entities/brand";
 import { getOrder } from "@/app/lib/services/order-data-service";
+import { getBrand } from "@/app/lib/services/brands-data-service";
 
 interface PageProps {
   params: Promise<{ lang: string; brandId: string; memberId: string; orderId: string }>;
@@ -21,7 +22,12 @@ export default async function CheckoutConfirmationPage({ params }: PageProps) {
   }
 
   let order: Order;
-  order = await getOrder(brandId, memberId, orderId);
+  let brand: Brand;
+
+    [order, brand] = await Promise.all([
+        getOrder(brandId, memberId, orderId),
+        getBrand(brandId)
+      ]);
 
   if (!order) {
       redirect(`/${lang}/brands/${brandId}/memberships`);
@@ -35,7 +41,7 @@ export default async function CheckoutConfirmationPage({ params }: PageProps) {
       </div>
       <div className="d-flex flex-column justify-content-between w-50 h-100">
         <div className="overflow-auto flex-fill w-100 h-100">
-         <OrderConfirmation lang={lang} brandId={brandId} order={order} />
+         <OrderConfirmation lang={lang} brandId={brandId} order={order} brand={brand} />
         </div>
       </div>
       <div className="d-flex flex-column justify-content-between w-25 h-100 ms-4 me-4">
@@ -44,14 +50,3 @@ export default async function CheckoutConfirmationPage({ params }: PageProps) {
     </div>
   );
 }
-
-/*<Breadcrumb
-        crumb={{
-          reset: true,
-          id: "checkout.page",
-          locale: `${lang}`,
-          href: `/members/${brandId}/memberships/checkout`,
-          key: "breadcrumb.checkout",
-          namespace: "member"
-        }}
-      />*/
